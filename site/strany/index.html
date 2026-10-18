@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>世界 · Урок 02 — Страны и города</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1020;--ink2:#171b33;--paper:#f3eee5;--card:#fffdf9;--line:#e3dccf;
+  --red:#e8402f;--red2:#ff6b55;--gold:#f4c34f;--jade:#17a37a;--sky:#7fb2ff;--muted:#7b7769;
+  --hz:'Noto Serif SC','Noto Sans SC',serif;--disp:Unbounded,Manrope,sans-serif;
+  --shadow:0 30px 70px -30px #0d102055;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+.hz{font-family:var(--hz);font-weight:900}
+.py{color:var(--red);font-weight:800;letter-spacing:.02em}
+img{display:block;max-width:100%}
+
+/* topbar */
+.top{position:fixed;inset:0 0 auto 0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px);color:#fff;transition:.3s}
+.top.solid{background:#0d1020e6;backdrop-filter:blur(14px);box-shadow:0 1px 0 #ffffff14}
+.brand{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.brand b{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--red);font-family:var(--hz);font-size:18px}
+.top-r{display:flex;align-items:center;gap:12px;font-size:12px}
+.pbar{width:120px;height:6px;border-radius:9px;background:#ffffff22;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--red2));transition:.5s}
+.voice-btn{border:1px solid #ffffff38;border-radius:99px;padding:8px 13px;font-weight:800;font-size:12px;color:#fff;display:flex;gap:7px;align-items:center}
+.voice-btn:hover{background:#ffffff14}
+.voice-pop{position:fixed;top:70px;right:clamp(16px,4vw,48px);z-index:60;width:min(340px,calc(100vw - 32px));background:#fff;color:var(--ink);border-radius:18px;box-shadow:var(--shadow);padding:16px;display:none}
+.voice-pop.open{display:block}
+.voice-pop h4{margin:0 0 4px;font-family:var(--disp);font-size:14px}.voice-pop p{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.5}
+.voice-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-radius:11px;font-size:13px;font-weight:700;border:1px solid var(--line);margin-bottom:6px}
+.voice-opt.on{border-color:var(--red);background:#fff1ee}.voice-opt small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.speed{display:flex;gap:6px;margin-top:10px}.speed button{flex:1;padding:9px;border-radius:10px;background:#f2ede4;font-weight:800;font-size:12px}.speed button.on{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;background:radial-gradient(1200px 700px at 75% 40%,#1f2a5a 0%,#0d1020 60%);color:#fff;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:90px clamp(18px,5vw,72px) 40px}
+.stars{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,#fff9,transparent),radial-gradient(1px 1px at 70% 80%,#fff7,transparent),radial-gradient(1.5px 1.5px at 40% 70%,#fff8,transparent),radial-gradient(1px 1px at 85% 15%,#fffa,transparent),radial-gradient(1px 1px at 10% 85%,#fff6,transparent),radial-gradient(1.2px 1.2px at 55% 12%,#fff9,transparent),radial-gradient(1px 1px at 92% 55%,#fff8,transparent);opacity:.8}
+.hero-txt{position:relative;z-index:2;max-width:560px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.eyebrow:before{content:'';width:26px;height:2px;background:var(--gold)}
+.hero h1{font-family:var(--disp);font-size:clamp(40px,6vw,84px);line-height:.95;letter-spacing:-.04em;margin:20px 0 18px;font-weight:900}
+.hero h1 .hz{display:block;font-size:1.25em;color:var(--red2);letter-spacing:.02em;text-shadow:0 10px 40px #e8402f55}
+.hero p{color:#c9cbe0;font-size:15px;line-height:1.7;margin:0 0 26px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}.chips span{border:1px solid #ffffff2e;border-radius:99px;padding:8px 13px;font-size:12px;color:#e7e8f5;background:#ffffff08}
+.cta{display:inline-flex;gap:10px;align-items:center;background:var(--red);color:#fff;font-weight:800;padding:16px 24px;border-radius:16px;box-shadow:0 18px 40px -12px #e8402faa;transition:.2s}
+.cta:hover{transform:translateY(-2px);background:var(--red2)}
+.globe-wrap{position:relative;height:min(80vh,680px);z-index:1}
+#globe{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:pan-y}
+#globe:active{cursor:grabbing}
+.pin{position:absolute;left:0;top:0;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:opacity .25s;z-index:3}
+.pin span{font-family:var(--hz);font-weight:900;font-size:15px;background:#0d1020d9;border:1px solid #ffffff40;padding:5px 9px;border-radius:9px;white-space:nowrap;backdrop-filter:blur(6px);transition:.2s}
+.pin:after{content:'';width:2px;height:12px;background:linear-gradient(#fff,transparent)}
+.pin.city span{background:#e8402fdd;border-color:#ffb3a8}
+.pin:hover span,.pin.sel span{background:var(--gold);color:var(--ink);transform:scale(1.12)}
+.pin.hidden{opacity:0;pointer-events:none}
+.globe-hint{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:11px;color:#9aa0c7;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.globe-fallback{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bcd6ff,#3b67c9 40%,#14204d 80%);box-shadow:0 0 90px #4f7cff66,inset -30px -40px 80px #050816;display:none}
+.country-pop{position:absolute;z-index:5;right:clamp(12px,3vw,40px);bottom:60px;width:min(300px,80%);background:#fffdf9;color:var(--ink);border-radius:22px;overflow:hidden;box-shadow:0 40px 80px -20px #000a;transform:translateY(20px) scale(.96);opacity:0;pointer-events:none;transition:.35s cubic-bezier(.2,.9,.3,1.2)}
+.country-pop.show{opacity:1;transform:none;pointer-events:auto}
+.cp-img{height:130px;background-size:cover;background-position:center}
+.cp-body{padding:14px 16px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cp-body .hz{font-size:34px;line-height:1}
+.cp-body small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.play{flex:none;width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:16px;box-shadow:0 10px 20px -8px #e8402f}
+.play:hover{background:var(--red2)}.play.sm{width:36px;height:36px;font-size:13px}
+.play.playing{animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #e8402f88}100%{box-shadow:0 0 0 16px #e8402f00}}
+
+/* layout */
+main{max-width:1200px;margin:auto;padding:0 clamp(16px,4vw,48px) 60px}
+.sec{padding-top:90px}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:end;margin-bottom:28px}
+.num{grid-row:span 2;font-family:var(--disp);font-weight:900;font-size:clamp(54px,8vw,100px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--ink);opacity:.9}
+.sec-head .tag{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+.sec-head h2{margin:0;font-family:var(--disp);font-size:clamp(24px,3.3vw,38px);letter-spacing:-.03em;line-height:1.05}
+.sec-head p{grid-column:1/-1;margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.65;max-width:640px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(18px,3.5vw,36px);box-shadow:var(--shadow)}
+.dark{background:var(--ink);color:#fff;border-color:#ffffff14}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{padding:12px 18px;border-radius:13px;font-weight:800;font-size:13px;background:#efe8db;transition:.15s}
+.btn:hover{background:#e6dccb}.btn.ink{background:var(--ink);color:#fff}.btn.ink:hover{background:#262c4f}.btn.red{background:var(--red);color:#fff}.btn.red:hover{background:var(--red2)}
+.btn:disabled{opacity:.4;cursor:default}
+.counter{font-size:11px;font-weight:800;letter-spacing:.1em;padding:8px 12px;border-radius:99px;background:#efe8db;white-space:nowrap}
+.dark .counter{background:#ffffff14}
+.fb{min-height:24px;font-size:14px;font-weight:700;margin-top:14px;line-height:1.5}
+.fb.ok{color:var(--jade)}.fb.no{color:var(--red)}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* flip cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.flip{perspective:1100px;height:270px;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.front{background-size:cover;background-position:center;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;box-shadow:0 20px 40px -22px #000c}
+.front:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 30%,#0d1020ee)}
+.front>*{position:relative}
+.front .hz{font-size:46px;line-height:1;text-shadow:0 6px 24px #000a}
+.front .k{position:absolute;top:14px;left:14px;font-size:10px;font-weight:800;letter-spacing:.14em;background:#ffffffd9;color:var(--ink);padding:5px 9px;border-radius:99px}
+.front .turn{font-size:11px;color:#ffffffaa;margin-top:8px}
+.back{transform:rotateY(180deg);background:var(--card);border:1px solid var(--line);padding:18px;display:flex;flex-direction:column}
+.back .hz{font-size:34px;line-height:1.05}
+.back .py{font-size:18px;margin-top:6px}
+.back .tr{font-weight:800;font-size:15px;margin-top:4px}
+.back .why{font-size:12px;color:var(--muted);line-height:1.55;margin-top:auto;border-top:1px dashed var(--line);padding-top:10px}
+.back .play{position:absolute;top:14px;right:14px}
+.flip-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.seg{display:inline-flex;background:#e9e2d4;border-radius:12px;padding:4px}.seg button{padding:8px 13px;border-radius:9px;font-size:12px;font-weight:800}.seg button.on{background:#fff;box-shadow:0 2px 8px #0001}
+
+/* constructor */
+.cons{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:stretch}
+.cons-photo{border-radius:22px;min-height:300px;background-size:cover;background-position:center;position:relative;overflow:hidden;color:#fff;display:flex;align-items:flex-end;padding:20px}
+.cons-photo:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 40%,#0d1020dd)}
+.cons-photo div{position:relative;font-family:var(--disp);font-size:26px;font-weight:900}
+.cons-photo small{display:block;font-family:Manrope;font-size:12px;font-weight:600;opacity:.8;margin-top:4px}
+.slot-row{display:flex;justify-content:center;gap:12px;margin:10px 0 22px}
+.slot{width:96px;height:110px;border-radius:20px;border:2px dashed #cfc5b2;display:grid;place-items:center;font-family:var(--hz);font-weight:900;font-size:58px;transition:.3s}
+.slot.fixed{border:0;background:var(--ink);color:#fff;box-shadow:0 18px 30px -16px #0d1020}
+.slot.filled{border:0;background:var(--red);color:#fff;animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+.slot.bad{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.4) rotate(-12deg)}100%{transform:none}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.tile{width:62px;height:62px;border-radius:16px;background:#fff;border:1px solid var(--line);font-family:var(--hz);font-weight:900;font-size:30px;box-shadow:0 8px 16px -10px #0004;transition:.15s}
+.tile:hover{transform:translateY(-3px);border-color:var(--red)}
+.tile.used{opacity:.25;pointer-events:none}
+.cons-why{background:#fff6e0;border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.6;margin-top:16px;min-height:48px}
+
+/* tone matrix */
+.tones{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:center}
+.big-listen{width:150px;height:150px;border-radius:50%;margin:10px auto 18px;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ff8a76,var(--red) 60%,#a8261a);color:#fff;font-size:42px;box-shadow:0 30px 50px -20px #e8402f,inset -10px -14px 30px #0003;transition:.2s}
+.big-listen:hover{transform:scale(1.04)}
+.matrix{display:grid;grid-template-columns:40px repeat(4,1fr);gap:7px}
+.matrix .lab{display:grid;place-items:center;font-size:11px;font-weight:800;color:#9aa0c7}
+.mcell{aspect-ratio:1;border-radius:13px;background:#ffffff0d;border:1px solid #ffffff1c;display:grid;place-items:center;transition:.15s}
+.mcell svg{width:70%;height:55%}
+.mcell:hover{background:#ffffff1f;border-color:#ffffff55}
+.mcell.ok{background:var(--jade);border-color:var(--jade)}.mcell.no{background:#e8402f88;border-color:var(--red)}
+.tone-reveal{text-align:center;min-height:70px}
+.tone-reveal .hz{font-size:40px}
+
+/* dictation */
+.dict{display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:center}
+.dict-input{display:flex;gap:10px}
+.dict-input input{flex:1;min-width:0;padding:16px 18px;border-radius:15px;border:1.5px solid var(--line);background:#fff;font-size:20px;font-weight:700;outline:none;letter-spacing:.03em}
+.dict-input input:focus{border-color:var(--red);box-shadow:0 0 0 4px #e8402f1a}
+.tone-keys{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tone-keys button{padding:7px 10px;border-radius:9px;background:#efe8db;font-weight:800;font-size:14px}
+.dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:18px}.dots i{width:22px;height:6px;border-radius:9px;background:#e3dccf}.dots i.ok{background:var(--jade)}.dots i.half{background:var(--gold)}.dots i.no{background:var(--red)}.dots i.cur{outline:2px solid var(--ink);outline-offset:2px}
+.answer-card{display:none;margin-top:14px;background:#f6f1e7;border-radius:14px;padding:14px 16px;align-items:center;gap:14px}
+.answer-card.show{display:flex}.answer-card .hz{font-size:34px}
+
+/* listening */
+.lis-top{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.wave{display:flex;gap:3px;align-items:center;height:40px}.wave i{width:4px;border-radius:4px;background:var(--red);height:20%;transition:.2s}
+.wave.go i{animation:wv .9s ease-in-out infinite}.wave i:nth-child(2n){animation-delay:.15s}.wave i:nth-child(3n){animation-delay:.3s}
+@keyframes wv{50%{height:100%}}
+.opts4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.photo-opt{position:relative;height:170px;border-radius:18px;overflow:hidden;background-size:cover;background-position:center;color:#fff;text-align:left;padding:14px;display:flex;align-items:flex-end;font-weight:800;transition:.2s;outline:3px solid transparent;outline-offset:-3px}
+.photo-opt:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#0d1020dd)}
+.photo-opt span{position:relative}
+.photo-opt:hover{transform:translateY(-3px)}
+.photo-opt.ok{outline-color:var(--jade)}.photo-opt.no{outline-color:var(--red);filter:grayscale(.7)}
+.transcript{margin-top:16px;padding:14px 16px;border-radius:14px;background:#f6f1e7;display:none}.transcript.show{display:block}
+.transcript .hz{font-size:24px}
+
+/* builder */
+.target-ru{font-family:var(--disp);font-size:clamp(20px,2.6vw,28px);font-weight:700;margin:6px 0 18px}
+.lane{min-height:76px;border-radius:18px;border:2px dashed #cfc5b2;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;transition:.2s}
+.lane.ok{border-style:solid;border-color:var(--jade);background:#e8f7f0}
+.lane.no{animation:shake .4s;border-color:var(--red)}
+.chip{padding:10px 14px;border-radius:13px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 12px -8px #0005;text-align:center;transition:.15s}
+.chip .hz{display:block;font-size:24px;line-height:1.1}.chip small{display:block;font-size:10px;color:var(--red);font-weight:800;margin-top:2px}
+.chip:hover{transform:translateY(-2px)}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;min-height:60px}
+
+/* dialogue */
+.dlg{display:grid;grid-template-columns:280px 1fr;gap:24px}
+.dlg-scene{border-radius:22px;background:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=80') center/cover,linear-gradient(160deg,#28345f,#0d1020);min-height:380px;position:relative;overflow:hidden;color:#fff;padding:18px;display:flex;flex-direction:column;justify-content:flex-end}
+.dlg-scene:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0d102033,#0d1020ee)}
+.dlg-scene>*{position:relative}
+.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--red));display:grid;place-items:center;font-family:var(--hz);font-size:28px;font-weight:900;margin-bottom:10px;border:3px solid #fff}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:300px;max-height:460px;overflow:auto;padding:4px}
+.bub{max-width:82%;padding:12px 15px;border-radius:18px;animation:pop .35s ease;line-height:1.35}
+.bub .hz{font-size:20px;font-weight:700}.bub .py{font-size:12px;display:block;margin-top:4px}.bub .ru{font-size:12px;color:var(--muted);display:block}
+.bub.them{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px;align-self:flex-start}
+.bub.me{background:var(--ink);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}.bub.me .py{color:var(--gold)}.bub.me .ru{color:#aab}
+.bub button{margin-left:6px;font-size:12px;opacity:.6}
+.replies{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.reply{text-align:left;padding:12px 15px;border-radius:14px;border:1.5px solid var(--line);background:#fff;transition:.15s}
+.reply:hover{border-color:var(--ink)}.reply .hz{font-size:18px;font-weight:700}.reply.no{border-color:var(--red);animation:shake .4s}
+.hide-help .py,.hide-help .ru{display:none!important}
+
+/* departure board */
+.board{background:#090b14;border-radius:24px;padding:clamp(16px,3vw,30px);color:#fff;box-shadow:inset 0 0 0 1px #ffffff12,var(--shadow)}
+.board-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--disp);font-size:13px;letter-spacing:.12em;color:var(--gold)}
+.flaps{display:flex;justify-content:center;gap:8px;margin:28px 0 8px;min-height:120px}
+.flap{position:relative;width:clamp(64px,12vw,104px);height:clamp(84px,15vw,124px);border-radius:10px;background:linear-gradient(#1d2135 50%,#161a2c 50%);display:grid;place-items:center;font-family:var(--hz);font-weight:900;font-size:clamp(42px,8vw,72px);color:#f7f1e3;box-shadow:0 10px 20px #0008;overflow:hidden}
+.flap:after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:#090b14}
+.flap.go{animation:flap .5s ease}
+@keyframes flap{0%{transform:rotateX(0)}45%{transform:rotateX(88deg);filter:brightness(.5)}55%{transform:rotateX(-88deg)}100%{transform:rotateX(0)}}
+.board-py{text-align:center;font-family:var(--disp);color:var(--gold);min-height:22px;letter-spacing:.08em}
+.board-opts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.board-opts button{padding:16px 10px;border-radius:13px;background:#ffffff0e;border:1px solid #ffffff1f;color:#fff;font-weight:800;font-size:14px}
+.board-opts button:hover{background:#ffffff1c}.board-opts button.ok{background:var(--jade)}.board-opts button.no{background:var(--red)}
+.timer{height:5px;border-radius:9px;background:#ffffff14;margin-top:20px;overflow:hidden}.timer i{display:block;height:100%;width:100%;background:var(--gold);transition:width .25s linear}
+.board-start{text-align:center;padding:30px 0}
+
+/* speaking */
+.speak{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.say-card{text-align:center}
+.say-card .hz{font-size:clamp(34px,5vw,52px);line-height:1.2}
+.say-nav{display:flex;justify-content:center;gap:6px;margin:6px 0 16px;flex-wrap:wrap}
+.say-nav button{padding:7px 11px;border-radius:9px;background:#efe8db;font-size:12px;font-weight:800}.say-nav button.on{background:var(--ink);color:#fff}
+.mic{width:96px;height:96px;border-radius:50%;background:var(--ink);color:#fff;font-size:30px;display:grid;place-items:center;margin:16px auto 10px;transition:.2s}
+.mic.rec{background:var(--red);animation:pulse 1s infinite}
+.heard{min-height:60px;font-size:14px;line-height:1.6}
+.cmp{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-top:8px}.cmp span{font-family:var(--hz);font-size:26px;font-weight:900;padding:2px 6px;border-radius:8px}.cmp .y{background:#d9f3e8;color:#0d7a58}.cmp .n{background:#ffe1dc;color:var(--red)}
+.write-box{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:14px;padding:14px;font-size:18px;resize:vertical;outline:none;background:#fff}
+.write-box:focus{border-color:var(--red)}
+
+/* passport */
+.passport{display:grid;grid-template-columns:320px 1fr;gap:0;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+.pp-cover{background:linear-gradient(160deg,#7d1d16,#3d0c09);color:#f4d58a;padding:30px;display:flex;flex-direction:column;justify-content:space-between;min-height:420px;position:relative}
+.pp-cover .emb{width:120px;height:120px;margin:30px auto;border-radius:50%;border:2px solid #f4d58a88;display:grid;place-items:center;font-family:var(--hz);font-size:62px;font-weight:900}
+.pp-cover h3{margin:0;font-family:var(--disp);font-size:20px;letter-spacing:.14em;text-align:center}
+.pp-cover p{text-align:center;font-size:11px;letter-spacing:.24em;margin:6px 0 0;opacity:.7}
+.pp-page{background:repeating-linear-gradient(0deg,#fbf6ea 0 28px,#f4ecda 28px 29px);padding:26px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;align-content:center}
+.stamp{aspect-ratio:1;border-radius:50%;border:3px dashed #c9bfa9;display:grid;place-items:center;text-align:center;color:#c9bfa9;font-size:10px;font-weight:800;letter-spacing:.06em;padding:8px;transition:.4s}
+.stamp b{display:block;font-family:var(--hz);font-size:28px;line-height:1.1}
+.stamp.on{border-style:double;border-width:5px;animation:stampIn .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stampIn{0%{transform:scale(2) rotate(-30deg);opacity:0}100%{opacity:1}}
+.final{margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.final .big{font-family:var(--disp);font-size:clamp(26px,4vw,40px);font-weight:900}
+
+.cons>*,.tones>*,.dict>*,.dlg>*,.speak>*{min-width:0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,30px);opacity:0;z-index:80;background:var(--ink);color:#fff;padding:13px 18px;border-radius:14px;font-size:13px;font-weight:700;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.reveal{opacity:0;transform:translateY(30px);transition:1s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:84px}.globe-wrap{height:62vh;order:-1;margin:-10px -18px 0}
+  .country-pop{bottom:30px}
+  .cons,.tones,.dict,.dlg,.speak{grid-template-columns:1fr}
+  .opts4{grid-template-columns:1fr 1fr}.board-opts{grid-template-columns:1fr 1fr}
+  .passport{grid-template-columns:minmax(0,1fr)}.pp-cover{min-height:auto}.pp-page{grid-template-columns:repeat(4,1fr)}
+  .dlg-scene{min-height:200px}
+}
+@media(max-width:560px){
+  .pbar{width:60px}.voice-btn .lbl{display:none}
+  .cards{grid-template-columns:1fr 1fr;gap:10px}.flip{height:230px}.front .hz{font-size:38px}
+  .slot{width:78px;height:92px;font-size:46px}
+  .photo-opt{height:130px}.pp-page{grid-template-columns:repeat(3,1fr)}
+  .num{font-size:54px}
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="brand"><b>国</b><span>中文 · Урок 02</span></div>
+  <div class="top-r">
+    <div class="pbar"><i id="pbar"></i></div><span id="ptxt">0/10</span>
+    <button class="voice-btn" id="voiceBtn">🔊 <span class="lbl">Голос</span></button>
+  </div>
+</header>
+<div class="voice-pop" id="voicePop">
+  <h4>Озвучка</h4>
+  <p>По умолчанию — живой нейронный голос (нужен интернет). Если он не загрузится, урок сам переключится на лучший голос устройства.</p>
+  <div id="voiceList"></div>
+  <div class="speed"><button data-rate="1" class="on">Обычно</button><button data-rate=".75">Медленнее</button><button data-rate=".55">Очень медленно</button></div>
+  <button class="btn ink" style="width:100%;margin-top:10px" id="voiceTest">Проверить: 我是俄罗斯人</button>
+</div>
+
+<section class="hero">
+  <div class="stars"></div>
+  <div class="hero-txt">
+    <div class="eyebrow">Урок 02 · 世界 shìjiè · мир</div>
+    <h1>Откуда ты?<span class="hz">你是哪国人？</span></h1><div class="py" style="color:var(--gold);margin:-6px 0 18px">Nǐ shì nǎ guó rén? · 哪 nǎ — «какой»</div>
+    <p>Сегодня путешествуем: 8 стран и 2 столицы, тренируем тоны и слух, а в конце собираешь паспорт со штампами. Покрути глобус и нажми на любую страну →</p>
+    <div class="chips"><span>✦ 11 новых слов</span><span>♫ диктант на двусложные слова</span><span>🎙 говорим вслух</span><span>◷ ~45 минут</span></div>
+    <a class="cta" href="#s1">Поехали ✈</a>
+  </div>
+  <div class="globe-wrap">
+    <div class="globe-fallback" id="globeFallback"></div>
+    <canvas id="globe"></canvas>
+    <div id="pins"></div>
+    <div class="country-pop" id="cpop"><div class="cp-img" id="cpImg"></div><div class="cp-body"><div><div class="hz" id="cpHz"></div><small><span class="py" id="cpPy"></span> · <span id="cpRu"></span></small></div><button class="play" id="cpPlay" aria-label="Слушать">▶</button></div></div>
+    <div class="globe-hint">↻ крути · нажимай на иероглифы</div>
+  </div>
+</section>
+
+<main>
+
+<!-- 01 cards -->
+<section class="sec reveal" id="s1">
+  <div class="sec-head"><div class="num">01</div><div class="tag">Знакомимся</div><h2>Паспорт новых слов</h2>
+  <p>Сначала посмотри на иероглифы и попробуй вспомнить сама — потом переворачивай карточку. Внизу каждой — маленькая история: почему страна называется именно так.</p></div>
+  <div class="flip-tools">
+    <div class="seg" id="cardMode"><button class="on" data-m="hz">Иероглиф → смысл</button><button data-m="ru">Перевод → иероглиф</button></div>
+    <span class="counter" id="flipCount">ПЕРЕВЁРНУТО 0 / 11</span>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- 02 constructor -->
+<section class="sec reveal" id="s2">
+  <div class="sec-head"><div class="num">02</div><div class="tag">Понимаем систему</div><h2>Конструктор 国 guó</h2>
+  <p>Почти все страны = <b>один иероглиф + 国</b>. Посмотри на фото и название, выбери первый иероглиф — и страна соберётся.</p></div>
+  <div class="box cons">
+    <div class="cons-photo" id="consPhoto"><div id="consRu">—<small>подсказка</small></div></div>
+    <div>
+      <div class="row" style="justify-content:space-between"><b>Собери страну</b><span class="counter" id="consCount">1 / 7</span></div>
+      <div class="slot-row"><div class="slot" id="consSlot">?</div><div class="slot fixed">国</div></div>
+      <div class="tiles" id="consTiles"></div>
+      <div class="cons-why" id="consWhy">Выбери иероглиф ↑</div>
+      <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn ink" id="consNext" disabled>Следующая страна →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 tones -->
+<section class="sec reveal" id="s3">
+  <div class="sec-head"><div class="num">03</div><div class="tag">Фонетика · тоны</div><h2>Тоновая матрица</h2>
+  <p>Слушаешь двусложное слово — и находишь его «мелодию» в матрице: строка = тон первого слога, столбец = тон второго. Слова — из того, что ты уже знаешь, плюс новые страны.</p></div>
+  <div class="box dark tones">
+    <div style="text-align:center">
+      <div class="row" style="justify-content:space-between"><span class="counter" id="toneCount">1 / 10</span><span class="counter" id="toneScore">✓ 0</span></div>
+      <button class="big-listen" id="toneListen">▶</button>
+      <div class="tone-reveal" id="toneReveal"><span class="small" style="color:#9aa0c7">Нажми и слушай. Можно сколько угодно раз.</span></div>
+      <button class="btn" id="toneNext" style="display:none;margin-top:10px">Дальше →</button>
+    </div>
+    <div>
+      <div class="matrix" id="matrix"></div>
+      <p class="small" style="color:#9aa0c7;margin:12px 0 0">Строки — 1-й слог, столбцы — 2-й слог. ˉ ровный · ˊ вверх · ˇ вниз-вверх · ˋ вниз</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 dictation -->
+<section class="sec reveal" id="s4">
+  <div class="sec-head"><div class="num">04</div><div class="tag">Фонетика · диктант</div><h2>Диктант: двусложные слова</h2>
+  <p>Слушай и записывай <b>пиньинем с тонами</b>. Можно цифрами (<b>lao3shi1</b>) или значками (<b>lǎoshī</b>). Проверка отдельно показывает, верны ли звуки и верны ли тоны. ü пиши как <b>v</b>.</p></div>
+  <div class="box dict">
+    <div style="text-align:center">
+      <button class="big-listen" id="dictListen">▶</button>
+      <div class="row" style="justify-content:center"><button class="btn" id="dictSlow">🐢 медленно</button></div>
+    </div>
+    <div>
+      <div class="row" style="justify-content:space-between;margin-bottom:12px"><b>Слово <span id="dictN">1</span> из <span id="dictT">12</span></b><span class="counter" id="dictScore">✓ 0</span></div>
+      <div class="dict-input"><input id="dictIn" placeholder="напр. lao3shi1" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn red" id="dictCheck">Проверить</button></div>
+      <div class="tone-keys" id="toneKeys"></div>
+      <div class="fb" id="dictFb"></div>
+      <div class="answer-card" id="dictAns"><span class="hz" id="daHz"></span><div><div class="py" id="daPy"></div><div class="small" id="daRu"></div></div><button class="play sm" id="daPlay" style="margin-left:auto">▶</button></div>
+      <div class="row" style="margin-top:14px"><button class="btn ink" id="dictNext">Следующее слово →</button><button class="btn" id="dictRestart">Заново</button></div>
+      <div class="dots" id="dictDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 listening -->
+<section class="sec reveal" id="s5">
+  <div class="sec-head"><div class="num">05</div><div class="tag">Аудирование</div><h2>Паспортный контроль</h2>
+  <p>Ты работаешь на границе в аэропорту Пекина. Слушай, что говорит пассажир, и выбери его страну. Текст фразы появится после ответа.</p></div>
+  <div class="box">
+    <div class="lis-top">
+      <button class="play" id="lisPlay">▶</button>
+      <div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="counter" id="lisCount" style="margin-left:auto">ПАССАЖИР 1 / 6</span>
+    </div>
+    <div class="opts4" id="lisOpts"></div>
+    <div class="transcript" id="lisTr"></div>
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn ink" id="lisNext" disabled>Следующий пассажир →</button></div>
+  </div>
+</section>
+
+<!-- 06 builder -->
+<section class="sec reveal" id="s6">
+  <div class="sec-head"><div class="num">06</div><div class="tag">Грамматика</div><h2>Собери фразу</h2>
+  <p>Нажимай на карточки в правильном порядке. Одна карточка в каждом наборе — лишняя. Нажми на слово в строке, чтобы вернуть его обратно.</p></div>
+  <div class="box">
+    <div class="row" style="justify-content:space-between"><span class="small">Переведи на китайский:</span><span class="counter" id="bCount">1 / 6</span></div>
+    <div class="target-ru" id="bRu"></div>
+    <div class="lane" id="bLane"></div>
+    <div class="pool" id="bPool"></div>
+    <div class="fb" id="bFb"></div>
+    <div class="row" style="margin-top:6px"><button class="btn red" id="bCheck">Проверить</button><button class="btn" id="bListen">▶ Послушать ответ</button><button class="btn ink" id="bNext" style="margin-left:auto" disabled>Дальше →</button></div>
+  </div>
+</section>
+
+<!-- 07 dialogue -->
+<section class="sec reveal" id="s7">
+  <div class="sec-head"><div class="num">07</div><div class="tag">Диалог</div><h2>Знакомство в самолёте</h2>
+  <p>Рейс Москва → Пекин. Соседка по креслу заговорила с тобой. Выбирай реплики — они звучат вслух. Пиньинь и перевод можно скрыть, когда станет легко.</p></div>
+  <div class="box dlg">
+    <div class="dlg-scene"><div class="avatar">明</div><b style="font-size:18px">李明 Lǐ Míng</b><span class="small" style="color:#cfd2e6">Рейс 莫斯科 → 北京 · место 14B</span>
+      <div class="row" style="margin-top:14px"><button class="btn" id="dlgHelp">Скрыть пиньинь</button><button class="btn red" id="dlgRestart">Заново</button></div></div>
+    <div><div class="chat" id="chat"></div><div class="replies" id="replies"></div></div>
+  </div>
+</section>
+
+<!-- 08 board -->
+<section class="sec reveal" id="s8">
+  <div class="sec-head"><div class="num">08</div><div class="tag">Скорость</div><h2>Табло вылетов</h2>
+  <p>45 секунд. На табло появляется направление — выбери перевод как можно быстрее. Серия правильных ответов подряд даёт бонус.</p></div>
+  <div class="board">
+    <div class="board-head"><span>出发 · DEPARTURES</span><span>⏱ <span id="bdTime">45</span>с · ✓ <span id="bdScore">0</span> · 🔥 <span id="bdStreak">0</span></span></div>
+    <div id="bdStartBox" class="board-start"><div class="flaps" id="flapsDemo"></div><button class="btn red" id="bdStart">Старт ▶</button><p class="small" style="color:#9aa0c7;margin-top:12px">Рекорд: <span id="bdBest">—</span></p></div>
+    <div id="bdGame" style="display:none">
+      <div class="flaps" id="flaps"></div><div class="board-py" id="bdPy"></div>
+      <div class="board-opts" id="bdOpts"></div>
+      <div class="timer"><i id="bdBar"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 speaking -->
+<section class="sec reveal" id="s9">
+  <div class="sec-head"><div class="num">09</div><div class="tag">Говорим</div><h2>Скажи вслух</h2>
+  <p>Послушай образец, нажми на микрофон и скажи фразу. Браузер распознает речь и подсветит, какие иероглифы он «услышал». Можно и просто записать себя и сравнить с образцом.</p></div>
+  <div class="speak">
+    <div class="box say-card">
+      <div class="say-nav" id="sayNav"></div>
+      <div class="hz" id="sayHz"></div><div class="py" id="sayPy" style="font-size:17px;margin-top:6px"></div><div class="small" id="sayRu"></div>
+      <div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="sayModel">▶ Образец</button><button class="btn" id="sayMine" disabled>▶ Моя запись</button></div>
+      <button class="mic" id="mic">🎙</button>
+      <div class="heard" id="heard"><span class="small">Нажми на микрофон и говори</span></div>
+    </div>
+    <div class="box">
+      <div class="tag" style="font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--red)">ТВОЙ ХОД</div>
+      <h3 style="font-family:var(--disp);margin:6px 0 8px">Мини-презентация о себе</h3>
+      <p class="small">Напиши 3–4 предложения: кто ты, откуда, кто ты по профессии/учишься ли, откуда твой друг. Используй 我是… / 我不是… / 我也是… / 他是…人吗？</p>
+      <textarea class="write-box hz" id="myText" placeholder="你好！我叫……。我是俄罗斯人。" style="font-weight:500"></textarea>
+      <div class="row" style="margin-top:10px"><button class="btn ink" id="readMine">▶ Озвучить мой текст</button><button class="btn" id="saveMine">Сохранить</button></div>
+      <p class="small" style="margin-top:12px">人 rén — человек. Страна + 人 = житель страны: 中国人, 法国人. 北京人 — житель Пекина.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 passport -->
+<section class="sec reveal" id="s10">
+  <div class="sec-head"><div class="num">10</div><div class="tag">Финиш</div><h2>Твой паспорт</h2>
+  <p>За каждое задание — штамп. Собери все 10.</p></div>
+  <div class="passport">
+    <div class="pp-cover"><div><h3>护照</h3><p>PASSPORT · 中文</p></div><div class="emb">国</div><p>LESSON 02 · 世界</p></div>
+    <div class="pp-page" id="stamps"></div>
+  </div>
+  <div class="final"><div><div class="big" id="finalTxt">Штампов: 0 / 10</div><div class="small">你很棒！Nǐ hěn bàng! — Ты молодец!</div></div><button class="btn" id="resetAll">Сбросить прогресс</button></div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ DATA ============ */
+const U=id=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80`;
+const W=[
+ {hz:'国',py:'guó',ru:'страна, государство',img:U('photo-1451187580459-43490279c0fa'),g:'linear-gradient(135deg,#1b2a6b,#0d1020)',why:'Внутри рамки 囗 «граница» — 玉 «нефрит, сокровище». Страна = сокровище, обнесённое границей.',kind:'ОСНОВА'},
+ {hz:'中国',py:'Zhōngguó',ru:'Китай',img:U('photo-1508804185872-d7badad00f7d'),g:'linear-gradient(135deg,#b3261e,#5a0f0b)',why:'中 «середина». Буквально — «Срединное государство», центр мира.',kind:'СТРАНА',lat:35,lon:104,c:'中'},
+ {hz:'俄罗斯',py:'Éluósī',ru:'Россия',img:U('photo-1547448415-e9f5b28e570d'),g:'linear-gradient(135deg,#2a4c9a,#10173a)',why:'Без 国! Название пришло через монгольское «Орос» — отсюда Э-ло-сы.',kind:'СТРАНА',lat:60,lon:90},
+ {hz:'英国',py:'Yīngguó',ru:'Великобритания',img:U('photo-1513635269975-59663e0ac1ad'),g:'linear-gradient(135deg,#29406b,#0f1730)',why:'英 Yīng — по звучанию от «England». А ещё 英 = «герой, выдающийся».',kind:'СТРАНА',lat:53,lon:-2,c:'英'},
+ {hz:'美国',py:'Měiguó',ru:'США',img:U('photo-1496442226666-8d4d0e62e6e9'),g:'linear-gradient(135deg,#3a2f6b,#120f2a)',why:'美 Měi — от «A-mé-rica». Значение — «красивый». Буквально «красивая страна».',kind:'СТРАНА',lat:39,lon:-98,c:'美'},
+ {hz:'法国',py:'Fǎguó',ru:'Франция',img:U('photo-1502602898657-3e91760cbb34'),g:'linear-gradient(135deg,#355f8a,#13243a)',why:'法 Fǎ — от «France». Значение — «закон».',kind:'СТРАНА',lat:46.6,lon:2.3,c:'法'},
+ {hz:'德国',py:'Déguó',ru:'Германия',img:U('photo-1560969184-10fe8719e047'),g:'linear-gradient(135deg,#4a4a4a,#151515)',why:'德 Dé — от «Deutschland». Значение — «добродетель».',kind:'СТРАНА',lat:51,lon:10,c:'德'},
+ {hz:'韩国',py:'Hánguó',ru:'Южная Корея',img:U('photo-1517154421773-0529f29ea451'),g:'linear-gradient(135deg,#5b3d8a,#1c1233)',why:'韩 Hán — корейцы сами называют страну 한국 «Хангук». Китайцы взяли тот же корень.',kind:'СТРАНА',lat:36.5,lon:127.8,c:'韩'},
+ {hz:'泰国',py:'Tàiguó',ru:'Таиланд',img:U('photo-1508009603885-50cf7c579365'),g:'linear-gradient(135deg,#a0661a,#3a2008)',why:'泰 Tài — от «Thai». Значение — «спокойный, мирный».',kind:'СТРАНА',lat:15.8,lon:101,c:'泰'},
+ {hz:'莫斯科',py:'Mòsīkē',ru:'Москва',img:U('photo-1513326738677-b964603b136d'),g:'linear-gradient(135deg,#8a2a2a,#2a0c0c)',why:'Чистая транскрипция: Мо-сы-кэ. Иероглифы подобраны по звуку, смысла не ищем.',kind:'ГОРОД',lat:55.75,lon:37.6,city:1},
+ {hz:'北京',py:'Běijīng',ru:'Пекин',img:U('photo-1584646098378-0874589d76b1'),g:'linear-gradient(135deg,#9a3d1e,#2e1006)',why:'北 «север» + 京 «столица» = «Северная столица». Есть и 南京 — «Южная».',kind:'ГОРОД',lat:39.9,lon:116.4,city:1}
+];
+const byHz=h=>W.find(w=>w.hz===h);
+const bg=w=>`background-image:url('${w.img}'),${w.g}`;
+
+/* ============ UTIL ============ */
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let toastT;function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2300)}
+
+/* ============ VOICE ============ */
+const V={mode:store.get('zh-voice','google'),rate:1,sysVoice:null,cur:null,failed:false};
+function zhVoices(){if(!('speechSynthesis'in window))return[];return speechSynthesis.getVoices().filter(v=>/^(zh|cmn)/i.test(v.lang)&&!/HK|TW|yue/i.test(v.lang))}
+function vScore(v){let s=0;const n=v.name;if(/natural|neural|online/i.test(n))s+=60;if(/xiaoxiao|xiaoyi|yunxi|yunjian|xiaochen|xiaohan|xiaomo/i.test(n))s+=30;if(/google/i.test(n))s+=25;if(/tingting|lilian|yu-?shu|meijia|lili/i.test(n))s+=15;if(/premium|enhanced/i.test(n))s+=20;if(/CN/i.test(v.lang))s+=3;return s}
+function bestVoice(){const vs=zhVoices().sort((a,b)=>vScore(b)-vScore(a));return vs[0]||null}
+function stopAudio(){if(V.cur){V.cur.pause();V.cur=null}if('speechSynthesis'in window)speechSynthesis.cancel();document.querySelectorAll('.playing').forEach(b=>b.classList.remove('playing'));$('#wave')&&$('#wave').classList.remove('go')}
+function speak(text,{rate,btn,onend}={}){
+  stopAudio();const r=rate||V.rate;if(btn)btn.classList.add('playing');
+  const done=()=>{if(btn)btn.classList.remove('playing');onend&&onend()};
+  if(V.mode==='google'&&!V.failed){
+    const a=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q='+encodeURIComponent(text));
+    a.playbackRate=r;a.preservesPitch=true;a.mozPreservesPitch=true;a.webkitPreservesPitch=true;V.cur=a;
+    let fell=false;const fall=()=>{if(fell)return;fell=true;V.failed=true;toast('Онлайн-голос недоступен — включаю голос устройства');renderVoices();sysSpeak(text,r,done)};
+    a.onended=done;a.onerror=fall;a.play().catch(e=>{if(e&&e.name==='NotAllowedError'){done();return}fall()});
+    return;
+  }
+  sysSpeak(text,r,done);
+}
+function sysSpeak(text,r,done){
+  if(!('speechSynthesis'in window)){toast('Этот браузер не умеет озвучивать');done();return}
+  const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';const v=(V.mode!=='google'&&zhVoices().find(x=>x.name===V.mode))||bestVoice();if(v)u.voice=v;
+  u.rate=Math.max(.5,r*.9);u.onend=done;u.onerror=done;speechSynthesis.speak(u);
+}
+function renderVoices(){
+  const list=[{id:'google',name:'Живой голос (онлайн)',sub:V.failed?'не загрузился в этот раз':'рекомендовано · естественная интонация'}];
+  zhVoices().sort((a,b)=>vScore(b)-vScore(a)).slice(0,5).forEach(v=>list.push({id:v.name,name:v.name.replace(/Microsoft |Google /,''),sub:(vScore(v)>=50?'нейронный · ':'системный · ')+v.lang}));
+  $('#voiceList').innerHTML=list.map(o=>`<button class="voice-opt ${V.mode===o.id?'on':''}" data-v="${o.id.replace(/"/g,'&quot;')}"><span>${o.id==='google'?'✦':'◦'}</span><span>${o.name}<small>${o.sub}</small></span></button>`).join('');
+}
+if('speechSynthesis'in window){speechSynthesis.onvoiceschanged=renderVoices}
+renderVoices();
+$('#voiceBtn').onclick=e=>{e.stopPropagation();renderVoices();$('#voicePop').classList.toggle('open')};
+document.addEventListener('click',e=>{if(!e.target.closest('#voicePop')&&!e.target.closest('#voiceBtn'))$('#voicePop').classList.remove('open')});
+$('#voiceList').onclick=e=>{const b=e.target.closest('.voice-opt');if(!b)return;V.mode=b.dataset.v;if(V.mode==='google')V.failed=false;store.set('zh-voice',V.mode);renderVoices();speak('你好！')};
+document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>{V.rate=+b.dataset.rate;document.querySelectorAll('.speed button').forEach(x=>x.classList.toggle('on',x===b))});
+$('#voiceTest').onclick=e=>speak('我是俄罗斯人。',{btn:e.currentTarget});
+
+/* ============ STAMPS ============ */
+const STAMPS=[['globe','世','глобус'],['cards','卡','карточки'],['cons','国','конструктор'],['tones','声','тоны'],['dict','听','диктант'],['lis','关','контроль'],['build','句','фразы'],['dlg','话','диалог'],['board','飞','табло'],['say','说','речь']];
+let got=new Set(store.get('zh-l02-stamps',[]));
+function stamp(id){if(got.has(id))return;got.add(id);store.set('zh-l02-stamps',[...got]);const s=STAMPS.find(x=>x[0]===id);toast(`Штамп в паспорт: ${s[1]} · ${s[2]} ✓`);renderStamps()}
+const stampColors=['#e8402f','#17a37a','#3a5bd9','#b5651d','#8e3fb5'];
+function renderStamps(){
+  $('#stamps').innerHTML=STAMPS.map((s,i)=>{const on=got.has(s[0]);const c=stampColors[i%5];return `<div class="stamp ${on?'on':''}" style="${on?`color:${c};border-color:${c};transform:rotate(${(i*37%30)-15}deg)`:''}"><div><b>${on?s[1]:'·'}</b>${s[2].toUpperCase()}</div></div>`}).join('');
+  $('#pbar').style.width=got.size*10+'%';$('#ptxt').textContent=got.size+'/10';
+  $('#finalTxt').textContent=got.size===10?'Паспорт заполнен! 🎉':`Штампов: ${got.size} / 10`;
+}
+$('#resetAll').onclick=()=>{got.clear();store.set('zh-l02-stamps',[]);renderStamps();toast('Прогресс сброшен')};
+renderStamps();
+
+/* ============ GLOBE ============ */
+const visited=new Set();
+function showCountry(w){
+  $('#cpImg').setAttribute('style',bg(w));$('#cpHz').textContent=w.hz;$('#cpPy').textContent=w.py;$('#cpRu').textContent=w.ru;
+  $('#cpop').classList.add('show');$('#cpPlay').onclick=e=>speak(w.hz,{btn:e.currentTarget});speak(w.hz,{btn:$('#cpPlay')});
+  visited.add(w.hz);if(visited.size>=4)stamp('globe');
+}
+try{(function globe(){
+  const cv=$('#globe'),pinsEl=$('#pins'),places=W.filter(w=>w.lat!==undefined);
+  const fallback=()=>{$('#globeFallback').style.display='block';cv.style.display='none';
+    pinsEl.style.cssText='position:absolute;inset:auto 0 70px 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;z-index:4';
+    pinsEl.innerHTML=places.map(w=>`<button class="pin ${w.city?'city':''}" style="position:static;transform:none" data-h="${w.hz}"><span>${w.hz}</span></button>`).join('');
+    pinsEl.onclick=e=>{const p=e.target.closest('.pin');if(p)showCountry(byHz(p.dataset.h))}};
+  if(!window.THREE)return fallback();
+  let renderer;try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true})}catch(e){return fallback()}
+  const R=1;renderer.setPixelRatio(Math.min(2,devicePixelRatio));
+  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(36,1,.1,100);cam.position.set(0,0,3.6);
+  const group=new THREE.Group();scene.add(group);
+  const loader=new THREE.TextureLoader();loader.crossOrigin='anonymous';
+  const mat=new THREE.MeshPhongMaterial({color:0x2a4a9a,shininess:18,specular:0x335599});
+  loader.load('https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg',t=>{mat.map=t;mat.color.set(0xffffff);mat.needsUpdate=true});
+  loader.load('https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png',t=>{mat.bumpMap=t;mat.bumpScale=.035;mat.needsUpdate=true});
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(R,96,96),mat));
+  const atm=new THREE.Mesh(new THREE.SphereGeometry(R*1.16,64,64),new THREE.ShaderMaterial({transparent:true,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false,
+    vertexShader:'varying vec3 n;void main(){n=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'varying vec3 n;void main(){float i=pow(.72-dot(n,vec3(0,0,1.)),3.);gl_FragColor=vec4(.35,.55,1.,1.)*i;}'}));
+  scene.add(atm);
+  scene.add(new THREE.AmbientLight(0x8899cc,.75));const sun=new THREE.DirectionalLight(0xffffff,1.05);sun.position.set(-3,2,4);scene.add(sun);
+  const ll=(lat,lon,r)=>{const p=(90-lat)*Math.PI/180,t=(lon+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(p)*Math.cos(t),r*Math.cos(p),r*Math.sin(p)*Math.sin(t))};
+  const dots=places.map(w=>{const pos=ll(w.lat,w.lon,R*1.005);const m=new THREE.Mesh(new THREE.SphereGeometry(.018,12,12),new THREE.MeshBasicMaterial({color:w.city?0xff6b55:0xf4c34f}));m.position.copy(pos);group.add(m);
+    const ring=new THREE.Mesh(new THREE.RingGeometry(.025,.035,32),new THREE.MeshBasicMaterial({color:w.city?0xff6b55:0xf4c34f,transparent:true,opacity:.6,side:THREE.DoubleSide}));ring.position.copy(pos);ring.lookAt(pos.clone().multiplyScalar(2));group.add(ring);
+    const el=document.createElement('button');el.className='pin'+(w.city?' city':'');el.innerHTML=`<span>${w.hz}</span>`;el.onclick=()=>{select(w);};pinsEl.appendChild(el);
+    return{w,pos,el,ring}});
+  let rx=.6,ry=-2.79,trx=rx,tryy=ry,drag=null,idle=0;
+  function select(w){dots.forEach(d=>d.el.classList.toggle('sel',d.w===w));const p=ll(w.lat,w.lon,1);let t=-Math.atan2(p.x,p.z);
+    while(t-ry>Math.PI)t-=2*Math.PI;while(t-ry<-Math.PI)t+=2*Math.PI;tryy=t;trx=w.lat*Math.PI/180*.85;idle=-240;showCountry(w)}
+  cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,rx:trx,ry:tryy};cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;tryy=drag.ry+(e.clientX-drag.x)*.006;trx=Math.max(-1.2,Math.min(1.2,drag.rx+(e.clientY-drag.y)*.004));idle=-180});
+  cv.addEventListener('pointerup',()=>drag=null);cv.addEventListener('pointercancel',()=>drag=null);
+  function size(){const r=cv.getBoundingClientRect();renderer.setSize(r.width,r.height,false);cam.aspect=r.width/r.height;cam.position.z=r.width<500?4.1:3.6;cam.updateProjectionMatrix()}
+  addEventListener('resize',size);size();
+  const v=new THREE.Vector3(),camDir=new THREE.Vector3();let t0=0;
+  (function loop(t){requestAnimationFrame(loop);idle++;if(idle>0&&!drag)tryy+=.0012;
+    rx+=(trx-rx)*.07;ry+=(tryy-ry)*.07;group.rotation.set(rx,ry,0);
+    const r=cv.getBoundingClientRect();
+    dots.forEach(d=>{v.copy(d.pos).applyMatrix4(group.matrixWorld);const facing=v.clone().normalize().dot(camDir.copy(cam.position).normalize());
+      const s=1+.35*Math.sin(t/400+d.pos.x*9);d.ring.scale.set(s,s,s);
+      v.project(cam);d.el.style.left=((v.x+1)/2*r.width)+'px';d.el.style.top=((1-v.y)/2*r.height-6)+'px';d.el.classList.toggle('hidden',facing<.25)});
+    renderer.render(scene,cam)})(0);
+})()}catch(e){console.warn('globe',e)}
+
+/* ============ 01 CARDS ============ */
+let flipped=new Set(),cardMode='hz';
+function renderCards(){
+  $('#cards').innerHTML=W.map((w,i)=>`<div class="flip" data-i="${i}"><div class="flip-in">
+   <div class="face front" style="${bg(w)}"><span class="k">${w.kind}</span>${cardMode==='hz'?`<div class="hz">${w.hz}</div>`:`<div style="font-family:var(--disp);font-size:24px;font-weight:900">${w.ru}</div>`}<div class="turn">нажми, чтобы перевернуть ↻</div></div>
+   <div class="face back"><button class="play sm" data-say="${w.hz}">▶</button><div class="hz">${w.hz}</div><div class="py">${w.py}</div><div class="tr">${w.ru}</div><div class="why">${w.why}</div></div>
+  </div></div>`).join('');
+}
+$('#cards').onclick=e=>{const p=e.target.closest('[data-say]');if(p){e.stopPropagation();speak(p.dataset.say,{btn:p});return}
+  const f=e.target.closest('.flip');if(!f)return;f.classList.toggle('on');if(f.classList.contains('on')){const w=W[f.dataset.i];speak(w.hz);flipped.add(f.dataset.i);$('#flipCount').textContent=`ПЕРЕВЁРНУТО ${flipped.size} / 11`;if(flipped.size>=8)stamp('cards')}};
+$('#cardMode').onclick=e=>{const b=e.target.closest('button');if(!b)return;cardMode=b.dataset.m;$('#cardMode').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderCards()};
+renderCards();
+
+/* ============ 02 CONSTRUCTOR ============ */
+const consList=shuffle(W.filter(w=>w.c));let ci=0,consDone=false;
+function consRender(){const w=consList[ci];consDone=false;$('#consPhoto').setAttribute('style',bg(w));$('#consRu').innerHTML=`${w.ru}<small>${w.py.replace(/guó$/,'')} + guó</small>`;
+  $('#consSlot').className='slot';$('#consSlot').textContent='?';$('#consCount').textContent=`${ci+1} / ${consList.length}`;$('#consWhy').textContent='Выбери иероглиф ↑';$('#consNext').disabled=true;
+  $('#consTiles').innerHTML=shuffle(W.filter(x=>x.c)).map(x=>`<button class="tile" data-c="${x.c}">${x.c}</button>`).join('')}
+$('#consTiles').onclick=e=>{const t=e.target.closest('.tile');if(!t||consDone)return;const w=consList[ci],slot=$('#consSlot');
+  if(t.dataset.c===w.c){consDone=true;slot.textContent=w.c;slot.className='slot filled';t.classList.add('used');$('#consWhy').innerHTML=`<b class="hz">${w.hz}</b> <span class="py">${w.py}</span> — ${w.why}`;speak(w.hz);$('#consNext').disabled=false;if(ci===consList.length-1){$('#consNext').textContent='Ещё раз ↻';stamp('cons')}}
+  else{slot.classList.remove('bad');void slot.offsetWidth;slot.classList.add('bad');const o=W.find(x=>x.c===t.dataset.c);$('#consWhy').innerHTML=`Это <b class="hz">${o.hz}</b> — ${o.ru}. Попробуй ещё.`}};
+$('#consNext').onclick=()=>{if(ci===consList.length-1){ci=0;$('#consNext').textContent='Следующая страна →'}else ci++;consRender()};
+consRender();
+
+/* ============ 03 TONES ============ */
+const toneWords=[['中国','Zhōngguó','Китай',1,2],['北京','Běijīng','Пекин',3,1],['法国','Fǎguó','Франция',3,2],['泰国','Tàiguó','Таиланд',4,2],['英语','Yīngyǔ','английский язык',1,3],['汉语','Hànyǔ','китайский язык',4,3],['老师','lǎoshī','учитель',3,1],['再见','zàijiàn','до свидания',4,4],['医生','yīshēng','врач',1,1],['同学','tóngxué','одноклассник',2,2],['厨师','chúshī','повар',2,1],['阿姨','āyí','тётя',1,2],['美国','Měiguó','США',3,2],['韩国','Hánguó','Южная Корея',2,2],['司机','sījī','водитель',1,1],['歌星','gēxīng','звезда эстрады',1,1]];
+let tList=[],ti=0,tScore=0,tDone=false;
+const contour={1:'M8 12 L42 12',2:'M8 40 L42 8',3:'M8 22 Q20 50 42 10',4:'M8 8 L42 44'};
+function toneSvg(a,b){return `<svg viewBox="0 0 100 52" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="${contour[a]}"/><path d="${contour[b]}" transform="translate(50 0)"/></svg>`}
+function buildMatrix(){let h='<div></div>';for(let c=1;c<=4;c++)h+=`<div class="lab">2-й: ${'ˉˊˇˋ'[c-1]}${c}</div>`;
+  for(let r=1;r<=4;r++){h+=`<div class="lab">1-й: ${'ˉˊˇˋ'[r-1]}${r}</div>`;for(let c=1;c<=4;c++)h+=`<button class="mcell" data-r="${r}" data-c="${c}" title="${r}+${c}" style="color:#fff">${toneSvg(r,c)}</button>`}
+  $('#matrix').innerHTML=h}
+function toneStart(){tList=shuffle(toneWords).slice(0,10);ti=0;tScore=0;toneRound()}
+function toneRound(){tDone=false;$('#toneCount').textContent=`${ti+1} / ${tList.length}`;$('#toneScore').textContent='✓ '+tScore;$('#toneReveal').innerHTML='<span class="small" style="color:#9aa0c7">Нажми и слушай. Можно сколько угодно раз.</span>';$('#toneNext').style.display='none';document.querySelectorAll('.mcell').forEach(c=>c.classList.remove('ok','no'))}
+$('#toneListen').onclick=e=>speak(tList[ti][0],{btn:e.currentTarget});
+$('#matrix').onclick=e=>{const c=e.target.closest('.mcell');if(!c||tDone)return;const w=tList[ti];
+  if(+c.dataset.r===w[3]&&+c.dataset.c===w[4]){tDone=true;c.classList.add('ok');tScore++;$('#toneScore').textContent='✓ '+tScore;$('#toneReveal').innerHTML=`<div class="hz">${w[0]}</div><span class="py">${w[1]}</span> <span style="color:#c9cbe0">· ${w[2]} · тоны ${w[3]}+${w[4]}</span>`;$('#toneNext').style.display='inline-block';$('#toneNext').textContent=ti===tList.length-1?'Ещё раунд ↻':'Дальше →';if(ti===tList.length-1&&tScore>=6)stamp('tones');speak(w[0])}
+  else{c.classList.add('no');setTimeout(()=>c.classList.remove('no'),600);toast(`Это ${c.dataset.r}+${c.dataset.c}. Послушай ещё раз`)}};
+$('#toneNext').onclick=()=>{if(ti===tList.length-1){if(tScore<6)toast(`${tScore}/10 — для штампа нужно 6. Ещё раунд!`);toneStart()}else{ti++;toneRound();speak(tList[ti][0],{btn:$('#toneListen')})}};
+buildMatrix();toneStart();
+
+/* ============ 04 DICTATION ============ */
+const dictBank=[['老师','lǎoshī','учитель'],['学生','xuésheng','ученик, студент'],['再见','zàijiàn','до свидания'],['我们','wǒmen','мы'],['她们','tāmen','они (жен.)'],['你们','nǐmen','вы'],['英语','Yīngyǔ','английский язык'],['汉语','Hànyǔ','китайский язык'],['朋友','péngyou','друг'],['医生','yīshēng','врач'],['司机','sījī','водитель'],['厨师','chúshī','повар'],['歌星','gēxīng','звезда эстрады'],['同学','tóngxué','одноклассник'],['女儿','nǚ’ér','дочь'],['夫妻','fūqī','супруги'],['中国','Zhōngguó','Китай'],['美国','Měiguó','США'],['北京','Běijīng','Пекин'],['德国','Déguó','Германия'],['泰国','Tàiguó','Таиланд'],['韩国','Hánguó','Южная Корея'],['英国','Yīngguó','Великобритания'],['法国','Fǎguó','Франция']];
+const TM={};'āáǎà|ēéěè|īíǐì|ōóǒò|ūúǔù|ǖǘǚǜ'.split('|').forEach((g,i)=>[...g].forEach((ch,k)=>TM[ch]=['a','e','i','o','u','ü'][i]+(k+1)));
+function parsePy(s){s=s.toLowerCase().normalize('NFC').replace(/u:/g,'ü').replace(/v/g,'ü');let letters='',tones=[];
+  for(const ch of s){if(TM[ch]){letters+=TM[ch][0];tones.push(+TM[ch][1])}else if(/[1-4]/.test(ch))tones.push(+ch);else if(/[a-zü]/.test(ch))letters+=ch}
+  return{letters,tones}}
+let dList=[],di=0,dRes=[],dDone=false;
+function dictStart(){dList=[...shuffle(dictBank.slice(0,16)).slice(0,7),...shuffle(dictBank.slice(16)).slice(0,5)];dList=shuffle(dList);di=0;dRes=[];$('#dictT').textContent=dList.length;dictRound()}
+function dictRound(){dDone=false;$('#dictN').textContent=di+1;$('#dictIn').value='';$('#dictFb').textContent='';$('#dictFb').className='fb';$('#dictAns').classList.remove('show');$('#dictScore').textContent='✓ '+dRes.filter(x=>x==='ok').length;
+  $('#dictDots').innerHTML=dList.map((_,i)=>`<i class="${dRes[i]||''} ${i===di?'cur':''}"></i>`).join('');$('#dictNext').textContent=di===dList.length-1?'Закончить ✓':'Следующее слово →'}
+$('#dictListen').onclick=e=>speak(dList[di][0],{btn:e.currentTarget});
+$('#dictSlow').onclick=()=>speak(dList[di][0],{rate:.6,btn:$('#dictListen')});
+function dictCheck(){const val=$('#dictIn').value.trim();if(!val){toast('Сначала напиши, что услышала');return}
+  const w=dList[di],a=parsePy(w[1]),b=parsePy(val),fb=$('#dictFb');const lOk=a.letters===b.letters,tOk=a.tones.join()===b.tones.join();let res;
+  if(lOk&&tOk){fb.innerHTML='正确！Всё верно — и звуки, и тоны 🎯';fb.className='fb ok';res='ok'}
+  else if(lOk){fb.innerHTML=`Звуки верно ✓, а тоны нет: у тебя <b>${b.tones.join('+')||'—'}</b>, нужно <b>${a.tones.join('+')}</b>`;fb.className='fb no';res='half'}
+  else{fb.innerHTML=`Пока не совпало. Сравни: у тебя <b>${val}</b>`;fb.className='fb no';res='no'}
+  if(!dDone){dRes[di]=res;dDone=true}
+  $('#daHz').textContent=w[0];$('#daPy').textContent=w[1];$('#daRu').textContent=w[2];$('#dictAns').classList.add('show');
+  $('#dictScore').textContent='✓ '+dRes.filter(x=>x==='ok').length;$('#dictDots').innerHTML=dList.map((_,i)=>`<i class="${dRes[i]||''} ${i===di?'cur':''}"></i>`).join('')}
+$('#dictCheck').onclick=dictCheck;$('#dictIn').onkeydown=e=>{if(e.key==='Enter')dictCheck()};
+$('#daPlay').onclick=e=>speak(dList[di][0],{btn:e.currentTarget});
+$('#dictNext').onclick=()=>{if(!dDone)dRes[di]='no';if(di===dList.length-1){const ok=dRes.filter(x=>x==='ok').length,h=dRes.filter(x=>x==='half').length;toast(`Итог: ${ok} идеально, ${h} — звуки верно, тоны нет`);if(ok+h>=8)stamp('dict');dictStart()}else{di++;dictRound();speak(dList[di][0],{btn:$('#dictListen')})}};
+$('#dictRestart').onclick=dictStart;
+$('#toneKeys').innerHTML=['ā','á','ǎ','à','ē','é','ě','è','ī','í','ǐ','ì','ō','ó','ǒ','ò','ū','ú','ǔ','ù','ǚ'].map(c=>`<button>${c}</button>`).join('');
+$('#toneKeys').onclick=e=>{if(e.target.tagName!=='BUTTON')return;const i=$('#dictIn'),p=i.selectionStart??i.value.length;i.value=i.value.slice(0,p)+e.target.textContent+i.value.slice(i.selectionEnd??p);i.focus();i.selectionStart=i.selectionEnd=p+1};
+dictStart();
+
+/* ============ 05 LISTENING ============ */
+const lisData=[
+ {s:'你好！我是德国人。',py:'Nǐ hǎo! Wǒ shì Déguó rén.',ru:'Здравствуйте! Я из Германии.',a:'德国'},
+ {s:'她是泰国人，她是学生。',py:'Tā shì Tàiguó rén, tā shì xuésheng.',ru:'Она из Таиланда, она студентка.',a:'泰国'},
+ {s:'我们不是美国人，我们是英国人。',py:'Wǒmen bú shì Měiguó rén, wǒmen shì Yīngguó rén.',ru:'Мы не американцы, мы британцы.',a:'英国'},
+ {s:'他是老师，他是韩国人。',py:'Tā shì lǎoshī, tā shì Hánguó rén.',ru:'Он учитель, он кореец.',a:'韩国'},
+ {s:'我不是中国人，我是法国人。',py:'Wǒ bú shì Zhōngguó rén, wǒ shì Fǎguó rén.',ru:'Я не китаец, я француз.',a:'法国'},
+ {s:'你好！我是莫斯科人，我也是学生。',py:'Nǐ hǎo! Wǒ shì Mòsīkē rén, wǒ yě shì xuésheng.',ru:'Привет! Я москвичка, я тоже студентка.',a:'莫斯科'}];
+let lList=[],li=0,lDone=false,lOk=0;
+function lisStart(){lList=shuffle(lisData);li=0;lOk=0;lisRound()}
+function lisRound(){lDone=false;const d=lList[li];$('#lisCount').textContent=`ПАССАЖИР ${li+1} / ${lList.length}`;$('#lisTr').classList.remove('show');$('#lisNext').disabled=true;$('#lisNext').textContent=li===lList.length-1?'Ещё раз ↻':'Следующий пассажир →';
+  const pool=W.filter(w=>w.lat!==undefined&&w.hz!==d.a&&w.hz!=='北京'&&!(d.a==='莫斯科'&&w.hz==='俄罗斯'));const opts=shuffle([byHz(d.a),...shuffle(pool).slice(0,3)]);
+  $('#lisOpts').innerHTML=opts.map(w=>`<button class="photo-opt" data-h="${w.hz}" style="${bg(w)}"><span>${w.ru}</span></button>`).join('')}
+function lisPlay(){$('#wave').classList.add('go');speak(lList[li].s,{btn:$('#lisPlay'),onend:()=>$('#wave').classList.remove('go')});setTimeout(()=>{if(!V.cur&&!(window.speechSynthesis&&speechSynthesis.speaking))$('#wave').classList.remove('go')},8000)}
+$('#lisPlay').onclick=lisPlay;
+$('#lisOpts').onclick=e=>{const b=e.target.closest('.photo-opt');if(!b||lDone)return;const d=lList[li];
+  if(b.dataset.h===d.a){lDone=true;lOk++;b.classList.add('ok');$('#lisTr').innerHTML=`<div class="hz">${d.s}</div><div class="py">${d.py}</div><div class="small">${d.ru}</div>`;$('#lisTr').classList.add('show');$('#lisNext').disabled=false;if(li===lList.length-1)stamp('lis')}
+  else{b.classList.add('no');toast('Не тот паспорт — послушай ещё раз')}};
+$('#lisNext').onclick=()=>{if(li===lList.length-1)lisStart();else{li++;lisRound();lisPlay()}};
+lisStart();
+
+/* ============ 06 BUILDER ============ */
+const PY={'我':'wǒ','你':'nǐ','他':'tā','她':'tā','我们':'wǒmen','你们':'nǐmen','他们':'tāmen','她们':'tāmen','是':'shì','不是':'bú shì','也':'yě','也是':'yě shì','吗':'ma','呢':'ne','人':'rén','老师':'lǎoshī','学生':'xuésheng','很':'hěn','好':'hǎo','不':'bù'};
+W.forEach(w=>PY[w.hz]=w.py);
+const bData=[
+ {ru:'Я из России.',a:['我','是','俄罗斯','人'],x:'吗'},
+ {ru:'Он не француз.',a:['他','不是','法国','人'],x:'也'},
+ {ru:'Мы тоже китайцы.',a:['我们','也','是','中国','人'],x:'不'},
+ {ru:'Ты кореянка?',a:['你','是','韩国','人','吗'],x:'呢'},
+ {ru:'Учитель — американец, а ты?',a:['老师','是','美国','人','你','呢'],x:'吗'},
+ {ru:'Они (жен.) не студентки из Таиланда.',a:['她们','不是','泰国','学生'],x:'他们'}];
+let bi=0,bLane=[],bPool=[],bOk=false;
+function bRound(){const d=bData[bi];bOk=false;bLane=[];bPool=shuffle([...d.a,d.x]).map((t,i)=>({t,id:i}));$('#bRu').textContent=d.ru;$('#bCount').textContent=`${bi+1} / ${bData.length}`;$('#bFb').textContent='';$('#bFb').className='fb';$('#bNext').disabled=true;$('#bLane').className='lane';$('#bNext').textContent=bi===bData.length-1?'Ещё раз ↻':'Дальше →';bDraw()}
+const chip=c=>`<button class="chip" data-id="${c.id}"><span class="hz">${c.t}</span><small>${PY[c.t]||''}</small></button>`;
+function bDraw(){$('#bLane').innerHTML=bLane.map(chip).join('')||'<span class="small" style="padding:0 8px">сюда…</span>';$('#bPool').innerHTML=bPool.map(chip).join('')}
+$('#bPool').onclick=e=>{const c=e.target.closest('.chip');if(!c||bOk)return;const k=bPool.findIndex(x=>x.id==c.dataset.id);bLane.push(bPool.splice(k,1)[0]);bDraw();speak(bLane[bLane.length-1].t,{rate:1})};
+$('#bLane').onclick=e=>{const c=e.target.closest('.chip');if(!c||bOk)return;const k=bLane.findIndex(x=>x.id==c.dataset.id);bPool.push(bLane.splice(k,1)[0]);bDraw()};
+$('#bCheck').onclick=()=>{const d=bData[bi],got=bLane.map(x=>x.t).join(''),need=d.a.join('');
+  if(got===need){bOk=true;$('#bLane').className='lane ok';$('#bFb').innerHTML=`正确！ <span class="py">${d.a.map(t=>PY[t]).join(' ')}</span>`;$('#bFb').className='fb ok';$('#bNext').disabled=false;speak(need);if(bi===bData.length-1)stamp('build')}
+  else{const l=$('#bLane');l.classList.remove('no');void l.offsetWidth;l.classList.add('no');$('#bFb').textContent=bLane.length<d.a.length?'Не хватает слов.':(bLane.some(x=>x.t===d.x)?'Одно слово тут лишнее.':'Проверь порядок слов: кто → 是/不是 → откуда → 人.');$('#bFb').className='fb no'}};
+$('#bListen').onclick=e=>speak(bData[bi].a.join(''),{btn:e.currentTarget});
+$('#bNext').onclick=()=>{bi=(bi+1)%bData.length;bRound()};
+bRound();
+
+/* ============ 07 DIALOGUE ============ */
+const dlg=[
+ {t:['你好！','Nǐ hǎo!','Привет!'],r:[[['你好！','Nǐ hǎo!','Привет!'],1],[['再见！','Zàijiàn!','Пока!'],0,'Рано прощаться — вы только встретились 🙂']]},
+ {t:['你是中国人吗？','Nǐ shì Zhōngguó rén ma?','Ты китаянка?'],r:[[['不是，我是俄罗斯人。你呢？','Bú shì, wǒ shì Éluósī rén. Nǐ ne?','Нет, я россиянка. А ты?'],1],[['是，我是俄罗斯人。','Shì, wǒ shì Éluósī rén.','Да, я россиянка.'],0,'«是» = «да», а дальше «я россиянка» — противоречие.']]},
+ {t:['我是中国人，我是北京人。你是莫斯科人吗？','Wǒ shì Zhōngguó rén, wǒ shì Běijīng rén. Nǐ shì Mòsīkē rén ma?','Я китаянка, я из Пекина. Ты из Москвы?'],r:[[['是的，我是莫斯科人。','Shì de, wǒ shì Mòsīkē rén.','Да, я из Москвы.'],1],[['我是北京人吗？','Wǒ shì Běijīng rén ma?','Я из Пекина?'],0,'Это вопрос, а нужно ответить.']]},
+ {t:['你是学生吗？','Nǐ shì xuésheng ma?','Ты студентка?'],r:[[['是，我是学生。你也是学生吗？','Shì, wǒ shì xuésheng. Nǐ yě shì xuésheng ma?','Да, я студентка. Ты тоже студентка?'],1],[['我是老师们。','Wǒ shì lǎoshīmen.','Я — учителя.'],0,'们 — множественное число, а «я» одна.']]},
+ {t:['不是，我是老师。我是汉语老师！','Bú shì, wǒ shì lǎoshī. Wǒ shì Hànyǔ lǎoshī!','Нет, я учитель. Я учитель китайского!'],r:[[['哦！很好！','Ò! Hěn hǎo!','О! Здорово!'],1],[['我也是汉语老师。','Wǒ yě shì Hànyǔ lǎoshī.','Я тоже учитель китайского.'],0,'Ты же только что сказала, что студентка 🙂']]},
+ {t:['到北京了！再见！','Dào Běijīng le! Zàijiàn!','Прилетели в Пекин! До свидания!'],r:[[['再见！','Zàijiàn!','До свидания!'],1],[['你好吗？','Nǐ hǎo ma?','Как дела?'],0,'Самолёт приземлился, пора прощаться.']],note:'到…了 dào…le — «прибыли в…», готовая фраза'}];
+let gi=0;
+function bubble(arr,who,note){const d=document.createElement('div');d.className='bub '+who;d.innerHTML=`<span class="hz">${arr[0]}</span><button title="Слушать">▶</button><span class="py">${arr[1]}</span><span class="ru">${arr[2]}${note?' · '+note:''}</span>`;d.querySelector('button').onclick=()=>speak(arr[0]);$('#chat').appendChild(d);$('#chat').scrollTop=1e5}
+function dlgStep(){const s=dlg[gi];bubble(s.t,'them',s.note);speak(s.t[0]);
+  $('#replies').innerHTML=shuffle(s.r).map(r=>`<button class="reply" data-ok="${r[1]}" data-why="${r[2]||''}" data-hz="${r[0][0]}" data-py="${r[0][1]}" data-ru="${r[0][2]}"><span class="hz">${r[0][0]}</span><span class="py" style="display:block;font-size:12px">${r[0][1]}</span><span class="small ru">${r[0][2]}</span></button>`).join('')}
+$('#replies').onclick=e=>{const b=e.target.closest('.reply');if(!b)return;
+  if(b.dataset.ok==='1'){bubble([b.dataset.hz,b.dataset.py,b.dataset.ru],'me');$('#replies').innerHTML='';speak(b.dataset.hz,{onend:()=>{gi++;if(gi<dlg.length)setTimeout(dlgStep,350);else{stamp('dlg');$('#replies').innerHTML='<div class="fb ok">Диалог пройден! Попробуй ещё раз со скрытым пиньинем 😉</div>'}}})}
+  else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');toast(b.dataset.why)}};
+$('#dlgRestart').onclick=()=>{gi=0;$('#chat').innerHTML='';dlgStep()};
+$('#dlgHelp').onclick=e=>{const box=$('#s7');box.classList.toggle('hide-help');e.target.textContent=box.classList.contains('hide-help')?'Показать пиньинь':'Скрыть пиньинь'};
+let dlgStarted=false;new IntersectionObserver(en=>{if(en[0].isIntersecting&&!dlgStarted){dlgStarted=true;dlgStep()}},{threshold:.4}).observe($('#s7'));
+
+/* ============ 08 BOARD ============ */
+const bdWords=W.filter(w=>w.hz!=='国');let bdT=45,bdS=0,bdSt=0,bdTimer=null,bdCur=null,bdLock=false,bdBest=store.get('zh-board-best',0);
+$('#bdBest').textContent=bdBest||'—';
+function flaps(el,txt){let h='';for(let i=0;i<3;i++)h+=`<div class="flap" style="${i>=txt.length?'opacity:.25':''}">${txt[i]||''}</div>`;el.innerHTML=h;[...el.children].forEach((c,i)=>{setTimeout(()=>c.classList.add('go'),i*90)})}
+flaps($('#flapsDemo'),'北京');
+function bdRound(){bdLock=false;let w;do{w=bdWords[Math.random()*bdWords.length|0]}while(w===bdCur);bdCur=w;flaps($('#flaps'),w.hz);$('#bdPy').textContent='';
+  const o=shuffle([w,...shuffle(bdWords.filter(x=>x!==w)).slice(0,3)]);$('#bdOpts').innerHTML=o.map(x=>`<button data-h="${x.hz}">${x.ru}</button>`).join('')}
+$('#bdStart').onclick=()=>{bdT=45;bdS=0;bdSt=0;$('#bdScore').textContent=0;$('#bdStreak').textContent=0;$('#bdStartBox').style.display='none';$('#bdGame').style.display='block';bdRound();clearInterval(bdTimer);
+  bdTimer=setInterval(()=>{bdT--;$('#bdTime').textContent=bdT;$('#bdBar').style.width=(bdT/45*100)+'%';if(bdT<=0){clearInterval(bdTimer);bdEnd()}},1000)};
+$('#bdOpts').onclick=e=>{const b=e.target.closest('button');if(!b||bdLock)return;bdLock=true;
+  if(b.dataset.h===bdCur.hz){b.classList.add('ok');bdSt++;bdS+=bdSt>=3?2:1;$('#bdPy').textContent=bdCur.py;speak(bdCur.hz,{rate:1.1})}else{b.classList.add('no');bdSt=0;[...$('#bdOpts').children].find(x=>x.dataset.h===bdCur.hz).classList.add('ok');$('#bdPy').textContent=bdCur.py+' — '+bdCur.ru}
+  $('#bdScore').textContent=bdS;$('#bdStreak').textContent=bdSt;setTimeout(()=>{if(bdT>0)bdRound()},b.classList.contains('ok')?550:1300)};
+function bdEnd(){$('#bdGame').style.display='none';$('#bdStartBox').style.display='block';$('#bdStart').textContent='Ещё раз ▶';if(bdS>bdBest){bdBest=bdS;store.set('zh-board-best',bdS);$('#bdBest').textContent=bdS}if(bdS>=10){toast(`Время! Очков: ${bdS}`);setTimeout(()=>stamp('board'),2400)}else toast(`Очков: ${bdS}. Для штампа нужно 10 — ещё раз?`)}
+
+/* ============ 09 SPEAKING ============ */
+const sayList=[['我是俄罗斯人。','Wǒ shì Éluósī rén.','Я из России.'],['我不是中国人。','Wǒ bú shì Zhōngguó rén.','Я не китаянка.'],['他是美国人吗？','Tā shì Měiguó rén ma?','Он американец?'],['我们也是学生。','Wǒmen yě shì xuésheng.','Мы тоже студенты.'],['老师是北京人。','Lǎoshī shì Běijīng rén.','Учитель из Пекина.'],['你是哪国人？','Nǐ shì nǎ guó rén?','Из какой ты страны? (哪 nǎ — какой)']];
+let si=0,rec=null,recUrl=null,listening=false;
+$('#sayNav').innerHTML=sayList.map((_,i)=>`<button data-i="${i}" class="${i?'':'on'}">${i+1}</button>`).join('');
+function sayShow(){const s=sayList[si];$('#sayHz').textContent=s[0];$('#sayPy').textContent=s[1];$('#sayRu').textContent=s[2];$('#heard').innerHTML='<span class="small">Нажми на микрофон и говори</span>';$('#sayNav').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===si));$('#sayMine').disabled=true;recUrl=null}
+$('#sayNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;si=+b.dataset.i;sayShow()};
+$('#sayModel').onclick=e=>speak(sayList[si][0],{btn:e.currentTarget});
+$('#sayMine').onclick=()=>{if(recUrl){stopAudio();new Audio(recUrl).play()}};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+$('#mic').onclick=async()=>{if(listening){rec&&rec.stop();return}stopAudio();
+  const target=sayList[si][0].replace(/[。？！，]/g,'');listening=true;$('#mic').classList.add('rec');$('#heard').innerHTML='<span class="small">Слушаю… говори фразу</span>';
+  let mr=null,chunks=[];try{const st=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(st);mr.ondataavailable=e=>chunks.push(e.data);mr.onstop=()=>{recUrl=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType}));$('#sayMine').disabled=false;st.getTracks().forEach(t=>t.stop())};mr.start()}catch(e){}
+  const finish=()=>{listening=false;$('#mic').classList.remove('rec');if(mr&&mr.state!=='inactive')mr.stop()};
+  if(SR){rec=new SR();rec.lang='zh-CN';rec.interimResults=false;rec.maxAlternatives=3;
+    rec.onresult=e=>{const alts=[...e.results[0]].map(a=>a.transcript.replace(/[。？！，,.?!\s]/g,''));let best=alts[0],bs=-1;alts.forEach(a=>{const sc=[...target].filter((c,i)=>a.includes(c)).length;if(sc>bs){bs=sc;best=a}});
+      const html=[...target].map(c=>`<span class="${best.includes(c)?'y':'n'}">${c}</span>`).join('');const pct=Math.round(bs/target.length*100);
+      $('#heard').innerHTML=`<div class="small">Я услышала: <b class="hz" style="font-weight:700">${best||'—'}</b></div><div class="cmp">${html}</div><div class="fb ${pct>=80?'ok':'no'}">${pct>=80?'很好！Звучит понятно 👏':pct>=50?'Почти! Послушай образец и повтори медленнее.':'Пока не разобрала. Попробуй ещё раз, чётче тоны.'}</div>`;if(pct>=80)stamp('say')};
+    rec.onerror=e=>{$('#heard').innerHTML=`<span class="small">${e.error==='not-allowed'?'Нет доступа к микрофону — разреши его в браузере.':'Не расслышала. Попробуй ещё раз.'}</span>`;finish()};
+    rec.onend=finish;try{rec.start()}catch(e){finish()}}
+  else{$('#heard').innerHTML='<span class="small">Распознавание речи работает в Chrome/Edge. Здесь — просто запиши себя (5 сек) и сравни с образцом.</span>';setTimeout(()=>{finish();stamp('say')},5000)}};
+sayShow();
+$('#myText').value=store.get('zh-mytext','');
+$('#readMine').onclick=e=>{const t=$('#myText').value.trim();if(t)speak(t,{btn:e.currentTarget});else toast('Сначала напиши пару фраз')};
+$('#saveMine').onclick=()=>{store.set('zh-mytext',$('#myText').value);toast('Сохранено в этом браузере')};
+
+/* ============ CHROME ============ */
+addEventListener('scroll',()=>$('#top').classList.toggle('solid',scrollY>40),{passive:true});
+const io=new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
