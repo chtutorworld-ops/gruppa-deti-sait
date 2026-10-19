@@ -339,20 +339,6 @@ const phoneSlide=(id,src,poster,z,p,r,text)=>`
 const S=[]; const add=(block,title,html,cls='')=>S.push({block,title,html,cls});
 const B=['Начало','1. История языка и письменности','2. Путунхуа, диалекты, письмо','3. Особенности языка и тест','4. Пиньинь, слог, тон','5. Базовые финали и артикуляция','6. Инициали b p m f d t n l g k h','7. Инициали z c s zh ch sh','8. Инициали y w r j q x','Конец'];
 
-add(0,'复习 — Разминка по QR-коду',`
-  <div style="position:absolute;inset:0;background:radial-gradient(90% 80% at 30% 20%,#F1F4F9 0%,#E9EDF4 55%,#E2E7F0 100%)"></div>
-  <div style="position:absolute;left:90px;right:90px;top:0;bottom:0;display:grid;grid-template-columns:1fr 360px;gap:70px;align-items:center">
-    <div style="display:grid;gap:18px">
-      <div class="k2">Пока все подключаются</div>
-      <div style="display:flex;align-items:baseline;gap:16px"><span class="z" style="font-size:70px;line-height:1;color:#2B3270">复习</span><span class="pyn" style="font-size:26px;color:#5B6BD8">fùxí</span></div>
-      <div style="font-weight:800;font-size:50px;line-height:1.05;color:#1E2350;letter-spacing:-.02em">Карта прошлого урока</div>
-      <div style="display:grid;gap:14px;margin-top:8px">
-      ${[['📷','Наведи камеру телефона на код'],['✍️','Напиши своё имя'],['🗺️','Пройди 6 станций — вспомни, что мы узнали']].map(([e,t])=>`<div class="nk" style="display:flex;align-items:center;gap:16px;padding:14px 20px;font-size:22px;font-weight:700;color:#3D4560"><span style="font-size:30px">${e}</span>${t}</div>`).join('')}
-      </div>
-    </div>
-    <div class="nk" style="padding:26px;display:grid;justify-items:center;gap:12px"><div class="qrbox" data-qr="../povtor/"></div><div class="pyn" style="font-size:18px;color:#5B6BD8">复习 · Карта урока</div></div>
-  </div>`);
-
 add(0,'Обложка',`
   <div class="tit">
     <div class="orb"><div class="zh">你好</div><div class="py">nǐ hǎo</div></div>
@@ -525,6 +511,20 @@ add(3,'小测验 — Маленький тест',`
   ${hd('小测验','xiǎo cèyàn','Что вы узнали о китайском языке?','left')}
   <div id="quiz" style="position:absolute;left:72px;top:120px;width:760px"></div>`);
 
+add(4,'复习 — Карта прошлого урока по QR-коду',`
+  <div style="position:absolute;inset:0;background:radial-gradient(90% 80% at 30% 20%,#F1F4F9 0%,#E9EDF4 55%,#E2E7F0 100%)"></div>
+  <div style="position:absolute;left:90px;right:90px;top:0;bottom:0;display:grid;grid-template-columns:1fr 360px;gap:70px;align-items:center">
+    <div style="display:grid;gap:18px">
+      <div class="k2">Пока все подключаются</div>
+      <div style="display:flex;align-items:baseline;gap:16px"><span class="z" style="font-size:70px;line-height:1;color:#2B3270">复习</span><span class="pyn" style="font-size:26px;color:#5B6BD8">fùxí</span></div>
+      <div style="font-weight:800;font-size:50px;line-height:1.05;color:#1E2350;letter-spacing:-.02em">Карта прошлого урока</div>
+      <div style="display:grid;gap:14px;margin-top:8px">
+      ${[['📷','Наведи камеру телефона на код'],['✍️','Напиши своё имя'],['🗺️','Пройди 6 станций — вспомни, что мы узнали']].map(([e,t])=>`<div class="nk" style="display:flex;align-items:center;gap:16px;padding:14px 20px;font-size:22px;font-weight:700;color:#3D4560"><span style="font-size:30px">${e}</span>${t}</div>`).join('')}
+      </div>
+    </div>
+    <div class="nk" style="padding:26px;display:grid;justify-items:center;gap:12px"><div class="qrbox" data-qr="../povtor/"></div><div class="pyn" style="font-size:18px;color:#5B6BD8">复习 · Карта урока</div></div>
+  </div>`);
+
 add(4,'犯错不可怕 — Ошибаться не страшно',`
   <img src="img/girl.webp" alt="" style="position:absolute;right:30px;bottom:0;height:600px;mix-blend-mode:multiply">
   <div style="position:absolute;left:80px;top:0;bottom:0;width:780px;display:flex;flex-direction:column;justify-content:center;gap:16px">
@@ -570,9 +570,9 @@ add(4,'Как китайцы печатают',`
     <div class="ime" id="tdIme"><div class="pp" id="tdPP"></div><div class="cs"><span>1.中国</span><span>2.种过</span><span>3.中</span><span>4.钟</span></div></div>
     <div class="task"><span class="lng">中</span><span>拼</span><span>10:05</span></div>
   </div></div><div class="base"></div></div>
-  <div style="position:absolute;left:560px;top:560px;display:flex;gap:18px;align-items:center">
-    <button class="playb nk" onclick="typeDemo()">▶ Показать, как печатают</button>
-    <span style="font-size:17px;color:#5D6893;font-weight:700">nihao → 你好 · zhongguo → 中国</span>
+  <div style="position:absolute;left:560px;top:550px;right:40px;display:flex;gap:18px;align-items:center">
+    <button class="playb nk" id="tdBtn" onclick="event.stopPropagation();typeDemo()">▶ Шаг 1</button>
+    <span id="tdCap" style="font-size:19px;color:#2B3270;font-weight:800;max-width:430px;line-height:1.3">Нажимай — по одному шагу</span>
   </div>`);
 
 const W=[['1 иероглиф',[['我','wǒ','я'],['水','shuǐ','вода']]],['2 иероглифа',[['老师','lǎoshī','учитель'],['朋友','péngyou','друг']]],['3 иероглифа',[['外国人','wàiguórén','иностранец'],['电视机','diànshìjī','телевизор']]],['4 и больше',[['现代化','xiàndàihuà','модернизация']]]];
@@ -892,17 +892,20 @@ try{ if(window.QRCode) new QRCode(document.getElementById('qr'),{text:TRAINER,wi
 /* QR codes for warm-up & test */
 try{const BASE=hosted?location.href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-1/';
  document.querySelectorAll('[data-qr]').forEach(el=>{const u=new URL(el.dataset.qr,BASE).href;if(window.QRCode)new QRCode(el,{text:u,width:272,height:272,colorDark:'#2B3270',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});else el.innerHTML='<p style="text-align:center">'+u+'</p>';});}catch(e){}
-/* typing demo */
-let tdBusy=false;
-window.typeDemo=async function(){if(tdBusy)return;tdBusy=true;const w=ms=>new Promise(r=>setTimeout(r,ms));
- const inp=document.getElementById('tdIn'),cand=document.getElementById('tdCand'),chat=document.getElementById('tdChat'),doc=document.getElementById('tdDoc'),ime=document.getElementById('tdIme'),pp=document.getElementById('tdPP');
- chat.innerHTML='<div class="bub l">你叫什么名字？</div>';doc.innerHTML='我爱';ime.style.display='none';cand.innerHTML='';inp.innerHTML='&nbsp;';
- let t='';for(const c of 'nihao'){const k=document.querySelector(`[data-key="${c}"]`);k&&k.classList.add('hit');t+=c;inp.innerHTML='<u>'+t+'</u>';
-  cand.innerHTML=t.length>1?['你好','你','尼','泥'].map((x,i)=>`<span>${x}</span>`).join(''):'';await w(380);k&&k.classList.remove('hit');}
- await w(400);cand.firstChild&&cand.firstChild.classList.add('on');await w(600);inp.innerHTML='你好';cand.innerHTML='';await w(500);
- chat.insertAdjacentHTML('beforeend','<div class="bub">你好！</div>');inp.innerHTML='&nbsp;';
- let s2='';ime.style.display='block';for(const c of 'zhongguo'){s2+=c;pp.textContent=s2;doc.innerHTML='我爱<u>'+s2+'</u>';await w(260);}
- await w(700);ime.style.display='none';doc.innerHTML='我爱中国';tdBusy=false;};
+/* typing demo: one step per click */
+let tdStep=0,tdBusy=false;
+const TDS=['Шаг 1. Печатаем пиньинь латиницей, без тонов: n-i-h-a-o','Шаг 2. Телефон предлагает иероглифы, которые так читаются','Шаг 3. Выбираем нужный — 你好','Шаг 4. Отправляем сообщение','Шаг 5. На компьютере так же: печатаем z-h-o-n-g-g-u-o','Шаг 6. Выбираем 1 — 中国. Готово!'];
+window.typeDemo=async function(reset){if(tdBusy)return;const w=ms=>new Promise(r=>setTimeout(r,ms));
+ const inp=document.getElementById('tdIn'),cand=document.getElementById('tdCand'),chat=document.getElementById('tdChat'),doc=document.getElementById('tdDoc'),ime=document.getElementById('tdIme'),pp=document.getElementById('tdPP'),cap=document.getElementById('tdCap'),btn=document.getElementById('tdBtn');
+ if(reset||tdStep>=6){tdStep=0;chat.innerHTML='<div class="bub l">你叫什么名字？</div>';doc.innerHTML='我爱';ime.style.display='none';cand.innerHTML='';inp.innerHTML='&nbsp;';cap.textContent='Нажимай «Дальше» — по одному шагу';btn.textContent='▶ Шаг 1';return;}
+ tdBusy=true;const st=tdStep;cap.textContent=TDS[st];
+ if(st===0){let t='';for(const c of 'nihao'){const k=document.querySelector(`[data-key="${c}"]`);k&&k.classList.add('hit');t+=c;inp.innerHTML='<u>'+t+'</u>';await w(750);k&&k.classList.remove('hit');await w(150);}}
+ if(st===1){for(const x of ['你好','你','尼','泥']){cand.insertAdjacentHTML('beforeend',`<span>${x}</span>`);await w(350);}}
+ if(st===2){cand.firstChild&&cand.firstChild.classList.add('on');await w(900);inp.innerHTML='你好';cand.innerHTML='';}
+ if(st===3){await w(300);chat.insertAdjacentHTML('beforeend','<div class="bub">你好！</div>');inp.innerHTML='&nbsp;';}
+ if(st===4){let s2='';ime.style.display='block';for(const c of 'zhongguo'){s2+=c;pp.textContent=s2;doc.innerHTML='我爱<u>'+s2+'</u>';await w(600);}}
+ if(st===5){const f=ime.querySelector('.cs span');f.style.background='#DCE6FF';await w(900);f.style.background='';ime.style.display='none';doc.innerHTML='我爱中国';}
+ tdStep++;btn.textContent=tdStep>=6?'↺ Сначала':'▶ Шаг '+(tdStep+1);tdBusy=false;};
 /* quiz */
 const qz=document.getElementById('quiz');let qi=0,score=0,res=[];
 function rq(){
