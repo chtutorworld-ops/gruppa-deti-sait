@@ -18,6 +18,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Взять готовую озвучку из прошлых выкладок
+        uses: actions/cache@v4
+        with:
+          path: site/audio
+          key: audio-${{ hashFiles('tools/audio-list.txt', 'tools/make_audio.py') }}
+          restore-keys: audio-
+      - name: Озвучить новые слоги (голос Microsoft Edge)
+        continue-on-error: true
+        timeout-minutes: 15
+        run: |
+          pip install edge-tts
+          python tools/make_audio.py
+          ls site/audio | wc -l
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -849,7 +849,20 @@ const VPREF=[/Xiaoxiao.*(Natural|Online)/i,/Yunxi.*(Natural|Online)/i,/(Natural|
 function pick(){if(!('speechSynthesis' in window))return;const all=speechSynthesis.getVoices();const vs=all.filter(v=>/^(zh[-_]CN|cmn)/i.test(v.lang));
   voice=null;for(const r of VPREF){voice=vs.find(v=>r.test(v.name));if(voice)break;} voice=voice||vs.find(v=>!v.localService)||vs[0]||all.find(v=>/^zh/i.test(v.lang))||null;}
 if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick;}
-function say(t,el){
+
+/* Real neural voice: pre-made mp3 in ../audio/, browser voice only as a fallback */
+const AUDIO_BASE=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)&&!window.claude)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+let curA=null;
+function playMp3(text,rate,el,cls,fallback){
+  const h=[...String(text)].filter(c=>/[一-鿿]/.test(c));if(!h.length)return fallback();
+  try{curA&&curA.pause();}catch(e){} if('speechSynthesis' in window)speechSynthesis.cancel();
+  const a=new Audio(AUDIO_BASE+h.map(c=>c.codePointAt(0).toString(16)).join('-')+'.mp3');curA=a;
+  a.preservesPitch=true;a.playbackRate=rate&&rate<.85?.78:1;let done=false;
+  const off=()=>{el&&el.classList.remove(cls);};const fail=()=>{if(done)return;done=true;off();fallback();};
+  if(el)el.classList.add(cls);a.onended=off;a.onerror=fail;a.play().then(()=>{done=true;}).catch(fail);
+}
+function say(t,el){playMp3(t,1,el,"play",()=>sayTTS(t,el));}
+function sayTTS(t,el){
   if(!('speechSynthesis' in window)){toast('Этот браузер не умеет произносить текст');return;}
   if(!voice)pick(); if(!voice){toast('Нет китайского голоса. Откройте урок в Chrome или Edge');return;}
   speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.lang=voice.lang;u.rate=.85;
