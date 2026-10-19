@@ -4,12 +4,15 @@ import json, os, urllib.request
 API = "https://gruppa-deti.ch-tutor-world.workers.dev/api/voice/"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "site", "audio", "voice")
 os.makedirs(OUT, exist_ok=True)
-items = json.load(urllib.request.urlopen(API + "list", timeout=30)).get("items", [])
+UA = {"User-Agent": "Mozilla/5.0 (gruppa-deti-sait build)"}
+def get(u):
+    return urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=30).read()
+items = json.loads(get(API + "list")).get("items", [])
 got = {}
 for it in items:
     i = it["id"]
     try:
-        data = urllib.request.urlopen(API + "get?id=" + i, timeout=30).read()
+        data = get(API + "get?id=" + i)
         open(os.path.join(OUT, i + ".wav"), "wb").write(data); got[i] = 1
     except Exception as e:
         print("не скачалось", i, e)
