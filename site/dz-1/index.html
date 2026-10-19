@@ -193,7 +193,7 @@ function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8
 const TASKS=[
  {id:'kbd',e:'⌨️',c:'#DCE3FF',t:'Китайская клавиатура',s:'Установи пиньинь и напиши 你好'},
  {id:'listen',e:'👂',c:'#DDF5EC',t:'Угадай тон',s:'2 уровня: слоги и слова'},
- {id:'speak',e:'🎯',c:'#FFF1D6',t:'Скажи тон — проверю',s:'yī yí yǐ yì · wū wú wǔ wù'},
+ {id:'speak',e:'🎯',c:'#FFF1D6',t:'Скажи тон — проверю',s:'bī bí bǐ bì · wū wú wǔ wù'},
  {id:'rec',e:'🎙️',c:'#FFE3EB',t:'Запиши голос учителю',s:'a · o · e · i · u с тонами'},
  {id:'theory',e:'📝',c:'#EDE6FF',t:'Вопросы по теории',s:'12 вопросов'},
 ];
@@ -303,7 +303,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
   $('#nx').onclick=()=>{L.i++;askL();};});}
 
 /* ---------- 3. speak & check ---------- */
-const SP=[['yi',1],['yi',2],['yi',3],['yi',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
+const SP=[['bi',1],['bi',2],['bi',3],['bi',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
 let spI=0;
 function calibV(){shell(`${backBtn}<h2><span class="zh">说</span>Сначала настроим микрофон</h2><p class="lead">Скажи протяжно <b>«а-а-а»</b> своим обычным, спокойным голосом — не высоко и не низко. Так система узнает твой голос и будет точнее слышать тоны.</p>
  <button class="mic n" id="cmic">🎤</button><div style="text-align:center;font-size:14px;font-weight:700;color:var(--mu)" id="clab">Нажми и скажи «а-а-а» (2 секунды)</div><div class="fb" id="cfb"></div>`);
