@@ -103,7 +103,7 @@ ol.steps li:before{content:counter(s);position:absolute;left:12px;top:10px;width
 <div class="app" id="app"></div><div class="toast" id="toast"></div>
 <script>
 const R={"a": "阿,,,", "o": "噢,哦,,", "e": "婀,鹅,,饿", "yi": "衣,移,以,意", "wu": "乌,无,五,物", "ma": "妈,麻,马,骂", "ba": "八,拔,把,爸", "po": "坡,婆,叵,破", "mo": "摸,魔,抹,墨", "fa": "发,罚,法,珐", "da": "搭,达,打,大", "ni": "妮,泥,你,逆", "mi": "眯,迷,米,密", "bi": "逼,鼻,笔,必", "di": "低,敌,底,地", "ti": "梯,题,体,替", "ge": "哥,格,舸,个", "ke": "科,咳,渴,客", "hu": "呼,湖,虎,户", "lu": "噜,炉,鲁,路", "tu": "突,图,土,兔", "du": "督,读,赌,杜", "pu": "扑,葡,普,瀑", "fu": "夫,服,府,父"};
-const WORDS=[["中国", "Zhōngguó", "Китай", [1, 2]], ["老师", "lǎoshī", "учитель", [3, 1]], ["北京", "Běijīng", "Пекин", [3, 1]], ["熊猫", "xióngmāo", "панда", [2, 1]], ["足球", "zúqiú", "футбол", [2, 2]], ["牛奶", "niúnǎi", "молоко", [2, 3]], ["面包", "miànbāo", "хлеб", [4, 1]], ["咖啡", "kāfēi", "кофе", [1, 1]], ["唱歌", "chànggē", "петь", [4, 1]], ["上海", "Shànghǎi", "Шанхай", [4, 3]], ["美国", "Měiguó", "Америка", [3, 2]], ["汉语", "Hànyǔ", "китайский язык", [4, 3]], ["中文", "Zhōngwén", "китайский язык", [1, 2]], ["火车", "huǒchē", "поезд", [3, 1]], ["电视", "diànshì", "телевизор", [4, 4]], ["手机", "shǒujī", "телефон", [3, 1]], ["学校", "xuéxiào", "школа", [2, 4]], ["医生", "yīshēng", "врач", [1, 1]], ["天气", "tiānqì", "погода", [1, 4]], ["地图", "dìtú", "карта", [4, 2]], ["太阳", "tàiyáng", "солнце", [4, 2]], ["大米", "dàmǐ", "рис", [4, 3]], ["公园", "gōngyuán", "парк", [1, 2]], ["汽车", "qìchē", "машина", [4, 1]], ["西瓜", "xīguā", "арбуз", [1, 1]], ["蛋糕", "dàngāo", "торт", [4, 1]], ["飞机", "fēijī", "самолёт", [1, 1]], ["苹果", "píngguǒ", "яблоко", [2, 3]], ["米饭", "mǐfàn", "рис (варёный)", [3, 4]], ["汉字", "hànzì", "иероглиф", [4, 4]], ["拼音", "pīnyīn", "пиньинь", [1, 1]], ["电话", "diànhuà", "телефонный звонок", [4, 4]], ["茶杯", "chábēi", "чашка", [2, 1]], ["黄色", "huángsè", "жёлтый", [2, 4]], ["北方", "běifāng", "север", [3, 1]]];
+const WORDS=[["中国", "Zhōngguó", "Китай", [1, 2]], ["老师", "lǎoshī", "учитель", [3, 1]], ["北京", "Běijīng", "Пекин", [3, 1]], ["熊猫", "xióngmāo", "панда", [2, 1]], ["足球", "zúqiú", "футбол", [2, 2]], ["牛奶", "niúnǎi", "молоко", [2, 3]], ["面包", "miànbāo", "хлеб", [4, 1]], ["咖啡", "kāfēi", "кофе", [1, 1]], ["唱歌", "chànggē", "петь", [4, 1]], ["上海", "Shànghǎi", "Шанхай", [4, 3]], ["美国", "Měiguó", "Америка", [3, 2]], ["汉语", "Hànyǔ", "китайский язык", [4, 3]], ["中文", "Zhōngwén", "китайский язык", [1, 2]], ["火车", "huǒchē", "поезд", [3, 1]], ["电视", "diànshì", "телевизор", [4, 4]], ["手机", "shǒujī", "телефон", [3, 1]], ["学校", "xuéxiào", "школа", [2, 4]], ["医生", "yīshēng", "врач", [1, 1]], ["天气", "tiānqì", "погода", [1, 4]], ["地图", "dìtú", "карта", [4, 2]], ["大米", "dàmǐ", "рис", [4, 3]], ["公园", "gōngyuán", "парк", [1, 2]], ["汽车", "qìchē", "машина", [4, 1]], ["西瓜", "xīguā", "арбуз", [1, 1]], ["蛋糕", "dàngāo", "торт", [4, 1]], ["飞机", "fēijī", "самолёт", [1, 1]], ["苹果", "píngguǒ", "яблоко", [2, 3]], ["米饭", "mǐfàn", "рис (варёный)", [3, 4]], ["汉字", "hànzì", "иероглиф", [4, 4]], ["拼音", "pīnyīn", "пиньинь", [1, 1]], ["电话", "diànhuà", "телефонный звонок", [4, 4]], ["茶杯", "chábēi", "чашка", [2, 1]], ["黄色", "huángsè", "жёлтый", [2, 4]], ["北方", "běifāng", "север", [3, 1]]];
 
 /* ===================== settings ===================== */
 const HW='dz1';
@@ -191,7 +191,7 @@ function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8
 const TASKS=[
  {id:'kbd',e:'⌨️',c:'#DCE3FF',t:'Китайская клавиатура',s:'Установи пиньинь и напиши 你好'},
  {id:'listen',e:'👂',c:'#DDF5EC',t:'Угадай тон',s:'2 уровня: слоги и слова'},
- {id:'speak',e:'🎯',c:'#FFF1D6',t:'Скажи тон — проверю',s:'Говори в микрофон, вижу твой тон'},
+ {id:'speak',e:'🎯',c:'#FFF1D6',t:'Скажи тон — проверю',s:'mā má mǎ mà · wū wú wǔ wù'},
  {id:'rec',e:'🎙️',c:'#FFE3EB',t:'Запиши голос учителю',s:'a · o · e · i · u с тонами'},
  {id:'theory',e:'📝',c:'#EDE6FF',t:'Вопросы по теории',s:'12 вопросов'},
 ];
@@ -266,7 +266,9 @@ function kbdV(){const k=KB[kbTab];const ok=S.done.kbd&&S.done.kbd.ok;
 
 /* ---------- 2. listening ---------- */
 const BASES=Object.keys(R);
-function mkL1(){const items=[];const used=new Set();while(items.length<10){const b=BASES[Math.random()*BASES.length|0];const row=R[b].split(',');const ts=[1,2,3,4].filter(t=>row[t-1]);const t=ts[Math.random()*ts.length|0];const k=b+t;if(used.has(k))continue;used.add(k);items.push({b,t,ch:row[t-1]});}return items;}
+let GOOD=null;fetch(AUDIO+'check.json').then(r=>r.json()).then(j=>{GOOD={};for(const k in j.items)GOOD[j.items[k].c]=j.items[k].ok;}).catch(()=>{});
+const goodCh=ch=>!GOOD||GOOD[ch]!==false;
+function mkL1(){const items=[];const used=new Set();while(items.length<10){const b=BASES[Math.random()*BASES.length|0];const row=R[b].split(',');const ts=[1,2,3,4].filter(t=>row[t-1]&&goodCh(row[t-1]));if(!ts.length)continue;const t=ts[Math.random()*ts.length|0];const k=b+t;if(used.has(k))continue;used.add(k);items.push({b,t,ch:row[t-1]});}return items;}
 const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
 const TM={1:'ˉ',2:'ˊ',3:'ˇ',4:'ˋ'};
 const mini=(t,c)=>{const p={1:'M4 6 H28',2:'M4 24 L28 6',3:'M4 10 Q15 30 28 6',4:'M4 6 L28 26'}[t];return `<svg width="34" height="30" viewBox="0 0 32 32"><path d="${p}" stroke="${c||`var(--t${t})`}" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;};
@@ -295,7 +297,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
   $('#nx').onclick=()=>{L.i++;askL();};});}
 
 /* ---------- 3. speak & check ---------- */
-const SP=[['a',1],['a',2],['a',3],['a',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
+const SP=[['ma',1],['ma',2],['ma',3],['ma',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
 let spI=0;
 function speakV(){const it=SP[spI],d=S.done.speak||{passed:0,items:{}};const items=d.items||{};
  shell(`${backBtn}<h2><span class="zh">说</span>Скажи тон — система проверит</h2><p class="lead">Послушай образец, нажми 🎤 и скажи слог. Я нарисую твой голос поверх образца и скажу, какой тон получился. Пробуй, пока не совпадёт!</p>
@@ -325,12 +327,12 @@ function speakV(){const it=SP[spI],d=S.done.speak||{passed:0,items:{}};const ite
   busy=false;};}
 
 /* ---------- 4. record for teacher ---------- */
-const RECS=[['a','a','ā á ǎ à'],['o','o','ō ó ǒ ò'],['e','e','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
+const RECS=[['a','ma','ā á ǎ à'],['o','mo','ō ó ǒ ò'],['e','ke','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
 const blobs={};
 function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
  shell(`${backBtn}<h2><span class="zh">录音</span>Запиши голос учителю</h2><p class="lead">Для каждой финали: послушай образец, нажми «Записать» и произнеси все 4 тона по порядку. Потом прослушай себя и нажми «Отправить». Можно перезаписать сколько угодно раз.</p>
  <div class="grid2">${RECS.map(([id,b,txt])=>`<div class="rc n" id="rc-${id}"><div class="hd"><span class="py">${txt}</span><span class="st ${items[id]?'ok':''}" id="st-${id}">${items[id]?'✓ отправлено':''}</span></div>
-  <div class="row"><button class="btn g" data-ref="${id}">▶ Образец</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
+  <div class="row"><button class="btn g" data-ref="${id}">▶ Образец${b!==id&&b!=="yi"&&b!=="wu"?` <small style="font-weight:600">(на слоге ${b})</small>`:""}</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
  <div class="tip">💡 Говори чётко и не спеши: <b>ā — á — ǎ — à</b>. Если отправка не проходит, в конце будет запасная кнопка «Отправить через мессенджер».</div>`);
  document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);const row=R[r[1]].split(',');playSeq([1,2,3,4].map(t=>row[t-1]).filter(Boolean),b);});
  let stop=null,cur=null;
