@@ -1,0 +1,119 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>录音 — Запись эталонных слогов</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;--t1:#2DBE8C;--t2:#F5A524;--t3:#7C6FFF;--t4:#FF5C8A}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,sans-serif;color:var(--t);padding:16px 14px 60px}
+button{font:inherit;border:0;cursor:pointer;color:inherit;background:none}
+.w{max-width:980px;margin:0 auto}.n{background:var(--bg);border-radius:24px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.in{background:var(--bg);border-radius:18px;box-shadow:inset 5px 5px 10px var(--sh1),inset -5px -5px 10px var(--sh2)}
+.py{font-family:Nunito,sans-serif;font-weight:900}
+h1{font-size:24px;color:var(--ink)}p.l{margin-top:6px;line-height:1.5;font-size:15.5px}
+.head{padding:18px 20px}.bar{height:10px;border-radius:6px;background:#D6DBE6;margin-top:12px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok));transition:width .3s}
+.lay{display:grid;gap:16px;margin-top:16px}@media(min-width:860px){.lay{grid-template-columns:1fr 340px;align-items:start}.list{position:sticky;top:12px}}
+.stage{padding:24px;text-align:center}
+.big{font-size:96px;line-height:1.05;margin-top:6px}
+.tn{font-size:17px;font-weight:800;color:var(--mu);margin-top:4px}
+.hint{margin:14px auto 0;max-width:520px;font-size:15px;line-height:1.45;background:#FFF6DC;color:#6B5310;border-radius:16px;padding:10px 14px}
+.mic{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;font-size:46px;margin:18px auto 6px}
+.mic.rec{background:var(--no);color:#fff;animation:p 1s infinite}@keyframes p{50%{box-shadow:0 0 0 16px rgba(255,92,138,.18)}}
+.lab{font-size:14px;font-weight:700;color:var(--mu)}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.btn{padding:13px 20px;border-radius:16px;font-weight:800;font-size:16px;background:var(--ac);color:#fff;box-shadow:6px 6px 14px var(--sh1),-6px -6px 14px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ink)}.btn.ok{background:var(--ok)}.btn:disabled{opacity:.4}
+svg.ch{width:100%;max-width:460px;height:auto;display:block;margin:14px auto 0}
+.list{padding:14px;display:grid;gap:12px}
+.grp{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:4px 4px 0}
+.sy{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:16px}
+.sy b{width:44px;font-family:Nunito;font-size:18px;color:var(--ink)}
+.pill{flex:1;padding:8px 0;border-radius:12px;font-family:Nunito;font-weight:800;font-size:17px;color:var(--mu);text-align:center}
+.pill.done{color:#fff;background:var(--ok)}.pill.cur{box-shadow:inset 3px 3px 7px var(--sh1),inset -3px -3px 7px var(--sh2);color:var(--ac)}
+.pill.done.cur{box-shadow:0 0 0 3px var(--ac)}
+.msg{margin-top:12px;font-weight:700;min-height:22px}.msg.ok{color:#14855E}.msg.no{color:#D9366A}
+.key{padding:20px;max-width:420px;margin:10vh auto}.key input{width:100%;font:inherit;font-size:18px;padding:12px 16px;border:0;margin-top:14px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/voice/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/voice/';
+const GROUPS=[
+ ['Для «Угадай тон»',['ma','ba','da','ni','mi','bi','di','tu']],
+ ['Для «Скажи тон»',['mo','wu']],
+ ['Образцы гласных для «Запиши голос»',['a','o','e','yi']],
+];
+const ITEMS=[];GROUPS.forEach(([g,bs])=>bs.forEach(b=>[1,2,3,4].forEach(t=>ITEMS.push(b+t))));
+const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
+const mark=(b,t)=>{let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
+const TIP={1:'Высоко и ровно, как долгая нота.',2:'Снизу вверх, как удивлённое «а?».',3:'Полный 3-й тон: вниз, задержаться внизу (можно с хрипотцой) и подняться — «галочка». Не торопитесь.',4:'Резко сверху вниз, коротко.'};
+let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||'';}catch(e){}
+let DONE={},cur=0,blob=null,url=null;
+const $=s=>document.querySelector(s);
+
+/* ---------- pitch (for the curve) ---------- */
+function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=new Float32Array(tmax+1);
+ for(let t=1;t<=tmax;t++){let s=0;for(let i=0;i<W;i++){const v=x[i]-x[i+t];s+=v*v;}d[t]=s;}let run=0;for(let t=1;t<=tmax;t++){run+=d[t];d[t]=run?d[t]*t/run:1;}
+ for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;return sr/t;}}return 0;}
+function curve(pcm,sr){const step=Math.round(sr/100),F=512+Math.floor(sr/65)+2,out=[];let mx=0;
+ for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];mx=Math.max(mx,Math.sqrt(s/512));}
+ for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];if(Math.sqrt(s/512)<mx*0.12){out.push(0);continue;}const f=yin(pcm.subarray(i,i+F),sr);out.push(f>65&&f<550?f:0);}
+ return out;}
+function chart(f){const v=f.filter(x=>x>0);if(v.length<5)return '';const med=[...v].sort((a,b)=>a-b)[v.length>>1];
+ const W=460,H=150,n=f.length,st=f.map(x=>x>0?12*Math.log2(x/med):null);
+ const y=s=>H/2-Math.max(-8,Math.min(8,s))*(H/2-12)/8,x=i=>14+i*(W-28)/Math.max(1,n-1);
+ let d='',pen=false;st.forEach((s,i)=>{if(s===null){pen=false;return;}d+=(pen?'L':'M')+x(i).toFixed(1)+' '+y(s).toFixed(1);pen=true;});
+ return `<svg class="ch in" viewBox="0 0 ${W} ${H}"><line x1="10" x2="${W-10}" y1="${H/2}" y2="${H/2}" stroke="#D3D8E3"/><path d="${d}" fill="none" stroke="#3B4BD8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><text x="16" y="18" font-size="12" font-weight="700" fill="#9AA2BC">высоко</text><text x="16" y="${H-8}" font-size="12" font-weight="700" fill="#9AA2BC">низко</text></svg>`;}
+
+/* ---------- recording to clean WAV ---------- */
+let AC=null,stream=null,proc=null,chunks=[],recOn=false,autoT=null;
+async function startRec(onAuto){AC=AC||new (window.AudioContext||window.webkitAudioContext)();await AC.resume();
+ stream=stream&&stream.active?stream:await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+ const src=AC.createMediaStreamSource(stream);proc=AC.createScriptProcessor(4096,1,1);chunks=[];
+ proc.onaudioprocess=e=>{if(recOn)chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));};
+ src.connect(proc);proc.connect(AC.destination);recOn=true;autoT=setTimeout(()=>onAuto&&onAuto(),4000);}
+async function stopRec(){if(!recOn)return;recOn=false;clearTimeout(autoT);try{proc.disconnect();}catch(e){}
+ const sr=AC.sampleRate,len=chunks.reduce((a,c)=>a+c.length,0),x=new Float32Array(len);let o=0;chunks.forEach(c=>{x.set(c,o);o+=c.length;});
+ // trim silence
+ let pk=0;for(const v of x)pk=Math.max(pk,Math.abs(v));const th=pk*0.04,win=Math.round(sr*0.01);let a=0,b=x.length;
+ for(let i=0;i<x.length;i+=win){let m=0;for(let j=i;j<Math.min(x.length,i+win);j++)m=Math.max(m,Math.abs(x[j]));if(m>th){a=Math.max(0,i-Math.round(sr*0.08));break;}}
+ for(let i=x.length-win;i>0;i-=win){let m=0;for(let j=i;j<Math.min(x.length,i+win);j++)m=Math.max(m,Math.abs(x[j]));if(m>th){b=Math.min(x.length,i+win+Math.round(sr*0.12));break;}}
+ const cut=x.slice(a,b);
+ // resample to 22050
+ const out=22050,ol=Math.ceil(cut.length*out/sr),oc=new OfflineAudioContext(1,ol,out),buf=oc.createBuffer(1,cut.length,sr);buf.copyToChannel(cut,0);
+ const s=oc.createBufferSource();s.buffer=buf;s.connect(oc.destination);s.start();const r=(await oc.startRendering()).getChannelData(0);
+ let p2=0;for(const v of r)p2=Math.max(p2,Math.abs(v));const g=p2?0.89/p2:1,fade=Math.round(out*0.012);
+ const y=new Float32Array(r.length);for(let i=0;i<r.length;i++){let v=r[i]*g;if(i<fade)v*=i/fade;if(i>r.length-fade)v*=(r.length-i)/fade;y[i]=v;}
+ return {wav:wav(y,out),pcm:y,sr:out,pk};}
+function wav(y,sr){const b=new ArrayBuffer(44+y.length*2),v=new DataView(b);const w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
+ w(0,'RIFF');v.setUint32(4,36+y.length*2,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,y.length*2,true);
+ for(let i=0;i<y.length;i++)v.setInt16(44+i*2,Math.max(-1,Math.min(1,y[i]))*32767,true);return new Blob([b],{type:'audio/wav'});}
+
+/* ---------- UI ---------- */
+function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Object.keys(DONE).length;
+ $('#app').innerHTML=`<div class="head n"><h1>录音 · Запись эталонных слогов</h1><p class="l">Эти записи будут звучать в домашних заданиях вместо синтезатора. Говорите отчётливо и чуть медленнее обычного. После записи вы увидите кривую своего голоса — для 3-го тона там должна быть «галочка».</p>
+ <div class="bar"><i style="width:${done/ITEMS.length*100}%"></i></div><p class="l" style="font-weight:800">Записано ${done} из ${ITEMS.length}</p></div>
+ <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].includes(b))[0]}</div>
+  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t}-й тон ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>
+  <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
+  <div id="cv"></div>
+  <div class="row"><button class="btn g" id="pl" ${blob?'':'disabled'}>▶ Прослушать</button><button class="btn ok" id="sv" ${blob?'':'disabled'}>✓ Сохранить и дальше</button>${DONE[id]?'<button class="btn g" id="old">▶ Сохранённое</button>':''}</div>
+  <div class="row"><button class="btn g" id="pv">‹ Назад</button><button class="btn g" id="nx">Пропустить ›</button></div><div class="msg" id="msg"></div></div>
+ <div class="list n">${GROUPS.map(([g,bs])=>`<div class="grp">${g}</div>${bs.map(bb=>`<div class="sy"><b>${bb}</b>${[1,2,3,4].map(tt=>{const k=bb+tt;return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}">${mark(bb,tt)}</button>`}).join('')}</div>`).join('')}`).join('')}</div></div>`;
+ document.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>{cur=ITEMS.indexOf(x.dataset.k);blob=null;render();});
+ $('#pv').onclick=()=>{cur=(cur+ITEMS.length-1)%ITEMS.length;blob=null;render();};$('#nx').onclick=()=>{cur=(cur+1)%ITEMS.length;blob=null;render();};
+ if($('#old'))$('#old').onclick=async()=>{const a=new Audio(API+'get?id='+id+'&t='+Date.now());a.play();};
+ $('#pl').onclick=()=>{if(url)new Audio(url).play();};
+ $('#mic').onclick=async()=>{const m=$('#mic');if(recOn){await finish();return;}
+  try{await startRec(finish);m.classList.add('rec');m.textContent='■';$('#ml').textContent='Говорите…';}catch(e){$('#msg').className='msg no';$('#msg').textContent='Нет доступа к микрофону. Разрешите микрофон для этой страницы.';}};
+ async function finish(){if(!recOn)return;const m=$('#mic');m.classList.remove('rec');m.textContent='🎤';const r=await stopRec();
+  if(!r||r.pk<0.02){$('#msg').className='msg no';$('#msg').textContent='Очень тихо — поднесите телефон ближе и повторите.';return;}
+  blob=r.wav;url&&URL.revokeObjectURL(url);url=URL.createObjectURL(blob);$('#cv').innerHTML=chart(curve(r.pcm,r.sr));$('#pl').disabled=false;$('#sv').disabled=false;$('#ml').textContent='Послушайте. Если нравится — «Сохранить». Нет — нажмите 🎤 ещё раз.';new Audio(url).play();}
+ $('#sv').onclick=async()=>{const sb=$('#sv');sb.disabled=true;sb.textContent='Сохраняю…';
+  try{const r=await fetch(API+'put?key='+encodeURIComponent(KEY)+'&id='+id,{method:'POST',headers:{'Content-Type':'audio/wav'},body:blob});const j=await r.json();if(!r.ok)throw new Error(j.error==='key'?'неверный ключ':j.error);
+   DONE[id]=1;blob=null;let n=cur;for(let k=1;k<=ITEMS.length;k++){const c=(cur+k)%ITEMS.length;if(!DONE[ITEMS[c]]){n=c;break;}}cur=n;render();
+   if(Object.keys(DONE).length===ITEMS.length){$('#msg').className='msg ok';$('#msg').textContent='🎉 Всё записано! Напишите мне в чат «записала» — я подключу ваш голос к заданиям.';}}
+  catch(e){sb.disabled=false;sb.textContent='✓ Сохранить и дальше';$('#msg').className='msg no';$('#msg').textContent='Не сохранилось: '+e.message;}};}
+async function boot(){if(!KEY){$('#app').innerHTML=`<div class="key n"><h1>Ключ учителя</h1><input class="in" id="k" placeholder="ключ"><button class="btn" id="go" style="width:100%;margin-top:14px">Открыть</button></div>`;
+  $('#go').onclick=()=>{KEY=$('#k').value.trim();try{localStorage.setItem('dzkey',KEY)}catch(e){}boot();};return;}
+ try{localStorage.setItem('dzkey',KEY)}catch(e){}
+ try{const r=await fetch(API+'list');const j=await r.json();(j.items||[]).forEach(x=>DONE[x.id]=1);}catch(e){}
+ const f=ITEMS.findIndex(i=>!DONE[i]);cur=f<0?0:f;render();}
+boot();
+</script></body></html>

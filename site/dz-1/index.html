@@ -141,9 +141,12 @@ function play(text,el,rate){return new Promise(res=>{try{curA&&curA.pause()}catc
 /* textbook tones re-synthesised from a clean recording (audio/syn/<syllable><tone>.wav) */
 const SYN=AUDIO+'syn/';let SYNOK=null;fetch(SYN+'index.json').then(r=>r.json()).then(j=>SYNOK=j).catch(()=>{});
 const synKey=(b,t)=>({yi:'i',wu:'u'}[b]||b)+t;
-const hasSyn=(b,t)=>!!(SYNOK&&SYNOK[synKey(b,t)]);
+const VOICE=AUDIO+'voice/';let VOK=null;fetch(VOICE+'index.json?'+Date.now()).then(r=>r.json()).then(j=>VOK=j).catch(()=>{});
+const hasVoice=(b,t)=>!!(VOK&&VOK[b+t]);
+const hasSyn=(b,t)=>hasVoice(b,t)||!!(SYNOK&&SYNOK[synKey(b,t)]);
+const sylURL=(b,t)=>hasVoice(b,t)?VOICE+b+t+'.wav':SYN+synKey(b,t)+'.wav';
 function playSyl(b,t,el,rate){if(!hasSyn(b,t)){const c=chOf(b,t);return c?play(c,el,rate):Promise.resolve();}
- return new Promise(res=>{try{curA&&curA.pause()}catch(e){}const a=new Audio(SYN+synKey(b,t)+'.wav');curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
+ return new Promise(res=>{try{curA&&curA.pause()}catch(e){}const a=new Audio(sylURL(b,t));curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
   const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;a.onerror=()=>{el&&el.classList.remove('on');const c=chOf(b,t);(c?play(c,el,rate):Promise.resolve()).then(res);};a.play().catch(a.onerror);});}
 async function playSylSeq(b,el){for(const t of [1,2,3,4]){await playSyl(b,t,el);await new Promise(r=>setTimeout(r,350));}}
 async function playSeq(list,el){for(const t of list){await play(t,el);await new Promise(r=>setTimeout(r,250));}}
@@ -282,7 +285,7 @@ const ALT={"mo4": ["默", "末", "莫", "陌", "漠"], "wu1": ["乌", "屋", "�
 function chOf(b,t){const alt=ALT[b+t];if(alt&&GOOD){const ok=alt.find(c=>GOOD[c]===true);if(ok)return ok;}return (alt&&alt[0])||R[b].split(',')[t-1];}
 function noRepeat(arr,key){for(let k=0;k<200;k++){const a=shuffle(arr);if(a.every((x,i)=>!i||key(x)!==key(a[i-1])))return a;}return arr;}
 function mkL1(){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const used=new Set(),items=[];
- for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(SYNOK)return hasSyn(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
+ for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(VOK&&Object.keys(VOK).length>=8)return hasVoice(b,t);if(SYNOK)return hasSyn(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
  return items;}
 function mkL2(){let w=shuffle(WORDS).slice(0,10);for(let k=0;k<300;k++){const a=shuffle(w);if(a.every((x,i)=>!i||(x[3].join('')!==a[i-1][3].join('')&&x[3][0]!==a[i-1][3][0])))return a;}return w;}
 const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
@@ -332,7 +335,7 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
  $('#recal').onclick=()=>{S.base=0;keep();calibV();};
  document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{spI=+b.dataset.sp;speakV();});
  $('#ref').onclick=()=>playSyl(it.b,it.t,$('#ref'));$('#refs').onclick=()=>playSyl(it.b,it.t,$('#refs'),0.75);
- let ref=TT[it.t][0].map(v=>v+LV[it.t]);if(hasSyn(it.b,it.t)||(GOOD&&GOOD[it.ch]===true))refContour(hasSyn(it.b,it.t)?SYN+synKey(it.b,it.t)+'.wav':it.ch).then(r=>{if(r&&classify(r.c)===it.t){ref=r.c.map(v=>v+LV[it.t]);$('#chart').innerHTML=chartSVG(ref,null);}});
+ let ref=TT[it.t][0].map(v=>v+LV[it.t]);if(hasSyn(it.b,it.t)||(GOOD&&GOOD[it.ch]===true))refContour(hasSyn(it.b,it.t)?sylURL(it.b,it.t):it.ch).then(r=>{if(r&&classify(r.c)===it.t){ref=r.c.map(v=>v+LV[it.t]);$('#chart').innerHTML=chartSVG(ref,null);}});
  let stopFn=null,busy=false;
  $('#mic').onclick=async()=>{if(stopFn){stopFn();return;}if(busy)return;busy=true;const mic=$('#mic'),lab=$('#mlab'),fb=$('#sfb');
   try{const blob=await record(2600,s=>{stopFn=s;mic.classList.add('rec');mic.textContent='■';lab.textContent='Говори! (нажми ещё раз, чтобы закончить)';});

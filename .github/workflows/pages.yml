@@ -42,6 +42,10 @@ jobs:
         run: |
           python tools/make_tones.py
           ls site/audio/syn | wc -l
+      - name: Голос учителя (записи из хранилища)
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python tools/fetch_voice.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
