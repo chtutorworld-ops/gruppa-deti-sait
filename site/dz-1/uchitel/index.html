@@ -1,0 +1,46 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ДЗ 1 — ответы учеников</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--mu:#7D86A3;--ok:#17936A;--no:#D9366A;--ac:#5B6BD8}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,sans-serif;color:#3D4560;padding:20px 14px}
+.w{max-width:1200px;margin:0 auto}.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px #C5CBD8,-8px -8px 18px #fff}
+h1{font-size:26px;color:var(--ink)}p{margin-top:6px;color:var(--mu)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:16px 18px;margin:16px 0}
+input{font:inherit;font-size:16px;padding:10px 14px;border:0;border-radius:14px;box-shadow:inset 4px 4px 8px #C5CBD8,inset -4px -4px 8px #fff;background:var(--bg);min-width:220px}
+button{font:inherit;font-weight:800;border:0;cursor:pointer;padding:10px 16px;border-radius:14px;background:var(--ac);color:#fff}
+button.g{background:var(--bg);color:var(--ink);box-shadow:4px 4px 10px #C5CBD8,-4px -4px 10px #fff}
+.tbl{overflow-x:auto;padding:8px}table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{padding:10px 10px;text-align:left;border-bottom:1px solid #D6DBE6;vertical-align:top;white-space:nowrap}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+td b{color:var(--ink)}.ok{color:var(--ok);font-weight:800}.no{color:var(--mu)}
+.au{display:flex;gap:6px;flex-wrap:wrap}.au button{padding:6px 10px;font-size:13px}
+small{color:var(--mu)}
+</style></head><body><div class="w">
+<h1>📋 ДЗ 1 — кто что сделал</h1><p>Ответы приходят сюда сами. Нажмите кнопку с буквой, чтобы послушать запись ученика.</p>
+<div class="bar n"><input id="key" placeholder="Ключ учителя"><button id="load">Показать</button><button class="g" id="ref">Обновить</button><span id="info"></span></div>
+<div class="tbl n"><table><thead><tr><th>Ученик</th><th>Клавиатура</th><th>Тоны: слоги</th><th>Тоны: слова</th><th>Скажи тон</th><th>Записи (a o e i u)</th><th>Теория</th><th>Последний раз</th></tr></thead><tbody id="tb"><tr><td colspan="8"><small>Введите ключ</small></td></tr></tbody></table></div>
+</div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const k0=new URLSearchParams(location.search).get('key');let KEY=k0||'';try{KEY=KEY||localStorage.getItem('dzkey')||''}catch(e){}
+document.getElementById('key').value=KEY;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ago=t=>{if(!t)return '';const d=new Date(t);return d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});};
+let cur=null;
+async function load(){KEY=document.getElementById('key').value.trim();try{localStorage.setItem('dzkey',KEY)}catch(e){}
+ const info=document.getElementById('info');info.textContent='Загружаю…';
+ try{const r=await fetch(API+'list?hw=dz1&key='+encodeURIComponent(KEY));const d=await r.json();if(!r.ok)throw new Error(d.error==='key'?'Неверный ключ':d.error);
+  info.textContent='Учеников: '+d.subs.length;
+  const rows=d.subs.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru')).map(s=>{const p=s.parts||{},au=d.aud[s.sid]||{};
+   const c=(x,f)=>x?`<span class="ok">${f(x)}</span>`:'<span class="no">—</span>';
+   return `<tr><td><b>${esc(s.name)}</b><br><small>${esc((p.hello&&p.hello.plat)||'')}</small></td>
+   <td>${c(p.kbd,x=>'✓ '+esc(x.typed||''))}</td><td>${c(p.listen1,x=>x.score+'/10')}</td><td>${c(p.listen2,x=>x.score+'/10')}</td>
+   <td>${c(p.speak,x=>(x.passed||0)+'/8 <small>попыток: '+(x.tries||0)+'</small>')}</td>
+   <td><div class="au">${['a','o','e','i','u'].map(i=>au[i]?`<button data-sid="${s.sid}" data-i="${i}">▶ ${i}</button>`:`<span class="no">${i}</span>`).join('')}</div></td>
+   <td>${c(p.theory,x=>x.score+'/'+(x.of||12))}</td><td><small>${ago(s.updated)}</small></td></tr>`;}).join('');
+  document.getElementById('tb').innerHTML=rows||'<tr><td colspan="8"><small>Пока никто не начал</small></td></tr>';
+  document.querySelectorAll('[data-sid]').forEach(b=>b.onclick=async()=>{b.textContent='…';try{const r=await fetch(API+`play?hw=dz1&sid=${b.dataset.sid}&item=${b.dataset.i}&key=${encodeURIComponent(KEY)}`);const bl=await r.blob();cur&&cur.pause();cur=new Audio(URL.createObjectURL(bl));cur.play();}catch(e){alert('Не удалось загрузить запись');}b.textContent='▶ '+b.dataset.i;});
+ }catch(e){info.textContent='⚠ '+e.message;}}
+document.getElementById('load').onclick=load;document.getElementById('ref').onclick=load;if(KEY)load();
+</script></body></html>

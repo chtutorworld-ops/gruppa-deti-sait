@@ -1,0 +1,385 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>作业 — Домашнее задание 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@700;800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--ok:#2DBE8C;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;
+ --t1:#2DBE8C;--t2:#F5A524;--t3:#7C6FFF;--t4:#FF5C8A;--t0:#9AA2BC;--han:'LXGW WenKai GB','PingFang SC','Hiragino Sans GB','Noto Sans SC','Microsoft YaHei',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg)}
+body{font-family:Manrope,system-ui,-apple-system,sans-serif;color:var(--t);min-height:100vh;padding:max(14px,env(safe-area-inset-top)) 14px 40px}
+button{font:inherit;border:0;cursor:pointer;color:inherit;background:none}
+.zh{font-family:var(--han)}.py{font-family:Nunito,Manrope,sans-serif;font-weight:800}
+.n{background:var(--bg);border-radius:24px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.in{background:var(--bg);border-radius:18px;box-shadow:inset 5px 5px 10px var(--sh1),inset -5px -5px 10px var(--sh2)}
+.app{max-width:1120px;margin:0 auto}
+.top{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:18px}
+.top .zh{font-size:34px;color:var(--ac2);line-height:1;white-space:nowrap}
+@media(max-width:600px){.top small{display:none}.top .zh{font-size:28px}.top h1{font-size:17px}}
+.top h1{font-size:19px;font-weight:800;color:var(--ink);line-height:1.15}
+.top small{display:block;font-size:13px;color:var(--mu);font-weight:600}
+.me{margin-left:auto;font-size:14px;font-weight:800;color:var(--ac);padding:8px 14px;border-radius:14px}
+.lay{display:grid;gap:18px}
+@media(min-width:900px){.lay{grid-template-columns:300px 1fr;align-items:start}.side{position:sticky;top:14px}.only-m{display:none!important}}
+@media(max-width:899px){.lay.task .side{display:none}.lay.home .main{display:none}}
+.side{padding:12px;display:grid;gap:10px}
+.ti{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;text-align:left;width:100%;transition:transform .1s}
+.ti:active{transform:scale(.98)}
+.ti .e{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;flex:none}
+.ti b{display:block;font-size:16px;color:var(--ink);line-height:1.2}.ti small{display:block;font-size:12.5px;color:var(--mu);font-weight:600;margin-top:2px}
+.ti .st{margin-left:auto;font-size:13px;font-weight:800;color:var(--mu);white-space:nowrap}
+.ti .st.ok{color:var(--ok)}
+.ti.cur{box-shadow:inset 4px 4px 9px var(--sh1),inset -4px -4px 9px var(--sh2)}
+.prog{padding:4px 6px 2px;font-size:13px;font-weight:700;color:var(--mu)}
+.prog .bar{height:8px;border-radius:5px;background:#D6DBE6;margin-top:6px;overflow:hidden}.prog .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok));border-radius:5px;transition:width .4s}
+.main{padding:22px;min-height:420px}
+@media(max-width:600px){.main{padding:18px 14px}}
+.back{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:15px;color:var(--ac);padding:8px 14px;border-radius:14px;margin-bottom:14px}
+h2{font-size:26px;font-weight:800;color:var(--ink);line-height:1.15;letter-spacing:-.01em}
+h2 .zh{color:var(--ac2);margin-right:8px}
+.lead{font-size:16.5px;line-height:1.5;margin-top:8px}
+h3{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:18px;font-weight:800;font-size:16.5px;background:var(--ac);color:#fff;box-shadow:6px 6px 14px var(--sh1),-6px -6px 14px var(--sh2);transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn.g{background:var(--bg);color:var(--ac2)}
+.btn.red{background:var(--no)}
+.btn.okb{background:var(--ok)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+.tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:5px;margin-top:14px}
+.tabs button{padding:10px 16px;border-radius:13px;font-weight:800;font-size:15px;color:var(--mu)}
+.tabs button.on{background:var(--bg);color:var(--ac2);box-shadow:4px 4px 10px var(--sh1),-4px -4px 10px var(--sh2)}
+ol.steps{list-style:none;counter-reset:s;display:grid;gap:10px;margin-top:14px}
+ol.steps li{counter-increment:s;position:relative;padding:12px 14px 12px 56px;font-size:16px;line-height:1.45;border-radius:18px}
+ol.steps li:before{content:counter(s);position:absolute;left:12px;top:10px;width:32px;height:32px;border-radius:50%;background:var(--ac);color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
+.path{font-weight:800;color:var(--ac2)}
+.tip{margin-top:12px;padding:12px 16px;border-radius:16px;background:#FFF6DC;color:#6B5310;font-size:15px;line-height:1.45}
+.inp{width:100%;font:inherit;font-size:28px;font-family:var(--han);padding:14px 18px;border:0;outline:none;color:var(--ink)}
+.fb{margin-top:12px;font-size:16px;font-weight:700;line-height:1.45;min-height:24px}
+.fb.ok{color:#14855E}.fb.no{color:#D9366A}
+.qcard{padding:22px;margin-top:16px;text-align:center}
+.qhead{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--mu);letter-spacing:.06em;text-transform:uppercase}
+.dots{display:flex;gap:5px;justify-content:center;margin:12px 0 4px}.dots i{width:22px;height:6px;border-radius:3px;background:#D6DBE6}.dots i.ok{background:var(--ok)}.dots i.no{background:var(--no)}.dots i.cur{background:var(--ac)}
+.play{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;margin:14px auto 6px;font-size:36px;color:var(--ac)}
+.play.on{color:var(--ok);box-shadow:inset 6px 6px 12px var(--sh1),inset -6px -6px 12px var(--sh2)}
+.big{font-size:56px;line-height:1.1;color:var(--ac2)}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+@media(min-width:700px){.opts.o4{grid-template-columns:repeat(4,1fr)}}
+.opt{padding:16px 10px;border-radius:18px;font-size:26px;display:grid;justify-items:center;gap:4px;box-shadow:6px 6px 14px var(--sh1),-6px -6px 14px var(--sh2)}
+.opt small{font-family:Manrope;font-size:12.5px;font-weight:700;color:var(--mu)}
+.opt.ok{background:#DDF5EC;box-shadow:inset 3px 3px 8px #B9DCCD}.opt.no{background:#FFE3EB;box-shadow:inset 3px 3px 8px #F0C2D0}
+.mcq .opt{font-size:16px;font-weight:700;text-align:left;justify-items:start;padding:14px 16px;line-height:1.35}
+.mcq{display:grid;gap:10px;margin-top:14px}
+.lvl{display:grid;gap:14px;margin-top:16px}@media(min-width:700px){.lvl{grid-template-columns:1fr 1fr}}
+.lvl button{padding:20px;border-radius:22px;text-align:left}
+.lvl b{display:block;font-size:19px;color:var(--ink)}.lvl small{display:block;font-size:14.5px;margin-top:6px;line-height:1.4}
+.res{font-size:44px;font-weight:900;font-family:Nunito;color:var(--ac2);margin-top:8px}
+.grid2{display:grid;gap:14px;margin-top:14px}@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.rc{padding:16px 18px;border-radius:22px}
+.rc .hd{display:flex;align-items:baseline;gap:10px}
+.rc .hd .py{font-size:28px;color:var(--ac2)}
+.rc .st{margin-left:auto;font-size:13px;font-weight:800;color:var(--mu)}.rc .st.ok{color:var(--ok)}
+.rc .row{margin-top:10px;gap:8px}
+.rc .btn{padding:11px 15px;font-size:15px;border-radius:15px}
+.mic{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;font-size:44px;margin:14px auto 4px}
+.mic.rec{background:var(--no);color:#fff;box-shadow:0 0 0 10px rgba(255,92,138,.18),0 0 0 22px rgba(255,92,138,.08);animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 14px rgba(255,92,138,.22),0 0 0 28px rgba(255,92,138,.06)}}
+.chart{width:100%;max-width:520px;height:auto;display:block;margin:12px auto 0;border-radius:18px}
+.legend{display:flex;justify-content:center;gap:18px;font-size:13.5px;font-weight:700;color:var(--mu);margin-top:8px}
+.legend i{display:inline-block;width:18px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.chip{padding:8px 14px;border-radius:14px;font-family:Nunito;font-weight:800;font-size:20px;color:var(--mu)}
+.chip.on{color:var(--ac2);box-shadow:inset 3px 3px 7px var(--sh1),inset -3px -3px 7px var(--sh2)}
+.chip.ok{color:var(--ok)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ac2);color:#fff;padding:12px 18px;border-radius:16px;font-weight:700;font-size:15px;z-index:9;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.sync{font-size:12.5px;font-weight:700;color:var(--mu);padding:0 8px}
+.sync.err{color:#D9366A}
+.login{max-width:460px;margin:8vh auto 0;padding:28px 24px;text-align:center}
+.login input{width:100%;font:inherit;font-size:20px;padding:14px 18px;border:0;outline:none;margin-top:18px;color:var(--ink)}
+</style></head><body>
+<div class="app" id="app"></div><div class="toast" id="toast"></div>
+<script>
+const R={"a": "阿,,,", "o": "噢,哦,,", "e": "婀,鹅,,饿", "yi": "衣,移,以,意", "wu": "乌,无,五,物", "ma": "妈,麻,马,骂", "ba": "八,拔,把,爸", "po": "坡,婆,叵,破", "mo": "摸,魔,抹,墨", "fa": "发,罚,法,珐", "da": "搭,达,打,大", "ni": "妮,泥,你,逆", "mi": "眯,迷,米,密", "bi": "逼,鼻,笔,必", "di": "低,敌,底,地", "ti": "梯,题,体,替", "ge": "哥,格,舸,个", "ke": "科,咳,渴,客", "hu": "呼,湖,虎,户", "lu": "噜,炉,鲁,路", "tu": "突,图,土,兔", "du": "督,读,赌,杜", "pu": "扑,葡,普,瀑", "fu": "夫,服,府,父"};
+const WORDS=[["中国", "Zhōngguó", "Китай", [1, 2]], ["老师", "lǎoshī", "учитель", [3, 1]], ["北京", "Běijīng", "Пекин", [3, 1]], ["熊猫", "xióngmāo", "панда", [2, 1]], ["足球", "zúqiú", "футбол", [2, 2]], ["牛奶", "niúnǎi", "молоко", [2, 3]], ["面包", "miànbāo", "хлеб", [4, 1]], ["咖啡", "kāfēi", "кофе", [1, 1]], ["唱歌", "chànggē", "петь", [4, 1]], ["上海", "Shànghǎi", "Шанхай", [4, 3]], ["美国", "Měiguó", "Америка", [3, 2]], ["汉语", "Hànyǔ", "китайский язык", [4, 3]], ["中文", "Zhōngwén", "китайский язык", [1, 2]], ["火车", "huǒchē", "поезд", [3, 1]], ["电视", "diànshì", "телевизор", [4, 4]], ["手机", "shǒujī", "телефон", [3, 1]], ["学校", "xuéxiào", "школа", [2, 4]], ["医生", "yīshēng", "врач", [1, 1]], ["天气", "tiānqì", "погода", [1, 4]], ["地图", "dìtú", "карта", [4, 2]], ["太阳", "tàiyáng", "солнце", [4, 2]], ["大米", "dàmǐ", "рис", [4, 3]], ["公园", "gōngyuán", "парк", [1, 2]], ["汽车", "qìchē", "машина", [4, 1]], ["西瓜", "xīguā", "арбуз", [1, 1]], ["蛋糕", "dàngāo", "торт", [4, 1]], ["飞机", "fēijī", "самолёт", [1, 1]], ["苹果", "píngguǒ", "яблоко", [2, 3]], ["米饭", "mǐfàn", "рис (варёный)", [3, 4]], ["汉字", "hànzì", "иероглиф", [4, 4]], ["拼音", "pīnyīn", "пиньинь", [1, 1]], ["电话", "diànhuà", "телефонный звонок", [4, 4]], ["茶杯", "chábēi", "чашка", [2, 1]], ["黄色", "huángsè", "жёлтый", [2, 4]], ["北方", "běifāng", "север", [3, 1]]];
+
+/* ===================== settings ===================== */
+const HW='dz1';
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
+const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
+const plain=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ü/g,'u');
+const fn=t=>AUDIO+[...t].map(c=>c.codePointAt(0).toString(16)).join('-')+'.mp3';
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600);}
+
+/* ===================== state + saving ===================== */
+let S={};try{S=JSON.parse(localStorage.getItem('zh-'+HW)||'{}')}catch(e){}
+const keep=()=>{try{localStorage.setItem('zh-'+HW,JSON.stringify(S))}catch(e){}};
+S.done=S.done||{};S.queue=S.queue||[];
+let syncState='';
+async function send(part,data){S.done[part]=Object.assign({},S.done[part]||{},data,{ts:Date.now()});S.queue=S.queue.filter(q=>q.part!==part);S.queue.push({part,data:S.done[part]});keep();flush();}
+async function flush(){if(!S.sid||!S.queue.length)return;const q=S.queue[0];
+ try{const r=await fetch(API+'save',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({hw:HW,sid:S.sid,name:S.name,part:q.part,data:q.data})});
+  if(!r.ok)throw 0;S.queue.shift();keep();syncState='ok';paintSync();if(S.queue.length)flush();}
+ catch(e){syncState='err';paintSync();clearTimeout(flush._t);flush._t=setTimeout(flush,15000);}}
+function paintSync(){const el=$('#sync');if(!el)return;el.className='sync'+(syncState==='err'?' err':'');el.textContent=syncState==='err'?'⚠ нет связи — отправлю позже':S.queue.length?'отправляю…':'✓ учитель видит';}
+window.addEventListener('online',flush);
+
+/* ===================== audio ===================== */
+let curA=null;
+function play(text,el,rate){return new Promise(res=>{try{curA&&curA.pause()}catch(e){}
+ const a=new Audio(fn(text));curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
+ const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;
+ a.onerror=()=>{end();if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=.8;speechSynthesis.speak(u);}};
+ a.play().catch(a.onerror);});}
+async function playSeq(list,el){for(const t of list){await play(t,el);await new Promise(r=>setTimeout(r,250));}}
+let micStream=null;
+async function getMic(){if(micStream&&micStream.active)return micStream;
+ micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});return micStream;}
+function pickType(){for(const t of ['audio/webm;codecs=opus','audio/mp4','audio/webm','audio/ogg;codecs=opus'])if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))return t;return '';}
+async function record(maxMs,onStart){const s=await getMic();const type=pickType();
+ const mr=new MediaRecorder(s,type?{mimeType:type,audioBitsPerSecond:32000}:{});const ch=[];
+ mr.ondataavailable=e=>e.data.size&&ch.push(e.data);
+ const done=new Promise(r=>mr.onstop=()=>r(new Blob(ch,{type:mr.mimeType||type||'audio/webm'})));
+ mr.start();onStart&&onStart(()=>mr.state==='recording'&&mr.stop());setTimeout(()=>mr.state==='recording'&&mr.stop(),maxMs);return done;}
+
+/* ===================== pitch (YIN) ===================== */
+let AC=null;const ac=()=>AC||(AC=new (window.AudioContext||window.webkitAudioContext)());
+async function toPCM(blobOrBuf){const ab=blobOrBuf instanceof Blob?await blobOrBuf.arrayBuffer():blobOrBuf;
+ const buf=await new Promise((ok,bad)=>{const p=ac().decodeAudioData(ab,ok,bad);p&&p.catch&&p.catch(bad);});
+ const sr=16000,len=Math.ceil(buf.duration*sr);const oc=new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,len,sr);
+ const src=oc.createBufferSource();src.buffer=buf;src.connect(oc.destination);src.start();const r=await oc.startRendering();return r.getChannelData(0);}
+function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=new Float32Array(tmax+1);
+ for(let t=1;t<=tmax;t++){let s=0;for(let i=0;i<W;i++){const v=x[i]-x[i+t];s+=v*v;}d[t]=s;}
+ let run=0;for(let t=1;t<=tmax;t++){run+=d[t];d[t]=run?d[t]*t/run:1;}
+ for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;const a=d[t-1],b=d[t],c=d[t+1],den=a+c-2*b;const p=den?t+(a-c)/(2*den):t;return [sr/p,b];}}
+ return [0,1];}
+function contour(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,out=[];let mx=0;const rms=[];
+ for(let i=0;i+F<pcm.length;i+=hop){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);if(r>mx)mx=r;}
+ let k=0;for(let i=0;i+F<pcm.length;i+=hop,k++){if(rms[k]<Math.max(0.012,mx*0.12)){out.push(0);continue;}const [f]=yin(pcm.subarray(i,i+F),sr);out.push(f>65&&f<550?f:0);}
+ // longest voiced run (gaps up to 3 frames bridged)
+ let best=[0,0],st=-1,gap=0;for(let i=0;i<=out.length;i++){const v=i<out.length&&out[i]>0;if(v){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>3||i===out.length){const e=i-gap;if(e-st>best[1]-best[0])best=[st,e];st=-1;gap=0;}}}
+ let seg=out.slice(best[0],best[1]+1).filter(f=>f>0);if(seg.length<8)return null;
+ const med=[...seg].sort((a,b)=>a-b)[seg.length>>1];
+ let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>v>7?v-12:v<-7?v+12:v);
+ st2=st2.map((v,i,a)=>{const w=a.slice(Math.max(0,i-2),i+3).sort((p,q)=>p-q);return w[w.length>>1];});
+ const cut=Math.floor(st2.length*0.1);st2=st2.slice(cut,st2.length-cut);
+ const N=30,res=[];for(let i=0;i<N;i++){const p=i*(st2.length-1)/(N-1),a=Math.floor(p),b=Math.min(st2.length-1,a+1);res.push(st2[a]+(st2[b]-st2[a])*(p-a));}
+ const m=res.reduce((s,v)=>s+v,0)/N;return {c:res.map(v=>v-m),hz:med,len:seg.length};}
+function classify(c){const avg=(a,b)=>c.slice(a,b).reduce((s,v)=>s+v,0)/(b-a);
+ const s=avg(0,5),e=avg(25,30);let mn=1e9,mi=0;for(let i=5;i<27;i++)if(c[i]<mn){mn=c[i];mi=i;}
+ const mx=Math.max(...c),range=mx-Math.min(...c),delta=e-s;
+ if(range<2.0&&Math.abs(delta)<1.4)return 1;
+ if(mi>6&&mi<25&&s-mn>1.0&&e-mn>1.0)return 3;
+ if(delta>1.0)return 2;if(delta<-1.0)return 4;return 1;}
+const refCache={};
+async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
+const TEMPL={1:Array(30).fill(0),2:Array.from({length:30},(_,i)=>-2.5+5*Math.pow(i/29,1.4)),3:Array.from({length:30},(_,i)=>{const x=i/29;return x<.6?1-3.4*(x/.6):-2.4+3.6*((x-.6)/.4);}),4:Array.from({length:30},(_,i)=>3-6*Math.pow(i/29,.9))};
+function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-16)/8,x=i=>24+i*(W-48)/29;
+ const path=c=>c.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+ return `<svg class="chart in" viewBox="0 0 ${W} ${H}">${[-6,-3,0,3,6].map(v=>`<line x1="16" x2="${W-16}" y1="${y(v)}" y2="${y(v)}" stroke="#D3D8E3" stroke-width="1"/>`).join('')}
+ ${ref?`<path d="${path(ref)}" fill="none" stroke="#9AA2BC" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round"/>`:''}
+ ${me?`<path d="${path(me)}" fill="none" stroke="var(--t${tone||0})" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`:''}</svg>`;}
+
+/* ===================== tasks ===================== */
+const TASKS=[
+ {id:'kbd',e:'⌨️',c:'#DCE3FF',t:'Китайская клавиатура',s:'Установи пиньинь и напиши 你好'},
+ {id:'listen',e:'👂',c:'#DDF5EC',t:'Угадай тон',s:'2 уровня: слоги и слова'},
+ {id:'speak',e:'🎯',c:'#FFF1D6',t:'Скажи тон — проверю',s:'Говори в микрофон, вижу твой тон'},
+ {id:'rec',e:'🎙️',c:'#FFE3EB',t:'Запиши голос учителю',s:'a · o · e · i · u с тонами'},
+ {id:'theory',e:'📝',c:'#EDE6FF',t:'Вопросы по теории',s:'12 вопросов'},
+];
+function status(id){const d=S.done;
+ if(id==='kbd')return d.kbd&&d.kbd.ok?['✓ готово',1]:['',0];
+ if(id==='listen'){const a=d.listen1,b=d.listen2;if(a&&b)return [`✓ ${a.score}/10 · ${b.score}/10`,1];if(a||b)return ['1 из 2 уровней',0];return ['',0];}
+ if(id==='speak'){const n=d.speak?d.speak.passed||0:0;return n>=6?[`✓ ${n}/8`,1]:n?[`${n}/8`,0]:['',0];}
+ if(id==='rec'){const n=d.rec?Object.keys(d.rec.items||{}).length:0;return n>=5?['✓ 5/5',1]:n?[n+'/5',0]:['',0];}
+ if(id==='theory')return d.theory?[`✓ ${d.theory.score}/12`,1]:['',0];}
+let view='home';
+function shell(inner){const done=TASKS.filter(t=>status(t.id)[1]).length;
+ $('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 1</h1><small>Пиньинь, слоги, тоны, финали a o e i u</small></div><button class="me n" id="who">${esc(S.name)}</button></div>
+ <div class="lay ${view==='home'?'home':'task'}"><div class="side n">
+  <div class="prog">Сделано ${done} из ${TASKS.length}<div class="bar"><i style="width:${done/TASKS.length*100}%"></i></div></div>
+  ${TASKS.map(t=>{const [s,ok]=status(t.id);return `<button class="ti ${view===t.id?'cur':''}" data-go="${t.id}"><span class="e" style="background:${t.c}">${t.e}</span><span><b>${t.t}</b><small>${t.s}</small></span><span class="st ${ok?'ok':''}">${s}</span></button>`}).join('')}
+  <button class="ti" data-go="finish"><span class="e" style="background:#E3E6EE">📨</span><span><b>Готово? Отправить</b><small>итог и запасной способ</small></span></button>
+  <div id="sync" class="sync"></div></div>
+ <div class="main n">${inner}</div></div>`;
+ document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+ $('#who').onclick=()=>{if(confirm('Сменить ученика на этом устройстве?')){S={done:{},queue:[]};keep();login();}};paintSync();}
+const backBtn=`<button class="back n only-m" data-go="home">‹ Все задания</button>`;
+function go(id){view=id;stopAll();({home:homeV,kbd:kbdV,listen:listenV,speak:speakV,rec:recV,theory:theoryV,finish:finishV})[id]();window.scrollTo(0,0);}
+function stopAll(){try{curA&&curA.pause()}catch(e){}}
+function homeV(){shell(`<h2><span class="zh">你好</span>${esc(S.name)}!</h2><p class="lead">Выбери задание слева. Делай в любом порядке, всё сохраняется само, учитель видит твои результаты.</p><p class="lead">Нужны наушники или громкий звук, а для двух заданий — микрофон.</p>`);}
+
+/* ---------- 1. keyboard ---------- */
+const UA=navigator.userAgent;const PLAT=/iPhone|iPad|iPod/.test(UA)||(/Macintosh/.test(UA)&&'ontouchend' in document)?'ios':/Android/.test(UA)?'and':/Mac/.test(UA)?'mac':'win';
+const KB={
+ ios:{t:'iPhone / iPad',s:[
+  'Открой <span class="path">Настройки → Основные → Клавиатура → Клавиатуры</span>.',
+  'Нажми <span class="path">Новые клавиатуры</span> и найди <span class="path">Китайская (упрощённая)</span>.',
+  'Выбери <span class="path">Пиньинь – QWERTY</span> и нажми <span class="path">Готово</span>.',
+  'Теперь в любом поле ввода зажми значок <b>🌐</b> внизу клавиатуры и выбери <span class="path">简体拼音</span>.'],
+  tip:'Печатай латиницей без тонов: <b>nihao</b> — и вверху появится <span class="zh">你好</span>. Нажми на него.'},
+ and:{t:'Android',s:[
+  'Проверь, что у тебя клавиатура <b>Gboard</b>. Если нет — установи «Gboard» из Google Play.',
+  'Открой <span class="path">Настройки → Система → Язык и ввод → Экранная клавиатура → Gboard → Языки</span>.',
+  'Нажми <span class="path">Добавить клавиатуру</span> → <span class="path">Китайский (упрощённое письмо, Китай)</span> → выбери <span class="path">Пиньинь</span> → <span class="path">Готово</span>.',
+  'В поле ввода нажми <b>🌐</b> (или зажми пробел) и выбери китайскую раскладку.'],
+  tip:'На телефонах Samsung путь может быть: <span class="path">Настройки → Общие настройки → Список клавиатур</span>. Если запутался — попроси взрослого помочь.'},
+ win:{t:'Компьютер Windows',s:[
+  'Открой <span class="path">Пуск → Параметры → Время и язык → Язык и регион</span>.',
+  'Нажми <span class="path">Добавить язык</span>, найди <span class="path">中文(中华人民共和国)</span> — китайский (упрощённый) — и нажми <span class="path">Далее → Установить</span>.',
+  'Переключай раскладку клавишами <b>Win + Пробел</b>. Внизу справа появится <span class="zh">中</span>.',
+  'Если вместо иероглифов печатаются буквы — нажми <b>Shift</b> один раз.'],tip:'Набери <b>nihao</b>, появится список — нажми <b>1</b> или пробел.'},
+ mac:{t:'Компьютер Mac',s:[
+  'Открой <span class="path">Системные настройки → Клавиатура → Источники ввода → Изменить</span>.',
+  'Нажми <b>+</b> и выбери <span class="path">Китайский, упрощённый → Пиньинь – упрощённый</span>, затем <span class="path">Добавить</span>.',
+  'Переключай раскладку клавишами <b>Control + Пробел</b> или клавишей <b>🌐</b>.'],tip:'Набери <b>nihao</b> и нажми пробел — получится <span class="zh">你好</span>.'}};
+let kbTab=PLAT;
+function kbdV(){const k=KB[kbTab];const ok=S.done.kbd&&S.done.kbd.ok;
+ shell(`${backBtn}<h2><span class="zh">打字</span>Китайская клавиатура</h2><p class="lead">Китайцы печатают пиньинем: набирают слог латиницей, а телефон предлагает иероглифы. Установи такую клавиатуру себе.</p>
+ <div class="tabs in">${Object.keys(KB).map(id=>`<button class="${id===kbTab?'on':''}" data-kb="${id}">${KB[id].t}</button>`).join('')}</div>
+ <ol class="steps">${k.s.map(s=>`<li class="n">${s}</li>`).join('')}</ol><div class="tip">💡 ${k.tip}</div>
+ <h3>Проверка: напиши <span class="zh">你好</span> на своей китайской клавиатуре</h3>
+ <input class="inp in" id="kin" autocomplete="off" autocapitalize="off" placeholder="набери nihao…" value="${ok?'你好':''}">
+ <div class="row"><button class="btn" id="kchk">Проверить</button></div><div class="fb ${ok?'ok':''}" id="kfb">${ok?'✓ Готово! Ты умеешь печатать по-китайски.':''}</div>`);
+ document.querySelectorAll('[data-kb]').forEach(b=>b.onclick=()=>{kbTab=b.dataset.kb;kbdV();});
+ const chk=()=>{const v=$('#kin').value.trim(),fb=$('#kfb');
+  if(v.includes('你好')){fb.className='fb ok';fb.innerHTML='✓ Отлично! Это <span class="zh">你好</span> — nǐ hǎo. Задание засчитано.';send('kbd',{ok:true,typed:v.slice(0,40),plat:PLAT});}
+  else if(/ni\s*hao/i.test(v)){fb.className='fb no';fb.innerHTML='Почти! Ты набрал латиницу. Переключись на китайскую клавиатуру и выбери иероглифы <span class="zh">你好</span> в подсказках.';}
+  else if(/[一-鿿]/.test(v)){fb.className='fb no';fb.innerHTML='Иероглифы получились, но это не <span class="zh">你好</span>. Набери <b>nihao</b> и выбери первый вариант.';}
+  else{fb.className='fb no';fb.textContent='Пока пусто. Набери nihao на китайской клавиатуре.';}};
+ $('#kchk').onclick=chk;$('#kin').onkeydown=e=>{if(e.key==='Enter')chk();};}
+
+/* ---------- 2. listening ---------- */
+const BASES=Object.keys(R);
+function mkL1(){const items=[];const used=new Set();while(items.length<10){const b=BASES[Math.random()*BASES.length|0];const row=R[b].split(',');const ts=[1,2,3,4].filter(t=>row[t-1]);const t=ts[Math.random()*ts.length|0];const k=b+t;if(used.has(k))continue;used.add(k);items.push({b,t,ch:row[t-1]});}return items;}
+const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
+const TM={1:'ˉ',2:'ˊ',3:'ˇ',4:'ˋ'};
+const mini=(t,c)=>{const p={1:'M4 6 H28',2:'M4 24 L28 6',3:'M4 10 Q15 30 28 6',4:'M4 6 L28 26'}[t];return `<svg width="34" height="30" viewBox="0 0 32 32"><path d="${p}" stroke="${c||`var(--t${t})`}" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;};
+let L=null;
+function listenV(){L=null;const a=S.done.listen1,b=S.done.listen2;
+ shell(`${backBtn}<h2><span class="zh">听</span>Угадай тон</h2><p class="lead">Нажми ▶, послушай и выбери, какой тон ты услышал. Можно слушать сколько угодно раз.</p>
+ <div class="lvl"><button class="n" data-l="1"><b>Уровень 1 · Слоги</b><small>Один слог: mā, má, mǎ или mà? 10 вопросов.</small>${a?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${a.score}/10</small>`:''}</button>
+ <button class="n" data-l="2"><b>Уровень 2 · Слова из двух слогов</b><small>Два тона подряд: 1+2, 3+1… 10 вопросов.</small>${b?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${b.score}/10</small>`:''}</button></div>`);
+ document.querySelectorAll('[data-l]').forEach(x=>x.onclick=()=>startL(+x.dataset.l));}
+function startL(lv){L={lv,i:0,res:[],items:lv===1?mkL1():shuffle(WORDS).slice(0,10).map(w=>({w}))};askL();}
+function askL(){const it=L.items[L.i],lv=L.lv;
+ if(L.i>=10){const sc=L.res.filter(Boolean).length;const prev=S.done['listen'+lv];if(!prev||sc>=prev.score)send('listen'+lv,{score:sc,of:10});
+  shell(`${backBtn}<h2>Уровень ${lv} пройден!</h2><div class="res">${sc} / 10</div><p class="lead">${sc>=9?'Супер-уши! 🎧':sc>=6?'Хорошо! Попробуй ещё раз, чтобы стало 10.':'Тоны — это сложно, 犯错不可怕! Пройди ещё раз.'}</p><div class="row"><button class="btn" id="again">Ещё раз</button><button class="btn g" id="other">${lv===1?'Уровень 2 →':'Уровень 1'}</button></div>`);
+  $('#again').onclick=()=>startL(lv);$('#other').onclick=()=>startL(lv===1?2:1);return;}
+ let opts,correct,title;
+ if(lv===1){correct=it.t;opts=[1,2,3,4].map(t=>({k:t,h:`<span class="py">${mark(it.b,t)}</span>${mini(t)}`}));title=`<div class="big py">${it.b}</div>`;}
+ else{const w=it.w;correct=w[3].join('');const wrong=shuffle(PAIRS.filter(p=>p.join('')!==correct)).slice(0,3);opts=shuffle([w[3],...wrong]).map(p=>({k:p.join(''),h:`<span style="display:flex;gap:4px">${mini(p[0])}${mini(p[1])}</span><small>${p[0]} + ${p[1]} тон</small>`}));title=`<div class="big zh">${w[0]}</div><div class="py" style="font-size:20px;color:var(--mu)">${plain(w[1]).toLowerCase()}</div>`;}
+ shell(`${backBtn}<h2>Уровень ${lv} · ${lv===1?'слоги':'слова'}</h2><div class="qcard n"><div class="qhead"><span>Вопрос ${L.i+1} из 10</span><span>${L.res.filter(Boolean).length} ✓</span></div>
+ <div class="dots">${L.items.map((_,j)=>`<i class="${j<L.i?(L.res[j]?'ok':'no'):j===L.i?'cur':''}"></i>`).join('')}</div>
+ <button class="play n" id="pl">▶</button>${title}<div class="opts ${lv===1?'o4':''}">${opts.map(o=>`<button class="opt" data-k="${o.k}">${o.h}</button>`).join('')}</div><div class="fb" id="lfb"></div></div>`);
+ const text=lv===1?it.ch:it.w[0];const pb=$('#pl');pb.onclick=()=>play(text,pb);setTimeout(()=>play(text,pb),250);
+ let lock=false;document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=String(b.dataset.k)===String(correct);L.res[L.i]=ok;
+  document.querySelector(`[data-k="${correct}"]`).classList.add('ok');if(!ok)b.classList.add('no');
+  const fb=$('#lfb');fb.className='fb '+(ok?'ok':'no');
+  fb.innerHTML=(ok?'✓ Верно! ':'Не совсем. ')+(lv===1?`Это <span class="py">${mark(it.b,it.t)}</span> — ${it.t}-й тон.`:`<span class="zh">${it.w[0]}</span> <span class="py">${it.w[1]}</span> — ${it.w[2]}.`)+` <br><button class="btn" id="nx" style="margin-top:12px">Дальше</button>`;
+  $('#nx').onclick=()=>{L.i++;askL();};});}
+
+/* ---------- 3. speak & check ---------- */
+const SP=[['a',1],['a',2],['a',3],['a',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
+let spI=0;
+function speakV(){const it=SP[spI],d=S.done.speak||{passed:0,items:{}};const items=d.items||{};
+ shell(`${backBtn}<h2><span class="zh">说</span>Скажи тон — система проверит</h2><p class="lead">Послушай образец, нажми 🎤 и скажи слог. Я нарисую твой голос поверх образца и скажу, какой тон получился. Пробуй, пока не совпадёт!</p>
+ <div class="chips">${SP.map((x,j)=>`<button class="chip ${j===spI?'on':''} ${items[x.b+x.t]?'ok':''}" data-sp="${j}">${mark(x.b,x.t)}${items[x.b+x.t]?' ✓':''}</button>`).join('')}</div>
+ <div class="qcard n"><div class="qhead"><span>Слог ${spI+1} из ${SP.length}</span><span>получилось: ${Object.keys(items).length}/${SP.length}</span></div>
+ <div style="display:flex;justify-content:center;align-items:center;gap:22px;margin-top:10px"><div class="big py" style="color:var(--t${it.t})">${mark(it.b,it.t)}</div>${mini(it.t)}<span style="font-size:15px;font-weight:700;color:var(--mu)">${it.t}-й тон</span></div>
+ <div class="row" style="justify-content:center"><button class="btn g" id="ref">▶ Образец</button></div>
+ <button class="mic n" id="mic">🎤</button><div style="font-size:14px;font-weight:700;color:var(--mu)" id="mlab">Нажми и скажи «${mark(it.b,it.t)}»</div>
+ <div id="chart">${chartSVG(TEMPL[it.t],null)}</div><div class="legend"><span><i style="background:#9AA2BC"></i>образец</span><span><i style="background:var(--t${it.t})"></i>твой голос</span></div>
+ <div class="fb" id="sfb"></div></div>`);
+ document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{spI=+b.dataset.sp;speakV();});
+ $('#ref').onclick=()=>play(it.ch,$('#ref'));
+ let ref=null;refContour(it.ch).then(r=>{if(r){ref=r.c;$('#chart').innerHTML=chartSVG(ref,null);}});
+ let stopFn=null,busy=false;
+ $('#mic').onclick=async()=>{if(stopFn){stopFn();return;}if(busy)return;busy=true;const mic=$('#mic'),lab=$('#mlab'),fb=$('#sfb');
+  try{const blob=await record(2600,s=>{stopFn=s;mic.classList.add('rec');mic.textContent='■';lab.textContent='Говори! (нажми ещё раз, чтобы закончить)';});
+   stopFn=null;mic.classList.remove('rec');mic.textContent='🎤';lab.textContent='Считаю…';
+   const c=contour(await toPCM(blob));
+   if(!c){fb.className='fb no';fb.textContent='Не расслышал голос. Скажи громче и протяни гласную подольше, вот так: «а-а-а».';lab.textContent='Нажми и попробуй ещё раз';busy=false;return;}
+   const got=classify(c.c);$('#chart').innerHTML=chartSVG(ref||TEMPL[it.t],c.c,got);
+   const ok=got===it.t;fb.className='fb '+(ok?'ok':'no');
+   fb.innerHTML=ok?`✓ Получился ${got}-й тон — то, что нужно! ${spI<SP.length-1?'<br><button class="btn okb" id="snx" style="margin-top:12px">Следующий слог →</button>':''}`:`Похоже на <b>${got}-й тон</b> ${mini(got)}, а нужен ${it.t}-й. ${{1:'Держи голос ровно и высоко, как длинная нота.',2:'Подними голос снизу вверх, как будто удивляешься: «а?»',3:'Опусти голос вниз, а потом чуть подними.',4:'Резко опусти голос сверху вниз, как будто сердишься.'}[it.t]}`;
+   lab.textContent='Нажми и попробуй ещё раз';
+   const d2=S.done.speak||{items:{}};d2.items=d2.items||{};d2.tries=(d2.tries||0)+1;if(ok)d2.items[it.b+it.t]=1;d2.passed=Object.keys(d2.items).length;send('speak',{items:d2.items,passed:d2.passed,tries:d2.tries});
+   if(ok&&$('#snx'))$('#snx').onclick=()=>{spI++;speakV();};
+  }catch(e){fb.className='fb no';fb.textContent='Нет доступа к микрофону. Разреши микрофон в браузере (значок 🔒 или «аА» у адреса) и попробуй снова.';mic.classList.remove('rec');mic.textContent='🎤';stopFn=null;}
+  busy=false;};}
+
+/* ---------- 4. record for teacher ---------- */
+const RECS=[['a','a','ā á ǎ à'],['o','o','ō ó ǒ ò'],['e','e','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
+const blobs={};
+function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
+ shell(`${backBtn}<h2><span class="zh">录音</span>Запиши голос учителю</h2><p class="lead">Для каждой финали: послушай образец, нажми «Записать» и произнеси все 4 тона по порядку. Потом прослушай себя и нажми «Отправить». Можно перезаписать сколько угодно раз.</p>
+ <div class="grid2">${RECS.map(([id,b,txt])=>`<div class="rc n" id="rc-${id}"><div class="hd"><span class="py">${txt}</span><span class="st ${items[id]?'ok':''}" id="st-${id}">${items[id]?'✓ отправлено':''}</span></div>
+  <div class="row"><button class="btn g" data-ref="${id}">▶ Образец</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
+ <div class="tip">💡 Говори чётко и не спеши: <b>ā — á — ǎ — à</b>. Если отправка не проходит, в конце будет запасная кнопка «Отправить через мессенджер».</div>`);
+ document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);const row=R[r[1]].split(',');playSeq([1,2,3,4].map(t=>row[t-1]).filter(Boolean),b);});
+ let stop=null,cur=null;
+ document.querySelectorAll('[data-rec]').forEach(b=>b.onclick=async()=>{const id=b.dataset.rec;
+  if(stop&&cur===id){stop();return;}if(stop)return;cur=id;
+  try{const bl=await record(12000,s=>{stop=s;b.classList.add('red');b.textContent='■ Стоп';});
+   stop=null;cur=null;b.classList.remove('red');b.textContent='● Перезаписать';blobs[id]=bl;
+   document.querySelector(`[data-pl="${id}"]`).disabled=false;document.querySelector(`[data-up="${id}"]`).disabled=false;
+   $('#st-'+id).className='st';$('#st-'+id).textContent='записано, не отправлено';}
+  catch(e){stop=null;cur=null;b.classList.remove('red');b.textContent='● Записать';toast('Нет доступа к микрофону — разреши его в браузере');}});
+ document.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>{const bl=blobs[b.dataset.pl];if(!bl)return;try{curA&&curA.pause()}catch(e){}const a=new Audio(URL.createObjectURL(bl));curA=a;a.play();});
+ document.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const id=b.dataset.up,bl=blobs[id];if(!bl)return;b.disabled=true;b.textContent='Отправляю…';
+  try{const r=await fetch(API+`audio?hw=${HW}&sid=${S.sid}&item=${id}`,{method:'POST',headers:{'Content-Type':bl.type||'audio/webm'},body:bl});if(!r.ok)throw 0;
+   const d=S.done.rec||{items:{}};d.items=d.items||{};d.items[id]=Date.now();send('rec',{items:d.items});$('#st-'+id).className='st ok';$('#st-'+id).textContent='✓ отправлено';b.textContent='Отправлено ✓';toast('Запись отправлена учителю');}
+  catch(e){b.disabled=false;b.textContent='Ещё раз';toast('Не отправилось. Попробуй ещё раз или используй запасной способ в конце');}});}
+
+/* ---------- 5. theory ---------- */
+const TQ=[
+ ['Что такое пиньинь?',['Отдельный китайский язык','Запись звучания китайских слов латинскими буквами','Старинные иероглифы'],1],
+ ['Сколько систем записи в китайском языке?',['Одна — только иероглифы','Две — иероглифы и пиньинь','Три'],1],
+ ['Как китайцы печатают иероглифы на телефоне?',['Рисуют пальцем каждый иероглиф','Набирают пиньинь, а телефон предлагает иероглифы','Используют клавиатуру с тысячами кнопок'],1],
+ ['Чему равен один иероглиф?',['Одному слогу','Целому предложению','Одной букве'],0],
+ ['Сколько примерно слогов в китайском языке (без тонов)?',['Около 40','Около 400','Около 4000'],1],
+ ['Из каких частей состоит китайский слог?',['Инициаль + финаль + тон','Корень + суффикс','Только из гласных'],0],
+ ['В слоге mā что такое «m»?',['Финаль','Тон','Инициаль'],2],
+ ['Почему китаец скажет «сыпутыник» вместо «спутник»?',['В китайском нет стечений согласных — он вставляет гласную','Он шутит','В китайском нет звука «с»'],0],
+ ['Сколько тонов в путунхуа, если не считать нейтральный?',['Два','Четыре','Восемь'],1],
+ ['妈 mā — «мама», 马 mǎ — «лошадь». Что меняет смысл?',['Инициаль','Тон','Финаль'],1],
+ ['Какой значок у третьего тона?',['ˉ (ровная черта)','ˋ (вниз)','ˇ (галочка)'],2],
+ ['Какие финали мы выучили первыми?',['a o e i u','b p m f','zh ch sh'],0]];
+let T=null;
+function theoryV(){T={i:0,res:[]};askT();}
+function askT(){if(T.i>=TQ.length){const sc=T.res.filter(Boolean).length;send('theory',{score:sc,of:TQ.length,ans:T.res.map(x=>x?1:0)});
+  shell(`${backBtn}<h2>Теория пройдена!</h2><div class="res">${sc} / ${TQ.length}</div><p class="lead">${sc>=11?'Отлично! 🏆':sc>=8?'Хорошо! Можно пройти ещё раз.':'Повтори слайды урока и попробуй снова.'}</p><div class="row"><button class="btn" id="tag">Пройти ещё раз</button></div>`);$('#tag').onclick=theoryV;return;}
+ const [q,o,c]=TQ[T.i];
+ shell(`${backBtn}<h2><span class="zh">问题</span>Вопросы по теории</h2><div class="qcard n" style="text-align:left"><div class="qhead"><span>Вопрос ${T.i+1} из ${TQ.length}</span><span>${T.res.filter(Boolean).length} ✓</span></div>
+ <h3 style="margin-top:14px">${q}</h3><div class="mcq">${o.map((t,k)=>`<button class="opt" data-o="${k}">${'АБВ'[k]}) ${t}</button>`).join('')}</div><div class="fb" id="tfb"></div></div>`);
+ let lock=false;document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=+b.dataset.o===c;T.res[T.i]=ok;
+  document.querySelector(`[data-o="${c}"]`).classList.add('ok');if(!ok)b.classList.add('no');
+  const fb=$('#tfb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ Верно!':'Правильный ответ подсвечен зелёным.')+'<br><button class="btn" id="tnx" style="margin-top:12px">Дальше</button>';$('#tnx').onclick=()=>{T.i++;askT();};});}
+
+/* ---------- finish ---------- */
+function summary(){return `ДЗ 1 — ${S.name}\n`+TASKS.map(t=>`${status(t.id)[1]?'✅':'⬜'} ${t.t}: ${status(t.id)[0]||'не сделано'}`).join('\n');}
+function finishV(){const all=TASKS.every(t=>status(t.id)[1]);
+ shell(`${backBtn}<h2><span class="zh">完成</span>${all?'Всё сделано! 🎉':'Итог'}</h2><p class="lead">${all?'Молодец! Учитель уже видит твои ответы.':'Ещё не всё готово — задания без ✓ можно доделать.'}</p>
+ <pre class="in" style="white-space:pre-wrap;padding:16px;margin-top:14px;font:600 15px/1.6 Manrope">${esc(summary())}</pre>
+ <h3>Запасной способ</h3><p class="lead">Если внизу слева горит «⚠ нет связи», отправь итог и записи учителю в Telegram или WhatsApp:</p>
+ <div class="row"><button class="btn" id="share">📨 Отправить через мессенджер</button><button class="btn g" id="copy">Скопировать итог</button></div>`);
+ $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(summary());toast('Скопировано');}catch(e){toast('Не получилось скопировать');}};
+ $('#share').onclick=async()=>{const files=Object.entries(blobs).map(([id,b])=>new File([b],`${S.name}-${id}.${/mp4/.test(b.type)?'m4a':'webm'}`,{type:b.type}));
+  try{if(files.length&&navigator.canShare&&navigator.canShare({files}))await navigator.share({title:'ДЗ 1',text:summary(),files});
+   else if(navigator.share)await navigator.share({title:'ДЗ 1',text:summary()});
+   else{files.forEach(f=>{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();});await navigator.clipboard.writeText(summary());toast('Записи скачаны, итог скопирован — отправь учителю');}}
+  catch(e){}};}
+
+/* ---------- login ---------- */
+function login(){$('#app').innerHTML=`<div class="login n"><div class="zh" style="font-size:54px;color:var(--ac2)">作业</div><span class="py" style="color:var(--ac)">zuòyè</span><h2 style="margin-top:8px">Домашнее задание 1</h2><p class="lead">Напиши своё имя и фамилию, чтобы учитель знал, чьё это задание.</p>
+ <input class="in" id="nm" placeholder="Имя Фамилия" autocomplete="name"><button class="btn" id="go" style="width:100%;margin-top:16px">Начать</button></div>`;
+ const go2=()=>{const v=$('#nm').value.trim();if(v.length<2){toast('Напиши имя');return;}S.name=v.slice(0,60);S.sid=S.sid||(Date.now().toString(36)+Math.random().toString(36).slice(2,8));S.done=S.done||{};keep();send('hello',{plat:PLAT});go('home');};
+ $('#go').onclick=go2;$('#nm').onkeydown=e=>{if(e.key==='Enter')go2();};}
+if(S.name&&S.sid){go('home');flush();}else login();
+</script></body></html>
