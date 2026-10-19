@@ -124,11 +124,12 @@ const keep=()=>{try{localStorage.setItem('zh-'+HW,JSON.stringify(S))}catch(e){}}
 S.done=S.done||{};S.queue=S.queue||[];
 let syncState='';
 async function send(part,data){S.done[part]=Object.assign({},S.done[part]||{},data,{ts:Date.now()});S.queue=S.queue.filter(q=>q.part!==part);S.queue.push({part,data:S.done[part]});keep();flush();}
-async function flush(){if(!S.sid||!S.queue.length)return;const q=S.queue[0];
+const isTest=()=>/^(учитель|учительница|teacher|тест)$/i.test((S.name||'').trim());
+async function flush(){if(isTest()){S.queue=[];keep();syncState='test';paintSync();return;}if(!S.sid||!S.queue.length)return;const q=S.queue[0];
  try{const r=await fetch(API+'save',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({hw:HW,sid:S.sid,name:S.name,part:q.part,data:q.data})});
   if(!r.ok)throw 0;S.queue.shift();keep();syncState='ok';paintSync();if(S.queue.length)flush();}
  catch(e){syncState='err';paintSync();clearTimeout(flush._t);flush._t=setTimeout(flush,15000);}}
-function paintSync(){const el=$('#sync');if(!el)return;el.className='sync'+(syncState==='err'?' err':'');el.textContent=syncState==='err'?'⚠ нет связи — отправлю позже':S.queue.length?'отправляю…':'✓ учитель видит';}
+function paintSync(){const el=$('#sync');if(!el)return;el.className='sync'+(syncState==='err'?' err':'');el.textContent=isTest()?'🧑‍🏫 режим учителя — ответы не сохраняются':syncState==='err'?'⚠ нет связи — отправлю позже':S.queue.length?'отправляю…':'✓ учитель видит';}
 window.addEventListener('online',flush);
 
 /* ===================== audio ===================== */
@@ -229,7 +230,7 @@ function status(id){const d=S.done;
  if(id==='theory')return d.theory?[`✓ ${d.theory.score}/12`,1]:['',0];}
 let view='home';
 function shell(inner){const done=TASKS.filter(t=>status(t.id)[1]).length;
- $('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 1</h1><small>Пиньинь, слоги, тоны, финали a o e i u</small></div><button class="me n" id="who">${esc(S.name)}</button></div>
+ $('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 1</h1><small>Пиньинь, слоги, тоны, финали a o e i u</small></div><button class="me n" id="who">${esc(S.name)}</button></div>${isTest()?'<div class="tip" style="margin:-6px 0 16px;font-weight:700">🧑‍🏫 Режим учителя: всё работает как у детей, но ответы и записи никуда не отправляются. Чтобы выйти — нажмите на имя справа вверху.</div>':''}
  <div class="lay ${view==='home'?'home':'task'}"><div class="side n">
   <div class="prog">Сделано ${done} из ${TASKS.length}<div class="bar"><i style="width:${done/TASKS.length*100}%"></i></div></div>
   ${TASKS.map(t=>{const [s,ok]=status(t.id);return `<button class="ti ${view===t.id?'cur':''}" data-go="${t.id}"><span class="e" style="background:${t.c}">${t.e}</span><span><b>${t.t}</b><small>${t.s}</small></span><span class="st ${ok?'ok':''}">${s}</span></button>`}).join('')}
@@ -383,7 +384,7 @@ function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
    $('#st-'+id).className='st';$('#st-'+id).textContent='записано, не отправлено';}
   catch(e){stop=null;cur=null;b.classList.remove('red');b.textContent='● Записать';toast('Нет доступа к микрофону — разреши его в браузере');}});
  document.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>{const bl=blobs[b.dataset.pl];if(!bl)return;try{curA&&curA.pause()}catch(e){}const a=new Audio(URL.createObjectURL(bl));curA=a;a.play();});
- document.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const id=b.dataset.up,bl=blobs[id];if(!bl)return;b.disabled=true;b.textContent='Отправляю…';
+ document.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const id=b.dataset.up,bl=blobs[id];if(!bl)return;if(isTest()){$('#st-'+id).className='st ok';$('#st-'+id).textContent='✓ (режим учителя — не отправлено)';toast('Режим учителя: запись не отправляется');const d=S.done.rec||{items:{}};d.items=d.items||{};d.items[id]=Date.now();S.done.rec=d;keep();return;}b.disabled=true;b.textContent='Отправляю…';
   try{const r=await fetch(API+`audio?hw=${HW}&sid=${S.sid}&item=${id}`,{method:'POST',headers:{'Content-Type':bl.type||'audio/webm'},body:bl});if(!r.ok)throw 0;
    const d=S.done.rec||{items:{}};d.items=d.items||{};d.items[id]=Date.now();send('rec',{items:d.items});$('#st-'+id).className='st ok';$('#st-'+id).textContent='✓ отправлено';b.textContent='Отправлено ✓';toast('Запись отправлена учителю');}
   catch(e){b.disabled=false;b.textContent='Ещё раз';toast('Не отправилось. Попробуй ещё раз или используй запасной способ в конце');}});}
