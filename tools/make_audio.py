@@ -20,10 +20,10 @@ import numpy as np
 import edge_tts, miniaudio
 
 # Голоса и скорости, из которых выбираем лучший вариант (можно поменять)
-VOICES = ["zh-CN-XiaoyiNeural"]   # детский женский голос: учитель проверила — тоны чистые
+VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
 RATES = ["-20%", "-40%"]
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 5
+VERSION = 6
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -79,30 +79,33 @@ def contour(pcm):
     s = np.array([np.median(s[max(0, i-2):i+3]) for i in range(len(s))])
     cut = int(len(s) * 0.1); s = s[cut:len(s)-cut] if cut else s
     c = np.interp(np.linspace(0, len(s) - 1, 30), np.arange(len(s)), s)
-    return c - c.mean()
+    return c - c.mean(), float(med)
 
-def classify(c):
-    s, e = c[:5].mean(), c[25:].mean()
-    mi = int(np.argmin(c)); mn = c[mi]
-    rng, delta = c.max() - mn, e - s
-    if rng < 2.6 and abs(delta) < 2.0: return 1, 2.6 - rng
-    if 8 <= mi <= 26 and s - mn > 1.0 and e - mn > 0.6:
-        if mi < 11 and e - mn > 2.5 * (s - mn): return 2, e - mn
-        return 3, min(s - mn, e - mn)
-    if delta > 1.6: return 2, delta
-    if delta < -1.6:
-        fe = next((i for i in range(30) if c[i] <= mn + 0.6), 29)
-        if fe <= 18 and c[20:].mean() - mn < 1.0: return 3, s - mn
-        return 4, -delta
-    return 1, 0.0
+# Шаблоны формы тона (как в ДЗ) + уровень голоса относительно «обычного» голоса диктора
+def _tp(f):
+    a = np.array([f(i / 29) for i in range(30)]); return a - a.mean()
+TT = {1: [_tp(lambda x: 0.0)],
+      2: [_tp(lambda x: -2.5 + 5 * x ** 1.5), _tp(lambda x: -.5 * x / .3 if x < .3 else -.5 + 4.5 * (x - .3) / .7)],
+      3: [_tp(lambda x: -4 * x / .6 if x < .6 else -4 + 3.5 * (x - .6) / .4), _tp(lambda x: -4 * x / .5 if x < .5 else -4.0)],
+      4: [_tp(lambda x: 3 - 6 * x ** .9)]}
+LV = {1: 2, 2: -0.5, 3: -3, 4: 1}
+def scores(c, hz, base):
+    off = 12 * np.log2(hz / base) if base else None
+    out = {}
+    for t, tps in TT.items():
+        d = min(float(np.sqrt(np.mean((c - tp) ** 2))) for tp in tps)
+        if off is not None: d += 0.35 * abs(off - LV[t])
+        out[t] = d
+    return out
 
 def analyse(path):
+    """Возвращает (контур, медиана Гц) или None"""
     try:
         d = miniaudio.decode_file(path, output_format=miniaudio.SampleFormat.FLOAT32, nchannels=1, sample_rate=SR)
-        c = contour(np.asarray(d.samples, dtype=np.float32))
-        return (None, 0) if c is None else classify(c)
+        r = contour(np.asarray(d.samples, dtype=np.float32))
+        return r
     except Exception:
-        return None, 0
+        return None
 
 async def tts(text, voice, rate, path, sem):
     if os.path.exists(path) and os.path.getsize(path) > 500: return True
@@ -140,15 +143,28 @@ async def main():
     for src, dst in words:
         if os.path.exists(src): shutil.copyfile(src, dst)
     report, bad = {}, []
+    # «обычный голос» каждого диктора/скорости = медиана высоты по всем его записям
+    ana, bases = {}, {}
+    for k, cands in plan.items():
+        for v, r, p in cands:
+            if os.path.exists(p):
+                a = analyse(p); ana[p] = a
+                if a: bases.setdefault(v + r, []).append(a[1])
+    bases = {k: float(np.median(v)) for k, v in bases.items()}
     for k, cands in plan.items():
         want = tones[k]["t"]; best = None; seen = []
         for v, r, p in cands:
-            if not os.path.exists(p): continue
-            got, score = analyse(p); seen.append(got)
-            if got == want and (best is None or score > best[0]): best = (score, v, r, p)
+            a = ana.get(p)
+            if not a: seen.append(None); continue
+            sc = scores(a[0], a[1], bases.get(v + r))
+            got = min(sc, key=sc.get); seen.append(got)
+            others = min(d for t, d in sc.items() if t != want)
+            margin = others / max(sc[want], 1e-6)       # насколько уверенно это именно нужный тон
+            if got == want and margin >= 1.3 and (best is None or margin > best[0]):
+                best = (margin, v, r, p)
         if best:
             shutil.copyfile(best[3], os.path.join(OUT, k + ".mp3"))
-            report[k] = {"c": tones[k]["c"], "s": tones[k]["s"], "want": want, "ok": True, "voice": best[1], "rate": best[2]}
+            report[k] = {"c": tones[k]["c"], "s": tones[k]["s"], "want": want, "ok": True, "voice": best[1], "rate": best[2], "m": round(best[0], 2)}
         else:
             first = next((p for _, _, p in cands if os.path.exists(p)), None)
             if first: shutil.copyfile(first, os.path.join(OUT, k + ".mp3"))

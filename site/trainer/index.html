@@ -190,7 +190,7 @@ function weightTone(){ // more practice on tones the child misses
   const k=me(); const w=[1,2,3,4].map(t=>{const [a,b]=k.t[t];return 1+(b?(1-a/b)*3:1);}); const sum=w.reduce((x,y)=>x+y);
   let r=Math.random()*sum; for(let i=0;i<4;i++){r-=w[i];if(r<=0)return i+1;} return 4;}
 function makeQ(mode){
-  if(mode==='syl'){const t=weightTone();const c=POOL.filter(x=>x.t===t);return {mode,item:c[Math.floor(Math.random()*c.length)]};}
+  if(mode==='syl'){let t=weightTone();for(let k=0;k<8&&t===window._lastT;k++)t=weightTone();window._lastT=t;const c=POOL.filter(x=>x.t===t);return {mode,item:c[Math.floor(Math.random()*c.length)]};}
   const w=WORDS[Math.floor(Math.random()*WORDS.length)];const right=w[3].join('+');
   const opts=new Set([right]);while(opts.size<4){opts.add((1+Math.floor(Math.random()*4))+'+'+(1+Math.floor(Math.random()*4)));}
   return {mode,word:w,right,opts:[...opts].sort(()=>Math.random()-.5)};
