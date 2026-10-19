@@ -36,6 +36,12 @@ jobs:
           pip install edge-tts numpy miniaudio
           python tools/make_audio.py
           ls site/audio | wc -l
+      - name: Эталонные тоны (перерисовать мелодию по учебнику)
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          python tools/make_tones.py
+          ls site/audio/syn | wc -l
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

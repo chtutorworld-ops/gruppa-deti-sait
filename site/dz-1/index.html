@@ -138,6 +138,14 @@ function play(text,el,rate){return new Promise(res=>{try{curA&&curA.pause()}catc
  const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;
  a.onerror=()=>{end();if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=.8;speechSynthesis.speak(u);}};
  a.play().catch(a.onerror);});}
+/* textbook tones re-synthesised from a clean recording (audio/syn/<syllable><tone>.wav) */
+const SYN=AUDIO+'syn/';let SYNOK=null;fetch(SYN+'index.json').then(r=>r.json()).then(j=>SYNOK=j).catch(()=>{});
+const synKey=(b,t)=>({yi:'i',wu:'u'}[b]||b)+t;
+const hasSyn=(b,t)=>!!(SYNOK&&SYNOK[synKey(b,t)]);
+function playSyl(b,t,el,rate){if(!hasSyn(b,t)){const c=chOf(b,t);return c?play(c,el,rate):Promise.resolve();}
+ return new Promise(res=>{try{curA&&curA.pause()}catch(e){}const a=new Audio(SYN+synKey(b,t)+'.wav');curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
+  const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;a.onerror=()=>{el&&el.classList.remove('on');const c=chOf(b,t);(c?play(c,el,rate):Promise.resolve()).then(res);};a.play().catch(a.onerror);});}
+async function playSylSeq(b,el){for(const t of [1,2,3,4]){await playSyl(b,t,el);await new Promise(r=>setTimeout(r,350));}}
 async function playSeq(list,el){for(const t of list){await play(t,el);await new Promise(r=>setTimeout(r,250));}}
 let micStream=null;
 async function getMic(){if(micStream&&micStream.active)return micStream;
@@ -181,7 +189,7 @@ function scores(c,hz,base){const off=base?12*Math.log2(hz/base):null,out={};
 function classify(c,hz,base){const sc=scores(c,hz||1,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return best;}
 function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return {got:best,ok:best===want||sc[want]<=sc[best]*1.2+0.15};}
 const refCache={};
-async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
+async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(/\.wav$/.test(ch)?ch:fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
 const TEMPL={1:Array(30).fill(0),2:Array.from({length:30},(_,i)=>-2.5+5*Math.pow(i/29,1.4)),3:Array.from({length:30},(_,i)=>{const x=i/29;return x<.6?1-3.4*(x/.6):-2.4+3.6*((x-.6)/.4);}),4:Array.from({length:30},(_,i)=>3-6*Math.pow(i/29,.9))};
 function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-16)/8,x=i=>24+i*(W-48)/29;
  const path=c=>c.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
@@ -274,7 +282,7 @@ const ALT={"mo4": ["默", "末", "莫", "陌", "漠"], "wu1": ["乌", "屋", "�
 function chOf(b,t){const alt=ALT[b+t];if(alt&&GOOD){const ok=alt.find(c=>GOOD[c]===true);if(ok)return ok;}return (alt&&alt[0])||R[b].split(',')[t-1];}
 function noRepeat(arr,key){for(let k=0;k<200;k++){const a=shuffle(arr);if(a.every((x,i)=>!i||key(x)!==key(a[i-1])))return a;}return arr;}
 function mkL1(){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const used=new Set(),items=[];
- for(const t of seq){const cands=shuffle(BASES.filter(b=>{const c=R[b].split(',')[t-1];return c&&goodCh(c)&&!used.has(b+t);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
+ for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(SYNOK)return hasSyn(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
  return items;}
 function mkL2(){let w=shuffle(WORDS).slice(0,10);for(let k=0;k<300;k++){const a=shuffle(w);if(a.every((x,i)=>!i||(x[3].join('')!==a[i-1][3].join('')&&x[3][0]!==a[i-1][3][0])))return a;}return w;}
 const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
@@ -297,7 +305,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
  shell(`${backBtn}<h2>Уровень ${lv} · ${lv===1?'слоги':'слова'}</h2><div class="qcard n"><div class="qhead"><span>Вопрос ${L.i+1} из 10</span><span>${L.res.filter(Boolean).length} ✓</span></div>
  <div class="dots">${L.items.map((_,j)=>`<i class="${j<L.i?(L.res[j]?'ok':'no'):j===L.i?'cur':''}"></i>`).join('')}</div>
  <button class="play n" id="pl">▶</button>${title}<div class="opts ${lv===1?'o4':''}">${opts.map(o=>`<button class="opt" data-k="${o.k}">${o.h}</button>`).join('')}</div><div class="fb" id="lfb"></div></div>`);
- const text=lv===1?it.ch:it.w[0];const pb=$('#pl');pb.onclick=()=>play(text,pb);setTimeout(()=>play(text,pb),250);
+ const pb=$('#pl');const say=()=>lv===1?playSyl(it.b,it.t,pb):play(it.w[0],pb);pb.onclick=say;setTimeout(say,250);
  let lock=false;document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=String(b.dataset.k)===String(correct);L.res[L.i]=ok;
   document.querySelector(`[data-k="${correct}"]`).classList.add('ok');if(!ok)b.classList.add('no');
   const fb=$('#lfb');fb.className='fb '+(ok?'ok':'no');
@@ -323,8 +331,8 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
  <div class="fb" id="sfb"></div><div style="margin-top:14px;text-align:center"><button class="back n" id="recal" style="margin:0">🎚 Настроить голос заново</button></div></div>`);
  $('#recal').onclick=()=>{S.base=0;keep();calibV();};
  document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{spI=+b.dataset.sp;speakV();});
- $('#ref').onclick=()=>play(it.ch,$('#ref'));$('#refs').onclick=()=>play(it.ch,$('#refs'),0.75);
- let ref=TT[it.t][0].map(v=>v+LV[it.t]);if(GOOD&&GOOD[it.ch]===true)refContour(it.ch).then(r=>{if(r&&classify(r.c)===it.t){ref=r.c.map(v=>v+LV[it.t]);$('#chart').innerHTML=chartSVG(ref,null);}});
+ $('#ref').onclick=()=>playSyl(it.b,it.t,$('#ref'));$('#refs').onclick=()=>playSyl(it.b,it.t,$('#refs'),0.75);
+ let ref=TT[it.t][0].map(v=>v+LV[it.t]);if(hasSyn(it.b,it.t)||(GOOD&&GOOD[it.ch]===true))refContour(hasSyn(it.b,it.t)?SYN+synKey(it.b,it.t)+'.wav':it.ch).then(r=>{if(r&&classify(r.c)===it.t){ref=r.c.map(v=>v+LV[it.t]);$('#chart').innerHTML=chartSVG(ref,null);}});
  let stopFn=null,busy=false;
  $('#mic').onclick=async()=>{if(stopFn){stopFn();return;}if(busy)return;busy=true;const mic=$('#mic'),lab=$('#mlab'),fb=$('#sfb');
   try{const blob=await record(2600,s=>{stopFn=s;mic.classList.add('rec');mic.textContent='■';lab.textContent='Говори! (нажми ещё раз, чтобы закончить)';});
@@ -342,14 +350,14 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
   busy=false;};}
 
 /* ---------- 4. record for teacher ---------- */
-const RECS=[['a','ma','ā á ǎ à'],['o','mo','ō ó ǒ ò'],['e','ke','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
+const RECS=[['a','a','ā á ǎ à'],['o','o','ō ó ǒ ò'],['e','e','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
 const blobs={};
 function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
- shell(`${backBtn}<h2><span class="zh">录音</span>Запиши голос учителю</h2><p class="lead">Для каждой финали: послушай образец, нажми «Записать» и произнеси все 4 тона по порядку. Потом прослушай себя и нажми «Отправить». Можно перезаписать сколько угодно раз.</p>
+ shell(`${backBtn}<h2><span class="zh">录音</span>Запиши голос учителю</h2><p class="lead">Для каждой гласной: послушай образец, нажми «Записать» и произнеси её 4 раза — с 1-м, 2-м, 3-м и 4-м тоном. Только гласную, без согласных: «ā — á — ǎ — à». Потом прослушай себя и нажми «Отправить». Можно перезаписать сколько угодно раз.</p>
  <div class="grid2">${RECS.map(([id,b,txt])=>`<div class="rc n" id="rc-${id}"><div class="hd"><span class="py">${txt}</span><span class="st ${items[id]?'ok':''}" id="st-${id}">${items[id]?'✓ отправлено':''}</span></div>
-  <div class="row"><button class="btn g" data-ref="${id}">▶ Образец${b!==id&&b!=="yi"&&b!=="wu"?` <small style="font-weight:600">(на слоге ${b})</small>`:""}</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
+  <div class="row"><button class="btn g" data-ref="${id}">▶ Образец</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
  <div class="tip">💡 Говори чётко и не спеши: <b>ā — á — ǎ — à</b>. Если отправка не проходит, в конце будет запасная кнопка «Отправить через мессенджер».</div>`);
- document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);playSeq([1,2,3,4].map(t=>chOf(r[1],t)).filter(Boolean),b);});
+ document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);playSylSeq(r[1],b);});
  let stop=null,cur=null;
  document.querySelectorAll('[data-rec]').forEach(b=>b.onclick=async()=>{const id=b.dataset.rec;
   if(stop&&cur===id){stop();return;}if(stop)return;cur=id;
