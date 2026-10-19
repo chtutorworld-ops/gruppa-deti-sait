@@ -1,46 +1,143 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ДЗ 1 — ответы учеников</title><meta name="robots" content="noindex">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+<title>老师 — Панель учителя · ДЗ 1</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Nunito:wght@800;900&display=swap">
 <style>
-:root{--bg:#E9EDF4;--ink:#1E2350;--mu:#7D86A3;--ok:#17936A;--no:#D9366A;--ac:#5B6BD8}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,sans-serif;color:#3D4560;padding:20px 14px}
-.w{max-width:1200px;margin:0 auto}.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px #C5CBD8,-8px -8px 18px #fff}
-h1{font-size:26px;color:var(--ink)}p{margin-top:6px;color:var(--mu)}
-.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:16px 18px;margin:16px 0}
-input{font:inherit;font-size:16px;padding:10px 14px;border:0;border-radius:14px;box-shadow:inset 4px 4px 8px #C5CBD8,inset -4px -4px 8px #fff;background:var(--bg);min-width:220px}
-button{font:inherit;font-weight:800;border:0;cursor:pointer;padding:10px 16px;border-radius:14px;background:var(--ac);color:#fff}
-button.g{background:var(--bg);color:var(--ink);box-shadow:4px 4px 10px #C5CBD8,-4px -4px 10px #fff}
-.tbl{overflow-x:auto;padding:8px}table{border-collapse:collapse;width:100%;font-size:14.5px}
-th,td{padding:10px 10px;text-align:left;border-bottom:1px solid #D6DBE6;vertical-align:top;white-space:nowrap}
-th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
-td b{color:var(--ink)}.ok{color:var(--ok);font-weight:800}.no{color:var(--mu)}
-.au{display:flex;gap:6px;flex-wrap:wrap}.au button{padding:6px 10px;font-size:13px}
-small{color:var(--mu)}
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--mid:#F5A524;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;--han:'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px 14px 60px}
+button{font:inherit;border:0;cursor:pointer;color:inherit;background:none}
+.w{max-width:1240px;margin:0 auto}.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.in{background:var(--bg);border-radius:16px;box-shadow:inset 4px 4px 9px var(--sh1),inset -4px -4px 9px var(--sh2)}
+.zh{font-family:var(--han)}.py{font-family:Nunito,sans-serif;font-weight:800}
+.top{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap}
+.top .zh{font-size:36px;color:#2B3270}.top h1{font-size:22px;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600}
+.top .r{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input{font:inherit;font-size:15px;padding:10px 14px;border:0;outline:none;color:var(--ink);min-width:200px}
+.btn{padding:10px 16px;border-radius:14px;font-weight:800;background:var(--ac);color:#fff;box-shadow:4px 4px 10px var(--sh1),-4px -4px 10px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ink)}
+h2{font-size:19px;color:var(--ink);margin:26px 4px 12px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.kp{padding:16px 18px}.kp b{display:block;font-family:Nunito;font-size:32px;color:var(--ink);line-height:1.1}.kp span{font-size:13.5px;font-weight:700;color:var(--mu)}
+.tbl{overflow-x:auto;padding:6px}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #D6DBE6;white-space:nowrap;vertical-align:middle}
+th{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+td .nm{font-weight:800;color:var(--ink);text-decoration:underline dotted;cursor:pointer}
+.c{display:inline-block;min-width:54px;text-align:center;padding:5px 9px;border-radius:10px;font-weight:800;font-size:13px}
+.c.ok{background:#DDF5EC;color:#14855E}.c.mid{background:#FFF1D6;color:#9A6405}.c.no{background:#FFE3EB;color:#B8264F}.c.none{background:#E3E6EE;color:#9AA2BC}
+.au{display:flex;gap:4px}.au button{padding:5px 9px;border-radius:9px;font-weight:800;font-size:13px;background:var(--ac);color:#fff}.au span{padding:5px 9px;color:#B5BCCF;font-weight:800;font-size:13px}
+.grid{display:grid;gap:16px}@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+.card{padding:18px 20px}.card h3{font-size:16px;color:var(--ink);margin-bottom:4px}.card p{font-size:13.5px;color:var(--mu);margin-bottom:12px;line-height:1.4}
+.mx{border-collapse:separate;border-spacing:4px}.mx td,.mx th{border:0;text-align:center;padding:9px 6px;border-radius:10px;font-weight:800;font-size:14px}
+.bar{display:grid;grid-template-columns:minmax(140px,2.2fr) 2fr 50px;gap:10px;align-items:center;margin:7px 0;font-size:13.5px}
+.bar .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar .b{height:12px;border-radius:7px;background:#D6DBE6;overflow:hidden}.bar .b i{display:block;height:100%;border-radius:7px}
+.bar .v{font-weight:800;text-align:right}
+.empty{padding:22px;text-align:center;color:var(--mu);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(30,35,80,.35);display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto;z-index:9}
+.modal.on{display:flex}.modal .box{max-width:760px;width:100%;padding:22px 24px}
+.modal h3{font-size:20px;color:var(--ink)}.modal .x{float:right;font-size:22px;font-weight:800;color:var(--mu)}
+.log{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.log span{padding:5px 9px;border-radius:10px;font-weight:800;font-size:13px}
+.sub{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:16px 0 6px}
 </style></head><body><div class="w">
-<h1>📋 ДЗ 1 — кто что сделал</h1><p>Ответы приходят сюда сами. Нажмите кнопку с буквой, чтобы послушать запись ученика.</p>
-<div class="bar n"><input id="key" placeholder="Ключ учителя"><button id="load">Показать</button><button class="g" id="ref">Обновить</button><span id="info"></span></div>
-<div class="tbl n"><table><thead><tr><th>Ученик</th><th>Клавиатура</th><th>Тоны: слоги</th><th>Тоны: слова</th><th>Скажи тон</th><th>Записи (a o e i u)</th><th>Теория</th><th>Последний раз</th></tr></thead><tbody id="tb"><tr><td colspan="8"><small>Введите ключ</small></td></tr></tbody></table></div>
+<div class="top n"><span class="zh">老师</span><div><h1>Панель учителя · ДЗ 1</h1><small>Пиньинь, слоги, тоны · кто что сделал и где ошибаются</small></div>
+ <div class="r"><input class="in" id="key" placeholder="Ключ учителя"><button class="btn" id="load">Показать</button><button class="btn g" id="ref">↻ Обновить</button><span id="info" style="font-weight:700;color:var(--mu)"></span></div></div>
+<div id="out"><div class="empty">Введите ключ учителя</div></div>
 </div>
+<div class="modal" id="modal"><div class="box n" id="mbox"></div></div>
 <script>
+const TQ=[
+ ['Что такое пиньинь?',['Отдельный китайский язык','Запись звучания китайских слов латинскими буквами','Старинные иероглифы'],1],
+ ['Сколько систем записи в китайском языке?',['Одна — только иероглифы','Две — иероглифы и пиньинь','Три'],1],
+ ['Как китайцы печатают иероглифы на телефоне?',['Рисуют пальцем каждый иероглиф','Набирают пиньинь, а телефон предлагает иероглифы','Используют клавиатуру с тысячами кнопок'],1],
+ ['Чему равен один иероглиф?',['Одному слогу','Целому предложению','Одной букве'],0],
+ ['Сколько примерно слогов в китайском языке (без тонов)?',['Около 40','Около 400','Около 4000'],1],
+ ['Из каких частей состоит китайский слог?',['Инициаль + финаль + тон','Корень + суффикс','Только из гласных'],0],
+ ['В слоге mā что такое «m»?',['Финаль','Тон','Инициаль'],2],
+ ['Почему китаец скажет «сыпутыник» вместо «спутник»?',['В китайском нет стечений согласных — он вставляет гласную','Он шутит','В китайском нет звука «с»'],0],
+ ['Сколько тонов в путунхуа, если не считать нейтральный?',['Два','Четыре','Восемь'],1],
+ ['妈 mā — «мама», 马 mǎ — «лошадь». Что меняет смысл?',['Инициаль','Тон','Финаль'],1],
+ ['Какой значок у третьего тона?',['ˉ (ровная черта)','ˋ (вниз)','ˇ (галочка)'],2],
+ ['Какие финали мы выучили первыми?',['a o e i u','b p m f','zh ch sh'],0]];
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-const k0=new URLSearchParams(location.search).get('key');let KEY=k0||'';try{KEY=KEY||localStorage.getItem('dzkey')||''}catch(e){}
-document.getElementById('key').value=KEY;
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ago=t=>{if(!t)return '';const d=new Date(t);return d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});};
-let cur=null;
+const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
+const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const when=t=>t?new Date(t).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+const PLAT={ios:'iPhone',and:'Android',win:'Windows',mac:'Mac'};
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const col=p=>p>=80?'var(--ok)':p>=50?'var(--mid)':'var(--no)';
+let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||''}catch(e){}
+document.getElementById('key').value=KEY;let DATA=null,cur=null;
+
+function wrongPick(arr,c){let b=null;arr.forEach((v,k)=>{if(k!==c&&v>0&&(b===null||v>arr[b]))b=k;});return b;}
+function chip(val,of,goodAt){if(val==null)return '<span class="c none">—</span>';const p=of?val/of:1;return `<span class="c ${p>=(goodAt||.8)?'ok':p>=.5?'mid':'no'}">${val}${of?'/'+of:''}</span>`;}
+function render(){const {subs,aud}=DATA;const out=document.getElementById('out');
+ if(!subs.length){out.innerHTML='<div class="empty n" style="margin-top:16px">Пока никто не начал ДЗ. Отправьте детям ссылку: chtutorworld-ops.github.io/gruppa-deti-sait/dz-1/</div>';return;}
+ subs.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
+ const P=s=>s.parts||{};
+ const done=s=>{const p=P(s);return [p.kbd&&p.kbd.ok,p.listen1&&p.listen2,p.speak&&(p.speak.passed||0)>=6,p.rec&&Object.keys(p.rec.items||{}).length>=5,p.theory].filter(Boolean).length;};
+ const avg=(f)=>{const v=subs.map(f).filter(x=>x!=null);return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):'—';};
+ const all5=subs.filter(s=>done(s)===5).length;
+ // ----- error stats -----
+ const mx=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];const wordStat={},spStat={},thStat=TQ.map(()=>[0,0]),thPick=TQ.map(()=>[0,0,0]);
+ subs.forEach(s=>{const p=P(s);
+  (p.listen1&&p.listen1.log||[]).forEach(r=>{if(r.want>=1&&r.want<=4&&r.got>=1&&r.got<=4)mx[r.want-1][r.got-1]++;});
+  (p.listen2&&p.listen2.log||[]).forEach(r=>{const w=wordStat[r.q]=wordStat[r.q]||{ok:0,n:0,want:r.want};w.n++;if(String(r.got)===String(r.want))w.ok++;});
+  Object.entries(p.speak&&p.speak.stat||{}).forEach(([k,v])=>{const x=spStat[k]=spStat[k]||{ok:0,n:0,tries:0};x.n++;x.tries+=v.tries||0;if(v.ok)x.ok++;});
+  if(p.theory&&p.theory.ans)p.theory.ans.forEach((a,i)=>{if(thStat[i]){thStat[i][1]++;if(a)thStat[i][0]++;}});
+  if(p.theory&&p.theory.pick)p.theory.pick.forEach((a,i)=>{if(thPick[i]&&a!=null)thPick[i][a]++;});});
+ const mxRows=mx.map((r,i)=>{const n=r.reduce((a,b)=>a+b,0);return `<tr><th>${i+1}-й</th>${r.map((v,j)=>{const p=pct(v,n);const bg=i===j?`rgba(45,190,140,${.12+p/130})`:v?`rgba(255,92,138,${.08+p/110})`:'#E3E6EE';return `<td style="background:${bg}">${n?p+'%':'—'}<div style="font-size:11px;color:var(--mu)">${v}</div></td>`;}).join('')}<td style="color:${col(pct(r[i],n))}">${n?pct(r[i],n)+'%':'—'}</td></tr>`;}).join('');
+ const totL1=mx.flat().reduce((a,b)=>a+b,0);
+ const conf=[];mx.forEach((r,i)=>r.forEach((v,j)=>{if(i!==j&&v)conf.push([v,i+1,j+1]);}));conf.sort((a,b)=>b[0]-a[0]);
+ const words=Object.entries(wordStat).map(([w,v])=>[w,v]).sort((a,b)=>a[1].ok/a[1].n-b[1].ok/b[1].n).slice(0,8);
+ const sp=Object.entries(spStat).sort((a,b)=>a[1].ok/a[1].n-b[1].ok/b[1].n);
+ const th=TQ.map((q,i)=>[q,thStat[i],i]).filter(x=>x[1][1]).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]);
+ const bar=(label,p,extra)=>`<div class="bar"><div class="t">${label}</div><div class="b"><i style="width:${p}%;background:${col(p)}"></i></div><div class="v" style="color:${col(p)}">${p}%</div></div>${extra||''}`;
+ out.innerHTML=`
+ <h2>Общая картина</h2><div class="kpi">
+  <div class="kp n"><b>${subs.length}</b><span>начали ДЗ</span></div>
+  <div class="kp n"><b style="color:var(--ok)">${all5}</b><span>сделали все 5 заданий</span></div>
+  <div class="kp n"><b>${avg(s=>P(s).listen1?P(s).listen1.score:null)}<small style="font-size:16px">/10</small></b><span>угадай тон · слоги</span></div>
+  <div class="kp n"><b>${avg(s=>P(s).listen2?P(s).listen2.score:null)}<small style="font-size:16px">/10</small></b><span>угадай тон · слова</span></div>
+  <div class="kp n"><b>${avg(s=>P(s).speak?P(s).speak.passed||0:null)}<small style="font-size:16px">/8</small></b><span>скажи тон · получилось</span></div>
+  <div class="kp n"><b>${avg(s=>P(s).theory?P(s).theory.score:null)}<small style="font-size:16px">/12</small></b><span>теория</span></div></div>
+ <h2>Кто что сделал</h2><div class="tbl n"><table><thead><tr><th>Ученик</th><th>Готово</th><th>Клавиатура</th><th>Тон: слоги</th><th>Тон: слова</th><th>Скажи тон</th><th>Записи a o e i u</th><th>Теория</th><th>Последний раз</th></tr></thead><tbody>
+ ${subs.map((s,idx)=>{const p=P(s),au=aud[s.sid]||{};return `<tr><td><span class="nm" data-s="${idx}">${esc(s.name)}</span><br><small style="color:var(--mu)">${esc(PLAT[p.hello&&p.hello.plat]||'')}</small></td>
+  <td>${chip(done(s),5)}</td><td>${p.kbd&&p.kbd.ok?'<span class="c ok">✓</span>':'<span class="c none">—</span>'}</td>
+  <td>${p.listen1?chip(p.listen1.score,10):chip()}</td><td>${p.listen2?chip(p.listen2.score,10):chip()}</td>
+  <td>${p.speak?chip(p.speak.passed||0,8,.75):chip()}</td>
+  <td><div class="au">${['a','o','e','i','u'].map(i=>au[i]?`<button data-sid="${s.sid}" data-i="${i}">▶ ${i}</button>`:`<span>${i}</span>`).join('')}</div></td>
+  <td>${p.theory?chip(p.theory.score,12):chip()}</td><td><small>${when(s.updated)}</small></td></tr>`;}).join('')}</tbody></table></div>
+ <h2>Где ошибаются</h2><div class="grid">
+  <div class="card n"><h3>Угадай тон · какой тон с каким путают</h3><p>Строка — какой тон звучал, столбец — что выбрал ученик. Зелёное по диагонали — верно. Всего ответов: ${totL1}.</p>
+   ${totL1?`<table class="mx"><tr><th></th><th>выбрал 1</th><th>2</th><th>3</th><th>4</th><th>верно</th></tr>${mxRows}</table>
+   ${conf.length?`<p style="margin-top:12px;color:var(--t)"><b>Чаще всего путают:</b> ${conf.slice(0,3).map(([v,a,b])=>`${a}-й → ${b}-й (${v} раз)`).join(' · ')}</p>`:''}`:'<div class="empty">пока нет ответов</div>'}</div>
+  <div class="card n"><h3>Скажи тон · что получается произнести</h3><p>Доля учеников, у кого слог в итоге засчитан, и сколько в среднем попыток.</p>
+   ${sp.length?sp.map(([k,v])=>bar(`<span class="py">${mark(k.slice(0,-1),+k.slice(-1))}</span> <small style="color:var(--mu)">~${(v.tries/v.n).toFixed(1)} попыт.</small>`,pct(v.ok,v.n))).join(''):'<div class="empty">пока нет попыток</div>'}</div>
+  <div class="card n"><h3>Угадай тон · самые трудные слова</h3><p>Слова из двух слогов, где чаще всего ошибались.</p>
+   ${words.length?words.map(([w,v])=>bar(`<span class="zh" style="font-size:16px">${esc(w)}</span> <small style="color:var(--mu)">${String(v.want).split('').join('+')} · ${v.n} отв.</small>`,pct(v.ok,v.n))).join(''):'<div class="empty">пока нет ответов</div>'}</div>
+  <div class="card n"><h3>Теория · какие вопросы трудные</h3><p>Процент верных ответов, сначала самые трудные.</p>
+   ${th.length?th.map(([q,st,i])=>bar(esc(q[0]),pct(st[0],st[1]),(()=>{const w=wrongPick(thPick[i],q[2]);return w!=null&&pct(st[0],st[1])<80?`<div style="font-size:12.5px;color:var(--mu);margin:-2px 0 8px 4px">чаще всего ошибочно выбирали: «${esc(q[1][w])}»</div>`:'';})())).join(''):'<div class="empty">пока нет ответов</div>'}</div>
+ </div>`;
+ document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>detail(subs[+b.dataset.s]));
+ document.querySelectorAll('[data-sid]').forEach(b=>b.onclick=()=>playRec(b,b.dataset.sid,b.dataset.i));}
+async function playRec(b,sid,i){const t=b.textContent;b.textContent='…';try{const r=await fetch(API+`play?hw=dz1&sid=${sid}&item=${i}&key=${encodeURIComponent(KEY)}`);const bl=await r.blob();cur&&cur.pause();cur=new Audio(URL.createObjectURL(bl));cur.play();}catch(e){alert('Не удалось загрузить запись');}b.textContent=t;}
+function detail(s){const p=s.parts||{},au=DATA.aud[s.sid]||{};const lg=(log,f)=>(log||[]).map(f).join('');
+ const m=document.getElementById('modal');document.getElementById('mbox').innerHTML=`<button class="x" id="mx">✕</button><h3>${esc(s.name)}</h3><p style="color:var(--mu);font-weight:700">${esc(PLAT[p.hello&&p.hello.plat]||'')} · последний раз ${when(s.updated)}</p>
+ <div class="sub">Клавиатура</div>${p.kbd&&p.kbd.ok?`✓ напечатал(а): <span class="zh">${esc(p.kbd.typed)}</span>`:'не сделано'}
+ <div class="sub">Угадай тон · слоги ${p.listen1?`— лучший ${p.listen1.score}/10, последний ${p.listen1.last??p.listen1.score}/10, попыток ${p.listen1.attempts||1}`:''}</div>
+ ${p.listen1&&p.listen1.log?`<div class="log">${lg(p.listen1.log,r=>`<span class="c ${r.got==r.want?'ok':'no'}"><span class="py">${mark(r.q,r.want)}</span>${r.got==r.want?'':' → '+r.got+'-й'}</span>`)}</div>`:'нет данных'}
+ <div class="sub">Угадай тон · слова ${p.listen2?`— лучший ${p.listen2.score}/10, последний ${p.listen2.last??p.listen2.score}/10`:''}</div>
+ ${p.listen2&&p.listen2.log?`<div class="log">${lg(p.listen2.log,r=>`<span class="c ${String(r.got)===String(r.want)?'ok':'no'}"><span class="zh">${esc(r.q)}</span> ${String(r.want).split('').join('+')}${String(r.got)===String(r.want)?'':' → '+String(r.got).split('').join('+')}</span>`)}</div>`:'нет данных'}
+ <div class="sub">Скажи тон ${p.speak?`— получилось ${p.speak.passed||0}/8, попыток всего ${p.speak.tries||0}`:''}</div>
+ ${p.speak&&p.speak.stat?`<div class="log">${Object.entries(p.speak.stat).map(([k,v])=>`<span class="c ${v.ok?'ok':'no'}"><span class="py">${mark(k.slice(0,-1),+k.slice(-1))}</span> ×${v.tries}${v.ok?' ✓':' · слышно: '+(v.got||[]).join(',')}</span>`).join('')}</div>`:'нет данных'}
+ <div class="sub">Записи голоса</div><div class="au">${['a','o','e','i','u'].map(i=>au[i]?`<button data-sid2="${i}">▶ ${i}</button>`:`<span>${i}</span>`).join('')}</div>
+ <div class="sub">Теория ${p.theory?`— лучший ${p.theory.score}/12, последний ${p.theory.last??p.theory.score}/12`:''}</div>
+ ${p.theory&&p.theory.ans?TQ.map((q,i)=>`<div style="font-size:14px;margin:4px 0">${p.theory.ans[i]?'✅':'❌'} ${esc(q[0])}${!p.theory.ans[i]&&p.theory.pick&&p.theory.pick[i]!=null?` <small style="color:#B8264F">— выбрал(а): «${esc(q[1][p.theory.pick[i]])}»</small>`:''}</div>`).join(''):'нет данных'}`;
+ m.classList.add('on');document.getElementById('mx').onclick=()=>m.classList.remove('on');m.onclick=e=>{if(e.target===m)m.classList.remove('on');};
+ document.querySelectorAll('[data-sid2]').forEach(b=>b.onclick=()=>playRec(b,s.sid,b.dataset.sid2));}
 async function load(){KEY=document.getElementById('key').value.trim();try{localStorage.setItem('dzkey',KEY)}catch(e){}
  const info=document.getElementById('info');info.textContent='Загружаю…';
- try{const r=await fetch(API+'list?hw=dz1&key='+encodeURIComponent(KEY));const d=await r.json();if(!r.ok)throw new Error(d.error==='key'?'Неверный ключ':d.error);
-  info.textContent='Учеников: '+d.subs.length;
-  const rows=d.subs.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru')).map(s=>{const p=s.parts||{},au=d.aud[s.sid]||{};
-   const c=(x,f)=>x?`<span class="ok">${f(x)}</span>`:'<span class="no">—</span>';
-   return `<tr><td><b>${esc(s.name)}</b><br><small>${esc((p.hello&&p.hello.plat)||'')}</small></td>
-   <td>${c(p.kbd,x=>'✓ '+esc(x.typed||''))}</td><td>${c(p.listen1,x=>x.score+'/10')}</td><td>${c(p.listen2,x=>x.score+'/10')}</td>
-   <td>${c(p.speak,x=>(x.passed||0)+'/8 <small>попыток: '+(x.tries||0)+'</small>')}</td>
-   <td><div class="au">${['a','o','e','i','u'].map(i=>au[i]?`<button data-sid="${s.sid}" data-i="${i}">▶ ${i}</button>`:`<span class="no">${i}</span>`).join('')}</div></td>
-   <td>${c(p.theory,x=>x.score+'/'+(x.of||12))}</td><td><small>${ago(s.updated)}</small></td></tr>`;}).join('');
-  document.getElementById('tb').innerHTML=rows||'<tr><td colspan="8"><small>Пока никто не начал</small></td></tr>';
-  document.querySelectorAll('[data-sid]').forEach(b=>b.onclick=async()=>{b.textContent='…';try{const r=await fetch(API+`play?hw=dz1&sid=${b.dataset.sid}&item=${b.dataset.i}&key=${encodeURIComponent(KEY)}`);const bl=await r.blob();cur&&cur.pause();cur=new Audio(URL.createObjectURL(bl));cur.play();}catch(e){alert('Не удалось загрузить запись');}b.textContent='▶ '+b.dataset.i;});
- }catch(e){info.textContent='⚠ '+e.message;}}
+ try{const r=await fetch(API+'list?hw=dz1&key='+encodeURIComponent(KEY));const d=await r.json();if(!r.ok)throw new Error(d.error==='key'?'неверный ключ':d.error);
+  DATA=d;info.textContent='обновлено '+new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});render();}
+ catch(e){info.textContent='⚠ '+e.message;}}
 document.getElementById('load').onclick=load;document.getElementById('ref').onclick=load;if(KEY)load();
 </script></body></html>

@@ -310,9 +310,9 @@ function listenV(){L=null;const a=S.done.listen1,b=S.done.listen2;
  <div class="lvl"><button class="n" data-l="1"><b>Уровень 1 · Слоги</b><small>Один слог: mā, má, mǎ или mà? 10 вопросов.</small>${a?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${a.score}/10</small>`:''}</button>
  <button class="n" data-l="2"><b>Уровень 2 · Слова из двух слогов</b><small>Два тона подряд: 1+2, 3+1… 10 вопросов.</small>${b?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${b.score}/10</small>`:''}</button></div>`);
  document.querySelectorAll('[data-l]').forEach(x=>x.onclick=()=>startL(+x.dataset.l));}
-function startL(lv){L={lv,i:0,res:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};askL();}
+function startL(lv){L={lv,i:0,res:[],log:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};askL();}
 function askL(){const it=L.items[L.i],lv=L.lv;
- if(L.i>=10){const sc=L.res.filter(Boolean).length;const prev=S.done['listen'+lv];if(!prev||sc>=prev.score)send('listen'+lv,{score:sc,of:10});
+ if(L.i>=10){const sc=L.res.filter(Boolean).length;const prev=S.done['listen'+lv]||{};send('listen'+lv,{score:Math.max(sc,prev.score||0),last:sc,of:10,attempts:(prev.attempts||0)+1,log:L.log});
   shell(`${backBtn}<h2>Уровень ${lv} пройден!</h2><div class="res">${sc} / 10</div><p class="lead">${sc>=9?'Супер-уши! 🎧':sc>=6?'Хорошо! Попробуй ещё раз, чтобы стало 10.':'Тоны — это сложно, 犯错不可怕! Пройди ещё раз.'}</p><div class="row"><button class="btn" id="again">Ещё раз</button><button class="btn g" id="other">${lv===1?'Уровень 2 →':'Уровень 1'}</button></div>`);
   $('#again').onclick=()=>startL(lv);$('#other').onclick=()=>startL(lv===1?2:1);return;}
  let opts,correct,title;
@@ -322,7 +322,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
  <div class="dots">${L.items.map((_,j)=>`<i class="${j<L.i?(L.res[j]?'ok':'no'):j===L.i?'cur':''}"></i>`).join('')}</div>
  <button class="play n" id="pl">▶</button>${title}<div class="opts ${lv===1?'o4':''}">${opts.map(o=>`<button class="opt" data-k="${o.k}">${o.h}</button>`).join('')}</div><div class="fb" id="lfb"></div></div>`);
  const pb=$('#pl');const say=()=>lv===1?playSyl(it.b,it.t,pb):play(it.w[0],pb);pb.onclick=say;setTimeout(say,250);
- let lock=false;document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=String(b.dataset.k)===String(correct);L.res[L.i]=ok;
+ let lock=false;document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=String(b.dataset.k)===String(correct);L.res[L.i]=ok;L.log.push(lv===1?{q:it.b,want:it.t,got:+b.dataset.k}:{q:it.w[0],want:it.w[3].join(''),got:String(b.dataset.k)});
   document.querySelector(`[data-k="${correct}"]`).classList.add('ok');if(!ok)b.classList.add('no');
   const fb=$('#lfb');fb.className='fb '+(ok?'ok':'no');
   fb.innerHTML=(ok?'✓ Верно! ':'Не совсем. ')+(lv===1?`Это <span class="py">${mark(it.b,it.t)}</span> — ${it.t}-й тон.`:`<span class="zh">${it.w[0]}</span> <span class="py">${it.w[1]}</span> — ${it.w[2]}.`)+` <br><button class="btn" id="nx" style="margin-top:12px">Следующий вопрос →</button>`;
@@ -360,7 +360,7 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
    const ok=J.ok;fb.className='fb '+(ok?'ok':'no');
    fb.innerHTML=ok?`✓ Получился ${it.t}-й тон — то, что нужно! ${spI<SP.length-1?'<br><button class="btn okb" id="snx" style="margin-top:12px">Следующий слог →</button>':''}`:`Похоже на <b>${got}-й тон</b> ${mini(got)}, а нужен ${it.t}-й. ${{1:'Держи голос ровно и высоко, как длинная нота.',2:'Подними голос снизу вверх, как будто удивляешься: «а?»',3:'Опусти голос вниз, а потом чуть подними.',4:'Резко опусти голос сверху вниз, как будто сердишься.'}[it.t]}`;
    lab.textContent='Нажми и попробуй ещё раз';
-   const d2=S.done.speak||{items:{}};d2.items=d2.items||{};d2.tries=(d2.tries||0)+1;if(ok)d2.items[it.b+it.t]=1;d2.passed=Object.keys(d2.items).length;send('speak',{items:d2.items,passed:d2.passed,tries:d2.tries});
+   const d2=S.done.speak||{items:{}};d2.items=d2.items||{};d2.tries=(d2.tries||0)+1;if(ok)d2.items[it.b+it.t]=1;d2.passed=Object.keys(d2.items).length;const k2=it.b+it.t,st2=(d2.stat||{});st2[k2]=st2[k2]||{tries:0,got:[]};st2[k2].tries++;st2[k2].got=(st2[k2].got.concat(J.got)).slice(-6);if(ok)st2[k2].ok=1;send('speak',{items:d2.items,passed:d2.passed,tries:d2.tries,stat:st2});
    if(ok&&$('#snx'))$('#snx').onclick=()=>{spI++;speakV();};
   }catch(e){fb.className='fb no';fb.textContent='Нет доступа к микрофону. Разреши микрофон в браузере (значок 🔒 или «аА» у адреса) и попробуй снова.';mic.classList.remove('rec');mic.textContent='🎤';stopFn=null;}
   busy=false;};}
@@ -403,13 +403,13 @@ const TQ=[
  ['Какой значок у третьего тона?',['ˉ (ровная черта)','ˋ (вниз)','ˇ (галочка)'],2],
  ['Какие финали мы выучили первыми?',['a o e i u','b p m f','zh ch sh'],0]];
 let T=null;
-function theoryV(){T={i:0,res:[]};askT();}
-function askT(){if(T.i>=TQ.length){const sc=T.res.filter(Boolean).length;send('theory',{score:sc,of:TQ.length,ans:T.res.map(x=>x?1:0)});
+function theoryV(){T={i:0,res:[],pick:[]};askT();}
+function askT(){if(T.i>=TQ.length){const sc=T.res.filter(Boolean).length;const pv=S.done.theory||{};send('theory',{score:Math.max(sc,pv.score||0),last:sc,of:TQ.length,ans:T.res.map(x=>x?1:0),pick:T.pick,attempts:(pv.attempts||0)+1});
   shell(`${backBtn}<h2>Теория пройдена!</h2><div class="res">${sc} / ${TQ.length}</div><p class="lead">${sc>=11?'Отлично! 🏆':sc>=8?'Хорошо! Можно пройти ещё раз.':'Повтори слайды урока и попробуй снова.'}</p><div class="row"><button class="btn" id="tag">Пройти ещё раз</button></div>`);$('#tag').onclick=theoryV;return;}
  const [q,o,c]=TQ[T.i];
  shell(`${backBtn}<h2><span class="zh">问题</span>Вопросы по теории</h2><div class="qcard n" style="text-align:left"><div class="qhead"><span>Вопрос ${T.i+1} из ${TQ.length}</span><span>${T.res.filter(Boolean).length} ✓</span></div>
  <h3 style="margin-top:14px">${q}</h3><div class="mcq">${o.map((t,k)=>`<button class="opt" data-o="${k}">${'АБВ'[k]}) ${t}</button>`).join('')}</div><div class="fb" id="tfb"></div></div>`);
- let lock=false;document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=+b.dataset.o===c;T.res[T.i]=ok;
+ let lock=false;document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=+b.dataset.o===c;T.res[T.i]=ok;T.pick[T.i]=+b.dataset.o;
   document.querySelector(`[data-o="${c}"]`).classList.add('ok');if(!ok)b.classList.add('no');
   const fb=$('#tfb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ Верно!':'Правильный ответ подсвечен зелёным.')+'<br><button class="btn" id="tnx" style="margin-top:12px">Следующий вопрос →</button>';$('#tnx').onclick=()=>{T.i++;askT();};});}
 
