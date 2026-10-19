@@ -171,16 +171,27 @@ function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=
  let run=0;for(let t=1;t<=tmax;t++){run+=d[t];d[t]=run?d[t]*t/run:1;}
  for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;const a=d[t-1],b=d[t],c=d[t+1],den=a+c-2*b;const p=den?t+(a-c)/(2*den):t;return [sr/p,b];}}
  return [0,1];}
-function contour(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,out=[];let mx=0;const rms=[];
+/* pitch track with creak ("кряхтение") support: loud frames where pitch can't be measured
+   inside the syllable are vocal fry = the lowest point of the voice, so they are filled LOW */
+function track(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,f=[],rms=[];let mx=0;
  for(let i=0;i+F<pcm.length;i+=hop){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);if(r>mx)mx=r;}
- let k=0;for(let i=0;i+F<pcm.length;i+=hop,k++){if(rms[k]<Math.max(0.012,mx*0.12)){out.push(0);continue;}const [f]=yin(pcm.subarray(i,i+F),sr);out.push(f>65&&f<550?f:0);}
- // longest voiced run (gaps up to 3 frames bridged)
- let best=[0,0],st=-1,gap=0;for(let i=0;i<=out.length;i++){const v=i<out.length&&out[i]>0;if(v){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>12||i===out.length){const e=i-gap;if(e-st>best[1]-best[0])best=[st,e];st=-1;gap=0;}}}
- let seg=out.slice(best[0],best[1]+1).filter(f=>f>0);if(seg.length<8)return null;
+ const thr=Math.max(0.012,mx*0.12),cthr=mx*0.22;let k=0;
+ for(let i=0;i+F<pcm.length;i+=hop,k++){if(rms[k]<thr){f.push(0);continue;}const [v]=yin(pcm.subarray(i,i+F),sr);f.push(v>65&&v<550?v:(rms[k]>=cthr?-1:0));}
+ // syllable = longest stretch of sound (silence gaps <=3 frames bridged) with >=8 pitched frames
+ let best=null,st=-1,gap=0;for(let i=0;i<=f.length;i++){const on=i<f.length&&f[i]!==0;if(on){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>3||i===f.length){const e=i-gap,n=f.slice(st,e+1).filter(x=>x>0).length;if(n>=8&&(!best||n>best[2]))best=[st,e,n];st=-1;gap=0;}}}
+ if(!best)return null;const seg=f.slice(best[0],best[1]+1),creak=seg.map(x=>x<0);
+ const firstV=seg.findIndex(x=>x>0);let lastV=-1;seg.forEach((x,i)=>{if(x>0)lastV=i;});
+ for(let i=0;i<seg.length;i++){if(seg[i]>=0)continue;let l=i-1;while(l>=0&&seg[l]<=0)l--;let r=i+1;while(r<seg.length&&seg[r]<=0)r++;
+  const L=l>=0?seg[l]:0,Rv=r<seg.length?seg[r]:0;
+  if(i<firstV){seg[i]=0;continue;}                                   // noise before the voice (t, p, k…) — drop
+  if(i>lastV){const run=seg.length-lastV-1;seg[i]=run>=4?L*Math.pow(2,-3/12):0;continue;} // creaky ending = low
+  seg[i]=Math.min(L,Rv)*Math.pow(2,-2.5/12);}                        // creak in the middle = the bottom of the dip
+ const out=[],cr=[];seg.forEach((x,i)=>{if(x>0){out.push(x);cr.push(creak[i]);}});return {f:out,creak:cr};}
+function contour(pcm){const tr=track(pcm);if(!tr||tr.f.length<8)return null;const seg=tr.f;
  const med=[...seg].sort((a,b)=>a-b)[seg.length>>1];
  let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>v>7?v-12:v<-7?v+12:v);
  st2=st2.map((v,i,a)=>{const w=a.slice(Math.max(0,i-2),i+3).sort((p,q)=>p-q);return w[w.length>>1];});
- const cut=Math.floor(st2.length*0.1);st2=st2.slice(cut,st2.length-cut);
+ const cut=Math.floor(st2.length*0.08);st2=st2.slice(cut,st2.length-cut);
  const N=30,res=[];for(let i=0;i<N;i++){const p=i*(st2.length-1)/(N-1),a=Math.floor(p),b=Math.min(st2.length-1,a+1);res.push(st2[a]+(st2[b]-st2[a])*(p-a));}
  const m=res.reduce((s,v)=>s+v,0)/N;return {c:res.map(v=>v-m),hz:med,len:seg.length};}
 /* tone scoring: shape vs templates + pitch level vs the speaker's normal voice (S.base) */

@@ -51,15 +51,20 @@ const $=s=>document.querySelector(s);
 function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=new Float32Array(tmax+1);
  for(let t=1;t<=tmax;t++){let s=0;for(let i=0;i<W;i++){const v=x[i]-x[i+t];s+=v*v;}d[t]=s;}let run=0;for(let t=1;t<=tmax;t++){run+=d[t];d[t]=run?d[t]*t/run:1;}
  for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;return sr/t;}}return 0;}
-function curve(pcm,sr){const step=Math.round(sr/100),F=512+Math.floor(sr/65)+2,out=[];let mx=0;
- for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];mx=Math.max(mx,Math.sqrt(s/512));}
- for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];if(Math.sqrt(s/512)<mx*0.12){out.push(0);continue;}const f=yin(pcm.subarray(i,i+F),sr);out.push(f>65&&f<550?f:0);}
- return out;}
-function chart(f){const v=f.filter(x=>x>0);if(v.length<5)return '';const med=[...v].sort((a,b)=>a-b)[v.length>>1];
+function curve(pcm,sr){const step=Math.round(sr/100),F=512+Math.floor(sr/65)+2,f=[],rms=[];let mx=0;
+ for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);mx=Math.max(mx,r);}
+ let k=0;for(let i=0;i+F<pcm.length;i+=step,k++){if(rms[k]<mx*0.12){f.push(0);continue;}const v=yin(pcm.subarray(i,i+F),sr);f.push(v>65&&v<550?v:(rms[k]>=mx*0.22?-1:0));}
+ const fv=f.findIndex(x=>x>0);let lv=-1;f.forEach((x,i)=>{if(x>0)lv=i;});const cr=f.map(()=>false);
+ for(let i=0;i<f.length;i++){if(f[i]>=0)continue;cr[i]=true;if(i<fv){f[i]=0;cr[i]=false;continue;}let l=i-1;while(l>=0&&f[l]<=0)l--;let r=i+1;while(r<f.length&&f[r]<=0)r++;
+  const L=l>=0?f[l]:0,R=r<f.length?f[r]:0;f[i]=i>lv?L*Math.pow(2,-3/12):Math.min(L,R)*Math.pow(2,-2.5/12);}
+ return {f,cr};}
+function chart(tr){const f=tr.f,cr=tr.cr,v=f.filter((x,i)=>x>0&&!cr[i]);if(v.length<5)return '';const med=[...v].sort((a,b)=>a-b)[v.length>>1];
  const W=460,H=150,n=f.length,st=f.map(x=>x>0?12*Math.log2(x/med):null);
  const y=s=>H/2-Math.max(-8,Math.min(8,s))*(H/2-12)/8,x=i=>14+i*(W-28)/Math.max(1,n-1);
- let d='',pen=false;st.forEach((s,i)=>{if(s===null){pen=false;return;}d+=(pen?'L':'M')+x(i).toFixed(1)+' '+y(s).toFixed(1);pen=true;});
- return `<svg class="ch in" viewBox="0 0 ${W} ${H}"><line x1="10" x2="${W-10}" y1="${H/2}" y2="${H/2}" stroke="#D3D8E3"/><path d="${d}" fill="none" stroke="#3B4BD8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><text x="16" y="18" font-size="12" font-weight="700" fill="#9AA2BC">высоко</text><text x="16" y="${H-8}" font-size="12" font-weight="700" fill="#9AA2BC">низко</text></svg>`;}
+ let d='',dc='',pen=false,penc=false;st.forEach((s,i)=>{if(s===null){pen=penc=false;return;}const pt=x(i).toFixed(1)+' '+y(s).toFixed(1);
+  if(cr[i]){dc+=(penc?'L':'M')+pt;penc=true;if(pen){d+='L'+pt;}pen=false;}else{if(penc){dc+='L'+pt;}penc=false;d+=(pen?'L':'M')+pt;pen=true;}});
+ const hasCr=cr.some(Boolean);
+ return `<svg class="ch in" viewBox="0 0 ${W} ${H}"><line x1="10" x2="${W-10}" y1="${H/2}" y2="${H/2}" stroke="#D3D8E3"/><path d="${d}" fill="none" stroke="#3B4BD8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="${dc}" fill="none" stroke="#7C6FFF" stroke-width="5" stroke-dasharray="2 7" stroke-linecap="round"/><text x="16" y="18" font-size="12" font-weight="700" fill="#9AA2BC">высоко</text><text x="16" y="${H-8}" font-size="12" font-weight="700" fill="#9AA2BC">низко</text>${hasCr?`<text x="${W-16}" y="${H-8}" text-anchor="end" font-size="12" font-weight="700" fill="#7C6FFF">пунктир — кряхтение</text>`:''}</svg>`;}
 
 /* ---------- recording to clean WAV ---------- */
 let AC=null,stream=null,proc=null,chunks=[],recOn=false,autoT=null;
