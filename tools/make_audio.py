@@ -21,9 +21,9 @@ import edge_tts, miniaudio
 
 # Голоса и скорости, из которых выбираем лучший вариант (можно поменять)
 VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
-RATES = ["-20%", "-40%"]
+RATES = ["-20%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 6
+VERSION = 7
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -160,8 +160,10 @@ async def main():
             got = min(sc, key=sc.get); seen.append(got)
             others = min(d for t, d in sc.items() if t != want)
             margin = others / max(sc[want], 1e-6)       # насколько уверенно это именно нужный тон
-            if got == want and margin >= 1.3 and (best is None or margin > best[0]):
-                best = (margin, v, r, p)
+            slow = -int(r.strip('%'))           # 20, 40, 55
+            key = (slow, margin) if want == 3 else (margin, 0)
+            if got == want and margin >= 1.3 and (best is None or key > best[4]):
+                best = (margin, v, r, p, key)
         if best:
             shutil.copyfile(best[3], os.path.join(OUT, k + ".mp3"))
             report[k] = {"c": tones[k]["c"], "s": tones[k]["s"], "want": want, "ok": True, "voice": best[1], "rate": best[2], "m": round(best[0], 2)}
