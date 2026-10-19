@@ -15,3 +15,30 @@ for it in items:
         print("не скачалось", i, e)
 json.dump(got, open(os.path.join(OUT, "index.json"), "w"))
 print("Записей учителя:", len(got))
+
+# ---- проверка тонов в записях учителя (только мелодия голоса) ----
+try:
+    import wave, sys
+    import numpy as np
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from make_audio import contour, scores
+    def read16(p):
+        w = wave.open(p); sr = w.getframerate(); x = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2").astype(np.float32) / 32768
+        return np.interp(np.arange(0, len(x), sr / 16000), np.arange(len(x)), x).astype(np.float32)
+    res = {}
+    for i in got:
+        r = contour(read16(os.path.join(OUT, i + ".wav")))
+        if r: res[i] = r
+    base = float(np.median([r[1] for r in res.values()])) if res else None
+    rep = {}
+    for i, (c, hz) in res.items():
+        want = int(i[-1]); sc = scores(c, hz, base); gotT = min(sc, key=sc.get)
+        others = min(d for t, d in sc.items() if t != want)
+        rep[i] = {"want": want, "got": gotT, "margin": round(others / max(sc[want], 1e-6), 2),
+                  "hz": round(hz), "range": round(float(c.max() - c.min()), 1),
+                  "curve": [round(float(v), 1) for v in c[::3]]}
+    json.dump({"base": base, "items": rep}, open(os.path.join(OUT, "report.json"), "w"))
+    ok = sum(1 for v in rep.values() if v["want"] == v["got"])
+    print(f"Тоны в записях учителя: совпало {ok} из {len(rep)}")
+except Exception as e:
+    print("проверка не выполнена:", e)
