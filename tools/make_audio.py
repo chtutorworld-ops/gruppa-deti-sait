@@ -23,7 +23,7 @@ import edge_tts, miniaudio
 VOICES = ["zh-CN-XiaoyiNeural"]   # детский женский голос: учитель проверила — тоны чистые
 RATES = ["-20%", "-40%"]
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 3
+VERSION = 4
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -85,10 +85,10 @@ def classify(c):
     s, e = c[:5].mean(), c[25:].mean()
     mi = 5 + int(np.argmin(c[5:27])); mn = c[mi]
     rng, delta = c.max() - c.min(), e - s
-    if rng < 2.0 and abs(delta) < 1.4: return 1, 2.0 - rng
+    if rng < 2.6 and abs(delta) < 2.0: return 1, 2.6 - rng
     if 6 < mi < 25 and s - mn > 1.0 and e - mn > 1.0: return 3, min(s - mn, e - mn)
-    if delta > 1.0: return 2, delta
-    if delta < -1.0: return 4, -delta
+    if delta > 1.6: return 2, delta
+    if delta < -1.6: return 4, -delta
     return 1, 0.0
 
 def analyse(path):
