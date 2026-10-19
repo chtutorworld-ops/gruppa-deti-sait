@@ -1,0 +1,71 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小测验 — Маленький тест</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#2B3270;--t:#3D4560;--mu:#7D86A3;--ok:#2DBE8C;--no:#FF5C8A;--ac:#5B6BD8;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);min-height:100vh;padding:20px 16px 40px}
+.w{max-width:560px;margin:0 auto}
+.n{background:var(--bg);border-radius:24px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.in{box-shadow:inset 5px 5px 10px var(--sh1),inset -5px -5px 10px var(--sh2)}
+h1{font-size:28px;font-weight:800;color:var(--ink);line-height:1.15}
+.zh{font-family:'LXGW WenKai GB','PingFang SC','Noto Sans SC',sans-serif}
+.py{font-family:Nunito;font-weight:800;color:var(--ac)}
+.hd{padding:20px 22px;margin-bottom:22px}
+.hd .zh{font-size:40px;color:var(--ink)}
+.hd p{margin-top:6px;font-size:15px;color:var(--mu)}
+input{width:100%;font:inherit;font-size:20px;padding:14px 18px;border:0;border-radius:16px;background:var(--bg);color:var(--ink);outline:none;margin-top:14px}
+button{font:inherit;border:0;cursor:pointer;color:var(--t)}
+.btn{display:block;width:100%;margin-top:16px;padding:16px;border-radius:18px;font-size:18px;font-weight:800;background:var(--ac);color:#fff;box-shadow:6px 6px 14px var(--sh1),-6px -6px 14px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ink)}
+.bar{display:flex;gap:6px;margin:4px 0 16px}.bar i{flex:1;height:7px;border-radius:4px;background:#D6DBE6}.bar i.ok{background:var(--ok)}.bar i.no{background:var(--no)}.bar i.cur{background:var(--ac)}
+.q{padding:22px}
+.q .k{font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--mu);text-transform:uppercase}
+.q h2{font-size:22px;line-height:1.3;color:var(--ink);margin:8px 0 16px}
+.rec{font-size:16px;line-height:1.5;background:#F2F4F9;border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.o{display:block;width:100%;text-align:left;padding:14px 16px;margin-top:10px;border-radius:16px;font-size:17px;font-weight:700;line-height:1.35;background:var(--bg);box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2)}
+.o.ok{background:#DDF5EC;color:#17734F;box-shadow:inset 3px 3px 8px #B9DCCD}
+.o.no{background:#FFE3EB;color:#B8264F;box-shadow:inset 3px 3px 8px #F0C2D0}
+.fb{margin-top:14px;font-size:16px;line-height:1.45}
+.map{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.st{padding:18px 14px;text-align:center;border-radius:22px;position:relative}
+.st .e{font-size:34px}.st b{display:block;margin-top:6px;font-size:16px;color:var(--ink)}
+.st small{display:block;margin-top:4px;font-size:13px;color:var(--mu)}
+.st.done:after{content:"✓";position:absolute;right:10px;top:8px;width:28px;height:28px;border-radius:50%;background:var(--ok);color:#fff;font-weight:900;display:grid;place-items:center}
+.big{font-size:56px;font-weight:900;font-family:Nunito;color:var(--ink);text-align:center;margin:10px 0}
+.c{text-align:center}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const MODE='test';
+const DATA={"zh": "小测验", "py": "xiǎo cèyàn", "title": "Маленький тест", "sub": "Что ты узнал(а) о китайском языке? Ответь сам(а) — сразу увидишь, где верно.", "q": [{"q": "Сколько примерно лет китайской письменности?", "o": ["Около 500 лет", "Около 1000 лет", "Более 3500 лет", "Около 200 лет"], "c": 2}, {"q": "На чём делали самые древние китайские надписи?", "o": ["На бамбуковых дощечках", "На костях животных и панцирях черепах", "На шёлке", "На глиняных табличках"], "c": 1}, {"q": "Что такое путунхуа?", "o": ["Древний письменный язык", "Один из южных диалектов", "Современный государственный язык Китая, который учат в школах", "Особый вид каллиграфии"], "c": 2}, {"q": "Поймут ли друг друга устно человек из Пекина и человек из Гуанчжоу, если каждый будет говорить на своём родном диалекте?", "o": ["Да, различия небольшие", "Да, если будут говорить очень медленно", "Нет, различия сильнее, чем между русским и польским", "Поймут, но только если запишут"], "c": 2}, {"q": "Где используют упрощённые иероглифы, а где — традиционные?", "o": ["Везде используют упрощённые", "Везде используют традиционные", "Упрощённые — в КНР и Сингапуре, традиционные — на Тайване, в Гонконге и Макао", "Упрощённые — только в Пекине, везде остальные — традиционные"], "c": 2}, {"q": "Сколько примерно иероглифов нужно знать, чтобы читать газету и нормально общаться?", "o": ["100–200", "500–800", "3000–4000", "20 000–30 000"], "c": 2}, {"q": "Что такое «ключ» в китайском языке?", "o": ["Это то же самое, что иероглиф", "Это смысловая часть, из которых собираются иероглифы. Всего их 214", "Это специальный значок для обозначения тона", "Это клавиша на клавиатуре для переключения языка"], "c": 1}, {"q": "Что такое пиньинь?", "o": ["Это традиционные иероглифы", "Это один из диалектов китайского", "Это запись китайских слов латинскими буквами (показывает произношение)", "Это древний письменный язык"], "c": 2}, {"q": "Как китайцы печатают иероглифы на смартфоне, планшете, компьютере и любом другом гаджете?", "o": ["Рисуют каждый иероглиф мышкой или пальцем на экране", "Набирают пиньинь латиницей, а программа превращает его в иероглифы", "Используют отдельную клавиатуру с тысячами кнопок", "Печатают только английскими буквами"], "c": 1}, {"q": "Что из перечисленного ОТСУТСТВУЕТ в китайском языке?", "o": ["Тоны", "Порядок слов в предложении", "Спряжения глаголов (глагол не меняется)", "Фонетическая транскрипция"], "c": 2}]};
+const KEY='zh-'+MODE+'-v1';
+const app=document.getElementById('app');
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const H=`<div class="hd n"><div class="zh">${DATA.zh}</div><span class="py">${DATA.py}</span><h1 style="margin-top:6px">${DATA.title}</h1><p>${DATA.sub}</p></div>`;
+function login(){app.innerHTML=H+`<div class="q n"><h2>Как тебя зовут?</h2><input class="in" id="nm" placeholder="Имя" autocomplete="off"><button class="btn" id="go">Начать</button></div>`;
+ const go=()=>{const v=document.getElementById('nm').value.trim();if(!v)return;st.name=v;st.ans=st.ans||{};save();home();};
+ document.getElementById('go').onclick=go;document.getElementById('nm').onkeydown=e=>{if(e.key==='Enter')go();};}
+function home(){ if(!st.name)return login();
+ if(MODE==='map'){const done=Object.keys(st.ans||{}).length;
+  app.innerHTML=H+`<p style="margin:0 4px 14px;font-weight:700">Привет, ${st.name}! Пройди все станции прошлого урока: ${done} из ${DATA.q.length}</p><div class="map">${DATA.q.map((q,i)=>`<button class="st n ${st.ans[i]!=null?'done':''}" data-i="${i}"><div class="e">${q.e}</div><b>${q.t}</b><small>станция ${i+1}</small></button>`).join('')}</div>${done===DATA.q.length?`<div class="q n c" style="margin-top:20px"><div class="big">🎉</div><h2>Карта пройдена! Правильно с первого раза: ${DATA.q.filter((q,i)=>st.ans[i]===q.c).length} из ${DATA.q.length}</h2></div>`:''}<button class="btn g" id="rs">Начать заново</button>`;
+  app.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>ask(+b.dataset.i));
+  document.getElementById('rs').onclick=()=>{st.ans={};save();home();};
+ } else { st.i=st.i||0; if(st.i>=DATA.q.length)return result(); ask(st.i); } }
+function ask(i){const q=DATA.q[i];const n=DATA.q.length;
+ app.innerHTML=H+(MODE==='test'?`<div class="bar">${DATA.q.map((_,j)=>`<i class="${j<i?(st.ans[j]===DATA.q[j].c?'ok':'no'):j===i?'cur':''}"></i>`).join('')}</div>`:'')+
+ `<div class="q n"><div class="k">${MODE==='map'?q.e+' '+q.t:'Вопрос '+(i+1)+' из '+n}</div>${q.r?`<div class="rec" style="margin-top:10px">${q.r}</div>`:''}<h2>${q.q}</h2>${q.o.map((t,k)=>`<button class="o" data-k="${k}">${'АБВГ'[k]}) ${t}</button>`).join('')}<div class="fb" id="fb"></div></div>`;
+ let lock=false;
+ app.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const k=+b.dataset.k,ok=k===q.c;
+  if(st.ans[i]==null){st.ans[i]=k;save();}
+  app.querySelector(`[data-k="${q.c}"]`).classList.add('ok');if(!ok)b.classList.add('no');
+  document.getElementById('fb').innerHTML=`<b style="color:${ok?'#17936A':'#D9366A'}">${ok?'Верно! 👍':'Не страшно — 犯错不可怕! Правильный ответ подсвечен зелёным.'}</b>${q.x?`<div style="margin-top:6px">${q.x}</div>`:''}<button class="btn" id="nx">${MODE==='map'?'К карте':(i===n-1?'Посмотреть результат':'Дальше')}</button>`;
+  document.getElementById('nx').onclick=()=>{if(MODE==='test'){st.i=i+1;save();}home();};});}
+function result(){const n=DATA.q.length,s=DATA.q.filter((q,i)=>st.ans[i]===q.c).length;
+ app.innerHTML=H+`<div class="q n c"><div class="k">${st.name}, твой результат</div><div class="big">${s} / ${n}</div><h2>${s>=8?'Отлично! Ты всё запомнил(а) 🎉':s>=5?'Хорошо! Пару вещей стоит повторить 💪':'Ничего страшного: 犯错不可怕! Попробуй ещё раз'}</h2>
+ ${DATA.q.map((q,i)=>`<div class="rec" style="text-align:left">${st.ans[i]===q.c?'✅':'❌'} <b>${q.q}</b><br>Ответ: ${q.o[q.c]}</div>`).join('')}
+ <button class="btn" id="ag">Пройти ещё раз</button><button class="btn g" id="ch">Сменить имя</button></div>`;
+ document.getElementById('ag').onclick=()=>{st.ans={};st.i=0;save();home();};
+ document.getElementById('ch').onclick=()=>{st={};save();login();};}
+home();
+</script></body></html>

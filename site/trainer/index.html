@@ -114,13 +114,14 @@ const blank=()=>({t:{1:[0,0],2:[0,0],3:[0,0],4:[0,0]},w:[0,0],best:0,rounds:0});
 
 /* ---------- speech ---------- */
 let voice=null;
+const VPREF=[/Xiaoxiao.*(Natural|Online)/i,/Yunxi.*(Natural|Online)/i,/(Natural|Online|Neural).*(zh|Chinese|Xiao|Yun)/i,/Tingting.*(Enhanced|Premium|улучш)/i,/(Lilian|Yu-?shu|Meijia).*(Enhanced|Premium)/i,/Google\s*普通话/,/Google/,/Xiaoxiao|Yunxi|Yunyang|Xiaoyi/i,/Tingting|Ting-Ting|Lilian|Yu-?shu/i,/Huihui|Kangkang|Yaoyao|Lili/i];
 const pick=()=>{if(!('speechSynthesis' in window))return;const all=speechSynthesis.getVoices();const vs=all.filter(v=>/^(zh[-_]CN|cmn)/i.test(v.lang));
-  voice=vs.find(v=>/Google/.test(v.name))||vs.find(v=>/Xiaoxiao|Tingting|Ting-Ting|Yunxi|Huihui|Lili|Meijia/i.test(v.name))||vs[0]||all.find(v=>/^zh/i.test(v.lang))||null;};
+  voice=null;for(const r of VPREF){voice=vs.find(v=>r.test(v.name));if(voice)break;} voice=voice||vs.find(v=>!v.localService)||vs[0]||all.find(v=>/^zh/i.test(v.lang))||null;};
 if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick;}
 function say(text,el,rate){
   if(!('speechSynthesis' in window)){toast('Этот браузер не умеет произносить слова');return;}
   if(!voice)pick(); if(!voice){toast('На телефоне нет китайского голоса. Попробуй Chrome или Safari');return;}
-  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.voice=voice;u.lang=voice.lang;u.rate=rate||.72;
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.voice=voice;u.lang=voice.lang;u.rate=rate||.9;u.pitch=1;
   if(el){el.classList.add('playing');u.onend=u.onerror=()=>el.classList.remove('playing');}
   speechSynthesis.speak(u);
 }
@@ -220,7 +221,7 @@ function showFeedback(){
   } else {
     html=G.ok?`<p class="msg"><b>Верно!</b> ${q.word[1]} — это ${q.right.replace('+',' + ')}.</p>`
       :`<p class="msg">Здесь <b>${q.right.replace('+',' + ')}</b>: ${q.word[3].map((t,i)=>`${i?'второй':'первый'} слог — ${TN[t].nick}`).join(', ')}.</p>
-        <div class="cmp"><button data-say="${q.word[0]}" data-rate=".55">Послушать медленно</button></div>`;
+        <div class="cmp"><button data-say="${q.word[0]}" data-rate=".7">Послушать медленно</button></div>`;
   }
   if(!G.ok&&sample) html+=`<div><button class="btn" id="askAi">Спросить ИИ, как услышать разницу</button></div><div class="ai" id="aiOut" hidden></div>`;
   html+=`<button class="btn solid" id="nx">${G.i===G.n-1?'Посмотреть результат':'Дальше'}</button>`;
