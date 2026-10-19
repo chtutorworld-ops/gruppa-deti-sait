@@ -212,14 +212,13 @@ function scores(c,hz,base){const off=base?12*Math.log2(hz/base):null,out={};
  for(const t of [1,2,3,4]){let d=Math.min(...TT[t].map(tp=>Math.sqrt(tp.reduce((x,v,i)=>x+(c[i]-v)**2,0)/30)));if(off!==null)d+=0.35*Math.abs(off-LV[t]);out[t]=d;}return out;}
 function classify(c,hz,base){const sc=scores(c,hz||1,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return best;}
 function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;
- const rise=c.slice(25).reduce((x,v)=>x+v,0)/5-c.slice(0,5).reduce((x,v)=>x+v,0)/5;
- let mn=1e9,mi=0;c.forEach((v,i)=>{if(v<mn){mn=v;mi=i;}});const dip=c.slice(0,4).reduce((x,v)=>x+v,0)/4-mn;
- const ok=best===want||sc[want]<=sc[best]*1.2+0.15||(want===2&&best===3&&rise>2.5&&dip<=1.2&&mi<=13);   // 2nd tone with a tiny dip at the start (not audible) still counts
+ const pair=(a,b)=>(want===a&&best===b)||(want===b&&best===a);
+ const ok=best===want||(!pair(2,3)&&sc[want]<=sc[best]*1.1+0.1);   // 2nd vs 3rd must be exact: no leniency between them
  return {got:ok?want:best,ok};}
 const refCache={};
 async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(/\.wav$/.test(ch)?ch:fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
 const TEMPL={1:Array(30).fill(0),2:Array.from({length:30},(_,i)=>-2.5+5*Math.pow(i/29,1.4)),3:Array.from({length:30},(_,i)=>{const x=i/29;return x<.6?1-3.4*(x/.6):-2.4+3.6*((x-.6)/.4);}),4:Array.from({length:30},(_,i)=>3-6*Math.pow(i/29,.9))};
-function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-6.5,Math.min(6.5,v))*(H/2-16)/6.5,x=i=>24+i*(W-48)/29;
+function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-7,Math.min(7,v))*(H/2-16)/7,x=i=>24+i*(W-48)/29;
  const path=c=>c.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
  return `<svg class="chart in" viewBox="0 0 ${W} ${H}"><text x="22" y="20" font-size="13" font-weight="700" fill="#9AA2BC">высоко ↑</text><text x="22" y="${H-8}" font-size="13" font-weight="700" fill="#9AA2BC">низко ↓</text><text x="${W-24}" y="${H/2-6}" text-anchor="end" font-size="12" font-weight="700" fill="#B5BCCF">твой обычный голос</text>${[-6,-3,0,3,6].map(v=>`<line x1="16" x2="${W-16}" y1="${y(v)}" y2="${y(v)}" stroke="#D3D8E3" stroke-width="1"/>`).join('')}
  ${ref?`<path d="${path(ref)}" fill="none" stroke="#9AA2BC" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round"/>`:''}
@@ -368,7 +367,7 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
    const c=contour(await toPCM(blob));
    if(!c){fb.className='fb no';fb.textContent='Не расслышал голос. Скажи громче и протяни гласную подольше, вот так: «а-а-а».';lab.textContent='Нажми и попробуй ещё раз';busy=false;return;}
    if(!S.base){S.base=c.hz;keep();}
-   const J=judge(c.c,c.hz,S.base,it.t),got=J.ok?it.t:J.got;const off=12*Math.log2(c.hz/S.base);$('#chart').innerHTML=chartSVG(ref,c.c.map(v=>v+off),got);
+   const J=judge(c.c,c.hz,S.base,it.t),got=J.ok?it.t:J.got;const off=Math.max(-3,Math.min(3,12*Math.log2(c.hz/S.base)*0.5));$('#chart').innerHTML=chartSVG(ref,c.c.map(v=>v+off),got);
    const ok=J.ok;fb.className='fb '+(ok?'ok':'no');
    fb.innerHTML=ok?`✓ Получился ${it.t}-й тон — то, что нужно! ${spI<SP.length-1?'<br><button class="btn okb" id="snx" style="margin-top:12px">Следующий слог →</button>':''}`:`Похоже на <b>${got}-й тон</b> ${mini(got)}, а нужен ${it.t}-й. ${{1:'Держи голос ровно и высоко, как длинная нота.',2:'Подними голос снизу вверх, как будто удивляешься: «а?»',3:'Опусти голос вниз, а потом чуть подними.',4:'Резко опусти голос сверху вниз, как будто сердишься.'}[it.t]}`;
    lab.textContent='Нажми и попробуй ещё раз';
