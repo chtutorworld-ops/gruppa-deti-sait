@@ -192,6 +192,8 @@ function contour(pcm){const tr=track(pcm);if(!tr||tr.f.length<8)return null;cons
  let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>v>7?v-12:v<-7?v+12:v);
  st2=st2.map((v,i,a)=>{const w=a.slice(Math.max(0,i-2),i+3).sort((p,q)=>p-q);return w[w.length>>1];});
  const cut=Math.floor(st2.length*0.08);st2=st2.slice(cut,st2.length-cut);
+ while(st2.length>10&&Math.abs(st2[st2.length-1]-st2[st2.length-2])>2.5)st2.pop();  // jumps at the very end = measuring glitch
+ while(st2.length>10&&Math.abs(st2[0]-st2[1])>2.5)st2.shift();
  const N=30,res=[];for(let i=0;i<N;i++){const p=i*(st2.length-1)/(N-1),a=Math.floor(p),b=Math.min(st2.length-1,a+1);res.push(st2[a]+(st2[b]-st2[a])*(p-a));}
  const m=res.reduce((s,v)=>s+v,0)/N;return {c:res.map(v=>v-m),hz:med,len:seg.length};}
 /* tone scoring: shape vs templates + pitch level vs the speaker's normal voice (S.base) */
