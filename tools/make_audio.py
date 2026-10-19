@@ -23,7 +23,7 @@ import edge_tts, miniaudio
 VOICES = ["zh-CN-XiaoyiNeural"]   # детский женский голос: учитель проверила — тоны чистые
 RATES = ["-20%", "-40%"]
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 4
+VERSION = 5
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -68,7 +68,7 @@ def contour(pcm):
             gap = 0
         elif st >= 0:
             gap += 1
-            if gap > 3 or i == len(f0):
+            if gap > 12 or i == len(f0):
                 e = i - gap
                 if e - st > best[1] - best[0]: best = (st, e)
                 st, gap = -1, 0
@@ -83,12 +83,17 @@ def contour(pcm):
 
 def classify(c):
     s, e = c[:5].mean(), c[25:].mean()
-    mi = 5 + int(np.argmin(c[5:27])); mn = c[mi]
-    rng, delta = c.max() - c.min(), e - s
+    mi = int(np.argmin(c)); mn = c[mi]
+    rng, delta = c.max() - mn, e - s
     if rng < 2.6 and abs(delta) < 2.0: return 1, 2.6 - rng
-    if 6 < mi < 25 and s - mn > 1.0 and e - mn > 1.0: return 3, min(s - mn, e - mn)
+    if 8 <= mi <= 26 and s - mn > 1.0 and e - mn > 0.6:
+        if mi < 11 and e - mn > 2.5 * (s - mn): return 2, e - mn
+        return 3, min(s - mn, e - mn)
     if delta > 1.6: return 2, delta
-    if delta < -1.6: return 4, -delta
+    if delta < -1.6:
+        fe = next((i for i in range(30) if c[i] <= mn + 0.6), 29)
+        if fe <= 18 and c[20:].mean() - mn < 1.0: return 3, s - mn
+        return 4, -delta
     return 1, 0.0
 
 def analyse(path):

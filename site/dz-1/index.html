@@ -164,7 +164,7 @@ function contour(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,out=[];le
  for(let i=0;i+F<pcm.length;i+=hop){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);if(r>mx)mx=r;}
  let k=0;for(let i=0;i+F<pcm.length;i+=hop,k++){if(rms[k]<Math.max(0.012,mx*0.12)){out.push(0);continue;}const [f]=yin(pcm.subarray(i,i+F),sr);out.push(f>65&&f<550?f:0);}
  // longest voiced run (gaps up to 3 frames bridged)
- let best=[0,0],st=-1,gap=0;for(let i=0;i<=out.length;i++){const v=i<out.length&&out[i]>0;if(v){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>3||i===out.length){const e=i-gap;if(e-st>best[1]-best[0])best=[st,e];st=-1;gap=0;}}}
+ let best=[0,0],st=-1,gap=0;for(let i=0;i<=out.length;i++){const v=i<out.length&&out[i]>0;if(v){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>12||i===out.length){const e=i-gap;if(e-st>best[1]-best[0])best=[st,e];st=-1;gap=0;}}}
  let seg=out.slice(best[0],best[1]+1).filter(f=>f>0);if(seg.length<8)return null;
  const med=[...seg].sort((a,b)=>a-b)[seg.length>>1];
  let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>v>7?v-12:v<-7?v+12:v);
@@ -172,20 +172,23 @@ function contour(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,out=[];le
  const cut=Math.floor(st2.length*0.1);st2=st2.slice(cut,st2.length-cut);
  const N=30,res=[];for(let i=0;i<N;i++){const p=i*(st2.length-1)/(N-1),a=Math.floor(p),b=Math.min(st2.length-1,a+1);res.push(st2[a]+(st2[b]-st2[a])*(p-a));}
  const m=res.reduce((s,v)=>s+v,0)/N;return {c:res.map(v=>v-m),hz:med,len:seg.length};}
-function classify(c){const avg=(a,b)=>c.slice(a,b).reduce((s,v)=>s+v,0)/(b-a);
- const s=avg(0,5),e=avg(25,30);let mn=1e9,mi=0;for(let i=5;i<27;i++)if(c[i]<mn){mn=c[i];mi=i;}
- const mx=Math.max(...c),range=mx-Math.min(...c),delta=e-s;
+function classify(c){const avg=(a,b)=>c.slice(a,b).reduce((x,v)=>x+v,0)/(b-a);
+ const s=avg(0,5),e=avg(25,30),mx=Math.max(...c);let mn=1e9,mi=0;c.forEach((v,i)=>{if(v<mn){mn=v;mi=i;}});
+ const range=mx-mn,delta=e-s;
  if(range<2.6&&Math.abs(delta)<2.0)return 1;
- if(mi>6&&mi<25&&s-mn>1.0&&e-mn>1.0)return 3;
- if(delta>1.6)return 2;if(delta<-1.6)return 4;return 1;}
+ if(mi>=8&&mi<=26&&s-mn>1.0&&e-mn>0.6){if(mi<11&&e-mn>2.5*(s-mn))return 2;return 3;}
+ if(delta>1.6)return 2;
+ if(delta<-1.6){let fe=29;for(let i=0;i<30;i++)if(c[i]<=mn+0.6){fe=i;break;}if(fe<=18&&avg(20,30)-mn<1.0)return 3;return 4;}
+ return 1;}
+function near3(c){const avg=(a,b)=>c.slice(a,b).reduce((x,v)=>x+v,0)/(b-a);const s=avg(0,5);let mn=1e9,mi=0;c.forEach((v,i)=>{if(v<mn){mn=v;mi=i;}});return mi>=6&&mi<=25&&s-mn>0.8;}
 const refCache={};
 async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
 const TEMPL={1:Array(30).fill(0),2:Array.from({length:30},(_,i)=>-2.5+5*Math.pow(i/29,1.4)),3:Array.from({length:30},(_,i)=>{const x=i/29;return x<.6?1-3.4*(x/.6):-2.4+3.6*((x-.6)/.4);}),4:Array.from({length:30},(_,i)=>3-6*Math.pow(i/29,.9))};
 function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-16)/8,x=i=>24+i*(W-48)/29;
  const path=c=>c.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
- return `<svg class="chart in" viewBox="0 0 ${W} ${H}">${[-6,-3,0,3,6].map(v=>`<line x1="16" x2="${W-16}" y1="${y(v)}" y2="${y(v)}" stroke="#D3D8E3" stroke-width="1"/>`).join('')}
+ return `<svg class="chart in" viewBox="0 0 ${W} ${H}"><text x="22" y="20" font-size="13" font-weight="700" fill="#9AA2BC">высоко ↑</text><text x="22" y="${H-8}" font-size="13" font-weight="700" fill="#9AA2BC">низко ↓</text>${[-6,-3,0,3,6].map(v=>`<line x1="16" x2="${W-16}" y1="${y(v)}" y2="${y(v)}" stroke="#D3D8E3" stroke-width="1"/>`).join('')}
  ${ref?`<path d="${path(ref)}" fill="none" stroke="#9AA2BC" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round"/>`:''}
- ${me?`<path d="${path(me)}" fill="none" stroke="var(--t${tone||0})" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`:''}</svg>`;}
+ ${me?`<path d="${path(me)}" fill="none" stroke="#3B4BD8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`:''}</svg>`;}
 
 /* ===================== tasks ===================== */
 const TASKS=[
@@ -306,7 +309,7 @@ function speakV(){const it=SP[spI],d=S.done.speak||{passed:0,items:{}};const ite
  <div style="display:flex;justify-content:center;align-items:center;gap:22px;margin-top:10px"><div class="big py" style="color:var(--t${it.t})">${mark(it.b,it.t)}</div>${mini(it.t)}<span style="font-size:15px;font-weight:700;color:var(--mu)">${it.t}-й тон</span></div>
  <div class="row" style="justify-content:center"><button class="btn g" id="ref">▶ Образец</button></div>
  <button class="mic n" id="mic">🎤</button><div style="font-size:14px;font-weight:700;color:var(--mu)" id="mlab">Нажми и скажи «${mark(it.b,it.t)}»</div>
- <div id="chart">${chartSVG(TEMPL[it.t],null)}</div><div class="legend"><span><i style="background:#9AA2BC"></i>образец</span><span><i style="background:var(--t${it.t})"></i>твой голос</span></div>
+ <div id="chart">${chartSVG(TEMPL[it.t],null)}</div><div class="legend"><span><i style="background:repeating-linear-gradient(90deg,#9AA2BC 0 4px,transparent 4px 8px)"></i>серая пунктирная — образец</span><span><i style="background:#3B4BD8;height:5px"></i>синяя — твой голос</span></div>
  <div class="fb" id="sfb"></div></div>`);
  document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{spI=+b.dataset.sp;speakV();});
  $('#ref').onclick=()=>play(it.ch,$('#ref'));
@@ -318,8 +321,8 @@ function speakV(){const it=SP[spI],d=S.done.speak||{passed:0,items:{}};const ite
    const c=contour(await toPCM(blob));
    if(!c){fb.className='fb no';fb.textContent='Не расслышал голос. Скажи громче и протяни гласную подольше, вот так: «а-а-а».';lab.textContent='Нажми и попробуй ещё раз';busy=false;return;}
    const got=classify(c.c);$('#chart').innerHTML=chartSVG(ref||TEMPL[it.t],c.c,got);
-   const ok=got===it.t;fb.className='fb '+(ok?'ok':'no');
-   fb.innerHTML=ok?`✓ Получился ${got}-й тон — то, что нужно! ${spI<SP.length-1?'<br><button class="btn okb" id="snx" style="margin-top:12px">Следующий слог →</button>':''}`:`Похоже на <b>${got}-й тон</b> ${mini(got)}, а нужен ${it.t}-й. ${{1:'Держи голос ровно и высоко, как длинная нота.',2:'Подними голос снизу вверх, как будто удивляешься: «а?»',3:'Опусти голос вниз, а потом чуть подними.',4:'Резко опусти голос сверху вниз, как будто сердишься.'}[it.t]}`;
+   const ok=got===it.t||(it.t===3&&near3(c.c));fb.className='fb '+(ok?'ok':'no');
+   fb.innerHTML=ok?`✓ Получился ${it.t}-й тон — то, что нужно! ${spI<SP.length-1?'<br><button class="btn okb" id="snx" style="margin-top:12px">Следующий слог →</button>':''}`:`Похоже на <b>${got}-й тон</b> ${mini(got)}, а нужен ${it.t}-й. ${{1:'Держи голос ровно и высоко, как длинная нота.',2:'Подними голос снизу вверх, как будто удивляешься: «а?»',3:'Опусти голос вниз, а потом чуть подними.',4:'Резко опусти голос сверху вниз, как будто сердишься.'}[it.t]}`;
    lab.textContent='Нажми и попробуй ещё раз';
    const d2=S.done.speak||{items:{}};d2.items=d2.items||{};d2.tries=(d2.tries||0)+1;if(ok)d2.items[it.b+it.t]=1;d2.passed=Object.keys(d2.items).length;send('speak',{items:d2.items,passed:d2.passed,tries:d2.tries});
    if(ok&&$('#snx'))$('#snx').onclick=()=>{spI++;speakV();};
