@@ -37,7 +37,7 @@ const API=/workers\.dev$/.test(location.hostname)?'/api/voice/':'https://gruppa-
 const GROUPS=[
  ['Для «Угадай тон»',['ma','ba','da','ni','mi','bi','di','tu']],
  ['Для «Скажи тон»',['mo','wu']],
- ['Образцы гласных для «Запиши голос»',['a','o','e','yi']],
+ ['Образцы гласных для «Запиши голос»',['a','o','e','yi','u']],
 ];
 const ITEMS=[];GROUPS.forEach(([g,bs])=>bs.forEach(b=>[1,2,3,4].forEach(t=>ITEMS.push(b+t))));
 const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
@@ -99,7 +99,7 @@ function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Obje
  $('#app').innerHTML=`<div class="head n"><h1>录音 · Запись эталонных слогов</h1><p class="l">Эти записи будут звучать в домашних заданиях вместо синтезатора. Говорите отчётливо и чуть медленнее обычного. После записи вы увидите кривую своего голоса — для 3-го тона там должна быть «галочка».</p>
  <div class="bar"><i style="width:${done/ITEMS.length*100}%"></i></div><p class="l" style="font-weight:800">Записано ${done} из ${ITEMS.length}</p></div>
  <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].includes(b))[0]}</div>
-  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t}-й тон ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>
+  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t}-й тон ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
   <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
   <div id="cv"></div>
   <div class="row"><button class="btn g" id="pl" ${blob?'':'disabled'}>▶ Прослушать</button><button class="btn ok" id="sv" ${blob?'':'disabled'}>✓ Сохранить и дальше</button>${DONE[id]?'<button class="btn g" id="old">▶ Сохранённое</button>':''}</div>

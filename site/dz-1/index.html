@@ -393,7 +393,7 @@ function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
  <div class="grid2">${RECS.map(([id,b,txt])=>`<div class="rc n" id="rc-${id}"><div class="hd"><span class="py">${txt}</span><span class="st ${items[id]?'ok':''}" id="st-${id}">${items[id]?'✓ отправлено':''}</span></div>
   <div class="row"><button class="btn g" data-ref="${id}">▶ Образец</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
  <div class="tip">💡 Говори чётко и не спеши: <b>ā — á — ǎ — à</b>. Если отправка не проходит, в конце будет запасная кнопка «Отправить через мессенджер».</div>`);
- document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);playSylSeq(r[1],b);});
+ document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);playSylSeq([1,2,3,4].every(t=>hasVoice(r[0],t))?r[0]:r[1],b);});
  let stop=null,cur=null;
  document.querySelectorAll('[data-rec]').forEach(b=>b.onclick=async()=>{const id=b.dataset.rec;
   if(stop&&cur===id){stop();return;}if(stop)return;cur=id;
