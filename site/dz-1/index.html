@@ -149,7 +149,10 @@ const hasSyn=(b,t)=>hasVoice(b,t);   // only the teacher's real voice (synthetic
 const sylURL=(b,t)=>hasVoice(b,t)?VOICE+b+t+'.wav':SYN+synKey(b,t)+'.wav';
 function playSyl(b,t,el,rate){if(!hasSyn(b,t)){const c=chOf(b,t);return c?play(c,el,rate):Promise.resolve();}
  return new Promise(res=>{try{curA&&curA.pause()}catch(e){}const a=new Audio(sylURL(b,t));curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
-  const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;a.onerror=()=>{el&&el.classList.remove('on');const c=chOf(b,t);(c?play(c,el,rate):Promise.resolve()).then(res);};a.play().catch(a.onerror);});}
+  const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;let tried=0;
+  const fail=()=>{if(tried++<2){setTimeout(()=>{if(curA!==a)return end();a.load();a.play().catch(fail);},350);return;}end();};   // her voice only, never the robot
+  a.onerror=fail;a.play().catch(fail);});}
+const PRE={};function preload(b,t){const u=sylURL(b,t);if(PRE[u])return;const a=new Audio(u);a.preload='auto';a.load();PRE[u]=a;}
 async function playSylSeq(b,el){
  if([1,2,3,4].every(t=>hasVoice(b,t))){const as=[1,2,3,4].map(t=>{const a=new Audio(sylURL(b,t));a.preload='auto';a.load();return a;});
   el&&el.classList.add('on');for(const a of as){try{curA&&curA.pause()}catch(e){}curA=a;await new Promise(r=>{a.onended=r;a.onerror=r;a.play().catch(r);});await new Promise(r=>setTimeout(r,180));}el&&el.classList.remove('on');return;}
@@ -308,9 +311,15 @@ const goodCh=ch=>!GOOD||GOOD[ch]!==false;
 const ALT={"mo4": ["默", "末", "莫", "陌", "漠"], "wu1": ["乌", "屋", "污", "巫"], "wu2": ["无", "吴", "梧"]};
 function chOf(b,t){const alt=ALT[b+t];if(alt&&GOOD){const ok=alt.find(c=>GOOD[c]===true);if(ok)return ok;}return (alt&&alt[0])||R[b].split(',')[t-1];}
 function noRepeat(arr,key){for(let k=0;k<200;k++){const a=shuffle(arr);if(a.every((x,i)=>!i||key(x)!==key(a[i-1])))return a;}return arr;}
-function mkL1(){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const used=new Set(),items=[];
- for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(VOK&&Object.keys(VOK).length>=8)return hasVoice(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
- return items;}
+function mkL1(){const useV=VOK&&Object.keys(VOK).length>=8;
+ const okB=(b,t)=>useV?hasVoice(b,t):(c=>c&&goodCh(c))(R[b].split(',')[t-1]);
+ for(let k=0;k<400;k++){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const cnt={},items=[];let bad=false;
+  for(const t of seq){const prev=items.length?items[items.length-1].b:null;
+   const c=shuffle(BASES.filter(b=>okB(b,t)&&b!==prev&&!items.some(x=>x.b===b&&x.t===t)));
+   c.sort((x,y)=>(cnt[x]||0)-(cnt[y]||0));const b=c[0];if(!b||(cnt[b]||0)>=2){bad=true;break;}
+   cnt[b]=(cnt[b]||0)+1;items.push({b,t,ch:R[b].split(',')[t-1]});}
+  if(!bad)return items;}
+ return [1,2,3,4,1,2,3,4,1,2].map((t,i)=>{const b=BASES[i%BASES.length];return {b,t,ch:R[b].split(',')[t-1]};});}
 function mkL2(){let w=shuffle(WORDS).slice(0,10);for(let k=0;k<300;k++){const a=shuffle(w);if(a.every((x,i)=>!i||(x[3].join('')!==a[i-1][3].join('')&&x[3][0]!==a[i-1][3][0])))return a;}return w;}
 const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
 const TM={1:'ˉ',2:'ˊ',3:'ˇ',4:'ˋ'};
@@ -321,7 +330,7 @@ function listenV(){L=null;const a=S.done.listen1,b=S.done.listen2;
  <div class="lvl"><button class="n" data-l="1"><b>Уровень 1 · Слоги</b><small>Один слог: mā, má, mǎ или mà? 10 вопросов.</small>${a?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${a.score}/10</small>`:''}</button>
  <button class="n" data-l="2"><b>Уровень 2 · Слова из двух слогов</b><small>Два тона подряд: 1+2, 3+1… 10 вопросов.</small>${b?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${b.score}/10</small>`:''}</button></div>`);
  document.querySelectorAll('[data-l]').forEach(x=>x.onclick=()=>startL(+x.dataset.l));}
-async function startL(lv){await waitVoice();L={lv,i:0,res:[],log:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};askL();}
+async function startL(lv){if(!VOK)await waitVoice();L={lv,i:0,res:[],log:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};if(lv===1)L.items.forEach(it=>hasVoice(it.b,it.t)&&preload(it.b,it.t));askL();}
 function askL(){const it=L.items[L.i],lv=L.lv;
  if(L.i>=10){const sc=L.res.filter(Boolean).length;const prev=S.done['listen'+lv]||{};send('listen'+lv,{score:Math.max(sc,prev.score||0),last:sc,of:10,attempts:(prev.attempts||0)+1,log:L.log});
   shell(`${backBtn}<h2>Уровень ${lv} пройден!</h2><div class="res">${sc} / 10</div><p class="lead">${sc>=9?'Супер-уши! 🎧':sc>=6?'Хорошо! Попробуй ещё раз, чтобы стало 10.':'Тоны — это сложно, 犯错不可怕! Пройди ещё раз.'}</p><div class="row"><button class="btn" id="again">Ещё раз</button><button class="btn g" id="other">${lv===1?'Уровень 2 →':'Уровень 1'}</button></div>`);
@@ -377,7 +386,7 @@ function speakV(){if(!S.base)return calibV();const it=SP[spI],d=S.done.speak||{p
   busy=false;};}
 
 /* ---------- 4. record for teacher ---------- */
-const RECS=[['a','a','ā á ǎ à'],['o','o','ō ó ǒ ò'],['e','e','ē é ě è'],['i','yi','yī yí yǐ yì'],['u','wu','wū wú wǔ wù']];
+const RECS=[['a','a','ā á ǎ à'],['o','o','ō ó ǒ ò'],['e','e','ē é ě è'],['i','yi','ī í ǐ ì'],['u','wu','ū ú ǔ ù']];
 const blobs={};
 function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
  shell(`${backBtn}<h2><span class="zh">录音</span>Запиши голос учителю</h2><p class="lead">Для каждой гласной: послушай образец, нажми «Записать» и произнеси её 4 раза — с 1-м, 2-м, 3-м и 4-м тоном. Только гласную, без согласных: «ā — á — ǎ — à». Потом прослушай себя и нажми «Отправить». Можно перезаписать сколько угодно раз.</p>
