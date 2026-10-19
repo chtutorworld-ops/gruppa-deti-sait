@@ -23,7 +23,7 @@ import edge_tts, miniaudio
 VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
 RATES = ["-20%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 9
+VERSION = 10
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -92,10 +92,11 @@ def contour(pcm):
     s = 12 * np.log2(seg / med); s = np.where(s > 7, s - 12, np.where(s < -7, s + 12, s))
     s = np.array([np.median(s[max(0, i-2):i+3]) for i in range(len(s))])
     cut = int(len(s) * 0.08); s = s[cut:len(s)-cut] if cut else s
-    s = list(s)
-    while len(s) > 10 and abs(s[-1] - s[-2]) > 2.5: s.pop()      # скачок в самом конце — сбой измерения
-    while len(s) > 10 and abs(s[0] - s[1]) > 2.5: s.pop(0)
-    s = np.array(s)
+    n = len(s)                                     # резкий скачок у краёв звука — сбой измерения, отрезаем
+    for i in range(int(n * 0.7), n):
+        if abs(s[i] - s[i-1]) > 3.5: s = s[:i]; break
+    for i in range(int(len(s) * 0.25), 0, -1):
+        if abs(s[i] - s[i-1]) > 3.5: s = s[i:]; break
     c = np.interp(np.linspace(0, len(s) - 1, 30), np.arange(len(s)), s)
     return c - c.mean(), float(med)
 
