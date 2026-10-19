@@ -270,6 +270,8 @@ function kbdV(){const k=KB[kbTab];const ok=S.done.kbd&&S.done.kbd.ok;
 const BASES=Object.keys(R).filter(b=>!['a','o','e','yi','wu'].includes(b)); // только слоги с инициалью
 let GOOD=null;fetch(AUDIO+'check.json').then(r=>r.json()).then(j=>{GOOD={};for(const k in j.items)GOOD[j.items[k].c]=j.items[k].ok;}).catch(()=>{});
 const goodCh=ch=>!GOOD||GOOD[ch]!==false;
+const ALT={"mo4": ["默", "末", "莫", "陌", "漠"], "wu1": ["乌", "屋", "污", "巫"], "wu2": ["无", "吴", "梧"]};
+function chOf(b,t){const alt=ALT[b+t];if(alt&&GOOD){const ok=alt.find(c=>GOOD[c]===true);if(ok)return ok;}return (alt&&alt[0])||R[b].split(',')[t-1];}
 function noRepeat(arr,key){for(let k=0;k<200;k++){const a=shuffle(arr);if(a.every((x,i)=>!i||key(x)!==key(a[i-1])))return a;}return arr;}
 function mkL1(){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const used=new Set(),items=[];
  for(const t of seq){const cands=shuffle(BASES.filter(b=>{const c=R[b].split(',')[t-1];return c&&goodCh(c)&&!used.has(b+t);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
@@ -303,7 +305,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
   $('#nx').onclick=()=>{L.i++;askL();};});}
 
 /* ---------- 3. speak & check ---------- */
-const SP=[['mo',1],['mo',2],['mo',3],['mo',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,ch:R[b].split(',')[t-1]}));
+const SP=[['mo',1],['mo',2],['mo',3],['mo',4],['wu',1],['wu',2],['wu',3],['wu',4]].map(([b,t])=>({b,t,get ch(){return chOf(b,t);}}));
 let spI=0;
 function calibV(){shell(`${backBtn}<h2><span class="zh">说</span>Сначала настроим микрофон</h2><p class="lead">Скажи протяжно <b>«а-а-а»</b> своим обычным, спокойным голосом — не высоко и не низко. Так система узнает твой голос и будет точнее слышать тоны.</p>
  <button class="mic n" id="cmic">🎤</button><div style="text-align:center;font-size:14px;font-weight:700;color:var(--mu)" id="clab">Нажми и скажи «а-а-а» (2 секунды)</div><div class="fb" id="cfb"></div>`);
@@ -347,7 +349,7 @@ function recV(){const items=(S.done.rec&&S.done.rec.items)||{};
  <div class="grid2">${RECS.map(([id,b,txt])=>`<div class="rc n" id="rc-${id}"><div class="hd"><span class="py">${txt}</span><span class="st ${items[id]?'ok':''}" id="st-${id}">${items[id]?'✓ отправлено':''}</span></div>
   <div class="row"><button class="btn g" data-ref="${id}">▶ Образец${b!==id&&b!=="yi"&&b!=="wu"?` <small style="font-weight:600">(на слоге ${b})</small>`:""}</button><button class="btn" data-rec="${id}">● Записать</button><button class="btn g" data-pl="${id}" ${blobs[id]?'':'disabled'}>▶ Я</button><button class="btn okb" data-up="${id}" ${blobs[id]?'':'disabled'}>Отправить</button></div></div>`).join('')}</div>
  <div class="tip">💡 Говори чётко и не спеши: <b>ā — á — ǎ — à</b>. Если отправка не проходит, в конце будет запасная кнопка «Отправить через мессенджер».</div>`);
- document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);const row=R[r[1]].split(',');playSeq([1,2,3,4].map(t=>row[t-1]).filter(Boolean),b);});
+ document.querySelectorAll('[data-ref]').forEach(b=>b.onclick=()=>{const r=RECS.find(x=>x[0]===b.dataset.ref);playSeq([1,2,3,4].map(t=>chOf(r[1],t)).filter(Boolean),b);});
  let stop=null,cur=null;
  document.querySelectorAll('[data-rec]').forEach(b=>b.onclick=async()=>{const id=b.dataset.rec;
   if(stop&&cur===id){stop();return;}if(stop)return;cur=id;
