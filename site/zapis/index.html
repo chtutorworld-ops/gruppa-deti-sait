@@ -50,14 +50,18 @@ const $=s=>document.querySelector(s);
 /* ---------- pitch (for the curve) ---------- */
 function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=new Float32Array(tmax+1);
  for(let t=1;t<=tmax;t++){let s=0;for(let i=0;i<W;i++){const v=x[i]-x[i+t];s+=v*v;}d[t]=s;}let run=0;for(let t=1;t<=tmax;t++){run+=d[t];d[t]=run?d[t]*t/run:1;}
- for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;return sr/t;}}return 0;}
+ for(let t=tmin;t<tmax;t++){if(d[t]<0.15){while(t+1<tmax&&d[t+1]<d[t])t++;return [sr/t,d[t]];}}return [0,1];}
 function curve(pcm,sr){const step=Math.round(sr/100),F=512+Math.floor(sr/65)+2,f=[],rms=[];let mx=0;
  for(let i=0;i+F<pcm.length;i+=step){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);mx=Math.max(mx,r);}
- let k=0;for(let i=0;i+F<pcm.length;i+=step,k++){if(rms[k]<mx*0.12){f.push(0);continue;}const v=yin(pcm.subarray(i,i+F),sr);f.push(v>65&&v<550?v:(rms[k]>=mx*0.22?-1:0));}
- const fv=f.findIndex(x=>x>0);let lv=-1;f.forEach((x,i)=>{if(x>0)lv=i;});const cr=f.map(()=>false);
- for(let i=0;i<f.length;i++){if(f[i]>=0)continue;cr[i]=true;if(i<fv){f[i]=0;cr[i]=false;continue;}let l=i-1;while(l>=0&&f[l]<=0)l--;let r=i+1;while(r<f.length&&f[r]<=0)r++;
-  const L=l>=0?f[l]:0,R=r<f.length?f[r]:0;f[i]=i>lv?L*Math.pow(2,-3/12):Math.min(L,R)*Math.pow(2,-2.5/12);}
- return {f,cr};}
+ let k=0;for(let i=0;i+F<pcm.length;i+=step,k++){if(rms[k]<mx*0.05){f.push(0);continue;}const [v,ap]=yin(pcm.subarray(i,i+F),sr);f.push(v>65&&v<550&&ap<0.1&&rms[k]>=mx*0.1?v:-1);}
+ const vv=f.filter(x=>x>0).sort((a,b)=>a-b);const md=vv[vv.length>>1]||200;for(let i=0;i<f.length;i++)if(f[i]>0&&Math.abs(12*Math.log2(f[i]/md))>9)f[i]=-1;
+ const vi=[];f.forEach((x,i)=>{if(x>0)vi.push(i);});const cr=f.map(()=>false);if(vi.length<5)return {f:f.map(()=>0),cr};
+ const groups=[];let g=[vi[0]];for(let n=1;n<vi.length;n++){if(vi[n]-vi[n-1]<=35)g.push(vi[n]);else{groups.push(g);g=[vi[n]];}}groups.push(g);
+ const G=groups.sort((a,b)=>b.length-a.length)[0];const a=G[0],b=G[G.length-1];let e=b;while(e+1<f.length&&f[e+1]<0)e++;
+ const out=f.map((x,i)=>i<a||i>e?0:x);
+ for(let i=a;i<=e;i++){if(out[i]>0)continue;cr[i]=true;let l=i-1;while(l>=a&&f[l]<=0)l--;let r=i+1;while(r<=b&&f[r]<=0)r++;
+  out[i]=i>b?f[b]*Math.pow(2,-3/12):Math.min(f[l],f[r])*Math.pow(2,-3/12);}
+ return {f:out,cr};}
 function chart(tr){const f=tr.f,cr=tr.cr,v=f.filter((x,i)=>x>0&&!cr[i]);if(v.length<5)return '';const med=[...v].sort((a,b)=>a-b)[v.length>>1];
  const W=460,H=150,n=f.length,st=f.map(x=>x>0?12*Math.log2(x/med):null);
  const y=s=>H/2-Math.max(-8,Math.min(8,s))*(H/2-12)/8,x=i=>14+i*(W-28)/Math.max(1,n-1);

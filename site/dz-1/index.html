@@ -142,14 +142,18 @@ function play(text,el,rate){return new Promise(res=>{try{curA&&curA.pause()}catc
 /* textbook tones re-synthesised from a clean recording (audio/syn/<syllable><tone>.wav) */
 const SYN=AUDIO+'syn/';let SYNOK=null;fetch(SYN+'index.json').then(r=>r.json()).then(j=>SYNOK=j).catch(()=>{});
 const synKey=(b,t)=>({yi:'i',wu:'u'}[b]||b)+t;
-const VOICE=AUDIO+'voice/';let VOK=null;fetch(VOICE+'index.json?'+Date.now()).then(r=>r.json()).then(j=>VOK=j).catch(()=>{});
+const VOICE=AUDIO+'voice/';let VOK=null;const VOKP=fetch(VOICE+'index.json?'+Date.now()).then(r=>r.json()).then(j=>VOK=j).catch(()=>{});
+const waitVoice=()=>Promise.race([VOKP,new Promise(r=>setTimeout(r,4000))]);
 const hasVoice=(b,t)=>!!(VOK&&VOK[b+t]);
-const hasSyn=(b,t)=>hasVoice(b,t)||!!(SYNOK&&SYNOK[synKey(b,t)]);
+const hasSyn=(b,t)=>hasVoice(b,t);   // only the teacher's real voice (synthetic re-pitching sounded bad)
 const sylURL=(b,t)=>hasVoice(b,t)?VOICE+b+t+'.wav':SYN+synKey(b,t)+'.wav';
 function playSyl(b,t,el,rate){if(!hasSyn(b,t)){const c=chOf(b,t);return c?play(c,el,rate):Promise.resolve();}
  return new Promise(res=>{try{curA&&curA.pause()}catch(e){}const a=new Audio(sylURL(b,t));curA=a;a.playbackRate=rate||1;a.preservesPitch=true;el&&el.classList.add('on');
   const end=()=>{el&&el.classList.remove('on');res();};a.onended=end;a.onerror=()=>{el&&el.classList.remove('on');const c=chOf(b,t);(c?play(c,el,rate):Promise.resolve()).then(res);};a.play().catch(a.onerror);});}
-async function playSylSeq(b,el){for(const t of [1,2,3,4]){await playSyl(b,t,el);await new Promise(r=>setTimeout(r,350));}}
+async function playSylSeq(b,el){
+ if([1,2,3,4].every(t=>hasVoice(b,t))){const as=[1,2,3,4].map(t=>{const a=new Audio(sylURL(b,t));a.preload='auto';a.load();return a;});
+  el&&el.classList.add('on');for(const a of as){try{curA&&curA.pause()}catch(e){}curA=a;await new Promise(r=>{a.onended=r;a.onerror=r;a.play().catch(r);});await new Promise(r=>setTimeout(r,180));}el&&el.classList.remove('on');return;}
+ for(const t of [1,2,3,4]){await playSyl(b,t,el);await new Promise(r=>setTimeout(r,200));}}
 async function playSeq(list,el){for(const t of list){await play(t,el);await new Promise(r=>setTimeout(r,250));}}
 let micStream=null;
 async function getMic(){if(micStream&&micStream.active)return micStream;
@@ -176,21 +180,24 @@ function yin(x,sr){const W=512,tmin=Math.floor(sr/550),tmax=Math.floor(sr/65),d=
    inside the syllable are vocal fry = the lowest point of the voice, so they are filled LOW */
 function track(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,f=[],rms=[];let mx=0;
  for(let i=0;i+F<pcm.length;i+=hop){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);if(r>mx)mx=r;}
- const thr=Math.max(0.012,mx*0.12),cthr=mx*0.22;let k=0;
- for(let i=0;i+F<pcm.length;i+=hop,k++){if(rms[k]<thr){f.push(0);continue;}const [v]=yin(pcm.subarray(i,i+F),sr);f.push(v>65&&v<550?v:(rms[k]>=cthr?-1:0));}
- // syllable = longest stretch of sound (silence gaps <=3 frames bridged) with >=8 pitched frames
- let best=null,st=-1,gap=0;for(let i=0;i<=f.length;i++){const on=i<f.length&&f[i]!==0;if(on){if(st<0)st=i;gap=0;}else if(st>=0){gap++;if(gap>3||i===f.length){const e=i-gap,n=f.slice(st,e+1).filter(x=>x>0).length;if(n>=8&&(!best||n>best[2]))best=[st,e,n];st=-1;gap=0;}}}
- if(!best)return null;const seg=f.slice(best[0],best[1]+1),creak=seg.map(x=>x<0);
- const firstV=seg.findIndex(x=>x>0);let lastV=-1;seg.forEach((x,i)=>{if(x>0)lastV=i;});
- for(let i=0;i<seg.length;i++){if(seg[i]>=0)continue;let l=i-1;while(l>=0&&seg[l]<=0)l--;let r=i+1;while(r<seg.length&&seg[r]<=0)r++;
-  const L=l>=0?seg[l]:0,Rv=r<seg.length?seg[r]:0;
-  if(i<firstV){seg[i]=0;continue;}                                   // noise before the voice (t, p, k…) — drop
-  if(i>lastV){const run=seg.length-lastV-1;seg[i]=run>=4?L*Math.pow(2,-3/12):0;continue;} // creaky ending = low
-  seg[i]=Math.min(L,Rv)*Math.pow(2,-2.5/12);}                        // creak in the middle = the bottom of the dip
+ const thr=Math.max(0.01,mx*0.10),cthr=mx*0.05;let k=0;
+ for(let i=0;i+F<pcm.length;i+=hop,k++){const [v,ap]=rms[k]>=cthr?yin(pcm.subarray(i,i+F),sr):[0,1];
+  if(v>65&&v<550&&rms[k]>=thr&&ap<0.1)f.push(v);else f.push(rms[k]>=cthr?-1:0);}
+ {const v=f.filter(x=>x>0).sort((p,q)=>p-q);if(v.length){const md=v[v.length>>1];for(let i=0;i<f.length;i++)if(f[i]>0){const d=12*Math.log2(f[i]/md);if(d<-9||d>9)f[i]=-1;}}}  // wild pitch in noise = creak
+ // syllable = longest group of pitched frames; gaps up to 0.35 s between them are bridged (creak lives there)
+ const vi=[];f.forEach((x,i)=>{if(x>0)vi.push(i);});if(vi.length<8)return null;
+ const groups=[];let g=[vi[0]];for(let n=1;n<vi.length;n++){if(vi[n]-vi[n-1]<=35)g.push(vi[n]);else{groups.push(g);g=[vi[n]];}}groups.push(g);
+ const G=groups.sort((a,b)=>b.length-a.length)[0];if(G.length<8)return null;
+ let a=G[0],b=G[G.length-1];let e=b;while(e+1<f.length&&f[e+1]<0)e++;           // creaky tail after the last pitched frame
+ const seg=f.slice(a,e+1),creak=seg.map(x=>x<=0);const lastV=b-a;
+ for(let i=0;i<seg.length;i++){if(seg[i]>0)continue;let l=i-1;while(l>=0&&seg[l]<=0)l--;let r=i+1;while(r<seg.length&&seg[r]<=0)r++;
+  const L=l>=0?seg[l]:0,R=r<seg.length?seg[r]:0;
+  if(i>lastV){seg[i]=seg.length-lastV-1>=4?L*Math.pow(2,-3/12):0;continue;}  // creaky ending = low
+  seg[i]=Math.min(L,R)*Math.pow(2,-3/12);}                                 // gap in the middle = bottom of the dip
  const out=[],cr=[];seg.forEach((x,i)=>{if(x>0){out.push(x);cr.push(creak[i]);}});return {f:out,creak:cr};}
 function contour(pcm){const tr=track(pcm);if(!tr||tr.f.length<8)return null;const seg=tr.f;
  const med=[...seg].sort((a,b)=>a-b)[seg.length>>1];
- let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>v>7?v-12:v<-7?v+12:v);
+ let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>{while(v>7)v-=12;while(v<-7)v+=12;return Math.max(-7,Math.min(7,v));});
  st2=st2.map((v,i,a)=>{const w=a.slice(Math.max(0,i-2),i+3).sort((p,q)=>p-q);return w[w.length>>1];});
  const cut=Math.floor(st2.length*0.08);st2=st2.slice(cut,st2.length-cut);
  {const n=st2.length;for(let i=Math.floor(n*0.7);i<n;i++)if(Math.abs(st2[i]-st2[i-1])>3.5){st2=st2.slice(0,i);break;}  // sudden jump near the end = measuring glitch
@@ -208,7 +215,7 @@ function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t
 const refCache={};
 async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(/\.wav$/.test(ch)?ch:fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
 const TEMPL={1:Array(30).fill(0),2:Array.from({length:30},(_,i)=>-2.5+5*Math.pow(i/29,1.4)),3:Array.from({length:30},(_,i)=>{const x=i/29;return x<.6?1-3.4*(x/.6):-2.4+3.6*((x-.6)/.4);}),4:Array.from({length:30},(_,i)=>3-6*Math.pow(i/29,.9))};
-function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-8,Math.min(8,v))*(H/2-16)/8,x=i=>24+i*(W-48)/29;
+function chartSVG(ref,me,tone){const W=520,H=200,y=v=>H/2-Math.max(-6.5,Math.min(6.5,v))*(H/2-16)/6.5,x=i=>24+i*(W-48)/29;
  const path=c=>c.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
  return `<svg class="chart in" viewBox="0 0 ${W} ${H}"><text x="22" y="20" font-size="13" font-weight="700" fill="#9AA2BC">высоко ↑</text><text x="22" y="${H-8}" font-size="13" font-weight="700" fill="#9AA2BC">низко ↓</text><text x="${W-24}" y="${H/2-6}" text-anchor="end" font-size="12" font-weight="700" fill="#B5BCCF">твой обычный голос</text>${[-6,-3,0,3,6].map(v=>`<line x1="16" x2="${W-16}" y1="${y(v)}" y2="${y(v)}" stroke="#D3D8E3" stroke-width="1"/>`).join('')}
  ${ref?`<path d="${path(ref)}" fill="none" stroke="#9AA2BC" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round"/>`:''}
@@ -299,7 +306,7 @@ const ALT={"mo4": ["默", "末", "莫", "陌", "漠"], "wu1": ["乌", "屋", "�
 function chOf(b,t){const alt=ALT[b+t];if(alt&&GOOD){const ok=alt.find(c=>GOOD[c]===true);if(ok)return ok;}return (alt&&alt[0])||R[b].split(',')[t-1];}
 function noRepeat(arr,key){for(let k=0;k<200;k++){const a=shuffle(arr);if(a.every((x,i)=>!i||key(x)!==key(a[i-1])))return a;}return arr;}
 function mkL1(){const seq=noRepeat([1,1,2,2,3,3,4,4,1+(Math.random()*4|0),1+(Math.random()*4|0)],t=>t);const used=new Set(),items=[];
- for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(VOK&&Object.keys(VOK).length>=8)return hasVoice(b,t);if(SYNOK)return hasSyn(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
+ for(const t of seq){const cands=shuffle(BASES.filter(b=>{if(used.has(b+t))return false;if(VOK&&Object.keys(VOK).length>=8)return hasVoice(b,t);const c=R[b].split(',')[t-1];return c&&goodCh(c);}));const b=cands[0]||BASES.find(b=>R[b].split(',')[t-1]);used.add(b+t);items.push({b,t,ch:R[b].split(',')[t-1]});}
  return items;}
 function mkL2(){let w=shuffle(WORDS).slice(0,10);for(let k=0;k<300;k++){const a=shuffle(w);if(a.every((x,i)=>!i||(x[3].join('')!==a[i-1][3].join('')&&x[3][0]!==a[i-1][3][0])))return a;}return w;}
 const PAIRS=[];for(let a=1;a<=4;a++)for(let b=1;b<=4;b++)PAIRS.push([a,b]);
@@ -311,7 +318,7 @@ function listenV(){L=null;const a=S.done.listen1,b=S.done.listen2;
  <div class="lvl"><button class="n" data-l="1"><b>Уровень 1 · Слоги</b><small>Один слог: mā, má, mǎ или mà? 10 вопросов.</small>${a?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${a.score}/10</small>`:''}</button>
  <button class="n" data-l="2"><b>Уровень 2 · Слова из двух слогов</b><small>Два тона подряд: 1+2, 3+1… 10 вопросов.</small>${b?`<small style="color:var(--ok);font-weight:800">✓ лучший результат: ${b.score}/10</small>`:''}</button></div>`);
  document.querySelectorAll('[data-l]').forEach(x=>x.onclick=()=>startL(+x.dataset.l));}
-function startL(lv){L={lv,i:0,res:[],log:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};askL();}
+async function startL(lv){await waitVoice();L={lv,i:0,res:[],log:[],items:lv===1?mkL1():mkL2().map(w=>({w}))};askL();}
 function askL(){const it=L.items[L.i],lv=L.lv;
  if(L.i>=10){const sc=L.res.filter(Boolean).length;const prev=S.done['listen'+lv]||{};send('listen'+lv,{score:Math.max(sc,prev.score||0),last:sc,of:10,attempts:(prev.attempts||0)+1,log:L.log});
   shell(`${backBtn}<h2>Уровень ${lv} пройден!</h2><div class="res">${sc} / 10</div><p class="lead">${sc>=9?'Супер-уши! 🎧':sc>=6?'Хорошо! Попробуй ещё раз, чтобы стало 10.':'Тоны — это сложно, 犯错不可怕! Пройди ещё раз.'}</p><div class="row"><button class="btn" id="again">Ещё раз</button><button class="btn g" id="other">${lv===1?'Уровень 2 →':'Уровень 1'}</button></div>`);

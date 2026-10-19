@@ -22,8 +22,8 @@ import edge_tts, miniaudio
 # Голоса и скорости, из которых выбираем лучший вариант (можно поменять)
 VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
 RATES = ["-20%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
-WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
-VERSION = 10
+WORD_VOICE, WORD_RATE = "zh-CN-XiaoxiaoNeural", "-15%"   # слова — взрослый женский голос   # для слов из 2+ слогов
+VERSION = 11
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -46,50 +46,49 @@ def _yin(x):
             while t + 1 < tmax and cm[t+1] < cm[t]: t += 1
             a, b, c = cm[t-1], cm[t], cm[t+1]; den = a + c - 2*b
             p = t + (a - c) / (2*den) if den else t
-            return SR / p
-    return 0.0
+            return SR / p, float(b)
+    return 0.0, 1.0
 
 def track(pcm):
-    """Высота голоса по кадрам. Громкие кадры без измеримой высоты внутри слога —
-    это «кряхтение» (самая низкая точка 3-го тона), их заполняем НИЗКО."""
+    """Высота голоса по кадрам; «кряхтение» (неровный голос) внутри слога = самая низкая точка."""
     W, hop = 512, 160; F = W + SR // 65 + 2
     starts = list(range(0, len(pcm) - F, hop))
     if not starts: return None
     rms = np.array([np.sqrt(np.mean(pcm[i:i+W]**2)) for i in starts]); mx = rms.max()
-    thr, cthr = max(0.012, mx * 0.12), mx * 0.22
+    thr, cthr = max(0.01, mx * 0.10), mx * 0.05
     f = []
     for k, i in enumerate(starts):
-        if rms[k] < thr: f.append(0.0); continue
-        v = _yin(pcm[i:i+F]); f.append(v if 65 < v < 550 else (-1.0 if rms[k] >= cthr else 0.0))
-    best, st, gap = None, -1, 0
-    for i in range(len(f) + 1):
-        on = i < len(f) and f[i] != 0
-        if on:
-            if st < 0: st = i
-            gap = 0
-        elif st >= 0:
-            gap += 1
-            if gap > 3 or i == len(f):
-                e = i - gap; n = sum(1 for x in f[st:e+1] if x > 0)
-                if n >= 8 and (best is None or n > best[2]): best = (st, e, n)
-                st, gap = -1, 0
-    if not best: return None
-    seg = f[best[0]:best[1]+1]
-    fv = next(i for i, x in enumerate(seg) if x > 0); lv = max(i for i, x in enumerate(seg) if x > 0)
-    out = list(seg)
+        if rms[k] < cthr: f.append(0.0); continue
+        v, ap = _yin(pcm[i:i+F])
+        f.append(v if (65 < v < 550 and rms[k] >= thr and ap < 0.1) else -1.0)
+    v = sorted(x for x in f if x > 0)
+    if len(v) < 8: return None
+    md = v[len(v) // 2]
+    f = [(-1.0 if x > 0 and abs(12 * np.log2(x / md)) > 9 else x) for x in f]
+    vi = [i for i, x in enumerate(f) if x > 0]
+    groups, g = [], [vi[0]]
+    for a, b in zip(vi, vi[1:]):
+        if b - a <= 35: g.append(b)
+        else: groups.append(g); g = [b]
+    groups.append(g)
+    G = max(groups, key=len)
+    if len(G) < 8: return None
+    a, b = G[0], G[-1]; e = b
+    while e + 1 < len(f) and f[e + 1] < 0: e += 1
+    seg = f[a:e + 1]; lastV = b - a; out = list(seg)
     for i, x in enumerate(seg):
-        if x >= 0: continue
-        if i < fv: out[i] = 0; continue
-        if i > lv: out[i] = seg[lv] * 2 ** (-3/12) if len(seg) - lv - 1 >= 4 else 0; continue
-        l = max(k for k in range(i) if seg[k] > 0); r = min(k for k in range(i+1, len(seg)) if seg[k] > 0)
-        out[i] = min(seg[l], seg[r]) * 2 ** (-2.5/12)
+        if x > 0: continue
+        l = next((k for k in range(i - 1, -1, -1) if seg[k] > 0), None)
+        r = next((k for k in range(i + 1, len(seg)) if seg[k] > 0), None)
+        if i > lastV: out[i] = seg[lastV] * 2 ** (-3/12) if len(seg) - lastV - 1 >= 4 else 0; continue
+        out[i] = min(seg[l], seg[r]) * 2 ** (-3/12)
     return np.array([x for x in out if x > 0])
 
 def contour(pcm):
     seg = track(pcm)
     if seg is None or len(seg) < 8: return None
     med = np.median(seg)
-    s = 12 * np.log2(seg / med); s = np.where(s > 7, s - 12, np.where(s < -7, s + 12, s))
+    s = 12 * np.log2(seg / med); s = np.where(s > 7, s - 12, np.where(s < -7, s + 12, s)); s = np.clip(s, -7, 7)
     s = np.array([np.median(s[max(0, i-2):i+3]) for i in range(len(s))])
     cut = int(len(s) * 0.08); s = s[cut:len(s)-cut] if cut else s
     n = len(s)                                     # резкий скачок у краёв звука — сбой измерения, отрезаем
