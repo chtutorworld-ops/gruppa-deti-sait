@@ -94,6 +94,9 @@ ol.steps li:before{content:counter(s);position:absolute;left:12px;top:10px;width
 .toast.on{opacity:1}
 .sync{font-size:12.5px;font-weight:700;color:var(--mu);padding:0 8px}
 .sync.err{color:#D9366A}
+.nextbar{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:28px;padding-top:18px;border-top:1px solid #D6DBE6;flex-wrap:wrap}
+.nextbar .btn{flex:1 1 auto}.nextbar .btn.nx{flex:2 1 260px}
+.stepn{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
 .login{max-width:460px;margin:8vh auto 0;padding:28px 24px;text-align:center}
 .login input{width:100%;font:inherit;font-size:20px;padding:14px 18px;border:0;outline:none;margin-top:18px;color:var(--ink)}
 </style></head><body>
@@ -206,9 +209,16 @@ function shell(inner){const done=TASKS.filter(t=>status(t.id)[1]).length;
   ${TASKS.map(t=>{const [s,ok]=status(t.id);return `<button class="ti ${view===t.id?'cur':''}" data-go="${t.id}"><span class="e" style="background:${t.c}">${t.e}</span><span><b>${t.t}</b><small>${t.s}</small></span><span class="st ${ok?'ok':''}">${s}</span></button>`}).join('')}
   <button class="ti" data-go="finish"><span class="e" style="background:#E3E6EE">📨</span><span><b>Готово? Отправить</b><small>итог и запасной способ</small></span></button>
   <div id="sync" class="sync"></div></div>
- <div class="main n">${inner}</div></div>`;
+ <div class="main n">${stepHead()}${inner}${navBar()}</div></div>`;
  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
  $('#who').onclick=()=>{if(confirm('Сменить ученика на этом устройстве?')){S={done:{},queue:[]};keep();login();}};paintSync();}
+const ORDER=['kbd','listen','speak','rec','theory','finish'];
+function stepHead(){const i=ORDER.indexOf(view);return i>=0&&i<5?`<div class="stepn">Задание ${i+1} из 5</div>`:'';}
+function navBar(){const i=ORDER.indexOf(view);
+ if(view==='home')return `<div class="nextbar"><button class="btn nx" data-go="kbd">Начать с задания 1 →</button></div>`;
+ if(i<0)return '';const prev=i>0?ORDER[i-1]:'home',next=ORDER[i+1];
+ const nm=id=>id==='finish'?'Итог и отправка':TASKS.find(t=>t.id===id).t;
+ return `<div class="nextbar"><button class="btn g" data-go="${prev}">‹ ${prev==='home'?'Все задания':'Назад'}</button>${next?`<button class="btn nx" data-go="${next}">Следующее задание: ${nm(next)} →</button>`:''}</div>`;}
 const backBtn=`<button class="back n only-m" data-go="home">‹ Все задания</button>`;
 function go(id){view=id;stopAll();({home:homeV,kbd:kbdV,listen:listenV,speak:speakV,rec:recV,theory:theoryV,finish:finishV})[id]();window.scrollTo(0,0);}
 function stopAll(){try{curA&&curA.pause()}catch(e){}}
@@ -281,7 +291,7 @@ function askL(){const it=L.items[L.i],lv=L.lv;
  let lock=false;document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=String(b.dataset.k)===String(correct);L.res[L.i]=ok;
   document.querySelector(`[data-k="${correct}"]`).classList.add('ok');if(!ok)b.classList.add('no');
   const fb=$('#lfb');fb.className='fb '+(ok?'ok':'no');
-  fb.innerHTML=(ok?'✓ Верно! ':'Не совсем. ')+(lv===1?`Это <span class="py">${mark(it.b,it.t)}</span> — ${it.t}-й тон.`:`<span class="zh">${it.w[0]}</span> <span class="py">${it.w[1]}</span> — ${it.w[2]}.`)+` <br><button class="btn" id="nx" style="margin-top:12px">Дальше</button>`;
+  fb.innerHTML=(ok?'✓ Верно! ':'Не совсем. ')+(lv===1?`Это <span class="py">${mark(it.b,it.t)}</span> — ${it.t}-й тон.`:`<span class="zh">${it.w[0]}</span> <span class="py">${it.w[1]}</span> — ${it.w[2]}.`)+` <br><button class="btn" id="nx" style="margin-top:12px">Следующий вопрос →</button>`;
   $('#nx').onclick=()=>{L.i++;askL();};});}
 
 /* ---------- 3. speak & check ---------- */
@@ -360,7 +370,7 @@ function askT(){if(T.i>=TQ.length){const sc=T.res.filter(Boolean).length;send('t
  <h3 style="margin-top:14px">${q}</h3><div class="mcq">${o.map((t,k)=>`<button class="opt" data-o="${k}">${'АБВ'[k]}) ${t}</button>`).join('')}</div><div class="fb" id="tfb"></div></div>`);
  let lock=false;document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const ok=+b.dataset.o===c;T.res[T.i]=ok;
   document.querySelector(`[data-o="${c}"]`).classList.add('ok');if(!ok)b.classList.add('no');
-  const fb=$('#tfb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ Верно!':'Правильный ответ подсвечен зелёным.')+'<br><button class="btn" id="tnx" style="margin-top:12px">Дальше</button>';$('#tnx').onclick=()=>{T.i++;askT();};});}
+  const fb=$('#tfb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ Верно!':'Правильный ответ подсвечен зелёным.')+'<br><button class="btn" id="tnx" style="margin-top:12px">Следующий вопрос →</button>';$('#tnx').onclick=()=>{T.i++;askT();};});}
 
 /* ---------- finish ---------- */
 function summary(){return `ДЗ 1 — ${S.name}\n`+TASKS.map(t=>`${status(t.id)[1]?'✅':'⬜'} ${t.t}: ${status(t.id)[0]||'не сделано'}`).join('\n');}
