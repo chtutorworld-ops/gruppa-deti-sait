@@ -213,7 +213,8 @@ function scores(c,hz,base){const off=base?12*Math.log2(hz/base):null,out={};
 function classify(c,hz,base){const sc=scores(c,hz||1,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return best;}
 function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;
  const rise=c.slice(25).reduce((x,v)=>x+v,0)/5-c.slice(0,5).reduce((x,v)=>x+v,0)/5;
- const ok=best===want||sc[want]<=sc[best]*1.2+0.15||(want===2&&best===3&&rise>2.5);   // a 2nd tone may start with a small dip
+ let mn=1e9,mi=0;c.forEach((v,i)=>{if(v<mn){mn=v;mi=i;}});const dip=c.slice(0,4).reduce((x,v)=>x+v,0)/4-mn;
+ const ok=best===want||sc[want]<=sc[best]*1.2+0.15||(want===2&&best===3&&rise>2.5&&dip<=1.2&&mi<=13);   // 2nd tone with a tiny dip at the start (not audible) still counts
  return {got:ok?want:best,ok};}
 const refCache={};
 async function refContour(ch){if(refCache[ch])return refCache[ch];try{const r=await fetch(/\.wav$/.test(ch)?ch:fn(ch));const pcm=await toPCM(await r.arrayBuffer());return refCache[ch]=contour(pcm);}catch(e){return null;}}
