@@ -103,7 +103,7 @@ const WORDS=[['中国','Zhōngguó','Китай',[1,2]],['老师','lǎoshī','у
  ['天气','tiānqì','погода',[1,4]],['地图','dìtú','карта',[4,2]],['太阳','tàiyáng','солнце',[4,2]],['大米','dàmǐ','рис',[4,3]],['公园','gōngyuán','парк',[1,2]],['汽车','qìchē','машина',[4,1]],
  ['西瓜','xīguā','арбуз',[1,1]],['蛋糕','dàngāo','торт',[4,1]],['飞机','fēijī','самолёт',[1,1]],['苹果','píngguǒ','яблоко',[2,3]],['米饭','mǐfàn','рис (варёный)',[3,4]],['汉字','hànzì','иероглиф',[4,4]],
  ['拼音','pīnyīn','пиньинь',[1,1]],['电话','diànhuà','телефонный звонок',[4,4]],['茶杯','chábēi','чашка',[2,1]],['黄色','huángsè','жёлтый',[2,4]],['北方','běifāng','север',[3,1]],['熊','xióng','медведь',[2]]].filter(w=>w[3].length===2);
-let POOL=SYL.all().filter(x=>!['a','o','e','i','u'].includes(x.base));
+let POOL=SYL.all().filter(x=>!/^[aoeiuyw]/.test(x.base)); // только слоги с инициалью
 /* use only recordings whose tone was verified (audio/check.json) */
 try{fetch((/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/')+'check.json').then(r=>r.json()).then(j=>{const bad=new Set();for(const k in j.items)if(!j.items[k].ok)bad.add(j.items[k].c);const p=POOL.filter(x=>!bad.has(x.c));if([1,2,3,4].every(t=>p.some(x=>x.t===t)))POOL=p;}).catch(()=>{});}catch(e){}
 

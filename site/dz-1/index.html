@@ -265,7 +265,7 @@ function kbdV(){const k=KB[kbTab];const ok=S.done.kbd&&S.done.kbd.ok;
  $('#kchk').onclick=chk;$('#kin').onkeydown=e=>{if(e.key==='Enter')chk();};}
 
 /* ---------- 2. listening ---------- */
-const BASES=Object.keys(R);
+const BASES=Object.keys(R).filter(b=>!['a','o','e','yi','wu'].includes(b)); // только слоги с инициалью
 let GOOD=null;fetch(AUDIO+'check.json').then(r=>r.json()).then(j=>{GOOD={};for(const k in j.items)GOOD[j.items[k].c]=j.items[k].ok;}).catch(()=>{});
 const goodCh=ch=>!GOOD||GOOD[ch]!==false;
 function mkL1(){const items=[];const used=new Set();while(items.length<10){const b=BASES[Math.random()*BASES.length|0];const row=R[b].split(',');const ts=[1,2,3,4].filter(t=>row[t-1]&&goodCh(row[t-1]));if(!ts.length)continue;const t=ts[Math.random()*ts.length|0];const k=b+t;if(used.has(k))continue;used.add(k);items.push({b,t,ch:row[t-1]});}return items;}

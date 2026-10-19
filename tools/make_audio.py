@@ -20,10 +20,10 @@ import numpy as np
 import edge_tts, miniaudio
 
 # Голоса и скорости, из которых выбираем лучший вариант (можно поменять)
-VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-YunxiNeural", "zh-CN-XiaoyiNeural"]
+VOICES = ["zh-CN-XiaoyiNeural"]   # детский женский голос: учитель проверила — тоны чистые
 RATES = ["-20%", "-40%"]
-WORD_VOICE, WORD_RATE = "zh-CN-XiaoxiaoNeural", "-15%"   # для слов из 2+ слогов
-VERSION = 2
+WORD_VOICE, WORD_RATE = "zh-CN-XiaoyiNeural", "-20%"   # для слов из 2+ слогов
+VERSION = 3
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -117,7 +117,7 @@ async def main():
     items = [l.strip() for l in open(os.path.join(HERE, "audio-list.txt"), encoding="utf-8") if l.strip()]
     tones = json.load(open(os.path.join(HERE, "audio-tones.json"), encoding="utf-8"))
     sem = asyncio.Semaphore(PARALLEL)
-    jobs, plan = [], {}
+    jobs, plan, words = [], {}, []
     for t in items:
         k = fname(t)
         if len(t) == 1 and k in tones:
@@ -128,8 +128,12 @@ async def main():
                     p = os.path.join(d, k + ".mp3"); plan[k].append((v, r, p))
                     jobs.append(tts(t, v, r, p, sem))
         else:
-            jobs.append(tts(t, WORD_VOICE, WORD_RATE, os.path.join(OUT, k + ".mp3"), sem))
+            d = os.path.join(CAND, f"{WORD_VOICE}{WORD_RATE}"); os.makedirs(d, exist_ok=True)
+            words.append((os.path.join(d, k + ".mp3"), os.path.join(OUT, k + ".mp3")))
+            jobs.append(tts(t, WORD_VOICE, WORD_RATE, words[-1][0], sem))
     await asyncio.gather(*jobs)
+    for src, dst in words:
+        if os.path.exists(src): shutil.copyfile(src, dst)
     report, bad = {}, []
     for k, cands in plan.items():
         want = tones[k]["t"]; best = None; seen = []
