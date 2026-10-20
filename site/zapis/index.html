@@ -2,7 +2,7 @@
 <title>录音 — Запись эталонных слогов</title><meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Nunito:wght@800;900&display=swap">
 <style>
-:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;--t1:#2DBE8C;--t2:#F5A524;--t3:#7C6FFF;--t4:#FF5C8A}
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;--t1:#2DBE8C;--t2:#F5A524;--t3:#7C6FFF;--t4:#FF5C8A;--t0:#9AA2BC}
 *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,sans-serif;color:var(--t);padding:16px 14px 60px}
 button{font:inherit;border:0;cursor:pointer;color:inherit;background:none}
 .w{max-width:980px;margin:0 auto}.n{background:var(--bg);border-radius:24px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
@@ -38,11 +38,12 @@ const GROUPS=[
  ['Для «Угадай тон»',['ma','ba','da','ni','mi','bi','di','tu']],
  ['Для «Скажи тон»',['mo','wu']],
  ['Образцы гласных для «Запиши голос»',['a','o','e','yi','u']],
+ ['Нейтральный тон (для «Догоняем урок»)',['ma'],[0]],
 ];
-const ITEMS=[];GROUPS.forEach(([g,bs])=>bs.forEach(b=>[1,2,3,4].forEach(t=>ITEMS.push(b+t))));
+const ITEMS=[];GROUPS.forEach(([g,bs,ts])=>bs.forEach(b=>(ts||[1,2,3,4]).forEach(t=>ITEMS.push(b+t))));
 const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
-const mark=(b,t)=>{let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
-const TIP={1:'Высоко и ровно, как долгая нота.',2:'Снизу вверх, как удивлённое «а?».',3:'Полный 3-й тон: вниз, задержаться внизу (можно с хрипотцой) и подняться — «галочка». Не торопитесь.',4:'Резко сверху вниз, коротко.'};
+const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
+const TIP={1:'Высоко и ровно, как долгая нота.',2:'Снизу вверх, как удивлённое «а?».',3:'Полный 3-й тон: вниз, задержаться внизу (можно с хрипотцой) и подняться — «галочка». Не торопитесь.',4:'Резко сверху вниз, коротко.',0:'Нейтральный тон: ma, как 吗 в конце вопроса — легко и коротко.'};
 let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||'';}catch(e){}
 let DONE={},cur=0,blob=null,url=null;
 const $=s=>document.querySelector(s);
@@ -98,13 +99,13 @@ function wav(y,sr){const b=new ArrayBuffer(44+y.length*2),v=new DataView(b);cons
 function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Object.keys(DONE).length;
  $('#app').innerHTML=`<div class="head n"><h1>录音 · Запись эталонных слогов</h1><p class="l">Эти записи будут звучать в домашних заданиях вместо синтезатора. Говорите отчётливо и чуть медленнее обычного. После записи вы увидите кривую своего голоса — для 3-го тона там должна быть «галочка».</p>
  <div class="bar"><i style="width:${done/ITEMS.length*100}%"></i></div><p class="l" style="font-weight:800">Записано ${done} из ${ITEMS.length}</p></div>
- <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].includes(b))[0]}</div>
-  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t}-й тон ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
+ <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].includes(b)&&(g[2]||[1,2,3,4]).includes(t))[0]}</div>
+  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t?t+'-й тон':'нейтральный тон'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
   <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
   <div id="cv"></div>
   <div class="row"><button class="btn g" id="pl" ${blob?'':'disabled'}>▶ Прослушать</button><button class="btn ok" id="sv" ${blob?'':'disabled'}>✓ Сохранить и дальше</button>${DONE[id]?'<button class="btn g" id="old">▶ Сохранённое</button>':''}</div>
   <div class="row"><button class="btn g" id="pv">‹ Назад</button><button class="btn g" id="nx">Пропустить ›</button></div><div class="msg" id="msg"></div></div>
- <div class="list n">${GROUPS.map(([g,bs])=>`<div class="grp">${g}</div>${bs.map(bb=>`<div class="sy"><b>${bb}</b>${[1,2,3,4].map(tt=>{const k=bb+tt;return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}">${mark(bb,tt)}</button>`}).join('')}</div>`).join('')}`).join('')}</div></div>`;
+ <div class="list n">${GROUPS.map(([g,bs,ts])=>`<div class="grp">${g}</div>${bs.map(bb=>`<div class="sy"><b>${bb}</b>${(ts||[1,2,3,4]).map(tt=>{const k=bb+tt;return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}">${mark(bb,tt)}</button>`}).join('')}</div>`).join('')}`).join('')}</div></div>`;
  document.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>{cur=ITEMS.indexOf(x.dataset.k);blob=null;render();});
  $('#pv').onclick=()=>{cur=(cur+ITEMS.length-1)%ITEMS.length;blob=null;render();};$('#nx').onclick=()=>{cur=(cur+1)%ITEMS.length;blob=null;render();};
  if($('#old'))$('#old').onclick=async()=>{const a=new Audio(API+'get?id='+id+'&t='+Date.now());a.play();};
