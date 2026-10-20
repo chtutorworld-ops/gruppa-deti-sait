@@ -46,6 +46,9 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
         run: python tools/fetch_voice.py
+      - name: Проверить тоны в записях учителя (тем же анализатором, что в ДЗ)
+        continue-on-error: true
+        run: node tools/voice_report.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

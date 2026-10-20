@@ -185,23 +185,29 @@ function track(pcm){const sr=16000,hop=160,F=512+Math.floor(sr/65)+2,f=[],rms=[]
  for(let i=0;i+F<pcm.length;i+=hop){let s=0;for(let j=0;j<512;j++)s+=pcm[i+j]*pcm[i+j];const r=Math.sqrt(s/512);rms.push(r);if(r>mx)mx=r;}
  const thr=Math.max(0.01,mx*0.10),cthr=mx*0.05;let k=0;
  for(let i=0;i+F<pcm.length;i+=hop,k++){const [v,ap]=rms[k]>=cthr?yin(pcm.subarray(i,i+F),sr):[0,1];
-  if(v>65&&v<550&&rms[k]>=thr&&ap<0.1)f.push(v);else f.push(rms[k]>=cthr?-1:0);}
- {const v=f.filter(x=>x>0).sort((p,q)=>p-q);if(v.length){const md=v[v.length>>1];for(let i=0;i<f.length;i++)if(f[i]>0){const d=12*Math.log2(f[i]/md);if(d<-9||d>9)f[i]=-1;}}}  // wild pitch in noise = creak
- // syllable = longest group of pitched frames; gaps up to 0.35 s between them are bridged (creak lives there)
+  if(v>65&&v<550&&rms[k]>=thr&&ap<0.2)f.push(v);else f.push(rms[k]>=cthr?-1:0);}
+ // a pitch that jumps away from its neighbours is a measuring error (octave slip), not the voice
+ for(let pass=0;pass<2;pass++){const g=f.slice();for(let i=0;i<g.length;i++){if(g[i]<=0)continue;const nb=[];
+  for(let d=1;d<=5&&nb.length<6;d++){if(g[i-d]>0)nb.push(g[i-d]);if(g[i+d]>0)nb.push(g[i+d]);}
+  if(!nb.length){f[i]=-1;continue;}nb.sort((p,q)=>p-q);const m=nb[nb.length>>1];if(Math.abs(12*Math.log2(g[i]/m))>5)f[i]=-1;}}   // lonely blips too
+ // syllable = longest group of pitched frames; gaps up to 0.6 s inside it are bridged (a long creak lives there)
  const vi=[];f.forEach((x,i)=>{if(x>0)vi.push(i);});if(vi.length<8)return null;
- const groups=[];let g=[vi[0]];for(let n=1;n<vi.length;n++){if(vi[n]-vi[n-1]<=35)g.push(vi[n]);else{groups.push(g);g=[vi[n]];}}groups.push(g);
+ const groups=[];let g=[vi[0]];for(let n=1;n<vi.length;n++){if(vi[n]-vi[n-1]<=60)g.push(vi[n]);else{groups.push(g);g=[vi[n]];}}groups.push(g);
  const G=groups.sort((a,b)=>b.length-a.length)[0];if(G.length<8)return null;
  let a=G[0],b=G[G.length-1];let e=b;while(e+1<f.length&&f[e+1]<0)e++;           // creaky tail after the last pitched frame
- const seg=f.slice(a,e+1),creak=seg.map(x=>x<=0);const lastV=b-a;
- const falling=l=>{let p=-1;for(let k=l-6;k>=0;k--)if(seg[k]>0){p=k;break;}if(p<0)p=seg.findIndex(x=>x>0);return p<l&&12*Math.log2(seg[l]/seg[p])<-0.8;};  // voice was going down into the creak
- for(let i=0;i<seg.length;i++){if(seg[i]>0)continue;let l=i-1;while(l>=0&&seg[l]<=0)l--;let r=i+1;while(r<seg.length&&seg[r]<=0)r++;
-  const L=l>=0?seg[l]:0,R=r<seg.length?seg[r]:0;
-  if(i>lastV){seg[i]=(seg.length-lastV-1>=4&&falling(lastV))?L*Math.pow(2,-3/12):0;continue;}  // creaky ending = low (only after a fall)
-  seg[i]=falling(l)?Math.min(L,R)*Math.pow(2,-3/12):L*Math.pow(R/L,(i-l)/(r-l));}   // creak at the bottom of a dip, otherwise a plain gap: join smoothly                                 // gap in the middle = bottom of the dip
+ const seg=f.slice(a,e+1),orig=seg.slice(),creak=seg.map(x=>x<=0);const lastV=b-a;
+ const falling=l=>{let p=-1;for(let k=l-6;k>=0;k--)if(orig[k]>0){p=k;break;}if(p<0)p=orig.findIndex(x=>x>0);return p<l&&12*Math.log2(orig[l]/orig[p])<-0.8;};  // voice was going down into it
+ const lg=(x,y,u)=>x*Math.pow(y/x,u);
+ for(let i=0;i<=lastV;i++){if(orig[i]>0)continue;let i1=i;while(orig[i1+1]<=0)i1++;const l=i-1,r=i1+1,L=orig[l],R=orig[r],n=i1-i+1;
+  const low=Math.min(L,R)*Math.pow(2,-3/12),dip=falling(l)||n>=25;   // a long voiced-but-unpitched stretch is creak too
+  for(let j=0;j<n;j++){const u=(j+0.5)/n;seg[i+j]=!dip?lg(L,R,u):u<0.3?lg(L,low,u/0.3):u>0.7?lg(low,R,(u-0.7)/0.3):low;}   // creak = bottom of the dip; a plain gap is joined smoothly
+  i=i1;}
+ const tn=seg.length-lastV-1,L=orig[lastV],tail=tn>=4&&falling(lastV);
+ for(let j=0;j<tn;j++){const u=(j+0.5)/tn;seg[lastV+1+j]=tail?lg(L,L*Math.pow(2,-3/12),Math.min(1,u/0.3)):0;}   // creaky ending = low, only after a fall
  const out=[],cr=[];seg.forEach((x,i)=>{if(x>0){out.push(x);cr.push(creak[i]);}});return {f:out,creak:cr};}
 function contour(pcm){const tr=track(pcm);if(!tr||tr.f.length<8)return null;const seg=tr.f;
  const med=[...seg].sort((a,b)=>a-b)[seg.length>>1];
- let st2=seg.map(f=>12*Math.log2(f/med)).map(v=>{while(v>9)v-=12;while(v<-9)v+=12;return Math.max(-7,Math.min(7,v));});
+ let st2=seg.map(f=>Math.max(-9,Math.min(9,12*Math.log2(f/med))));
  st2=st2.map((v,i,a)=>{const w=a.slice(Math.max(0,i-2),i+3).sort((p,q)=>p-q);return w[w.length>>1];});
  const cut=Math.floor(st2.length*0.08);st2=st2.slice(cut,st2.length-cut);
  {const n=st2.length;for(let i=Math.floor(n*0.7);i<n;i++)if(Math.abs(st2[i]-st2[i-1])>3.5){st2=st2.slice(0,i);break;}  // sudden jump near the end = measuring glitch
@@ -214,8 +220,11 @@ const TT={1:[TP(x=>0)],2:[TP(x=>-2.5+5*Math.pow(x,1.5)),TP(x=>x<.3?-.5*x/.3:-.5+
 const LV={1:2,2:-0.5,3:-3,4:1};
 function scores(c,hz,base){const off=base?12*Math.log2(hz/base):null,out={};
  for(const t of [1,2,3,4]){let d=Math.min(...TT[t].map(tp=>Math.sqrt(tp.reduce((x,v,i)=>x+(c[i]-v)**2,0)/30)));if(off!==null)d+=0.35*Math.abs(off-LV[t]);out[t]=d;}return out;}
-function classify(c,hz,base){const sc=scores(c,hz||1,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return best;}
-function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;
+// 2nd vs 3rd: decided by the dip — did the voice first go DOWN noticeably (3rd) or start low and simply rise (2nd)?
+function fix23(c,best){if(best!==2&&best!==3)return best;const st=(c[0]+c[1]+c[2]+c[3])/4;let mn=1e9,mi=0;c.forEach((v,i)=>{if(v<mn){mn=v;mi=i;}});
+ const dip=st-mn,rise=(c[27]+c[28]+c[29])/3-mn;if(best===2&&dip>=1.5)return 3;if(best===3&&dip<1.5&&rise>=2.5&&mi<20)return 2;return best;}
+function classify(c,hz,base){const sc=scores(c,hz||1,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;return fix23(c,best);}
+function judge(c,hz,base,want){const sc=scores(c,hz,base);let best=1;for(const t of [2,3,4])if(sc[t]<sc[best])best=t;best=fix23(c,best);
  const pair=(a,b)=>(want===a&&best===b)||(want===b&&best===a);
  const ok=best===want||(!pair(2,3)&&sc[want]<=sc[best]*1.1+0.1);   // 2nd vs 3rd must be exact: no leniency between them
  return {got:ok?want:best,ok};}
