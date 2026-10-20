@@ -76,19 +76,24 @@ def track(pcm):
     a, b = G[0], G[-1]; e = b
     while e + 1 < len(f) and f[e + 1] < 0: e += 1
     seg = f[a:e + 1]; lastV = b - a; out = list(seg)
+    def falling(l):        # голос шёл вниз перед провалом в «кряхтение»?
+        p = next((k for k in range(l - 6, -1, -1) if seg[k] > 0), None)
+        if p is None: p = next(k for k in range(len(seg)) if seg[k] > 0)
+        return p < l and 12 * np.log2(seg[l] / seg[p]) < -0.8
     for i, x in enumerate(seg):
         if x > 0: continue
         l = next((k for k in range(i - 1, -1, -1) if seg[k] > 0), None)
         r = next((k for k in range(i + 1, len(seg)) if seg[k] > 0), None)
-        if i > lastV: out[i] = seg[lastV] * 2 ** (-3/12) if len(seg) - lastV - 1 >= 4 else 0; continue
-        out[i] = min(seg[l], seg[r]) * 2 ** (-3/12)
+        if i > lastV: out[i] = seg[lastV] * 2 ** (-3/12) if (len(seg) - lastV - 1 >= 4 and falling(lastV)) else 0; continue
+        if falling(l): out[i] = min(seg[l], seg[r]) * 2 ** (-3/12)        # кряхтение на дне 3-го тона
+        else: out[i] = seg[l] * (seg[r] / seg[l]) ** ((i - l) / (r - l))  # просто пропуск — соединяем плавно
     return np.array([x for x in out if x > 0])
 
 def contour(pcm):
     seg = track(pcm)
     if seg is None or len(seg) < 8: return None
     med = np.median(seg)
-    s = 12 * np.log2(seg / med); s = np.where(s > 7, s - 12, np.where(s < -7, s + 12, s)); s = np.clip(s, -7, 7)
+    s = 12 * np.log2(seg / med); s = np.where(s > 9, s - 12, np.where(s < -9, s + 12, s)); s = np.clip(s, -7, 7)
     s = np.array([np.median(s[max(0, i-2):i+3]) for i in range(len(s))])
     cut = int(len(s) * 0.08); s = s[cut:len(s)-cut] if cut else s
     n = len(s)                                     # резкий скачок у краёв звука — сбой измерения, отрезаем
