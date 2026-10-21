@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ИИ-помощник — магазин 王阿姨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+@font-face{font-family:'LXGW WenKai GB';src:url(data:font/woff;base64,/*FONT*/) format('woff');font-display:block}
+:root{
+  color-scheme:light;
+  --bg:#E7EBF1; --bg-2:#DEE3EB; --card:#EDF0F5; --hi:#FFFFFF; --lo:#C3CAD6;
+  --ink:#1D2136; --ink-2:#3B4060; --muted:#6B7088; --line:#D3D9E3;
+  --vio:#5A4FCF; --vio-2:#3F3699; --jade:#1F9A80; --rose:#D9466B; --gold:#C99A4B; --gold-tint:#FFF6E3;
+  --t1:#2F86D8; --t2:#1FA38A; --t3:#8A63DE; --t4:#E0446A; --t0:#9298AD;
+  --sans:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --han:'LXGW WenKai GB','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --neu:-7px -7px 16px var(--hi),7px 7px 16px var(--lo);
+  --neu-sm:-4px -4px 10px var(--hi),4px 4px 10px var(--lo);
+  --neu-in:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;
+  padding:28px max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--vio);outline-offset:3px}
+.han{font-family:var(--han)}
+.wrap{max-width:1080px;margin:0 auto}
+
+/* ---------- шапка ---------- */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.kicker b{font-family:var(--han);font-size:15px;letter-spacing:.04em;color:var(--vio);font-weight:400;text-transform:none}
+h1{font-size:clamp(28px,4.6vw,42px);line-height:1.1;font-weight:800;letter-spacing:-.02em;margin-top:6px}
+h1 .han{color:var(--vio-2);font-weight:400}
+.lead{color:var(--ink-2);max-width:560px;margin-top:8px}
+.back{font-weight:700;color:var(--vio-2);text-decoration:none;padding:10px 16px;border-radius:14px;box-shadow:var(--neu-sm);background:var(--bg)}
+.back:hover{color:var(--vio)}
+
+/* ---------- переключатель разделов (как в iOS) ---------- */
+.seg{display:flex;gap:6px;padding:6px;border-radius:18px;box-shadow:var(--neu-in);background:var(--bg);margin:0 0 26px;max-width:640px;overflow-x:auto;scrollbar-width:none}
+.seg button{flex:1 0 auto;padding:11px 16px;border-radius:13px;font-weight:700;font-size:15px;color:var(--muted);white-space:nowrap;transition:color .2s,background .25s var(--ease),box-shadow .25s var(--ease)}
+.seg button[aria-selected="true"]{color:var(--ink);background:var(--card);box-shadow:var(--neu-sm)}
+.seg button .han{font-size:16px;margin-left:4px}
+.panel[hidden]{display:none}
+
+/* ---------- общий пиньинь над знаками ---------- */
+.zh{font-family:var(--han);line-height:1.15}
+.zh ruby{ruby-position:over;margin:0 .03em}
+.zh rt{font-family:var(--sans);font-size:.42em;font-weight:700;letter-spacing:0;line-height:1.1;padding-bottom:.18em}
+.zh .p{color:var(--ink)}
+.t1 rt{color:var(--t1)} .t2 rt{color:var(--t2)} .t3 rt{color:var(--t3)} .t4 rt{color:var(--t4)} .t0 rt{color:var(--t0)}
+.nopy .zh rt{display:none}
+.tone-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+
+/* ---------- раздел 1: телефон ---------- */
+.shop{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:34px;align-items:start}
+.phone{position:relative;border-radius:52px;padding:12px;background:linear-gradient(145deg,#1B1D27,#2C2F3C);box-shadow:0 30px 60px -28px rgba(20,24,45,.55),0 0 0 2px #3A3D4B inset}
+.screen{position:relative;height:min(760px,calc(100vh - 60px));min-height:560px;border-radius:41px;overflow:hidden;background:#F4F5F9;display:flex;flex-direction:column}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:112px;height:32px;border-radius:20px;background:#0B0C10;z-index:5}
+.status{display:flex;justify-content:space-between;align-items:center;padding:16px 30px 6px;font-size:14px;font-weight:800;color:#111}
+.status i{font-style:normal;letter-spacing:.06em;font-size:12px}
+.chathead{display:flex;align-items:center;gap:12px;padding:10px 16px 12px;border-bottom:1px solid #E3E5EC;background:rgba(244,245,249,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.ava{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--han);font-size:22px;color:#fff;background:radial-gradient(circle at 30% 25%,#FF9DB4,#D9466B 70%);box-shadow:0 6px 14px -6px rgba(217,70,107,.7)}
+.who b{display:block;font-size:16px}
+.who b .han{font-weight:400}
+.who span{font-size:12.5px;color:var(--muted)}
+.who span.on::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#34C759;margin-right:5px;vertical-align:1px}
+.mission{margin:12px 12px 4px;padding:12px 14px 12px 16px;border-radius:16px;background:
+  linear-gradient(#FFFBF0,#FFFBF0) padding-box,repeating-linear-gradient(transparent 0 23px,#E8DFC8 23px 24px);
+  background-image:linear-gradient(90deg,transparent 30px,#F3B6B6 30px 31px,transparent 31px),repeating-linear-gradient(#FFFBF0 0 25px,#EADFC4 25px 26px);
+  border:1px solid #EADBB8;font-size:13.5px;position:relative;padding-left:44px}
+.mission::before{content:'任务';position:absolute;left:8px;top:12px;font-family:var(--han);font-size:13px;color:var(--rose);writing-mode:vertical-rl;letter-spacing:.1em}
+.mission b{font-weight:800}
+#missionText{padding-right:64px}
+.mission .zh{font-size:17px}
+.mission.done{border-color:#9ED9C9}
+.stamp{position:absolute;right:10px;top:50%;width:62px;height:62px;margin-top:-31px;border:3px solid var(--rose);border-radius:50%;display:grid;place-items:center;color:var(--rose);font-family:var(--han);font-size:28px;transform:rotate(-14deg) scale(2.4);opacity:0;transition:transform .45s var(--ease),opacity .3s}
+.mission.done .stamp{opacity:.9;transform:rotate(-14deg) scale(1)}
+.msgs{flex:1;overflow-y:auto;padding:10px 12px 14px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.row{display:flex;flex-direction:column;max-width:84%;animation:pop .35s var(--ease) both}
+.row.me{align-self:flex-end;align-items:flex-end}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}}
+.bub{padding:9px 13px 10px;border-radius:20px;font-size:21px;position:relative}
+.them .bub{background:#E9E9EF;border-bottom-left-radius:6px}
+.me .bub{background:linear-gradient(180deg,#5E6BF5,#4B55DD);color:#fff;border-bottom-right-radius:6px}
+.me .bub .zh .p{color:#fff}
+.me .bub rt{color:rgba(255,255,255,.86)!important}
+.bub .ru{display:block;font-size:13.5px;line-height:1.35;margin-top:6px;color:var(--ink-2);font-family:var(--sans)}
+.me .bub .ru{color:rgba(255,255,255,.85)}
+.bub .ru[hidden]{display:none}
+.tools{display:flex;gap:6px;margin-top:4px;padding:0 4px}
+.tools button{font-size:12px;font-weight:700;color:var(--muted);padding:3px 8px;border-radius:10px}
+.tools button:hover{color:var(--vio)}
+.fix{margin-top:5px;max-width:100%;font-size:13px;line-height:1.4;background:#FFF6E3;border:1px solid #F1D9A5;color:#6A4A12;padding:8px 11px;border-radius:14px}
+.fix b{color:#8A5A00}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#A3A7B7;animation:dot 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.suggest{margin:0 12px 8px;padding:10px 12px;border-radius:16px;background:#fff;border:1px solid #E1E4EC;box-shadow:0 8px 20px -14px rgba(30,35,70,.5);font-size:13px}
+.suggest[hidden]{display:none}
+.suggest .zh{font-size:22px;margin:2px 0 4px}
+.suggest .note{color:var(--muted)}
+.suggest .act{display:flex;gap:8px;margin-top:8px}
+.chip{padding:7px 12px;border-radius:12px;font-size:13px;font-weight:700;background:#F0F1F6;color:var(--ink-2)}
+.chip.pri{background:var(--vio);color:#fff}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 10px 18px;border-top:1px solid #E3E5EC;background:#F4F5F9}
+.ru-btn{flex:none;height:38px;padding:0 11px;border-radius:19px;background:#E9E9EF;font-size:13px;font-weight:800;color:var(--ink-2)}
+.ru-btn[aria-pressed="true"]{background:#FFE7B8;color:#6A4A12}
+.field{flex:1;min-width:0;height:38px;border-radius:19px;border:1px solid #D9DCE5;background:#fff;padding:0 14px;font:16px var(--sans);color:var(--ink)}
+.field.ruin{border-color:#F1C76E;background:#FFFCF3}
+.send{flex:none;width:38px;height:38px;border-radius:50%;background:var(--vio);color:#fff;display:grid;place-items:center}
+.send[hidden]{display:none}
+.mic{flex:none;position:relative;width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,#FF6A8A,#E0446A);color:#fff;display:grid;place-items:center;box-shadow:0 8px 18px -8px rgba(224,68,106,.8);touch-action:none;user-select:none;-webkit-user-select:none}
+.mic svg,.send svg{width:20px;height:20px}
+.mic::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:3px solid rgba(224,68,106,.45);transform:scale(var(--lvl,1));opacity:0;transition:opacity .2s}
+.mic.rec::before{opacity:1}
+.mic.rec{background:linear-gradient(180deg,#FF3D67,#C62853)}
+.mic.busy{opacity:.55;pointer-events:none}
+
+.side{display:grid;gap:18px}
+.card{background:var(--bg);border-radius:26px;padding:22px 24px;box-shadow:var(--neu)}
+.card h2{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+.card p{color:var(--ink-2);font-size:15px}
+.how{display:grid;gap:12px;margin-top:12px;counter-reset:s}
+.how li{list-style:none;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;font-size:15px;color:var(--ink-2)}
+.how li::before{counter-increment:s;content:counter(s);width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:var(--vio-2);box-shadow:var(--neu-sm)}
+.toggles{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.tog{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:var(--ink-2)}
+.tog input{appearance:none;width:46px;height:28px;border-radius:14px;background:var(--bg);box-shadow:var(--neu-in);position:relative;cursor:pointer;transition:background .25s}
+.tog input::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(30,35,60,.3);transition:transform .25s var(--ease)}
+.tog input:checked{background:var(--jade)}
+.tog input:checked::after{transform:translateX(18px)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:13px;color:var(--muted);font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:16px;font-weight:800;font-size:15px;background:var(--bg);box-shadow:var(--neu-sm);color:var(--ink);transition:box-shadow .2s,transform .2s}
+.btn:active{box-shadow:var(--neu-in);transform:scale(.98)}
+.btn.pri{background:var(--vio);color:#fff;box-shadow:0 10px 20px -10px rgba(90,79,207,.9)}
+.btn svg{width:18px;height:18px}
+.missions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+
+/* ---------- раздел 2: скажи — проверим (тетрадь) ---------- */
+.say{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.list{display:grid;gap:10px}
+.pick{text-align:left;padding:12px 14px;border-radius:16px;background:var(--bg);box-shadow:var(--neu-sm);display:grid;gap:2px;transition:box-shadow .2s}
+.pick .h{font-family:var(--han);font-size:19px;line-height:1.2}
+.pick small{color:var(--muted);font-size:12.5px}
+.pick[aria-pressed="true"]{box-shadow:var(--neu-in);color:var(--vio-2)}
+.pick.trap{background:linear-gradient(135deg,#FFF1F4,#F3EEFF)}
+.notebook{position:relative;border-radius:28px;padding:30px 30px 28px 66px;background:
+  linear-gradient(90deg,transparent 46px,#F2B1B8 46px 48px,transparent 48px),
+  repeating-linear-gradient(#FFFDF7 0 37px,#E6E9F2 37px 38px);
+  box-shadow:0 24px 50px -30px rgba(30,35,70,.5),0 0 0 1px #E3E6EE}
+.notebook .holes{position:absolute;left:16px;top:28px;bottom:28px;display:flex;flex-direction:column;justify-content:space-around}
+.notebook .holes i{width:14px;height:14px;border-radius:50%;background:var(--bg);box-shadow:inset 2px 2px 4px var(--lo)}
+.target{font-size:clamp(34px,6vw,54px);text-align:center;min-height:1.9em;display:flex;align-items:center;justify-content:center;flex-wrap:wrap}
+.target.num{font-family:var(--sans);font-weight:800;font-size:96px;color:var(--vio-2)}
+.ru-line{text-align:center;color:var(--muted);font-size:15px;margin:4px 0 18px}
+.ctrl{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap}
+.bigmic{position:relative;width:96px;height:96px;border-radius:50%;background:linear-gradient(180deg,#FF6A8A,#E0446A);color:#fff;display:grid;place-items:center;box-shadow:0 18px 30px -14px rgba(224,68,106,.9);touch-action:none;user-select:none;-webkit-user-select:none}
+.bigmic svg{width:34px;height:34px}
+.bigmic::before{content:'';position:absolute;inset:-10px;border-radius:50%;border:4px solid rgba(224,68,106,.35);transform:scale(var(--lvl,1));opacity:0;transition:opacity .2s}
+.bigmic.rec::before{opacity:1}
+.bigmic.busy{opacity:.55;pointer-events:none}
+.ctrl .hint{flex-basis:100%;text-align:center;font-size:13px;color:var(--muted);font-weight:700}
+.result{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.75);border:1px solid #E6E8F0}
+.result[hidden]{display:none}
+.ring{width:88px;height:88px;position:relative}
+.ring svg{width:88px;height:88px;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:24px;font-weight:800}
+.heard{font-size:13px;color:var(--muted);font-weight:700}
+.heard .zh{font-size:28px;color:var(--ink);font-weight:400}
+.cmp{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.cmp span{display:grid;justify-items:center;padding:6px 8px 5px;border-radius:12px;min-width:44px;font-family:var(--han);font-size:26px;line-height:1.1}
+.cmp span small{font-family:var(--sans);font-size:11px;font-weight:800}
+.cmp .ok{background:#E2F4EE;color:#11694F}
+.cmp .no{background:#FDE6EC;color:#A3173D}
+.cmp .no small{color:#A3173D}
+.note{font-size:15px;color:var(--ink-2)}
+.note b{color:var(--vio-2)}
+
+/* ---------- раздел 3: подсказчик ---------- */
+.helper{max-width:720px}
+.ask{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+.ask textarea{flex:1 1 320px;min-height:64px;resize:vertical;border-radius:18px;border:0;padding:14px 16px;font:17px/1.45 var(--sans);color:var(--ink);background:var(--bg);box-shadow:var(--neu-in)}
+.answer{margin-top:20px;padding:22px 24px;border-radius:24px;background:#fff;border:1px solid #E4E7EF}
+.answer[hidden]{display:none}
+.answer .zh{font-size:38px}
+.answer .back-ru{color:var(--muted);margin-top:4px}
+.answer .tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:var(--gold-tint);color:#6A4A12;font-size:14.5px}
+.answer .act{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.examples button{padding:7px 12px;border-radius:12px;font-size:13.5px;font-weight:700;color:var(--ink-2);box-shadow:var(--neu-sm);background:var(--bg)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:#1D2136;color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;font-weight:700;transition:.3s var(--ease);z-index:50;max-width:calc(100vw - 32px)}
+.toast.on{transform:translate(-50%,0);opacity:1}
+.foot{margin-top:40px;font-size:13px;color:var(--muted)}
+
+@media (max-width:880px){
+  .shop,.say{grid-template-columns:1fr}
+  .phone{max-width:420px;margin:0 auto;width:100%}
+  .list{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
+@media (max-width:520px){
+  body{padding-top:18px}
+  .seg button{flex:1 1 0;white-space:normal;line-height:1.2;padding:10px 8px;font-size:13.5px}
+  .seg button .han{display:none}
+  .back{padding:8px 12px;font-size:14px}
+  .phone{padding:0;border-radius:28px;background:none;box-shadow:0 20px 40px -26px rgba(20,24,45,.5)}
+  .screen{border-radius:28px;height:calc(100svh - 120px);min-height:520px}
+  .island,.status{display:none}
+  .notebook{padding:24px 18px 22px 50px}
+  .target.num{font-size:76px}
+  .result{grid-template-columns:1fr;justify-items:start}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <div class="kicker">ИИ на уроке <b>人工智能</b></div>
+    <h1>Магазин <span class="han">王阿姨</span></h1>
+    <p class="lead">Поговори с продавщицей голосом, проверь своё произношение и спроси, как сказать по-китайски, если не знаешь.</p>
+  </div>
+  <a class="back" href="../">← Все материалы</a>
+</header>
+
+<div class="seg" role="tablist" aria-label="Разделы">
+  <button role="tab" aria-selected="true" data-tab="shop">Магазин<span class="han">商店</span></button>
+  <button role="tab" aria-selected="false" data-tab="say">Скажи — проверим</button>
+  <button role="tab" aria-selected="false" data-tab="help">Подсказчик</button>
+</div>
+
+<!-- ============ 1. Магазин ============ -->
+<section class="panel" id="p-shop" role="tabpanel">
+  <div class="shop">
+    <div class="phone">
+      <div class="screen">
+        <div class="island"></div>
+        <div class="status"><span>9:41</span><i>5G ▮▮▮</i></div>
+        <div class="chathead">
+          <div class="ava">王</div>
+          <div class="who"><b><span class="han">王阿姨</span> · Wáng āyí</b><span class="on">продавщица, магазин у дома</span></div>
+        </div>
+        <div class="mission" id="mission"><div class="stamp">好</div><div id="missionText"></div></div>
+        <div class="msgs" id="msgs" aria-live="polite"></div>
+        <div class="suggest" id="suggest" hidden></div>
+        <div class="bar">
+          <button class="ru-btn" id="ruBtn" aria-pressed="false" title="Не знаю, как сказать — напишу по-русски">RU?</button>
+          <input class="field" id="field" placeholder="Напиши по-китайски…" autocomplete="off" enterkeyhint="send">
+          <button class="send" id="sendBtn" hidden aria-label="Отправить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          <button class="mic" id="mic" aria-label="Держи и говори"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="card">
+        <h2>Как играть</h2>
+        <ol class="how">
+          <li>Прочитай задание в тетрадке наверху чата: что купить.</li>
+          <li><span>Держи красную кнопку и говори по-китайски. Отпусти, и <span class="han">王阿姨</span> ответит голосом.</span></li>
+          <li><span>Не знаешь, как сказать? Нажми <b>RU?</b>, напиши по-русски, и появится подсказка.</span></li>
+          <li>Узнай у неё, сколько всё стоит. Когда она назовёт сумму, на задании появится печать.</li>
+        </ol>
+        <div class="toggles">
+          <label class="tog"><input type="checkbox" id="tPy" checked> Пиньинь над знаками</label>
+          <label class="tog"><input type="checkbox" id="tRu"> Перевод сразу</label>
+        </div>
+        <div class="legend"><span><i class="tone-dot" style="background:var(--t1)"></i>1 тон</span><span><i class="tone-dot" style="background:var(--t2)"></i>2 тон</span><span><i class="tone-dot" style="background:var(--t3)"></i>3 тон</span><span><i class="tone-dot" style="background:var(--t4)"></i>4 тон</span><span><i class="tone-dot" style="background:var(--t0)"></i>лёгкий</span></div>
+      </div>
+      <div class="card">
+        <h2>Другое задание</h2>
+        <p>Начни разговор заново с новым списком покупок.</p>
+        <div class="missions" id="missionBtns"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. Скажи — проверим ============ -->
+<section class="panel" id="p-say" role="tabpanel" hidden>
+  <div class="say">
+    <div class="list" id="phrases"></div>
+    <div>
+      <div class="notebook">
+        <div class="holes"><i></i><i></i><i></i><i></i></div>
+        <div class="target" id="target"></div>
+        <div class="ru-line" id="targetRu"></div>
+        <div class="ctrl">
+          <button class="btn" id="listen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Послушать <span class="han">晓晓</span></button>
+          <button class="bigmic" id="bigmic" aria-label="Держи и говори"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+          <button class="btn" id="nextNum" hidden>Другое число →</button>
+          <div class="hint" id="sayHint">Держи кнопку и говори. Можно и просто нажать: начнётся запись, нажми ещё раз, чтобы закончить.</div>
+        </div>
+        <div class="result" id="result" hidden>
+          <div class="ring"><svg viewBox="0 0 88 88"><circle cx="44" cy="44" r="38" fill="none" stroke="#E6E8F0" stroke-width="9"/><circle id="ringArc" cx="44" cy="44" r="38" fill="none" stroke="var(--jade)" stroke-width="9" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="238.8" style="transition:stroke-dashoffset .8s var(--ease)"/></svg><b id="score">0</b></div>
+          <div>
+            <div class="heard">ИИ услышал: <span class="zh" id="heard"></span></div>
+            <div class="cmp" id="cmp"></div>
+            <div class="note" id="note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. Подсказчик ============ -->
+<section class="panel" id="p-help" role="tabpanel" hidden>
+  <div class="card helper">
+    <h2>Не знаешь, как сказать? Напиши по-русски</h2>
+    <p>ИИ даст простой вариант на китайском, с пиньинем и коротким пояснением, и прочитает его вслух.</p>
+    <div class="ask">
+      <textarea id="ruText" placeholder="Например: «А у вас есть зелёный чай?»"></textarea>
+      <button class="btn pri" id="askBtn">Подскажи</button>
+    </div>
+    <div class="examples" id="examples"></div>
+    <div class="answer" id="answer" hidden></div>
+  </div>
+</section>
+
+<p class="foot">Голос и разбор делает ИИ, поэтому иногда он может ошибиться. Если что-то звучит странно, спроси учителя.</p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module">
+import { pinyin } from './pinyin-pro.mjs';
+const API = 'https://kitai-ii.ch-tutor-world.workers.dev';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const HAN = /[㐀-鿿]/;
+let AUDIO = {};
+fetch('audio/index.json').then(r => r.json()).then(j => AUDIO = j).catch(() => {});
+
+/* ---------- пиньинь над знаками, цвет по тону ---------- */
+function ruby(text){
+  const arr = pinyin(String(text || ''), { type: 'all', toneSandhi: true });
+  return '<span class="zh">' + arr.map(x => x.isZh
+    ? `<ruby class="t${x.num || 0}"><span class="p">${esc(x.origin)}</span><rt>${esc(x.pinyin)}</rt></ruby>`
+    : `<span class="p">${esc(x.origin)}</span>`).join('') + '</span>';
+}
+const pyStr = t => pinyin(String(t || ''), { toneSandhi: true }).replace(/\s+([，。？！、,.?!])/g, '$1');
+
+/* ---------- тосты ---------- */
+let tt; function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3200); }
+
+/* ---------- звук ---------- */
+let cur = null;
+function stopAudio(){ if (cur) { try { cur.pause(); } catch (e) {} cur = null; } }
+function playUrl(url){ stopAudio(); const a = new Audio(url); cur = a; return new Promise(res => { a.onended = res; a.onerror = res; a.play().catch(res); }); }
+const ttsCache = new Map();
+async function speak(text, opts = {}){
+  const f = AUDIO[text];
+  if (f) return playUrl('audio/' + f);
+  try {
+    let url = ttsCache.get(text);
+    if (!url) {
+      const r = await fetch(API + '/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, voice: opts.voice || 'xiaoyi' }) });
+      if (!r.ok) throw 0;
+      url = URL.createObjectURL(await r.blob()); ttsCache.set(text, url);
+    }
+    return playUrl(url);
+  } catch (e) { toast('Не получилось озвучить. Проверь интернет.'); }
+}
+
+/* ---------- запись с микрофона → WAV 16 кГц ---------- */
+let stream = null;
+async function getMic(){
+  if (stream && stream.active) return stream;
+  stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } });
+  return stream;
+}
+function wav16(f32, sr){
+  const n = f32.length, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, f32[i])); v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+  return new Blob([buf], { type: 'audio/wav' });
+}
+async function toWav(blob){
+  const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC();
+  const src = await ac.decodeAudioData(await blob.arrayBuffer()); ac.close && ac.close();
+  const len = Math.ceil(src.duration * 16000); const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  const oc = new OAC(1, len, 16000); const b = oc.createBufferSource(); b.buffer = src; b.connect(oc.destination); b.start();
+  const r = await oc.startRendering(); return wav16(r.getChannelData(0), 16000);
+}
+/* кнопка «держи и говори» (короткое нажатие = старт/стоп) */
+function holdToTalk(btn, onAudio){
+  let rec = null, chunks = [], t0 = 0, toggle = false, raf = 0, ac = null;
+  async function start(){
+    stopAudio();
+    try { await getMic(); } catch (e) { toast('Разреши доступ к микрофону, чтобы говорить.'); return false; }
+    chunks = []; const type = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+    rec = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
+    rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    rec.start(); t0 = performance.now(); btn.classList.add('rec');
+    try { const AC = window.AudioContext || window.webkitAudioContext; ac = new AC(); const an = ac.createAnalyser(); an.fftSize = 512; ac.createMediaStreamSource(stream).connect(an);
+      const d = new Uint8Array(an.fftSize); const loop = () => { an.getByteTimeDomainData(d); let s = 0; for (const x of d) { const y = (x - 128) / 128; s += y * y; } btn.style.setProperty('--lvl', (1 + Math.min(.45, Math.sqrt(s / d.length) * 3.2)).toFixed(3)); raf = requestAnimationFrame(loop); }; loop(); } catch (e) {}
+    return true;
+  }
+  function stop(){
+    if (!rec) return; const r = rec; rec = null; btn.classList.remove('rec'); cancelAnimationFrame(raf); btn.style.removeProperty('--lvl'); if (ac) { ac.close(); ac = null; }
+    const dur = performance.now() - t0;
+    r.onstop = async () => {
+      if (dur < 400) { toast('Слишком коротко. Скажи фразу целиком.'); return; }
+      btn.classList.add('busy');
+      try { await onAudio(await toWav(new Blob(chunks, { type: r.mimeType }))); }
+      catch (e) { toast('Не расслышал. Попробуй ещё раз, чуть громче.'); }
+      finally { btn.classList.remove('busy'); }
+    };
+    r.stop();
+  }
+  btn.addEventListener('pointerdown', async e => {
+    e.preventDefault();
+    if (rec && toggle) { toggle = false; stop(); return; }
+    const ok = await start(); if (!ok) return;
+    const up = () => { btn.removeEventListener('pointerup', up); btn.removeEventListener('pointercancel', up);
+      if (performance.now() - t0 < 350) toggle = true; else stop(); };
+    btn.addEventListener('pointerup', up); btn.addEventListener('pointercancel', up);
+  });
+  btn.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); if (rec) { toggle = false; stop(); } else start().then(ok => { if (ok) toggle = true; }); } });
+}
+const clean = t => String(t || '').replace(/[,]/g, '，').replace(/[?]/g, '？').replace(/[!]/g, '！').replace(/[.]/g, '。').replace(/[^\u3400-\u9fff，。？！、]/g, '').trim();
+async function stt(wav){
+  const r = await fetch(API + '/stt', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav });
+  const j = await r.json(); if (j.error) throw new Error(j.error); return clean(j.text);
+}
+const hanLen = t => (String(t).match(/[\u3400-\u9fff]/g) || []).length;
+async function post(path, body){
+  const r = await fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const j = await r.json(); if (j.error) throw new Error(j.error); return j;
+}
+
+/* ---------- вкладки ---------- */
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-selected', x === b));
+  document.querySelectorAll('.panel').forEach(p => p.hidden = p.id !== 'p-' + b.dataset.tab);
+  stopAudio();
+}));
+
+/* ================= 1. Магазин ================= */
+const MISSIONS = [
+  { list: '两斤苹果，一瓶牛奶', ru: 'два цзиня яблок и бутылку молока', total: 16 },
+  { list: '一个面包，两瓶水', ru: 'один хлеб и две бутылки воды', total: 12 },
+  { list: '一杯咖啡，三个鸡蛋', ru: 'чашку кофе и три яйца', total: 23 },
+  { list: '一斤香蕉，一份饺子', ru: 'цзинь бананов и порцию пельменей', total: 31 },
+];
+const CN = n => { const d = '零一二三四五六七八九'; if (n < 10) return d[n]; if (n < 20) return '十' + (n % 10 ? d[n % 10] : ''); return d[Math.floor(n / 10)] + '十' + (n % 10 ? d[n % 10] : ''); };
+let M = MISSIONS[0], history = [], done = false, waiting = false;
+const GREET = '你好！欢迎光临！你想买什么？';
+const msgs = $('#msgs');
+function scrollDown(){ msgs.scrollTop = msgs.scrollHeight; }
+function addMsg(role, zh, ru){
+  const row = document.createElement('div'); row.className = 'row ' + (role === 'user' ? 'me' : 'them');
+  const showRu = $('#tRu').checked;
+  row.innerHTML = `<div class="bub">${ruby(zh)}${ru ? `<span class="ru"${showRu ? '' : ' hidden'}>${esc(ru)}</span>` : ''}</div>` +
+    (role === 'user' ? '' : `<div class="tools"><button data-a="play">▶ Ещё раз</button>${ru ? '<button data-a="ru">Перевод</button>' : ''}</div>`);
+  row.querySelector('[data-a=play]')?.addEventListener('click', () => speak(zh));
+  row.querySelector('[data-a=ru]')?.addEventListener('click', () => { const r = row.querySelector('.ru'); r.hidden = !r.hidden; });
+  msgs.appendChild(row); scrollDown(); return row;
+}
+function typing(on){
+  let t = $('#typing');
+  if (on && !t) { t = document.createElement('div'); t.id = 'typing'; t.className = 'row them'; t.innerHTML = '<div class="bub" style="padding:0"><span class="typing"><i></i><i></i><i></i></span></div>'; msgs.appendChild(t); scrollDown(); }
+  if (!on && t) t.remove();
+}
+function setMission(m){
+  M = m; done = false; history = [];
+  $('#mission').classList.remove('done');
+  $('#missionText').innerHTML = `<b>Купи:</b> ${ruby(m.list)}<br><span style="color:var(--muted)">${esc(m.ru)}. Узнай, сколько всего.</span>`;
+  msgs.innerHTML = ''; $('#suggest').hidden = true;
+  history.push({ role: 'assistant', content: GREET });
+  addMsg('assistant', GREET, 'Здравствуй! Добро пожаловать! Что хочешь купить?');
+  document.querySelectorAll('#missionBtns button').forEach((b, i) => b.classList.toggle('pri', MISSIONS[i] === m));
+}
+function checkMission(zh){
+  if (done) return;
+  const t = M.total, s = String(zh).replace(/\s/g, '');
+  if (s.includes(CN(t) + '块') || s.includes(t + '块') || s.includes(CN(t) + '元') || s.includes(t + '元')) {
+    done = true; $('#mission').classList.add('done'); toast('Задание выполнено! 太棒了！');
+  }
+}
+function lock(on){ waiting = on; ['#field', '#sendBtn', '#ruBtn'].forEach(s => $(s).disabled = on); $('#mic').classList.toggle('busy', on); }
+async function userSays(zh){
+  zh = String(zh).trim(); if (!zh || waiting) return;
+  lock(true);
+  const row = addMsg('user', zh);
+  history.push({ role: 'user', content: zh });
+  typing(true);
+  try {
+    const j = await post('/chat', { messages: history, persona: 'wangayi' });
+    typing(false);
+    history.push({ role: 'assistant', content: j.zh });
+    if (j.fix) { const f = document.createElement('div'); f.className = 'fix'; f.innerHTML = '<b>Подсказка:</b> ' + esc(j.fix); row.appendChild(f); }
+    addMsg('assistant', j.zh, j.ru); checkMission(j.zh); speak(j.zh);
+  } catch (e) { typing(false); toast('王阿姨 не ответила. Проверь интернет и попробуй ещё раз.'); }
+  finally { lock(false); }
+}
+MISSIONS.forEach((m, i) => { const b = document.createElement('button'); b.className = 'chip'; b.innerHTML = `<span class="han">${esc(m.list)}</span>`; b.onclick = () => { setMission(m); speak(GREET); }; $('#missionBtns').appendChild(b); });
+$('#tPy').addEventListener('change', e => document.body.classList.toggle('nopy', !e.target.checked));
+$('#tRu').addEventListener('change', e => document.querySelectorAll('.bub .ru').forEach(r => r.hidden = !e.target.checked));
+
+const field = $('#field'), ruBtn = $('#ruBtn'), sendBtn = $('#sendBtn');
+let ruMode = false;
+function setRu(on){ ruMode = on; ruBtn.setAttribute('aria-pressed', on); field.classList.toggle('ruin', on); field.placeholder = on ? 'Напиши по-русски, что хочешь сказать…' : 'Напиши по-китайски…'; field.focus(); }
+ruBtn.onclick = () => setRu(!ruMode);
+field.addEventListener('input', () => { sendBtn.hidden = !field.value.trim(); $('#mic').hidden = !!field.value.trim(); });
+async function submit(){
+  const v = field.value.trim(); if (!v) return;
+  field.value = ''; sendBtn.hidden = true; $('#mic').hidden = false;
+  if (ruMode || !HAN.test(v)) {
+    const box = $('#suggest'); box.hidden = false; box.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+    try {
+      const j = await post('/hint', { ru: v });
+      box.innerHTML = `<div style="color:var(--muted);font-weight:700">«${esc(v)}» по-китайски:</div>${ruby(j.zh)}<div class="note">${esc(j.note || '')}</div>
+        <div class="act"><button class="chip" data-a="l">▶ Послушать</button><button class="chip pri" data-a="s">Отправить 王阿姨</button><button class="chip" data-a="x">Скрыть</button></div>`;
+      box.querySelector('[data-a=l]').onclick = () => speak(j.zh);
+      box.querySelector('[data-a=s]').onclick = () => { box.hidden = true; setRu(false); userSays(j.zh); };
+      box.querySelector('[data-a=x]').onclick = () => { box.hidden = true; };
+      speak(j.zh);
+    } catch (e) { box.hidden = true; toast('Подсказка не пришла. Попробуй ещё раз.'); }
+  } else userSays(v);
+}
+sendBtn.onclick = submit;
+field.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+holdToTalk($('#mic'), async wav => { const t = await stt(wav); if (!t) { toast('Не расслышал. Попробуй ещё раз.'); return; } userSays(t); });
+setMission(MISSIONS[0]);
+
+/* ================= 2. Скажи — проверим ================= */
+const PHRASES = [
+  ['我要两个苹果。', 'Мне два яблока.'], ['这个多少钱？', 'Сколько это стоит?'], ['我想吃饺子。', 'Я хочу пельменей.'],
+  ['服务员，买单！', 'Официант, счёт!'], ['我要一杯咖啡。', 'Мне чашку кофе.'], ['我不吃肉。', 'Я не ем мясо.'],
+  ['太贵了，便宜一点吧！', 'Слишком дорого, давайте подешевле!'], ['一共多少钱？', 'Сколько всего?'],
+];
+const NUMS = [4, 10, 14, 40, 44, 17, 70, 47];
+let cur2 = { zh: PHRASES[0][0], ru: PHRASES[0][1], trap: false };
+function renderPhrases(){
+  const L = $('#phrases'); L.innerHTML = '';
+  PHRASES.forEach(([zh, ru], i) => { const b = document.createElement('button'); b.className = 'pick'; b.setAttribute('aria-pressed', i === 0);
+    b.innerHTML = `<span class="h">${esc(zh)}</span><small>${esc(ru)}</small>`; b.onclick = () => choose(b, { zh, ru, trap: false }); L.appendChild(b); });
+  const t = document.createElement('button'); t.className = 'pick trap'; t.setAttribute('aria-pressed', false);
+  t.innerHTML = `<span class="h">十四 или 四十?</span><small>Ловушка s и sh: скажи число по-китайски</small>`;
+  t.onclick = () => choose(t, newNum()); L.appendChild(t);
+}
+function newNum(){ let n; do { n = NUMS[Math.floor(Math.random() * NUMS.length)]; } while (cur2.trap && n === cur2.n); return { zh: CN(n), ru: 'Скажи это число по-китайски', trap: true, n }; }
+function choose(btn, item){
+  document.querySelectorAll('.pick').forEach(x => x.setAttribute('aria-pressed', x === btn));
+  cur2 = item; drawTarget(); $('#result').hidden = true;
+}
+function drawTarget(){
+  const T = $('#target');
+  T.className = 'target' + (cur2.trap ? ' num' : '');
+  T.innerHTML = cur2.trap ? String(cur2.n) : ruby(cur2.zh);
+  $('#targetRu').textContent = cur2.ru;
+  $('#nextNum').hidden = !cur2.trap;
+  $('#listen').querySelector('.han').textContent = '晓晓';
+}
+$('#listen').onclick = () => speak(cur2.zh);
+$('#nextNum').onclick = () => { cur2 = newNum(); drawTarget(); $('#result').hidden = true; };
+holdToTalk($('#bigmic'), async wav => {
+  const heard = await stt(wav);
+  const j = await post('/check', { target: cur2.zh, heard, targetPinyin: pyStr(cur2.zh), heardPinyin: pyStr(heard) });
+  $('#result').hidden = false;
+  $('#heard').innerHTML = heard ? ruby(heard) : '<span style="font-family:var(--sans);font-size:15px">ничего не расслышал</span>';
+  $('#score').textContent = j.score;
+  const arc = $('#ringArc'); arc.style.stroke = j.score >= 90 ? 'var(--jade)' : j.score >= 60 ? 'var(--gold)' : 'var(--rose)';
+  requestAnimationFrame(() => arc.style.strokeDashoffset = 238.8 * (1 - j.score / 100));
+  $('#cmp').innerHTML = j.chars.map(c => `<span class="${c.ok ? 'ok' : 'no'}">${esc(c.t)}<small>${esc(pyStr(c.t))}${!c.ok && c.heard ? ' → ' + esc(pyStr(c.heard)) : ''}</small></span>`).join('');
+  const cut = heard && hanLen(heard) < hanLen(cur2.zh) * 0.6;
+  $('#note').innerHTML = j.ok ? '<b>Отлично!</b> ИИ услышал ровно то, что нужно. 太棒了！'
+    : !heard ? 'Ничего не было слышно. Проверь микрофон и говори чуть громче.'
+    : cut ? '<b>Похоже, фраза записалась не целиком.</b> Нажми кнопку, скажи всю фразу и только потом отпусти.'
+    : esc(j.note || 'Послушай 晓晓 ещё раз и повтори медленнее.');
+});
+renderPhrases(); drawTarget();
+
+/* ================= 3. Подсказчик ================= */
+const EX = ['А у вас есть зелёный чай?', 'Можно пакет?', 'Я хочу вот это.', 'Сколько стоит килограмм бананов?', 'У меня нет мелочи.', 'Спасибо, до свидания!'];
+EX.forEach(x => { const b = document.createElement('button'); b.textContent = x; b.onclick = () => { $('#ruText').value = x; ask(); }; $('#examples').appendChild(b); });
+async function ask(){
+  const ru = $('#ruText').value.trim(); if (!ru) { $('#ruText').focus(); return; }
+  const A = $('#answer'); A.hidden = false; A.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+  $('#askBtn').disabled = true;
+  try {
+    const j = await post('/hint', { ru });
+    A.innerHTML = `${ruby(j.zh)}<div class="back-ru">${esc(j.ru || '')}</div>${j.note ? `<div class="tip">${esc(j.note)}</div>` : ''}
+      <div class="act"><button class="btn" data-a="l"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Послушать</button><button class="btn" data-a="t">Потренировать вслух →</button></div>`;
+    A.querySelector('[data-a=l]').onclick = () => speak(j.zh);
+    A.querySelector('[data-a=t]').onclick = () => { document.querySelector('[data-tab=say]').click(); choose(document.createElement('i'), { zh: j.zh, ru, trap: false }); };
+    speak(j.zh);
+  } catch (e) { A.hidden = true; toast('Подсказка не пришла. Попробуй ещё раз.'); }
+  finally { $('#askBtn').disabled = false; }
+}
+$('#askBtn').onclick = ask;
+$('#ruText').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(); } });
+</script>
+</body></html>
