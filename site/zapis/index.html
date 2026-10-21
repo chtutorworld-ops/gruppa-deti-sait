@@ -40,6 +40,7 @@ const GROUPS=[
  ['Образцы гласных для «Запиши голос»',['a','o','e','yi','u']],
  ['Нейтральный тон (для «Догоняем урок»)',['ma'],[0]],
  ['Урок 3: как называют инициали',['bo:1','po:1','fo:2','de:2','te:4','ne:4','le:4','ge:1','ke:1','he:1','zi:1','ci:2','si:1','zhi:1','chi:1','shi:1','ri:4','ji:1','qi:1','xi:1']],
+ ['Урок 3: чистые звуки инициалей — без гласной и без тона',['b:0','p:0','m:0','f:0','d:0','t:0','n:0','l:0','g:0','k:0','h:0']],
  ['Урок 3: слоги, которые компьютер читает плохо',['ga:1','wa:1','ye:4']],
  ['Цепочки тонов 1 · b p m f',['pa','po','pi','pu','bo','bu','fa','fu']],
  ['Цепочки тонов 2 · d t n l',['ta','ti','te','du','na','nu','la','li','lu','de']],
@@ -54,6 +55,10 @@ const ITEMS=[];GROUPS.forEach(([g,bs,ts])=>bs.forEach(b=>ent(b,ts).forEach(k=>IT
 const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
 const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
 const TIP={1:'Высоко и ровно, как долгая нота.',2:'Снизу вверх, как удивлённое «а?».',3:'Полный 3-й тон: вниз, задержаться внизу (можно с хрипотцой) и подняться — «галочка». Не торопитесь.',4:'Резко сверху вниз, коротко.',0:'Нейтральный тон: ma, как 吗 в конце вопроса — легко и коротко.'};
+const SND={b:'Губы сомкнуть и разомкнуть — коротко, без выдоха и без гласной: «b», а не «бо».',d:'Кончик языка за верхние зубы — коротко, без выдоха и без гласной: «d».',g:'Корень языка к нёбу — коротко, без выдоха и без гласной: «g».',
+ p:'Как b, но с сильным выдохом — листок бумаги у рта должен качнуться. Без гласной: «p».',t:'Как d, но с сильным выдохом. Без гласной: «t».',k:'Как g, но с сильным выдохом. Без гласной: «k».',
+ m:'Губы сомкнуты, тяните «ммм» около секунды.',n:'Кончик языка за верхними зубами, тяните «ннн».',l:'Кончик языка за верхними зубами, тяните «ллл».',f:'Верхние зубы на нижней губе, тяните «ффф».',h:'Хриплый выдох из горла, тяните «ххх» — как будто греете руки.'};
+const isSnd=(b,t)=>!t&&!/[aeiouü]/.test(b);
 let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||'';}catch(e){}
 let DONE={},cur=0,blob=null,url=null;
 const $=s=>document.querySelector(s);
@@ -110,7 +115,7 @@ function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Obje
  $('#app').innerHTML=`<div class="head n"><h1>录音 · Запись эталонных слогов</h1><p class="l">Эти записи будут звучать в домашних заданиях вместо синтезатора. Говорите отчётливо и чуть медленнее обычного. После записи вы увидите кривую своего голоса — для 3-го тона там должна быть «галочка».</p>
  <div class="bar"><i style="width:${done/ITEMS.length*100}%"></i></div><p class="l" style="font-weight:800">Записано ${done} из ${ITEMS.length}</p></div>
  <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].some(e=>ent(e,g[2]).includes(id)))[0]}</div>
-  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t?t+'-й тон':'нейтральный тон'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
+  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t?t+'-й тон':isSnd(b,t)?'только звук':'нейтральный тон'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${isSnd(b,t)?SND[b]:TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
   <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
   <div id="cv"></div>
   <div class="row"><button class="btn g" id="pl" ${blob?'':'disabled'}>▶ Прослушать</button><button class="btn ok" id="sv" ${blob?'':'disabled'}>✓ Сохранить и дальше</button>${DONE[id]?'<button class="btn g" id="old">▶ Сохранённое</button>':''}</div>

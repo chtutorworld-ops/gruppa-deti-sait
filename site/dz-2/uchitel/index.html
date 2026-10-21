@@ -42,18 +42,20 @@ async function load(){const st=document.getElementById('st');if(!KEY){st.textCon
   const by={};(j.subs||[]).filter(s=>!isTest(s.name)).forEach(s=>{const k=first(s.name);const g=by[k]=by[k]||{names:new Set(),parts:{},sids:[],upd:0};g.names.add(s.name);g.sids.push(s.sid);g.upd=Math.max(g.upd,s.updated||0);
    for(const [p,v] of Object.entries(s.parts||{})){const o=g.parts[p];if(p==='rec'||p==='chain'){g.parts[p]=g.parts[p]||{items:{}};for(const [it,t] of Object.entries(v.items||{}))g.parts[p].items[it]={sid:s.sid,t};}
     else if(p==='game'){if(!o||(v.best||0)>(o.best||0))g.parts.game={...v,games:((o&&o.games)||0)+(v.games||0)};else o.games+=(v.games||0);}
+    else if(p==='speak'){if(!o||(v.passed||0)>=(o.passed||0))g.parts[p]=v;}
     else if(!o||(v.score||0)>=(o.score||0))g.parts[p]=v;}});
   const rows=Object.values(by).sort((a,b)=>[...a.names][0].localeCompare([...b.names][0],'ru'));
   const sc=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}</td>`;};
+  const spk=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.passed/p.of:0;return `<td class="${k>=.8?'g':k>=.4?'m':'b'}">${p.passed||0}/${p.of}${p.tries?`<small>попыток: ${p.tries}</small>`:''}</td>`;};
   const recs=(g,part,ids)=>{const it=(g.parts[part]||{}).items||{};const n=Object.keys(it).length;return `<td class="${n>=ids.length?'g':n?'m':'e'}">${ids.map(x=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${x.slice(1)}▶</button>`:`<span class="pl no">${x.slice(1)}</span>`).join('')}<small>${n}/${ids.length}</small></td>`;};
-  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Бриф</th><th>2 · Выдох</th><th>3 · Диктант</th><th>4 · 🎤 Инициали</th><th>5 · 🎶 Цепочки тонов</th><th>6 · 🚀 Шутер</th></tr>`+
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Бриф</th><th>2 · Выдох</th><th>3 · Диктант</th><th>4 · 🎤 Инициали</th><th>5 · 🎶 Цепочки тонов</th><th>6 · 🗣️ Скажи тон</th><th>7 · Тоны в словах</th><th>8 · Слог по частям</th><th>9 · 🏮 Китай</th><th>10 · 🚀 Шутер</th></tr>`+
    (rows.length?rows.map(g=>`<tr><td class="nm">${esc([...g.names].join(' / '))}<small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>
-    <td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g,'rec',['r1','r2','r3'])}${recs(g,'chain',['c1','c2','c3'])}
-    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="7" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 2.</td></tr>');
+    <td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g,'rec',['r1','r2','r3'])}${recs(g,'chain',['c1','c2','c3'])}${spk(g.parts.speak)}${sc(g.parts.words)}${sc(g.parts.parts)}${sc(g.parts.china)}
+    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 2.</td></tr>');
   document.querySelectorAll('.pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
   const done=f=>rows.filter(f).length;
   document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=3&&Object.keys((g.parts.chain||{}).items||{}).length>=3)}</b>сдали все записи</div><div><b>${done(g=>g.parts.air&&g.parts.dict)}</b>сделали слушание</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
-  const miss={};rows.forEach(g=>['air','dict','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const miss={};rows.forEach(g=>['air','dict','words','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
   st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, пробую снова…';}}
 load();setInterval(load,15000);
