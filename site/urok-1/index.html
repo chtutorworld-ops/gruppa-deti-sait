@@ -337,7 +337,7 @@ const phoneSlide=(id,src,poster,z,p,r,text)=>`
     ${HAND_FRONT}</div>`;
 /* ---------- slides ---------- */
 const S=[]; const add=(block,title,html,cls='')=>S.push({block,title,html,cls});
-const B=['Начало','1. История языка и письменности','2. Путунхуа, диалекты, письмо','3. Особенности языка и тест','4. Пиньинь, слог, тон','5. Базовые финали и артикуляция','6. Инициали b p m f d t n l g k h','7. Инициали z c s zh ch sh','8. Инициали y w r j q x','Конец'];
+const B=['Начало','1. История языка и письменности','2. Путунхуа, диалекты, письмо','3. Особенности языка и тест','4. Пиньинь, слог, тон','5. Базовые финали','6.','7.','8.','Конец'];
 
 add(0,'Обложка',`
   <div class="tit">
@@ -679,112 +679,7 @@ add(5,'Финали с тонами',`
    ${['āáǎà','ōóǒò','ūúǔù','īíǐì','ēéěè'].map(v=>`<div class="g" style="flex-direction:column;gap:4px;padding:16px 0">${[...v].map(sy).join('')}</div>`).join('')}
   </div>`);
 
-add(5,'Палатограмма',`
-  <img class="bg fit" src="img/palateview.webp" alt="Программа электропалатографии: зоны касания у преподавателя и ученика" style="background:#fff">`);
-add(5,'Электропалатограф',`
-  <img class="bg" src="img/epg.webp" alt="Электропалатограф: искусственное нёбо с датчиками, блок и экран">`);
-
-add(5,'Палатография',`
-  ${ttl('','','Палатография — как учёные «видят» язык')}
-  <div class="page" style="top:110px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:44px">
-    <div style="display:grid;gap:12px;align-content:start">
-      <p class="lead rv" style="font-size:19px"><b>Что это?</b> Палатография — метод экспериментальной фонетики, который фиксирует, где именно язык касается нёба при произнесении звуков.</p>
-      <div class="rv"><p class="lead" style="font-size:19px"><b>Классический метод:</b></p>
-        <ol style="padding-left:22px;font-size:17.5px;line-height:1.55;color:var(--ink-3)"><li>Язык покрывают специальным составом (раньше использовали шоколад, смешанный с угольным порошком).</li><li>Человек произносит нужный звук.</li><li>После произнесения на нёбе остаются следы — зоны контакта.</li><li>Экспериментатор фотографирует или зарисовывает получившуюся «карту касаний» — палатограмму.</li></ol></div>
-      <p class="lead rv" style="font-size:19px"><b>Современный метод (электропалатография):</b> во рту устанавливается тонкое искусственное нёбо со встроенными датчиками-электродами. При касании языком датчик замыкается, и компьютер фиксирует контакт в реальном времени.</p>
-    </div>
-    <div style="display:grid;gap:16px;align-content:start">
-      <div class="rv"><p class="lead" style="font-size:19px"><b>Зачем это нужно?</b></p>
-        <ul class="dl" style="gap:4px;margin-top:4px"><li style="font-size:19px">Сравнивать артикуляцию в разных языках.</li><li style="font-size:19px">Видеть разницу между тем, как произносят звук носитель и ученик.</li><li style="font-size:19px">Помогать исправлять ошибки — например, понять, почему русские «долбят языком в зубы», а китайцы так не делают.</li></ul></div>
-      <div class="card round rv" style="padding:16px 20px"><p class="lead" style="font-size:19px"><b>Главный вывод для нас:</b> палатография наглядно показала: у русских зона контакта языка смещена вперёд, к зубам, а у китайцев — назад, к нёбу. Это и есть та самая артикуляционная привычка, которую нужно менять при изучении китайского.</p></div>
-    </div>
-  </div></div>`);
-
-add(5,'Альвеолы',`<img class="bg fit" src="img/anatomy.webp" alt="Строение артикуляционного аппарата и альвеолы" style="background:#fff">`);
-
-add(6,'Инициали b p m f d t n l g k h',initials([['b','б','波'],['p','пх','坡'],['m','м','摸'],['f','ф','佛'],['d','д','得'],['t','тх','特'],['n','н','讷'],['l','л','乐'],['g','г','哥'],['k','кх','科'],['h','х','喝']]));
-add(6,'Язык: d t n l g k h',tongue(['root','tip'],'b, p, m, f — работают губы.'));
-
-add(6,'Непридыхательные и придыхательные',`
-  ${ttl('','','Непридыхательные и придыхательные')}
-  <div class="page"><div class="cols" style="grid-template-columns:1.2fr 1fr;align-items:center;gap:50px">
-    <div style="display:grid;gap:16px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;font-size:18px;font-weight:700;color:var(--muted);text-align:center"><span>непридыхательные</span><span style="color:var(--rose)">придыхательные</span></div>
-      ${[['b','б','波','p','пх','坡'],['d','д','得','t','тх','特'],['g','г','哥','k','кх','科']].map(([a,ar,ac,b,br,bc])=>`<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <button class="syl has card round" data-say="${ac}" style="padding:14px 0;font-family:var(--serif);font-size:84px;font-weight:600;color:var(--vio-2)">${a} <span style="font-family:var(--sans);font-size:26px;color:var(--muted)">(${ar})</span></button>
-        <button class="syl has card round" data-say="${bc}" data-blow style="padding:14px 0;font-family:var(--serif);font-size:84px;font-weight:600;color:var(--rose);border-color:rgba(168,69,106,.5)">${b} <span style="font-family:var(--sans);font-size:26px;color:var(--muted)">(${br})</span></button></div>`).join('')}
-    </div>
-    <div style="display:grid;justify-items:center;gap:16px">
-      <div style="display:flex;align-items:flex-start;gap:26px">
-        <svg viewBox="0 0 120 140" width="170" height="198" aria-hidden="true"><path d="M70 10C38 10 18 34 18 64c0 18 8 30 8 42v24h46v-16h16c8 0 10-6 10-12V88l12-4-12-26C96 30 88 10 70 10z" fill="#FFFDF8" stroke="#33315F" stroke-width="3" stroke-linejoin="round"/><circle cx="80" cy="50" r="4" fill="#33315F"/><path d="M98 84h8" stroke="#A8456A" stroke-width="4" stroke-linecap="round"/><path d="M110 74l8-4M112 84h8M110 94l8 4" stroke="#BE9760" stroke-width="3" stroke-linecap="round"/></svg>
-        <div class="paper-strip" id="strip"></div>
-      </div>
-      <p class="lead" style="font-size:20px;text-align:center;max-width:400px">Поднеси листок бумаги ко рту. На <b style="color:var(--rose)">p, t, k</b> он отклоняется от сильного выдоха, на b, d, g — почти не шевелится.</p>
-    </div>
-  </div></div>`);
-
-add(6,'Тренировка: пары b/p, d/t, g/k',`${PR}${drill(pairs('bō — pō; gǔ — kǔ; dé — té; gā — kā; bì — pì; dú — tú; bǔ — pǔ; gè — kè; dī — tī; bà — pà'),2,50)}`);
-add(6,'Видео с произнесением',phoneSlide('v49','','','声母','shēngmǔ','Слушаем произнесение','Повторяй за диктором каждую пару слогов.'));
-add(6,'Тренировка: четыре тона',`${PR}${drill(sets('bō bó bǒ bò; dū dú dǔ dù; kē ké kě kè; pī pí pǐ pì; gā gá gǎ gà; tā tá tǎ tà; bū bú bǔ bù; pō pó pǒ pò; gū gú gǔ gù; dā dá dǎ dà; kū kú kǔ kù; tī tí tǐ tì'),3,42)}`);
-add(6,'Тренировка: ряды слогов',`${PR}${drill(sets('bā bá bǎ bà; bī bí bǐ bì; bō bó bǒ bò; pī pí pǐ pì; pō pó pǒ pò; pū pú pǔ pù; lā lá lǎ là; mā má mǎ mà; mī mí mǐ mì; mō mó mǒ mò; dā dá dǎ dà; dī dí dǐ dì; tī tí tǐ tì; tū tú tǔ tù; lī lí lǐ lì; gē gé gě gè; kē ké kě kè; hū hú hǔ hù'),3,38)}`);
-add(6,'Тренировка: пары слогов',`${PR}${drill(pairs('bā — pá; bí — pì; bǔ — pù; bō — pō; dá — tú; dú — tù; dì — tí; gē — kè; gǔ — kū; gè — ké; nā — là; ní — nì; nù — lú; mā — mí; mù — mǐ; hē — fú; hú — kě'),3,38)}`);
-add(6,'Диктант 1',dictation(['gē','nù','bí','mā','tù','hú','pì','dā','lú','kè']));
-
-add(7,'Инициали z c s zh ch sh',initials([['z','дз','资'],['c','цх','词'],['s','с','丝'],['zh','дж','知'],['ch','чх','吃'],['sh','ш','诗']]));
-add(7,'Язык: z c s zh ch sh',tongue(['tip'],'Все шесть инициалей делает кончик языка.'));
-add(7,'Важное примечание',`
-  ${ttl('','','Важное примечание')}
-  <div class="page" style="display:grid;gap:30px;align-content:center;max-width:1040px">
-    <div class="note rv" style="font-size:25px;line-height:1.5">Со всей второй строчкой инициалей звук «i» обретает звучание <b>«Ы»</b>: <span class="p">${['zī','cí','sì','zhī','chī','shí'].map(sy).join(' ')}</span></div>
-    <div class="note rv" style="font-size:25px;line-height:1.5;border-color:var(--rose)">При сочетании звука «i» с придыхательными инициалями <b>c</b> и <b>ch</b> у них исчезает придыхание! Звук «c» читается как <b>«Ц»</b>, звук «ch» — как <b>«ЧШ»</b>.</div>
-    <div class="note rv" style="font-size:25px;line-height:1.5;border-color:var(--jade)">Вся вторая строчка инициалей <b>не сочетается</b> с финалью «o»!</div>
-  </div>`);
-add(7,'Тренировка: четыре тона',`${PR}${drill(sets('zā zá zǎ zà; cī cí cǐ cì; zhī zhí zhǐ zhì; chē ché chě chè; sū sú sǔ sù; chī chí chǐ chì; shā shá shǎ shà; zē zé zě zè; chū chú chǔ chù; sī sí sǐ sì; zhē zhé zhě zhè; cā cá cǎ cà; shī shí shǐ shì; zū zú zǔ zù; cē cé cě cè; shū shú shǔ shù'),3,36)}`);
-add(7,'Тренировка: пары',`${PR}${drill(pairs('chě — zhé; zhú — cù; sè — shé; cí — zì; zá — cā; zhā — shà; sù — zǔ; zhì — shí; sà — zā; zè — cé; zhī — zǐ; cì — chī; sū — shù; chá — zhā; sī — zì; zhǎ — zì; zhǔ — shā; shù — shè'),3,36)}`);
-add(7,'Диктант 2',dictation(['zhǎ','sū','cí','shè','zā','chě','zhì','sè','shù','cé']));
-const CH=[['tǎ','tà','tā'],['zì','zǐ','zī'],['bǎ','bā','bà'],['shí','shī','shǐ'],['cǎ','cā','cá'],['dà','dǎ','dā'],['sě','sē','sè'],['gé','gě','gē'],['chè','chě','chē'],['zhù','zhū','zhǔ']];
-add(7,'Выбери слог',`
-  ${hd('选音节','xuǎn yīnjié','Выбери слог на слух')}
-  <div style="position:absolute;left:90px;right:90px;top:100px;bottom:70px;display:grid;grid-template-columns:1fr 1fr;gap:20px 70px;align-content:center">
-  ${CH.map((o,i)=>`<div class="db" style="gap:20px"><span class="k">${i+1}</span>${o.map((s,j)=>`<span style="display:flex;align-items:baseline;gap:6px;flex:1"><span style="font-family:var(--serif);font-size:16px;color:var(--gold-2)">${'ABC'[j]})</span><span class="p" style="font-size:36px">${sy(s)}</span></span>`).join('')}</div>`).join('')}
-  </div>
-  <div class="hint">Слушай преподавателя и выбери слог, который прозвучал</div>`);
-add(7,'Диктант 3',dictation(['zú','chē','sì','zhě','cā','bó','tè','gǔ','shū','kě']));
-add(7,'温故知新 — Повторение',`
-  ${hd('温故知新','wēn gù zhī xīn','Повторение изученного')}
-  <div style="position:absolute;left:90px;right:90px;top:170px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
-    ${[['Инициали','Назовите все изученные инициали.'],['Финали','Назовите все изученные финали.'],['Тон','Расскажите всё, что вы знаете про тоны китайского языка.']].map(([h,t],i)=>`<div class="card round rv" style="padding:28px 28px;min-height:290px"><span class="lb" style="font-size:13px">№ ${i+1}</span><div class="h2" style="font-size:36px;margin:8px 0 12px">${h}</div><p class="lead" style="font-size:24px">${t}</p></div>`).join('')}
-  </div>
-  <div style="position:absolute;left:0;right:0;bottom:70px;display:grid;justify-items:center;gap:6px;text-align:center">
-    <div class="rule"></div>
-    <div style="font-family:var(--serif);font-size:30px;font-style:italic;color:var(--ink-3);margin-top:14px">«Повторяя старое, познаёшь новое»</div>
-    <div style="font-size:15px;color:var(--muted);font-weight:600">Конфуций, «Лунь юй»</div>
-  </div>`);
-add(7,'Тренировка: пары',`${PR}${drill(pairs('zé — zhě; nì — lǐ; sē — shè; bó — pǒ; zhí — zì; mǎ — mà; cù — chǔ; fū — hú; chā — cǎ; gē — kè; shū — sū; nù — lù; dě — tè; zē — cè; zhǔ — chù; fá — hà; sī — shǐ; gǔ — kù; bǐ — pì; dū — tù'),4,34)}`);
-add(7,'Диктант 4',dictation(['chǐ','zè','shǔ','cà','zhē','sù','tì','pǔ','shū','fó']));
-
-add(8,'Инициали y w r j q x',initials([['y','й','衣'],['w','w','乌'],['r','ж/р','日'],['j','дзь','鸡'],['q','тсь','七'],['x','сь','西']]));
-add(8,'Язык: j q x и r',tongue(['mid','tip'],'j, q, x — спинка языка, r — кончик языка.'));
-add(8,'最狡猾的声母 — Коварные инициали',`
-  ${ttl('最狡猾的声母','zuì jiǎohuá de shēngmǔ','Самые коварные инициали')}
-  <div class="page" style="display:grid;grid-template-columns:1fr 1fr;gap:26px 28px;align-content:center">
-    ${[['j','ji, ju','Средняя часть языка прижата к нёбу. Звук похож на русский «д» в словах «Дима», «дюшес».','鸡'],['r','ж/р','Язык свёрнут назад, кончик у альвеол. Губы чуть растянуты. Звук между русскими «ж» и «р». Не твёрдый, не мягкий.','日'],['q','qi, qu — с выдохом','Сильный выдох при произнесении. Похоже на английское «ch» в слове «cheap», только мягче и с придыханием.','七'],['x','xi, xu','Средняя часть языка прижата к нёбу. Звук немного шипящий и отдалённо напоминает звук «Щ».','西']].map(([l,s,t,c])=>`<div class="card round rv" style="display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:start;padding:22px 22px"><button class="syl has" data-say="${c}" style="font-family:var(--serif);font-size:84px;font-weight:600;line-height:1;color:var(--vio-2)">${l}</button><div><div class="p" style="font-size:20px">${s}</div><p class="lead" style="font-size:20px;margin-top:6px">${t}</p></div></div>`).join('')}
-  </div>`);
-add(8,'Важное примечание',`
-  ${ttl('','','Важное примечание')}
-  <div class="page" style="display:grid;gap:28px;align-content:center;max-width:1040px">
-    <div class="note rv" style="font-size:25px;line-height:1.5">Инициаль <b>«y»</b> не сочетается с финалью «o» — слога «yo» не бывает!</div>
-    <div class="note rv" style="font-size:25px;line-height:1.5;border-color:var(--jade)">Инициаль <b>«w»</b> не сочетается с финалями «i» и «e»: слогов «wi» и «we» не бывает!</div>
-    <div class="note rv" style="font-size:25px;line-height:1.5;border-color:var(--rose)">Инициаль <b>«r»</b> не сочетается с финалью «o» — слога «ro» не бывает!</div>
-    <div class="note rv" style="font-size:25px;line-height:1.5;border-color:var(--vio)">Инициали <b>«j», «q», «x»</b> сочетаются только с финалями «i» и «u»!</div>
-  </div>`);
-add(8,'Тренировка: четыре тона',`${PR}${drill(sets('yā yá yǎ yà; rē ré rě rè; qī qí qǐ qì; wū wú wǔ wù; jī jí jǐ jì; xī xí xǐ xì; yē yé yě yè; rū rú rǔ rù; qū qú qǔ qù; wō wó wǒ wò; jū jú jǔ jù; xū xú xǔ xù; yō yó yǒ yò; wā wá wǎ wà; rè ré rě rè; qì qí qǐ qì'),3,36)}`);
-add(8,'Тренировка: пары',`${PR}${drill(pairs('yā — wā; jī — qí; xī — jǐ; qù — xū; jǔ — qú; xǔ — yū; qì — jì; xí — yǐ; jù — qù; yē — wě; xū — yǔ; qí — xí; yú — rù; jū — qǔ'),3,38)}`);
-add(8,'Диктант 5',dictation(['jǐ','yē','qù','xú','wǎ','rè','qí','yě','xì','jū']));
-add(8,'Диктант 6',dictation(['zhǔ','cè','sǐ','chà','zhù','zé','pì','tǔ','fó','chī']));
-add(8,'Тренировка: все инициали',`${PR}${drill(sets('mō mó mǒ mò; zhī zhí zhǐ zhì; sū sú sǔ sù; qū qú qǔ qù; rē ré rě rè; dī dí dǐ dì; shī shí shǐ shì; cē cé cě cè; xī xí xǐ xì; yī yí yǐ yì; chī chí chǐ chì; pū pú pǔ pù; nē né ně nè; lē lé lě lè; zī zí zǐ zì; jī jí jǐ jì; fū fú fǔ fù; tī tí tǐ tì; wū wú wǔ wù; bō bó bǒ bò'),4,28)}`);
-add(8,'Тренировка: пары вперемешку',`${PR}${drill(pairs('sē — shè; jǔ — qǔ; mǎ — mà; rè — lè; zhí — zì; fū — zì; hú — xī; jī — cù; gē — chǔ; wǒ — wò; nì — lǐ; yū — wū; zhǔ — chù; bó — chù; pǒ — qì; xì — fá; hà — chā; cǎ — zē; cè — rì; rè — shū; nù — lù; yě — yè; sī — shǐ; jù — xù; gǔ — kù; zé — zhě; dū — tù; yí — wú; bǐ — pì; dě — tè'),5,27)}`);
-add(8,'Диктант 7',dictation(['chè','jī','wǒ','cā','rè','zé','yǐ','qù','zhì','xī']));
+/* lesson 3 (articulation and initials) lives in ../urok-3/ */
 
 add(9,'下课！再见！',`
   <img class="bg" src="img/liriver.webp" alt="" style="object-position:60% 50%">
