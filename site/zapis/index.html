@@ -41,7 +41,13 @@ const GROUPS=[
  ['Нейтральный тон (для «Догоняем урок»)',['ma'],[0]],
  ['Урок 3: как называют инициали',['bo:1','po:1','fo:2','de:2','te:4','ne:4','le:4','ge:1','ke:1','he:1','zi:1','ci:2','si:1','zhi:1','chi:1','shi:1','ri:4','ji:1','qi:1','xi:1']],
  ['Урок 3: слоги, которые компьютер читает плохо',['ga:1','wa:1','ye:4']],
- ['ДЗ 2: цепочки тонов (b-p, d-t, g-k)',['pa:1','pa:2','pa:3','pa:4','ta:1','ta:2','ta:3','ta:4','ge:2','ge:3','ge:4','ke:2','ke:3','ke:4']],
+ ['Цепочки тонов 1 · b p m f',['pa','po','pi','pu','bo','bu','fa','fu']],
+ ['Цепочки тонов 2 · d t n l',['ta','ti','te','du','na','nu','la','li','lu','de']],
+ ['Цепочки тонов 3 · g k h',['ge','ke','ga','gu','ka','ku','ha','he','hu']],
+ ['Цепочки тонов 4 · z c s',['za','zi','zu','ca','ci','cu','sa','si','su']],
+ ['Цепочки тонов 5 · zh ch sh',['zha','zhi','zhe','zhu','cha','chi','che','chu','sha','shi','she','shu']],
+ ['Цепочки тонов 6 · j q x',['ji','ju','qi','qu','xi','xu']],
+ ['Цепочки тонов 7 · y w r',['ya','ye','yu','wa','wo','re','ri','ru']],
 ];
 const ent=(e,ts)=>e.includes(':')?[e.replace(':','')]:(ts||[1,2,3,4]).map(t=>e+t);   // 'bo:1' = one syllable with one tone
 const ITEMS=[];GROUPS.forEach(([g,bs,ts])=>bs.forEach(b=>ent(b,ts).forEach(k=>ITEMS.push(k))));
