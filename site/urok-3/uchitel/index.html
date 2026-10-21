@@ -1,0 +1,92 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — Урок 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--ok:#2DBE8C;--no:#FF5C8A;--mid:#F5A524;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1300px;margin:0 auto;display:grid;gap:18px}
+.top{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap}
+.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.lay{display:grid;gap:18px}@media(min-width:1000px){.lay{grid-template-columns:420px 1fr;align-items:start}}
+.box{padding:18px 20px}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.btn{padding:10px 18px;border-radius:14px;font-weight:800;font-size:15px;background:var(--ac);color:#fff;box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ac2)}
+.clock{font:900 34px Nunito;color:var(--ac2);min-width:110px}
+.seg{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:10px 12px;border-radius:14px;margin-top:6px;font-size:14px;line-height:1.4}
+.seg b{color:var(--ink)}.seg .tm{font:800 14px Nunito;color:var(--ac)}.seg small{display:block;color:var(--mu);font-weight:600}
+.seg.now{background:#FFF1D6;box-shadow:inset 0 0 0 2px var(--mid)}.seg.past{opacity:.5}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);text-align:center;padding:4px 2px;line-height:1.2}
+th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 4px;border-radius:10px;font-weight:800;font-family:Nunito;font-size:15px}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;padding-left:12px;white-space:nowrap}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.8}
+.st{font-size:13px;font-weight:700;color:var(--mu)}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+.miss{margin-top:14px;font-size:14px;line-height:1.6}.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+</style></head><body>
+<div class="app">
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Урок 3 «Инициали»</h1><small>Прогресс ребят по заданиям урока обновляется сам каждые 10 секунд</small></div>
+  <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+   <a class="btn g" href="../" target="_blank" style="text-decoration:none">Презентация ↗</a><a class="btn g" href="../zadaniya/" target="_blank" style="text-decoration:none">Страница заданий ↗</a></div></div>
+ <div class="lay">
+  <div class="box n">
+   <h2>⏱ План урока · 60 минут</h2>
+   <div style="display:flex;gap:12px;align-items:center"><span class="clock" id="clk">00:00</span><button class="btn" id="tgo">▶ Начать урок</button><button class="btn g" id="trs">Сброс</button></div>
+   <div id="plan"></div>
+   <div class="tip">⚡ Не успеваете? Диктант 4 (№ 7) и Диктант 6 (№ 9) можно отдать в домашку — дети найдут их на той же странице заданий.</div>
+   <div class="tip" style="background:#E4E8FF;color:#2B3270">🔇 «Хором» — дети повторяют с выключенным микрофоном. 🎤 «По очереди» — каждый читает свою карточку, нажмите на номер, когда ответил. Задания на телефоне — назовите номер.</div>
+  </div>
+  <div class="box n">
+   <h2>📊 Прогресс по заданиям <span class="st" id="st"></span></h2>
+   <div class="kpi" id="kpi"></div>
+   <div style="overflow-x:auto"><table id="tb"></table></div>
+   <div class="miss" id="miss"></div>
+  </div>
+ </div>
+</div>
+<script>
+const KEY=new URLSearchParams(location.search).get('key')||'';
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const T=['Повторение','🎮 Крот','Дикт. 1','Дикт. 2','Выбери слог','Дикт. 3','Дикт. 4','Дикт. 5','Дикт. 6','Дикт. 7'];
+const PLAN=[[0,5,'Подключение и задание № 1','Слайды 1–2 · QR на странице заданий, повторение тонов и финалей (3 мин)'],
+ [5,9,'Палатография','Слайды 3–6 · как учёные «видят» язык, альвеолы'],
+ [9,21,'b p m f d t n l g k h','Слайды 7–15 · придыхание, инициали, язык, 2× хором → по очереди, 2× хором → по очереди'],
+ [21,24,'🎮 Игра «Бей крота» — № 2','Слайд 16 · 3 раунда, ≈3 минуты'],
+ [24,27,'Диктант 1 — № 3','Слайд 17 · потом «Показать ответы»'],
+ [27,37,'z c s zh ch sh','Слайды 18–26 · инициали, язык, примечания, хором → по очереди, № 4 Диктант 2, № 5 Выбери слог, № 6 Диктант 3'],
+ [37,41,'Повторение 温故知新','Слайды 27–30 · вопросы, пары хором → по очереди, № 7 Диктант 4'],
+ [41,52,'y w r j q x','Слайды 31–39 · инициали, язык, коварные, примечания, хором → по очереди, № 8 Диктант 5, № 9 Диктант 6'],
+ [52,58,'Все инициали','Слайды 40–43 · хором ×2 → по очереди, № 10 Диктант 7'],
+ [58,60,'下课！','Слайд 44 · итоги, домашка']];
+let t0=null,timer=null;try{t0=+localStorage.getItem('u3-t0')||null}catch(e){}
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function paintPlan(){const m=t0?(Date.now()-t0)/60000:-1;document.getElementById('clk').textContent=t0?fmt(Math.floor((Date.now()-t0)/1000)):'00:00';
+ document.getElementById('plan').innerHTML=PLAN.map(([a,b,h,d])=>`<div class="seg ${m>=a&&m<b?'now':m>=b?'past':''}"><span class="tm">${a}–${b} мин</span><span><b>${h}</b><small>${d}</small></span></div>`).join('');}
+document.getElementById('tgo').onclick=()=>{if(!t0){t0=Date.now();try{localStorage.setItem('u3-t0',t0)}catch(e){}}paintPlan();};
+document.getElementById('trs').onclick=()=>{t0=null;try{localStorage.removeItem('u3-t0')}catch(e){}paintPlan();};
+setInterval(paintPlan,1000);paintPlan();
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function load(){const st=document.getElementById('st');
+ if(!KEY){st.textContent='— откройте кабинет по ссылке с ключом';return;}
+ try{const r=await fetch(API+'list?hw=u3&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
+  const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
+  st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const cell=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}${p.sec?`<small>${Math.floor(p.sec/60)}:${String(p.sec%60).padStart(2,'0')}</small>`:''}</td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th>${T.map((x,i)=>`<th>№ ${i+1}<br>${x}</th>`).join('')}</tr>`+
+   (subs.length?subs.map(s=>`<tr><td class="nm">${esc(s.name)}</td>${T.map((_,i)=>cell((s.parts||{})['t'+(i+1)])).join('')}</tr>`).join(''):`<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не сдал задания. Как только ребёнок закончит задание, он появится здесь.</td></tr>`);
+  const done=i=>subs.filter(s=>(s.parts||{})['t'+i]).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${subs.length}</b>учеников</div>`+[1,2,3].map(i=>`<div><b>${done(i)}</b>сдали № ${i}</div>`).join('');
+  const miss={};subs.forEach(s=>Object.values(s.parts||{}).forEach(p=>(p.miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,14);
+  document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
+ }catch(e){st.textContent='· нет связи с хранилищем, пробую снова…';}}
+load();setInterval(load,10000);
+</script></body></html>
