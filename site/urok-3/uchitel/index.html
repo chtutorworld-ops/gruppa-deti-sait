@@ -34,7 +34,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
 <div class="app">
  <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Урок 3 «Инициали»</h1><small>Прогресс ребят по заданиям урока обновляется сам каждые 10 секунд</small></div>
   <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-   <a class="btn g" href="../" target="_blank" style="text-decoration:none">Презентация ↗</a><a class="btn g" href="../zadaniya/" target="_blank" style="text-decoration:none">Страница заданий ↗</a></div></div>
+   <a class="btn g" href="../" target="_blank" style="text-decoration:none">Презентация ↗</a><a class="btn g" id="zl" href="../zadaniya/" target="_blank" style="text-decoration:none">Страница заданий ↗</a></div></div>
  <div class="lay">
   <div class="box n">
    <h2>⏱ План урока · 60 минут</h2>
@@ -52,7 +52,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
  </div>
 </div>
 <script>
-const KEY=new URLSearchParams(location.search).get('key')||'';
+const KEY=new URLSearchParams(location.search).get('key')||'';document.getElementById('zl').href='../zadaniya/?key='+encodeURIComponent(KEY);
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
 const T=['Повторение','🎮 Крот','Дикт. 1','Дикт. 2','Выбери слог','Дикт. 3','Дикт. 4','Дикт. 5','Дикт. 6','Дикт. 7'];
 const PLAN=[[0,5,'Подключение и задание № 1','Слайды 1–2 · QR на странице заданий, повторение тонов и финалей (3 мин)'],
