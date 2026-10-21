@@ -1,0 +1,60 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — ДЗ 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1200px;margin:0 auto;display:grid;gap:18px}.box{padding:18px 20px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.btn{padding:10px 16px;border-radius:14px;font-weight:800;font-size:14px;background:var(--bg);color:var(--ac2);box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2);text-decoration:none}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);padding:4px;text-align:center}th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 6px;border-radius:10px;font:800 15px Nunito}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;white-space:nowrap}td.nm small{display:block;font-size:11px;color:var(--mu);font-weight:600}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.85}
+.pl{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:1px;border-radius:50%;background:#fff;color:var(--ac2);font-size:13px;font-weight:800;box-shadow:2px 2px 6px var(--sh1)}
+.pl.on{background:var(--ac);color:#fff}.pl.no{opacity:.25;cursor:default}
+.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+</style></head><body><div class="app">
+<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 2 «Инициали b p m f d t n l g k h»</h1><small>Обновляется само каждые 15 секунд · <span id="st"></span></small></div>
+ <div style="margin-left:auto;display:flex;gap:10px"><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
+<div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
+ <div class="tip">Записи: r1 = b p m f · r2 = d t n l · r3 = g k h · r4 = пары bō—pō, dé—tè, gē—kē. Нажмите на кружок, чтобы послушать. Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
+<div class="box n"><h2>❌ Где ошибались чаще всего</h2><div class="miss" id="miss">—</div></div>
+</div>
+<script>
+const KEY=new URLSearchParams(location.search).get('key')||'';
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+const first=n=>(n||'?').trim().split(/\s+/)[0].toLowerCase().replace(/ё/g,'е');
+let curA=null;
+function play(sid,item,el){try{curA&&curA.pause()}catch(e){}document.querySelectorAll('.pl.on').forEach(x=>x.classList.remove('on'));
+ const a=new Audio(API+`play?key=${encodeURIComponent(KEY)}&hw=dz2&sid=${sid}&item=${item}`);curA=a;el.classList.add('on');a.onended=a.onerror=()=>el.classList.remove('on');a.play().catch(()=>el.classList.remove('on'));}
+async function load(){const st=document.getElementById('st');if(!KEY){st.textContent='откройте по ссылке с ключом';return;}
+ try{const r=await fetch(API+'list?hw=dz2&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw 0;const j=await r.json();
+  const by={};(j.subs||[]).filter(s=>!isTest(s.name)).forEach(s=>{const k=first(s.name);const g=by[k]=by[k]||{names:new Set(),parts:{},sids:[],upd:0};g.names.add(s.name);g.sids.push(s.sid);g.upd=Math.max(g.upd,s.updated||0);
+   for(const [p,v] of Object.entries(s.parts||{})){const o=g.parts[p];if(p==='rec'){g.parts.rec=g.parts.rec||{items:{}};for(const [it,t] of Object.entries(v.items||{}))g.parts.rec.items[it]={sid:s.sid,t};}
+    else if(p==='game'){if(!o||(v.best||0)>(o.best||0))g.parts.game={...v,games:((o&&o.games)||0)+(v.games||0)};else o.games+=(v.games||0);}
+    else if(!o||(v.score||0)>=(o.score||0))g.parts[p]=v;}});
+  const rows=Object.values(by).sort((a,b)=>[...a.names][0].localeCompare([...b.names][0],'ru'));
+  const sc=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}</td>`;};
+  const recs=g=>{const it=(g.parts.rec||{}).items||{};const n=Object.keys(it).length;return `<td class="${n>=4?'g':n?'m':'e'}">${['r1','r2','r3','r4'].map(x=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${x.slice(1)}▶</button>`:`<span class="pl no">${x.slice(1)}</span>`).join('')}<small>${n}/4</small></td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Бриф</th><th>2 · Выдох</th><th>3 · Диктант</th><th>4 · Записи голоса</th><th>5 · 🚀 Шутер</th></tr>`+
+   (rows.length?rows.map(g=>`<tr><td class="nm">${esc([...g.names].join(' / '))}<small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>
+    <td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g)}
+    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="6" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 2.</td></tr>');
+  document.querySelectorAll('.pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
+  const done=f=>rows.filter(f).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=4)}</b>записали все 4</div><div><b>${done(g=>g.parts.air&&g.parts.dict)}</b>сделали слушание</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
+  const miss={};rows.forEach(g=>['air','dict','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
+  st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, пробую снова…';}}
+load();setInterval(load,15000);
+</script></body></html>
