@@ -25,7 +25,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.85}
 <div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 2 «Инициали b p m f d t n l g k h»</h1><small>Обновляется само каждые 15 секунд · <span id="st"></span></small></div>
  <div style="margin-left:auto;display:flex;gap:10px"><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
 <div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
- <div class="tip">Инициали: 1 = b p m f · 2 = d t n l · 3 = g k h. Цепочки: 1 = bā…bà pā…pà · 2 = dā…dà tā…tà · 3 = gē…gè kē…kè. Нажмите на кружок, чтобы послушать. Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
+ <div class="tip">Звуки инициалей: 1 = b p m f · 2 = d t n l · 3 = g k h. Цепочки: каждая буква — отдельная запись (bā…bà, pā…pà, dā…dà, tā…tà, gē…gè, kē…kè). Нажмите на кружок, чтобы послушать. Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
 <div class="box n"><h2>❌ Где ошибались чаще всего</h2><div class="miss" id="miss">—</div></div>
 </div>
 <script>
@@ -47,14 +47,14 @@ async function load(){const st=document.getElementById('st');if(!KEY){st.textCon
   const rows=Object.values(by).sort((a,b)=>[...a.names][0].localeCompare([...b.names][0],'ru'));
   const sc=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}</td>`;};
   const spk=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.passed/p.of:0;return `<td class="${k>=.8?'g':k>=.4?'m':'b'}">${p.passed||0}/${p.of}${p.tries?`<small>попыток: ${p.tries}</small>`:''}</td>`;};
-  const recs=(g,part,ids)=>{const it=(g.parts[part]||{}).items||{};const n=Object.keys(it).length;return `<td class="${n>=ids.length?'g':n?'m':'e'}">${ids.map(x=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${x.slice(1)}▶</button>`:`<span class="pl no">${x.slice(1)}</span>`).join('')}<small>${n}/${ids.length}</small></td>`;};
-  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Бриф</th><th>2 · Выдох</th><th>3 · Диктант</th><th>4 · 🎤 Инициали</th><th>5 · 🎶 Цепочки тонов</th><th>6 · 🗣️ Скажи тон</th><th>7 · Тоны в словах</th><th>8 · Слог по частям</th><th>9 · 🏮 Китай</th><th>10 · 🚀 Шутер</th></tr>`+
+  const recs=(g,part,ids,lb)=>{const it=(g.parts[part]||{}).items||{};const n=Object.keys(it).length;return `<td class="${n>=ids.length?'g':n?'m':'e'}">${ids.map(x=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${lb?lb[ids.indexOf(x)]:x.slice(1)}▶</button>`:`<span class="pl no">${lb?lb[ids.indexOf(x)]:x.slice(1)}</span>`).join('')}<small>${n}/${ids.length}</small></td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Слог по частям</th><th>2 · Тоны в словах</th><th>3 · 🗣️ Скажи тон</th><th>4 · Бриф</th><th>5 · Выдох</th><th>6 · Диктант</th><th>7 · 🎤 Звуки инициалей</th><th>8 · 🎶 Цепочки тонов</th><th>9 · 🏮 Китай</th><th>10 · 🚀 Шутер</th></tr>`+
    (rows.length?rows.map(g=>`<tr><td class="nm">${esc([...g.names].join(' / '))}<small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>
-    <td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g,'rec',['r1','r2','r3'])}${recs(g,'chain',['c1','c2','c3'])}${spk(g.parts.speak)}${sc(g.parts.words)}${sc(g.parts.parts)}${sc(g.parts.china)}
+    ${sc(g.parts.parts)}${sc(g.parts.words)}${spk(g.parts.speak)}<td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g,'rec',['r1','r2','r3'])}${recs(g,'chain',['c1','c2','c3','c4','c5','c6'],'bpdtgk')}${sc(g.parts.china)}
     <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 2.</td></tr>');
   document.querySelectorAll('.pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
   const done=f=>rows.filter(f).length;
-  document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=3&&Object.keys((g.parts.chain||{}).items||{}).length>=3)}</b>сдали все записи</div><div><b>${done(g=>g.parts.air&&g.parts.dict)}</b>сделали слушание</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
+  document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=3&&Object.keys((g.parts.chain||{}).items||{}).length>=6)}</b>сдали все записи</div><div><b>${done(g=>g.parts.air&&g.parts.dict)}</b>сделали слушание</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
   const miss={};rows.forEach(g=>['air','dict','words','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
   st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, пробую снова…';}}
