@@ -310,7 +310,7 @@ img.fit{object-fit:contain;background:#fff}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="audio-map.js"></script>
-<script>window.VOK=null;try{const b=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+<script>window.VOK=null;try{const b=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))&&!/workers\.dev$/.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
  const x=new XMLHttpRequest();x.open('GET',b+'voice/index.json?'+Date.now(),false);x.send();if(x.status===200)window.VOK=JSON.parse(x.responseText);}catch(e){}</script>
 <script>
 (function(){
@@ -603,7 +603,7 @@ function pick(){if(!('speechSynthesis' in window))return;const all=speechSynthes
 if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick;}
 
 /* Real neural voice: pre-made mp3 in ../audio/, browser voice only as a fallback */
-const AUDIO_BASE=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)&&!window.claude)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+const AUDIO_BASE=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)&&!window.claude)&&!/workers\.dev$/.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
 let curA=null;
 function playMp3(text,rate,el,cls,fallback){
   const h=[...String(text)].filter(c=>/[一-鿿]/.test(c));if(!h.length)return fallback();

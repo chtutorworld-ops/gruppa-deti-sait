@@ -108,7 +108,7 @@ const WORDS=[["中国", "Zhōngguó", "Китай", [1, 2]], ["老师", "lǎosh�
 /* ===================== settings ===================== */
 const HW='dz1';
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))&&!/workers\.dev$/.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
 const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
 const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
 const plain=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ü/g,'u');

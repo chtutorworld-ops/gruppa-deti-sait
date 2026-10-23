@@ -132,7 +132,7 @@ h3{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 10px}
 <div class="app" id="app"></div><div class="toast" id="toast"></div>
 <script>
 /* ===================== audio ===================== */
-const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
+const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))&&!/workers\.dev$/.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
 const VOICE=AUDIO+'voice/';let VOK=null;fetch(VOICE+'index.json?'+Date.now()).then(r=>r.json()).then(j=>VOK=j).catch(()=>{});
 const fn=t=>AUDIO+[...t].map(c=>c.codePointAt(0).toString(16)).join('-')+'.mp3';
 const $=s=>document.querySelector(s);
