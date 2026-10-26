@@ -1,0 +1,82 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><title>Детская группа · учитель</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+/* Layout: one column of grouped cards, same soft-grey "neumorphic" look as the kids' lessons */
+:root{
+ --bg:#E9EDF4; --card:#E9EDF4; --ink:#1E2350; --t:#3D4560; --mu:#6F7896; --ac:#5B6BD8; --ac2:#2B3270;
+ --sh1:#C5CBD8; --sh2:#FFFFFF; --chip:#DDE3F4; --warm:#FFF1D6; --warmInk:#7A5410;
+ --f-display:'Nunito',ui-rounded,system-ui,sans-serif; --f-body:'Manrope',system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+ --bg:#1C2030; --card:#1C2030; --ink:#E8EBF7; --t:#C5CAE0; --mu:#8C94B3; --ac:#8C98F2; --ac2:#C9CFFF;
+ --sh1:#12151F; --sh2:#262B40; --chip:#2A3150; --warm:#3A3220; --warmInk:#F2D49A; color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#1C2030; --card:#1C2030; --ink:#E8EBF7; --t:#C5CAE0; --mu:#8C94B3; --ac:#8C98F2; --ac2:#C9CFFF;
+ --sh1:#12151F; --sh2:#262B40; --chip:#2A3150; --warm:#3A3220; --warmInk:#F2D49A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--t);font-family:var(--f-body);line-height:1.5;
+ padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.w{max-width:880px;margin:0 auto;display:grid;gap:26px}
+header{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.zh{font-family:'Kaiti SC','STKaiti','KaiTi','PingFang SC','Noto Sans SC',serif;font-size:46px;color:var(--ac2);line-height:1}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,5vw,34px);color:var(--ink);margin:0;text-wrap:balance}
+header p{margin:2px 0 0;color:var(--mu);font-weight:600}
+.note{background:var(--warm);color:var(--warmInk);border-radius:18px;padding:14px 18px;font-size:14.5px;font-weight:600}
+h2{font-family:var(--f-display);font-weight:900;font-size:20px;color:var(--ink);margin:0 0 12px;display:flex;gap:10px;align-items:center}
+h2 small{font:700 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.c{background:var(--card);border-radius:22px;box-shadow:7px 7px 16px var(--sh1),-7px -7px 16px var(--sh2);padding:18px 18px 16px;display:grid;gap:8px;align-content:start;min-width:0}
+.c b{font-size:16.5px;color:var(--ink)}
+.c p{margin:0;font-size:14px;color:var(--mu)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:13px;font-weight:800;font-size:14px;text-decoration:none}
+.btn.p{background:var(--ac);color:#fff}
+.btn.g{background:var(--chip);color:var(--ac2)}
+.btn:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.tag{justify-self:start;font:800 11.5px var(--f-body);letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:9px;background:var(--chip);color:var(--ac2)}
+footer{color:var(--mu);font-size:13.5px}
+.key{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.key input{font:600 15px var(--f-body);padding:10px 14px;border:0;border-radius:13px;background:var(--chip);color:var(--ink);min-width:0;flex:1 1 220px}
+.key button{font:800 14px var(--f-body);padding:10px 16px;border:0;border-radius:13px;background:var(--ac);color:#fff;cursor:pointer}
+.key .st{font-weight:700;font-size:14px}
+.lock .tch .btn{pointer-events:none;opacity:.35}
+</style></head><body class="lock">
+<div class="w">
+ <header><span class="zh">小组</span><div><h1>Детская группа · учитель</h1><p>Все уроки, ДЗ и кабинеты в одном месте</p></div></header>
+ <div class="c"><b>🔑 Ключ учителя</b><p>Вводится один раз на каждом устройстве и хранится только в этом браузере. В самой странице ключа нет.</p>
+  <div class="key"><input id="k" type="password" autocomplete="current-password" placeholder="Ключ учителя" aria-label="Ключ учителя"><button id="ok">Войти</button><button id="out" style="background:var(--chip);color:var(--ac2)" hidden>Выйти</button><span class="st" id="st"></span></div></div>
+ <section><h2>🎓 Классные уроки</h2><div class="grid">
+  <div class="c"><span class="tag">урок 1</span><b>Привет, китайский!</b><p>Пиньинь, четыре тона, финали a o e i u.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-1/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-1/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+  <div class="c"><span class="tag">уроки 1–2</span><b>Догоняем урок</b><p>Повторение для пропустивших.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/dogon-urok-2/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/dogon-urok-2/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+  <div class="c"><span class="tag">урок 3</span><b>Инициали · презентация</b><p>Палатография, выдох, инициали.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-3/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-3/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+  <div class="c"><span class="tag">урок 3</span><b>Задания урока 3</b><p>Страница заданий на телефоне.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-3/zadaniya/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-3/zadaniya/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+ </div></section>
+ <section><h2>📝 Домашние задания <small>ссылки для детей</small></h2><div class="grid">
+  <div class="c"><span class="tag">ДЗ 1</span><b>Пиньинь и тоны</b><p>Клавиатура, тоны, голос, теория.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-1/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-1/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+  <div class="c"><span class="tag">ДЗ 2</span><b>Инициали</b><p>10 заданий, итоги.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-2/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-2/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+  <div class="c"><span class="tag">тренажёр</span><b>Тренажёр тонов</b><p>Можно давать детям в любое время.</p><div class="row"><a class="btn p" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/trainer/" target="_blank" rel="noopener">Открыть ↗</a><button class="btn g cp" data-c="https://chtutorworld-ops.github.io/gruppa-deti-sait/trainer/" style="border:0;cursor:pointer;font:800 14px var(--f-body)">Скопировать ссылку</button></div></div>
+ </div></section>
+ <section class="tch"><h2>🧑‍🏫 Для учителя <small>откроются после ввода ключа</small></h2><div class="grid">
+  <div class="c"><span class="tag">урок 3</span><b>Кабинет урока 3</b><p>План на 60 минут и прогресс детей.</p><div class="row"><a class="btn p" data-u="urok-3/uchitel/" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-3/uchitel/" target="_blank" rel="noopener">Открыть ↗</a></div></div>
+  <div class="c"><span class="tag">ДЗ 1</span><b>Кабинет ДЗ 1</b><p>Кто что сделал, досье.</p><div class="row"><a class="btn p" data-u="dz-1/uchitel/" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-1/uchitel/" target="_blank" rel="noopener">Открыть ↗</a></div></div>
+  <div class="c"><span class="tag">ДЗ 2</span><b>Кабинет ДЗ 2</b><p>Досье и отчёт для родителей.</p><div class="row"><a class="btn p" data-u="dz-2/uchitel/" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/dz-2/uchitel/" target="_blank" rel="noopener">Открыть ↗</a></div></div>
+  <div class="c"><span class="tag">голос</span><b>Запись голоса</b><p>Эталонные слоги вашим голосом.</p><div class="row"><a class="btn p" data-u="zapis/" href="https://chtutorworld-ops.github.io/gruppa-deti-sait/zapis/" target="_blank" rel="noopener">Открыть ↗</a></div></div>
+ </div></section>
+ <footer>Эта страница не связана с главной страницей группы — дети её не видят. Сохраните её в закладки.</footer>
+</div>
+<script>
+const API='https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/list?hw=none&key=';
+const $=s=>document.querySelector(s);let K='';try{K=new URLSearchParams(location.search).get('key')||localStorage.getItem('tkey')||''}catch(e){}
+if(location.search)history.replaceState(null,'',location.pathname);
+function apply(ok){document.body.classList.toggle('lock',!ok);$('#out').hidden=!ok;$('#k').hidden=ok;$('#ok').hidden=ok;
+ document.querySelectorAll('[data-u]').forEach(a=>a.href='https://chtutorworld-ops.github.io/gruppa-deti-sait/'+a.dataset.u+(ok?'?key='+encodeURIComponent(K):''));}
+async function check(){if(!K){apply(false);return;}$('#st').textContent='Проверяю…';
+ try{const r=await fetch(API+encodeURIComponent(K));if(r.status===403){$('#st').textContent='Неверный ключ';try{localStorage.removeItem('tkey')}catch(e){}apply(false);return;}
+  try{localStorage.setItem('tkey',K)}catch(e){}$('#st').textContent='✓ Ключ принят';apply(true);}
+ catch(e){$('#st').textContent='Нет связи — попробуйте позже';apply(false);}}
+$('#ok').onclick=()=>{K=$('#k').value.trim();check();};$('#k').onkeydown=e=>{if(e.key==='Enter')$('#ok').click();};
+$('#out').onclick=()=>{K='';try{localStorage.removeItem('tkey')}catch(e){}$('#st').textContent='';apply(false);};
+document.querySelectorAll('.cp').forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.c);b.textContent='✓ Скопировано';}catch(e){prompt('Ссылка:',b.dataset.c);}});
+check();
+</script></body></html>
