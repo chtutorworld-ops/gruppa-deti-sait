@@ -30,8 +30,8 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.85}
 .rep{width:100%;min-height:230px;margin-top:8px;padding:12px 14px;border:0;border-radius:14px;font:500 14.5px/1.5 Manrope;color:var(--t);background:#F4F6FB;resize:vertical}
 .tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
 </style></head><body><div class="app">
-<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 3 «Сочетания тонов · 你好 · 我叫»</h1><small>Обновляется само каждые 15 секунд · <span id="st"></span></small></div>
- <div style="margin-left:auto;display:flex;gap:10px"><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
+<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 3 «Сочетания тонов · 你好 · 我叫»</h1><small>Новые результаты — по кнопке «↻ Обновить» · <span id="st"></span></small></div>
+ <div style="margin-left:auto;display:flex;gap:10px"><button class="btn" id="ref" style="background:var(--ac);color:#fff">↻ Обновить</button><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
 <div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
  <div class="tip">Записи: 1 = 3 + 3 (dǎ gǔ · mǎ pǐ · nǐ hǎo) · 2 = 3 + 4 (kě pà · mǎ lù · kě lè) · 3 = «nǐ hǎo! wǒ jiào + имя». Нажмите на кружок, чтобы послушать. ИИ-тренер — сколько пар слогов из 8 ребёнок сказал с правильной мелодией. <b>Нажмите на имя ученика — откроется его досье и готовый отчёт для родителей.</b> Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
 <div class="box n"><h2>❌ Где ошибались чаще всего</h2><div class="miss" id="miss">—</div></div>
@@ -69,7 +69,7 @@ async function load(){const st=document.getElementById('st');if(!KEY){st.textCon
   document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=3)}</b>сдали все записи</div><div><b>${done(g=>g.parts.w33&&g.parts.sort)}</b>сделали 3 + 3 и 3 + 4</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
   const miss={};rows.forEach(g=>['ini','tone','w33','sort','phrase','dialog','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
-  st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, пробую снова…';}}
+  st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
 let ROWS=[],OPEN=null;
 const T=[['ini','🔤','Какая инициаль? (повторение)'],['tone','🎵','Какой тон? (повторение)'],['brief','📖','Что мы прошли на уроке 4'],['w33','🥁','3 + 3: как это записано?'],['sort','🔀','3 + 3 или 3 + 4?'],['phrase','👋','你好 и 我叫 на слух'],['dialog','💬','Диалог: Марко и Ли На'],['ai','🤖','ИИ-тренер: пары слогов (проверка голоса)'],['rec','🎤','Запись голоса'],['game','🚀','Космический шутер: слова']];
 const REC={rec:[['r1','3 + 3'],['r2','3 + 4'],['r3','nǐ hǎo! wǒ jiào…']]};
@@ -117,5 +117,7 @@ function report(g,nm,dn){const P=g.parts,L=[];const name=[...g.names][0];
  if(tips.length||miss.length){L.push('');L.push('Над чем поработаем дальше: '+(tips.length?tips.join('; '):'')+(miss.length?(tips.length?'. ':'')+'Слоги и слова, где были ошибки: '+miss.slice(0,10).join(', '):'')+'.');}
  if(todo.length){L.push('');L.push('⏳ Ещё не сделано: '+todo.join(', ')+'.');}
  return L.join('\n');}
-load();setInterval(load,15000);
+const refBtn=document.getElementById('ref');
+refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
+load();
 </script></body></html>

@@ -317,6 +317,8 @@ img.fit{object-fit:contain;background:#fff}
 .nm-ru .ear{width:40px;height:40px}
 .nm-st{position:absolute;top:-12px;right:18px;font:800 13px Manrope,sans-serif;color:#fff;padding:4px 10px;border-radius:12px;background:#2DBE8C;box-shadow:0 4px 10px -4px #2DBE8C;visibility:hidden}
 .nm-st.on{visibility:visible}
+.nm-ref{position:absolute;top:40px;right:90px;padding:10px 18px;border:0;border-radius:999px;cursor:pointer;font:800 16px Manrope,sans-serif;color:#5B6BD8}
+.nm-ref:disabled{opacity:.6}
 .nm-tag{position:absolute;top:-12px;right:18px;font:800 13px Manrope,sans-serif;color:#5B6BD8;padding:4px 10px;border-radius:12px;background:#E3E6FA}
 .nm-say{position:absolute;left:90px;right:90px;bottom:44px;display:flex;align-items:baseline;justify-content:center;gap:6px}
 .nm-say .z{font-family:var(--han);font-size:40px;color:#2B3270}
@@ -567,6 +569,7 @@ add(4,'Хором: 你好！我叫…',`${hd('我们一起练习','wǒmen yìqǐ
 
 /* ===== 5. names + 小明 ===== */
 add(5,'Наши имена',`${hd('我们班','wǒmen bān','Наши имена по-китайски','left')}
+  <button class="nk nm-ref" id="nmRef">↻ Обновить</button>
   <div class="nm-grid" id="nmGrid">${[...NAMES,TEACHER].map((n,i)=>`<div class="nk nm-c${n===TEACHER?' nm-t':''}">
     ${n===TEACHER?'<span class="nm-tag">老师 · учитель</span>':`<span class="nm-st" data-nm="${n.ru}">✍️ прописал${n.ru==='Афина'?'а':''}</span>`}
     <div class="nm-hz" style="font-size:${n.hz.length>4?60:n.hz.length>3?70:84}px">${[...n.hz].map((c,j)=>`<span>${c}<i style="background:${TCOL[n.t[j]]}"></i></span>`).join('')}</div>
@@ -752,7 +755,8 @@ const DZAPI=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-d
 async function board(){const g=document.getElementById('nmGrid');if(!g||!g.closest('.slide').classList.contains('live'))return;
   try{const r=await fetch(DZAPI+'board?hw=u4');if(!r.ok)return;const j=await r.json();const on=new Set(j.names||[]);
    g.querySelectorAll('[data-nm]').forEach(b=>b.classList.toggle('on',on.has(b.dataset.nm)));}catch(e){}}
-setInterval(board,8000);setTimeout(board,800);
+setTimeout(board,800);
+stage.addEventListener('click',async e=>{const b=e.target.closest('#nmRef');if(!b)return;b.disabled=true;b.textContent='↻ Обновляю…';await board();b.disabled=false;b.textContent='↻ Обновить';});
 /* QR codes for warm-up & test */
 try{const hosted=/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname)&&!window.claude;const BASE=hosted?location.href.split('#')[0]:'https://chtutorworld-ops.github.io/gruppa-deti-sait/urok-4/';
  document.querySelectorAll('[data-link]').forEach(el=>{el.textContent='Ссылка: '+new URL(el.dataset.link,BASE).href;});

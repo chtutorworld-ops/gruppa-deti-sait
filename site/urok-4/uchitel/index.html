@@ -32,7 +32,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
 .miss{margin-top:14px;font-size:14px;line-height:1.6}.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
 </style></head><body>
 <div class="app">
- <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Урок 4 «Сочетания тонов и знакомство»</h1><small>Прогресс ребят по заданиям урока обновляется сам каждые 10 секунд</small></div>
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Урок 4 «Сочетания тонов и знакомство»</h1><small>Прогресс ребят по заданиям урока обновляется по кнопке «↻ Обновить»</small></div>
   <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
    <a class="btn g" href="../" target="_blank" style="text-decoration:none">Презентация ↗</a><a class="btn g" id="zl" href="../zadaniya/" target="_blank" style="text-decoration:none">Страница заданий ↗</a></div></div>
  <div class="lay">
@@ -44,7 +44,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
    <div class="tip" style="background:#E4E8FF;color:#2B3270">🔇 «Хором» — дети повторяют с выключенным микрофоном. 🎤 «По очереди» — каждый читает свою карточку, нажмите на номер, когда ответил. Задания на телефоне — назовите номер.</div>
   </div>
   <div class="box n">
-   <h2>📊 Прогресс по заданиям <span class="st" id="st"></span></h2>
+   <h2>📊 Прогресс по заданиям <span class="st" id="st"></span><button class="btn" id="ref" style="margin-left:auto;padding:8px 14px;font-size:14px">↻ Обновить</button></h2>
    <div class="kpi" id="kpi"></div>
    <div style="overflow-x:auto"><table id="tb"></table></div>
    <div class="miss" id="miss"></div>
@@ -84,6 +84,8 @@ async function load(){const st=document.getElementById('st');
   const miss={};subs.forEach(s=>Object.values(s.parts||{}).forEach(p=>(p.miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,14);
   document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
- }catch(e){st.textContent='· нет связи с хранилищем, пробую снова…';}}
-load();setInterval(load,10000);
+ }catch(e){st.textContent='· нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
+const refBtn=document.getElementById('ref');
+refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
+load();
 </script></body></html>
