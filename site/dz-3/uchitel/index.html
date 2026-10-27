@@ -1,0 +1,121 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — ДЗ 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1200px;margin:0 auto;display:grid;gap:18px}.box{padding:18px 20px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.btn{padding:10px 16px;border-radius:14px;font-weight:800;font-size:14px;background:var(--bg);color:var(--ac2);box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2);text-decoration:none}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);padding:4px;text-align:center}th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 6px;border-radius:10px;font:800 15px Nunito}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;white-space:nowrap}td.nm small{display:block;font-size:11px;color:var(--mu);font-weight:600}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.85}
+.pl{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:1px;border-radius:50%;background:#fff;color:var(--ac2);font-size:13px;font-weight:800;box-shadow:2px 2px 6px var(--sh1)}
+.pl.on{background:var(--ac);color:#fff}.pl.no{opacity:.25;cursor:default}
+.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+.nmb{font:inherit;font-weight:800;color:var(--ink);text-decoration:underline dotted;cursor:pointer;text-align:left}
+.modal{position:fixed;inset:0;background:rgba(30,35,80,.4);display:none;align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto;z-index:9}.modal.on{display:flex}
+.mb{max-width:820px;width:100%;padding:22px 24px}.mb h3{font-size:22px;color:var(--ink)}.mb .x{float:right;font-size:22px;font-weight:800;color:var(--mu)}
+.sec{margin-top:14px;padding:12px 14px;border-radius:16px;background:#fff}.sec .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:800;color:var(--ink)}
+.sec .hd .v{margin-left:auto;font:900 15px Nunito;padding:3px 10px;border-radius:10px}.v.g{background:#DDF5EC;color:#14855E}.v.m{background:#FFF1D6;color:#9A6400}.v.b{background:#FFE3EB;color:#B0284F}.v.e{background:#E3E6EE;color:#9AA2BC}
+.sec .ds{font-size:13.5px;color:var(--mu);font-weight:600;margin-top:4px;line-height:1.5}
+.chipz{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.chipz span{padding:3px 9px;border-radius:9px;font:800 13px Nunito}.chipz .ok{background:#DDF5EC;color:#14855E}.chipz .no{background:#FFE3EB;color:#B0284F}
+.rep{width:100%;min-height:230px;margin-top:8px;padding:12px 14px;border:0;border-radius:14px;font:500 14.5px/1.5 Manrope;color:var(--t);background:#F4F6FB;resize:vertical}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+</style></head><body><div class="app">
+<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 3 «Сочетания тонов · 你好 · 我叫»</h1><small>Обновляется само каждые 15 секунд · <span id="st"></span></small></div>
+ <div style="margin-left:auto;display:flex;gap:10px"><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
+<div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
+ <div class="tip">Записи: 1 = 3 + 3 (dǎ gǔ · mǎ pǐ · nǐ hǎo) · 2 = 3 + 4 (kě pà · mǎ lù · kě lè) · 3 = «nǐ hǎo! wǒ jiào + имя». Нажмите на кружок, чтобы послушать. ИИ-тренер — сколько пар слогов из 8 ребёнок сказал с правильной мелодией. <b>Нажмите на имя ученика — откроется его досье и готовый отчёт для родителей.</b> Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
+<div class="box n"><h2>❌ Где ошибались чаще всего</h2><div class="miss" id="miss">—</div></div>
+</div>
+<div class="modal" id="modal"><div class="mb n" id="mbox"></div></div>
+<script>
+const KEY=new URLSearchParams(location.search).get('key')||'';
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+// sessions the teacher opened herself to check (not students)
+const HIDE_SID=new Set([]);let HIDE_LS=[];try{HIDE_LS=JSON.parse(localStorage.getItem('dz3-hide')||'[]')}catch(e){}
+const first=n=>(n||'?').trim().split(/\s+/)[0].toLowerCase().replace(/ё/g,'е');
+let curA=null;
+function play(sid,item,el){/* */try{curA&&curA.pause()}catch(e){}document.querySelectorAll('.pl.on').forEach(x=>x.classList.remove('on'));
+ const a=new Audio(API+`play?key=${encodeURIComponent(KEY)}&hw=dz3&sid=${sid}&item=${item}`);curA=a;el.classList.add('on');a.onended=a.onerror=()=>el.classList.remove('on');a.play().catch(()=>el.classList.remove('on'));}
+async function load(){const st=document.getElementById('st');if(!KEY){st.textContent='откройте по ссылке с ключом';return;}
+ try{const r=await fetch(API+'list?hw=dz3&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw 0;const j=await r.json();
+  const by={};(j.subs||[]).filter(s=>!isTest(s.name)&&!HIDE_SID.has(s.sid)&&!HIDE_LS.includes(s.sid)).forEach(s=>{const k=first(s.name);const g=by[k]=by[k]||{names:new Set(),parts:{},sids:[],upd:0,devs:new Set()};if(s.parts&&s.parts.hello&&s.parts.hello.ua)g.devs.add(s.parts.hello.ua);g.names.add(s.name);g.sids.push(s.sid);g.upd=Math.max(g.upd,s.updated||0);
+   for(const [p,v] of Object.entries(s.parts||{})){const o=g.parts[p];if(p==='rec'){g.parts[p]=g.parts[p]||{items:{}};for(const [it,t] of Object.entries(v.items||{}))g.parts[p].items[it]={sid:s.sid,t};}
+    else if(p==='game'){if(!o||(v.best||0)>(o.best||0))g.parts.game={...v,games:((o&&o.games)||0)+(v.games||0),miss:((o&&o.miss)||[]).concat(v.miss||[])};else{o.games+=(v.games||0);o.miss=(o.miss||[]).concat(v.miss||[]);}}
+    else if(p==='ai'){if(!o||(v.passed||0)>=(o.passed||0))g.parts[p]=v;}
+    else if(!o||(v.score||0)>=(o.score||0))g.parts[p]={...v,tries:(v.tries||1)+((o&&o.tries)||0)};else o.tries=(o.tries||1)+(v.tries||1);}});
+  const rows=Object.values(by).sort((a,b)=>[...a.names][0].localeCompare([...b.names][0],'ru'));
+  const sc=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}</td>`;};
+  const spk=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.passed/p.of:0;return `<td class="${k>=.8?'g':k>=.4?'m':'b'}">${p.passed||0}/${p.of}${p.tries?`<small>попыток: ${p.tries}</small>`:''}</td>`;};
+  const recs=(g,part,ids,lb)=>{const it=(g.parts[part]||{}).items||{};const n=Object.keys(it).length;return `<td class="${n>=ids.length?'g':n?'m':'e'}">${ids.map(x=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${lb?lb[ids.indexOf(x)]:x.slice(1)}▶</button>`:`<span class="pl no">${lb?lb[ids.indexOf(x)]:x.slice(1)}</span>`).join('')}<small>${n}/${ids.length}</small></td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Инициаль</th><th>2 · Тон</th><th>3 · Бриф</th><th>4 · 3 + 3</th><th>5 · 3+3 или 3+4</th><th>6 · 你好 我叫</th><th>7 · 💬 Диалог</th><th>8 · 🤖 ИИ-тренер</th><th>9 · 🎤 Записи</th><th>10 · 🚀 Шутер</th></tr>`+
+   (rows.length?rows.map((g,gi)=>`<tr><td class="nm"><button class="nmb" data-g="${gi}">${esc([...g.names].join(' / '))}</button><small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>
+    ${sc(g.parts.ini)}${sc(g.parts.tone)}<td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.w33)}${sc(g.parts.sort)}${sc(g.parts.phrase)}${sc(g.parts.dialog)}${spk(g.parts.ai)}${recs(g,'rec',['r1','r2','r3'])}
+    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 3.</td></tr>');
+  document.querySelectorAll('.pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
+  ROWS=rows;document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>dossier(rows[+b.dataset.g]));
+  const done=f=>rows.filter(f).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>Object.keys((g.parts.rec||{}).items||{}).length>=3)}</b>сдали все записи</div><div><b>${done(g=>g.parts.w33&&g.parts.sort)}</b>сделали 3 + 3 и 3 + 4</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
+  const miss={};rows.forEach(g=>['ini','tone','w33','sort','phrase','dialog','game'].forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
+  st.textContent='обновлено '+new Date().toLocaleTimeString('ru');}catch(e){st.textContent='нет связи с хранилищем, пробую снова…';}}
+let ROWS=[],OPEN=null;
+const T=[['ini','🔤','Какая инициаль? (повторение)'],['tone','🎵','Какой тон? (повторение)'],['brief','📖','Что мы прошли на уроке 4'],['w33','🥁','3 + 3: как это записано?'],['sort','🔀','3 + 3 или 3 + 4?'],['phrase','👋','你好 и 我叫 на слух'],['dialog','💬','Диалог: Марко и Ли На'],['ai','🤖','ИИ-тренер: пары слогов (проверка голоса)'],['rec','🎤','Запись голоса'],['game','🚀','Космический шутер: слова']];
+const REC={rec:[['r1','3 + 3'],['r2','3 + 4'],['r3','nǐ hǎo! wǒ jiào…']]};
+const SPN={ke3di3:'kě dǐ',mi3po4:'mǐ pò',tu3gu3:'tǔ gǔ',fa3du4:'fǎ dù',hu3ba3:'hǔ bǎ',ni3ku4:'nǐ kù',mi3ku3:'mǐ kǔ',hu3te4:'hǔ tè'};
+const WHY={'a-flat':'1-й слог не поднялся','a-full3':'1-й слог «галочкой»','b-high':'2-й слог не опустился','a-rise':'1-й слог поднялся','a-high':'1-й слог высоко','b-flat':'2-й слог не упал'};
+const lvl=(a,b)=>!b?'e':a/b>=.8?'g':a/b>=.5?'m':'b';
+const dt=t=>t?new Date(t).toLocaleString('ru',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
+function info(g,id){const p=g.parts[id];if(id==='rec'){const it=(p&&p.items)||{},n=Object.keys(it).length,m=REC[id].length;return {done:n>=m,v:n+' / '+m,l:n>=m?'g':n?'m':'e',n,m};}
+ if(!p)return {done:false,v:'—',l:'e'};
+ if(id==='brief')return {done:true,v:'✓',l:'g'};
+ if(id==='game')return {done:true,v:'🏆 '+(p.best||0),l:'g'};
+ if(id==='ai')return {done:true,v:(p.passed||0)+' / '+p.of,l:lvl(p.passed||0,p.of)};
+ return {done:true,v:p.score+' / '+p.of,l:lvl(p.score,p.of),k:p.of?p.score/p.of:0};}
+function dossier(g,keep){const nm=[...g.names].join(' / ');OPEN=first([...g.names][0]);const P=g.parts;
+ const secs=T.map(([id,e,t],i)=>{const f=info(g,id),p=P[id];let ds='',ch='';
+  if(id==='rec'){ch=`<div class="chipz">${REC[id].map(([k,lb])=>{const it=((p&&p.items)||{})[k];return it?`<button class="pl" style="width:auto;padding:0 10px;border-radius:12px" data-sid="${it.sid}" data-it="${k}">${lb} ▶</button>`:`<span class="no">${lb} — нет</span>`;}).join('')}</div>`;ds=f.n>=f.m?'Все записи отправлены — нажмите, чтобы послушать.':f.n?`Отправлено ${f.n} из ${f.m}.`:'Записи ещё не отправлены.';}
+  else if(!p)ds='Ещё не делал(а).';
+  else if(id==='brief')ds='Прочитал(а) и прослушал(а) материал урока.'+(p.ts?' · '+dt(p.ts):'');
+  else if(id==='game'){ds=`Рекорд: ${p.best||0}, сыграно игр: ${p.games||1}.`;const m=[...new Set(p.miss||[])];if(m.length)ch=`<div class="ds">Путал(а) в игре:</div><div class="chipz">${m.slice(0,12).map(x=>`<span class="no">${esc(x)}</span>`).join('')}</div>`;}
+  else if(id==='ai'){ds=`Засчитано ${p.passed||0} из ${p.of} пар, всего попыток: ${p.tries||0}.`;const st=p.stat||{};ch=`<div class="chipz">${Object.keys(SPN).map(k=>{const v=st[k];return v?`<span class="${v.ok?'ok':'no'}">${SPN[k]} ${v.ok?'✓':'✗'} ×${v.tries}${!v.ok&&v.why&&v.why.length?' · '+[...new Set(v.why)].map(w=>WHY[w]||w).join(', '):''}</span>`:`<span style="background:#EEF0F5;color:#A7AFC3">${SPN[k]}</span>`;}).join('')}</div>`;}
+  else{ds=`Лучший результат: ${p.best!=null?p.best:p.score} из ${p.of}${p.tries?`, попыток: ${p.tries}`:''}${p.ts?' · '+dt(p.ts):''}.`;const m=[...new Set(p.miss||[])];if(m.length)ch=`<div class="ds">Ошибки:</div><div class="chipz">${m.map(x=>`<span class="no">${esc(x)}</span>`).join('')}</div>`;}
+  return `<div class="sec"><div class="hd">${i+1}. ${e} ${t}<span class="v ${f.l}">${f.v}</span></div><div class="ds">${ds}</div>${ch}</div>`;}).join('');
+ const dn=T.filter(([id])=>info(g,id).done).length;
+ document.getElementById('mbox').innerHTML=`<button class="x" id="mx">✕</button><h3>📁 ${esc(nm)}</h3>
+  <div class="ds" style="color:var(--mu);font-weight:700;margin-top:4px">ДЗ 3 · сделано ${dn} из 10 · последний раз ${dt(g.upd)} · устройств: ${Math.max(1,g.sids.length)}</div>
+  ${secs}
+  <div class="sec" style="background:#F0F3FF"><div class="hd">📄 Отчёт для родителей<button class="btn" id="cp" style="margin-left:auto;padding:8px 14px">Скопировать</button></div><div class="ds">Текст можно поправить прямо здесь перед копированием.</div><textarea class="rep" id="rep">${esc(report(g,nm,dn))}</textarea></div>
+  <div style="margin-top:14px;text-align:right"><button class="btn" id="hide" style="color:#B0284F">🙈 Это не ученик — скрыть из кабинета</button></div>`;
+ const m=document.getElementById('modal');m.classList.add('on');const close=()=>{m.classList.remove('on');OPEN=null;};
+ document.getElementById('mx').onclick=close;m.onclick=e=>{if(e.target===m)close();};
+ document.querySelectorAll('#mbox .pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
+ document.getElementById('cp').onclick=async()=>{const t=document.getElementById('rep');try{await navigator.clipboard.writeText(t.value);}catch(e){t.select();document.execCommand('copy');}document.getElementById('cp').textContent='✓ Скопировано';};
+ document.getElementById('hide').onclick=()=>{if(!confirm('Скрыть «'+nm+'» из кабинета на этом устройстве?'))return;HIDE_LS=HIDE_LS.concat(g.sids);try{localStorage.setItem('dz3-hide',JSON.stringify(HIDE_LS))}catch(e){}close();load();};}
+function report(g,nm,dn){const P=g.parts,L=[];const name=[...g.names][0];
+ L.push(`${name} — домашнее задание 3 «Сочетания тонов 3 + 3 и 3 + 4, первые слова 你好 и 我叫»`);L.push(`Выполнено заданий: ${dn} из 10.`);L.push('');
+ const good=[],ok=[],todo=[];
+ T.forEach(([id,e,t])=>{const f=info(g,id);if(id==='rec')return;if(!f.done){todo.push(t);return;}
+  if(id==='brief')good.push(`${t} — изучено`);else if(id==='game')good.push(`${t} — рекорд ${P.game.best||0}`);else if(f.l==='g')good.push(`${t} — ${f.v}`);else ok.push(`${t} — ${f.v}`);});
+ if(good.length){L.push('✅ Хорошо получилось:');good.forEach(x=>L.push('• '+x));L.push('');}
+ if(ok.length){L.push('🔁 Стоит пройти ещё раз для закрепления:');ok.forEach(x=>L.push('• '+x));L.push('');}
+ const rr=info(g,'rec');
+ L.push(`🎤 Обязательные записи голоса: ${rr.n} из ${rr.m}.${rr.n>=rr.m?' Всё отправлено — спасибо!':' Пожалуйста, напомните отправить оставшиеся записи.'}`);
+ const miss=[...new Set([].concat(...['w33','sort','phrase','ini','tone'].map(id=>(P[id]&&P[id].miss)||[])))];
+ const tips=[];const lo=id=>P[id]&&P[id].of&&P[id].score/P[id].of<.6;if(lo('w33')||lo('sort'))tips.push('слышать сочетания тонов 3 + 3 и 3 + 4');if(lo('ini'))tips.push('различать инициали на слух');if(lo('tone'))tips.push('узнавать четыре тона');if(P.ai){const bad=Object.entries(P.ai.stat||{}).filter(([k,v])=>!v.ok).map(([k])=>k);if(bad.length)tips.push('произносить пары слогов с правильной мелодией ('+bad.map(k=>SPN[k]||k).join(', ')+')');}
+ if(tips.length||miss.length){L.push('');L.push('Над чем поработаем дальше: '+(tips.length?tips.join('; '):'')+(miss.length?(tips.length?'. ':'')+'Слоги и слова, где были ошибки: '+miss.slice(0,10).join(', '):'')+'.');}
+ if(todo.length){L.push('');L.push('⏳ Ещё не сделано: '+todo.join(', ')+'.');}
+ return L.join('\n');}
+load();setInterval(load,15000);
+</script></body></html>

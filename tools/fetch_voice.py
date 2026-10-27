@@ -21,7 +21,7 @@ print("Записей учителя:", len(got))
 
 # ---- проверка тонов в записях учителя (только мелодия голоса) ----
 try:
-    import wave, sys
+    import wave, sys, re
     import numpy as np
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from make_audio import contour, scores
@@ -30,6 +30,7 @@ try:
         return np.interp(np.arange(0, len(x), sr / 16000), np.arange(len(x)), x).astype(np.float32)
     res = {}
     for i in got:
+        if not re.fullmatch(r"[a-z]+[1-4]", i): continue   # words (da3gu3) are checked by ear
         r = contour(read16(os.path.join(OUT, i + ".wav")))
         if r: res[i] = r
     base = float(np.median([r[1] for r in res.values()])) if res else None

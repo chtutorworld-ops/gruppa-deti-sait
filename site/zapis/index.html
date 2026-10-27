@@ -35,6 +35,12 @@ svg.ch{width:100%;max-width:460px;height:auto;display:block;margin:14px auto 0}
 <script>
 const API=/workers\.dev$/.test(location.hostname)?'/api/voice/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/voice/';
 const GROUPS=[
+ // words and pairs: '=пишем|говорим', the third item is the hint for the whole group
+ ['Урок 4 и ДЗ 3: слова 3 + 3',['=dǎ gǔ|dá gǔ','=dǎ kǎ|dá kǎ','=mǔ mǎ|mú mǎ','=mǎ pǐ|má pǐ','=dǎ bǎ|dá bǎ','=nǐ hǎo|ní hǎo'],'Пишем 3 + 3, говорим 2 + 3: первый слог снизу вверх, второй — низко. Слитно, как одно слово.'],
+ ['Урок 4 и ДЗ 3: слова 3 + 4',['=kě pà','=mǎ lù','=kě lè','=tǔ dì','=lǐ fà','=dǎ pò','=wǒ jiào'],'Первый слог — неполный 3-й тон: низко и без подъёма. Второй — резко сверху вниз.'],
+ ['ДЗ 3: слова 2 + 3 (для сравнения)',['=hé mǎ','=mó fǎ'],'Обычные 2-й и 3-й тоны, слитно.'],
+ ['ДЗ 3: пары слогов для ИИ-тренера',['=kě dǐ|ké dǐ','=tǔ gǔ|tú gǔ','=hǔ bǎ|hú bǎ','=mǐ kǔ|mí kǔ','=mǐ pò','=fǎ dù','=hǔ tè','=nǐ kù'],'Слитно, как одно слово. По этим записям ИИ-тренер рисует образец для детей.'],
+ ['ДЗ 3: диалог Марко и Ли На',['=wǒ jiào Mǎ Kě.|wǒ jiào Má Kě','=wǒ jiào Lǐ Nà.'],'Живо и дружелюбно, как подросток знакомится. Чуть медленнее обычного.'],
  ['Для «Угадай тон»',['ma','ba','da','ni','mi','bi','di','tu']],
  ['Для «Скажи тон»',['mo','wu']],
  ['Образцы гласных для «Запиши голос»',['a','o','e','yi','u']],
@@ -50,7 +56,10 @@ const GROUPS=[
  ['Цепочки тонов 6 · j q x',['ji','ju','qi','qu','xi','xu']],
  ['Цепочки тонов 7 · y w r',['ya','ye','yu','wa','wo','re','ri','ru']],
 ];
-const ent=(e,ts)=>e.includes(':')?[e.replace(':','')]:(ts||[1,2,3,4]).map(t=>e+t);   // 'bo:1' = one syllable with one tone
+const VM={};'āáǎàēéěèīíǐìōóǒòūúǔù'.split('').forEach((c,i)=>VM[c]=['aeiou'[i>>2],(i&3)+1]);
+const wk=py=>py.toLowerCase().replace(/[!?.,]/g,'').trim().split(/\s+/).map(s=>{let t=0;const b=[...s].map(c=>VM[c]?(t=VM[c][1],VM[c][0]):c).join('');return b+t;}).join('');   // 'dǎ gǔ' -> 'da3gu3'
+const WD={};GROUPS.forEach(g=>g[1].forEach(e=>{if(e[0]!=='=')return;const [py,say]=e.slice(1).split('|');WD[wk(py)]={py,say,tip:g[2]};}));
+const ent=(e,ts)=>e[0]==='='?[wk(e.slice(1).split('|')[0])]:e.includes(':')?[e.replace(':','')]:(ts||[1,2,3,4]).map(t=>e+t);   // 'bo:1' = one syllable with one tone
 const ITEMS=[];GROUPS.forEach(([g,bs,ts])=>bs.forEach(b=>ent(b,ts).forEach(k=>ITEMS.push(k))));
 const V={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù'};
 const mark=(b,t)=>{if(!t)return b;let k=b.search(/a|e/);if(k<0)k=b.indexOf('ou');if(k<0){for(let j=b.length-1;j>=0;j--)if('aeiou'.includes(b[j])){k=j;break;}}return b.slice(0,k)+V[b[k]][t-1]+b.slice(k+1);};
@@ -111,16 +120,16 @@ function wav(y,sr){const b=new ArrayBuffer(44+y.length*2),v=new DataView(b);cons
  for(let i=0;i<y.length;i++)v.setInt16(44+i*2,Math.max(-1,Math.min(1,y[i]))*32767,true);return new Blob([b],{type:'audio/wav'});}
 
 /* ---------- UI ---------- */
-function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Object.keys(DONE).length;
+function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Object.keys(DONE).length,W=WD[id];
  $('#app').innerHTML=`<div class="head n"><h1>录音 · Запись эталонных слогов</h1><p class="l">Эти записи будут звучать в домашних заданиях вместо синтезатора. Говорите отчётливо и чуть медленнее обычного. После записи вы увидите кривую своего голоса — для 3-го тона там должна быть «галочка».</p>
  <div class="bar"><i style="width:${done/ITEMS.length*100}%"></i></div><p class="l" style="font-weight:800">Записано ${done} из ${ITEMS.length}</p></div>
  <div class="lay"><div class="stage n"><div class="lab">${GROUPS.find(g=>g[1].some(e=>ent(e,g[2]).includes(id)))[0]}</div>
-  <div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t?t+'-й тон':isSnd(b,t)?'только звук':'нейтральный тон'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${isSnd(b,t)?SND[b]:TIP[t]}</div>${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
-  <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
+  ${W?`<div class="big py" style="font-size:44px;color:var(--ink)">${W.py}</div><div class="tn">${W.say?'пишем '+W.py+' · говорим '+W.say:'слитно, как одно слово'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${W.tip}</div>`:`<div class="big py" style="color:var(--t${t})">${mark(b,t)}</div><div class="tn">${t?t+'-й тон':isSnd(b,t)?'только звук':'нейтральный тон'} ${DONE[id]?'· ✓ уже записано':''}</div><div class="hint">${isSnd(b,t)?SND[b]:TIP[t]}</div>`}${b==='u'?'<div class="hint" style="color:var(--ac);font-weight:800">Только гласная «у», без «в» в начале: губы сразу трубочкой — ū, а не wū.</div>':''}
+  <button class="mic n" id="mic">🎤</button><div class="lab" id="ml">Нажмите и скажите «${W?W.py:mark(b,t)}» (запись остановится сама или нажмите ещё раз)</div>
   <div id="cv"></div>
   <div class="row"><button class="btn g" id="pl" ${blob?'':'disabled'}>▶ Прослушать</button><button class="btn ok" id="sv" ${blob?'':'disabled'}>✓ Сохранить и дальше</button>${DONE[id]?'<button class="btn g" id="old">▶ Сохранённое</button>':''}</div>
   <div class="row"><button class="btn g" id="pv">‹ Назад</button><button class="btn g" id="nx">Пропустить ›</button></div><div class="msg" id="msg"></div></div>
- <div class="list n">${GROUPS.map(([g,bs,ts])=>`<div class="grp">${g}</div>${(bs.some(e=>e.includes(':'))?[bs.join(' ')]:bs).map(row=>{const one=row.includes(':');const bb=one?'':row;return `<div class="sy"${one?' style="flex-wrap:wrap"':''}>${one?'':`<b>${bb}</b>`}${(one?row.split(' ').map(e=>e.replace(':','')):(ts||[1,2,3,4]).map(tt=>row+tt)).map(k=>{const tt=+k.slice(-1),bk=k.slice(0,-1);return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}">${mark(bk,tt)}</button>`}).join('')}</div>`}).join('')}`).join('')}</div></div>`;
+ <div class="list n">${GROUPS.map(([g,bs,ts])=>`<div class="grp">${g}</div>${bs[0][0]==='='?`<div class="sy" style="flex-wrap:wrap">${bs.map(e=>{const k=ent(e)[0];return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}" style="flex:0 0 auto;padding:8px 12px">${WD[k].py}</button>`;}).join('')}</div>`:(bs.some(e=>e.includes(':'))?[bs.join(' ')]:bs).map(row=>{const one=row.includes(':');const bb=one?'':row;return `<div class="sy"${one?' style="flex-wrap:wrap"':''}>${one?'':`<b>${bb}</b>`}${(one?row.split(' ').map(e=>e.replace(':','')):(ts||[1,2,3,4]).map(tt=>row+tt)).map(k=>{const tt=+k.slice(-1),bk=k.slice(0,-1);return `<button class="pill ${DONE[k]?'done':''} ${k===id?'cur':''}" data-k="${k}">${mark(bk,tt)}</button>`}).join('')}</div>`}).join('')}`).join('')}</div></div>`;
  document.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>{cur=ITEMS.indexOf(x.dataset.k);blob=null;render();});
  $('#pv').onclick=()=>{cur=(cur+ITEMS.length-1)%ITEMS.length;blob=null;render();};$('#nx').onclick=()=>{cur=(cur+1)%ITEMS.length;blob=null;render();};
  if($('#old'))$('#old').onclick=async()=>{const a=new Audio(API+'get?id='+id+'&t='+Date.now());a.play();};
