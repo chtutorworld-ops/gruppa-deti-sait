@@ -68,7 +68,6 @@ const SND={b:'Губы сомкнуть и разомкнуть — коротк
  p:'Как b, но с сильным выдохом — листок бумаги у рта должен качнуться. Без гласной: «p».',t:'Как d, но с сильным выдохом. Без гласной: «t».',k:'Как g, но с сильным выдохом. Без гласной: «k».',
  m:'Губы сомкнуты, тяните «ммм» около секунды.',n:'Кончик языка за верхними зубами, тяните «ннн».',l:'Кончик языка за верхними зубами, тяните «ллл».',f:'Верхние зубы на нижней губе, тяните «ффф».',h:'Хриплый выдох из горла, тяните «ххх» — как будто греете руки.'};
 const isSnd=(b,t)=>!t&&!/[aeiouü]/.test(b);
-let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||'';}catch(e){}
 let DONE={},cur=0,blob=null,url=null;
 const $=s=>document.querySelector(s);
 
@@ -140,13 +139,11 @@ function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Obje
   if(!r||r.pk<0.02){$('#msg').className='msg no';$('#msg').textContent='Очень тихо — поднесите телефон ближе и повторите.';return;}
   blob=r.wav;url&&URL.revokeObjectURL(url);url=URL.createObjectURL(blob);$('#cv').innerHTML=chart(curve(r.pcm,r.sr));$('#pl').disabled=false;$('#sv').disabled=false;$('#ml').textContent='Послушайте. Если нравится — «Сохранить». Нет — нажмите 🎤 ещё раз.';new Audio(url).play();}
  $('#sv').onclick=async()=>{const sb=$('#sv');sb.disabled=true;sb.textContent='Сохраняю…';
-  try{const r=await fetch(API+'put?key='+encodeURIComponent(KEY)+'&id='+id,{method:'POST',headers:{'Content-Type':'audio/wav'},body:blob});const j=await r.json();if(!r.ok)throw new Error(j.error==='key'?'неверный ключ':j.error);
+  try{const r=await fetch(API+'put?id='+id,{method:'POST',headers:{'Content-Type':'audio/wav'},body:blob});const j=await r.json();if(!r.ok)throw new Error(j.error);
    DONE[id]=1;blob=null;let n=cur;for(let k=1;k<=ITEMS.length;k++){const c=(cur+k)%ITEMS.length;if(!DONE[ITEMS[c]]){n=c;break;}}cur=n;render();
    if(Object.keys(DONE).length===ITEMS.length){$('#msg').className='msg ok';$('#msg').textContent='🎉 Всё записано! Напишите мне в чат «записала» — я подключу ваш голос к заданиям.';}}
   catch(e){sb.disabled=false;sb.textContent='✓ Сохранить и дальше';$('#msg').className='msg no';$('#msg').textContent='Не сохранилось: '+e.message;}};}
-async function boot(){if(!KEY){$('#app').innerHTML=`<div class="key n"><h1>Ключ учителя</h1><input class="in" id="k" placeholder="ключ"><button class="btn" id="go" style="width:100%;margin-top:14px">Открыть</button></div>`;
-  $('#go').onclick=()=>{KEY=$('#k').value.trim();try{localStorage.setItem('dzkey',KEY)}catch(e){}boot();};return;}
- try{localStorage.setItem('dzkey',KEY)}catch(e){}
+async function boot(){
  try{const r=await fetch(API+'list');const j=await r.json();(j.items||[]).forEach(x=>DONE[x.id]=1);}catch(e){}
  const f=ITEMS.findIndex(i=>!DONE[i]);cur=f<0?0:f;render();}
 boot();

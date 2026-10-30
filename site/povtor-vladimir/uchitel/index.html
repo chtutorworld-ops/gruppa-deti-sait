@@ -16,15 +16,13 @@ table{width:100%;border-collapse:collapse;font-size:15px}td{padding:10px 12px;bo
 </style></head><body><div class="w" id="app"></div>
 <script>
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-let KEY=new URLSearchParams(location.search).get('key')||'';try{if(KEY)localStorage.setItem('zh-pv-vl-t',KEY);else KEY=localStorage.getItem('zh-pv-vl-t')||'';}catch(e){}
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]);
 const ORDER=[['tones','Разминка: какой тон'],['asp','p или b: с выдохом и без'],['dict','Диктант на слух'],['mix','3 + 3 или 3 + 4'],['pict','Древний знак → иероглиф'],['rad','Игра «Ключи»'],
  ['w-ni','Пропись 你 (×3)'],['w-wo','Пропись 我 (×3)'],['w-hao','Пропись 好 (×3)'],['w-jiao','Пропись 叫 (×3)'],['name','Пропись имени 弗拉基米尔'],['xm','Разговор с 小明'],['zcs','z c s zh ch sh']];
 const when=t=>t?new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
 async function load(){$('#app').innerHTML=`<div class="top n"><div><h1>Повторение для Владимира</h1><small>уроки 4 и 5 · кабинет учителя</small></div><button id="rf">↻ Обновить</button></div><div id="out" class="box n">Загружаю…</div>`;
  $('#rf').onclick=load;
- if(!KEY){$('#out').textContent='Откройте страницу по ссылке с ключом учителя (?key=…).';return;}
- let j;try{const r=await fetch(API+'list?hw=pv-vl&key='+encodeURIComponent(KEY));j=await r.json();if(j.error==='key'){$('#out').textContent='Ключ не подошёл.';return;}}catch(e){$('#out').textContent='Сервер не ответил. Нажмите «↻ Обновить» чуть позже.';return;}
+ let j;try{const r=await fetch(API+'list?hw=pv-vl');j=await r.json();}catch(e){$('#out').textContent='Сервер не ответил. Нажмите «↻ Обновить» чуть позже.';return;}
  const subs=(j.subs||[]).sort((a,b)=>(b.updated||0)-(a.updated||0));
  if(!subs.length){$('#out').innerHTML='Владимир ещё не начинал повторение. Ссылка для него: <b>https://chtutorworld-ops.github.io/gruppa-deti-sait/povtor-vladimir/</b>';return;}
  // several devices → merge, newest part wins

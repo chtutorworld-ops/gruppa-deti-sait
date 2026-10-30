@@ -38,7 +38,6 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.85}
 </div>
 <div class="modal" id="modal"><div class="mb n" id="mbox"></div></div>
 <script>
-const KEY=new URLSearchParams(location.search).get('key')||'';
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
@@ -47,9 +46,9 @@ const HIDE_SID=new Set(['mvmcxumps1eh7v']);let HIDE_LS=[];try{HIDE_LS=JSON.parse
 const first=n=>(n||'?').trim().split(/\s+/)[0].toLowerCase().replace(/ё/g,'е');
 let curA=null;
 function play(sid,item,el){/* */try{curA&&curA.pause()}catch(e){}document.querySelectorAll('.pl.on').forEach(x=>x.classList.remove('on'));
- const a=new Audio(API+`play?key=${encodeURIComponent(KEY)}&hw=dz2&sid=${sid}&item=${item}`);curA=a;el.classList.add('on');a.onended=a.onerror=()=>el.classList.remove('on');a.play().catch(()=>el.classList.remove('on'));}
-async function load(){const st=document.getElementById('st');if(!KEY){st.textContent='откройте по ссылке с ключом';return;}
- try{const r=await fetch(API+'list?hw=dz2&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw 0;const j=await r.json();
+ const a=new Audio(API+`play?hw=dz2&sid=${sid}&item=${item}`);curA=a;el.classList.add('on');a.onended=a.onerror=()=>el.classList.remove('on');a.play().catch(()=>el.classList.remove('on'));}
+async function load(){const st=document.getElementById('st');
+ try{const r=await fetch(API+'list?hw=dz2&_='+Date.now());if(!r.ok)throw 0;const j=await r.json();
   const by={};(j.subs||[]).filter(s=>!isTest(s.name)&&!HIDE_SID.has(s.sid)&&!HIDE_LS.includes(s.sid)).forEach(s=>{const k=first(s.name);const g=by[k]=by[k]||{names:new Set(),parts:{},sids:[],upd:0,devs:new Set()};if(s.parts&&s.parts.hello&&s.parts.hello.ua)g.devs.add(s.parts.hello.ua);g.names.add(s.name);g.sids.push(s.sid);g.upd=Math.max(g.upd,s.updated||0);
    for(const [p,v] of Object.entries(s.parts||{})){const o=g.parts[p];if(p==='rec'||p==='chain'){g.parts[p]=g.parts[p]||{items:{}};for(const [it,t] of Object.entries(v.items||{}))g.parts[p].items[it]={sid:s.sid,t};}
     else if(p==='game'){if(!o||(v.best||0)>(o.best||0))g.parts.game={...v,games:((o&&o.games)||0)+(v.games||0),miss:((o&&o.miss)||[]).concat(v.miss||[])};else{o.games+=(v.games||0);o.miss=(o.miss||[]).concat(v.miss||[]);}}

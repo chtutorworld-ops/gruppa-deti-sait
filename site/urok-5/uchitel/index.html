@@ -41,7 +41,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
    <h2>⏱ План урока · 60 минут</h2>
    <div style="display:flex;gap:12px;align-items:center"><span class="clock" id="clk">00:00</span><button class="btn" id="tgo">▶ Начать урок</button><button class="btn g" id="trs">Сброс</button></div>
    <div id="plan"></div>
-   <div class="tip">🔒 Задания открываются по порядку: следующее — только после предыдущего. По вашей ссылке с ключом открыто всё.<br>⚡ Не успеваете? № 8–11 (z c s…) — запас, их можно отдать в домашку.</div>
+   <div class="tip">🔒 Задания открываются по порядку: следующее — только после предыдущего. Из кабинета (кнопка «Страница заданий») у вас открыто всё.<br>⚡ Не успеваете? № 8–11 (z c s…) — запас, их можно отдать в домашку.</div>
    <div class="tip" style="background:#E4E8FF;color:#2B3270">🔇 «Хором» — дети повторяют с выключенным микрофоном. 🎤 «По очереди» — каждый читает свою карточку, нажмите на номер, когда ответил. Задания на телефоне — назовите номер.</div>
   </div>
   <div class="box n">
@@ -54,7 +54,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
  </div>
 </div>
 <script>
-const KEY=new URLSearchParams(location.search).get('key')||'';document.getElementById('zl').href='../zadaniya/?key='+encodeURIComponent(KEY);
+document.getElementById('zl').href='../zadaniya/?uchitel';
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
 const T=['Шутер','Контр. диктант','Урок 4','Ключи','Пропись','Имя','小明','Выбери слог','Дикт. 2','Дикт. 3','Дикт. 4'];
 const PLAN=[[0,6,'Подключение и разминка','Слайды 1–3 · QR, 4 цепочки слогов — каждый читает вслух'],
@@ -75,8 +75,7 @@ setInterval(paintPlan,1000);paintPlan();
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 async function load(){const st=document.getElementById('st');
- if(!KEY){st.textContent='— откройте кабинет по ссылке с ключом';return;}
- try{const r=await fetch(API+'list?hw=u5&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
+ try{const r=await fetch(API+'list?hw=u5&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
   const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
   st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   const cell=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}${p.sec?`<small>${Math.floor(p.sec/60)}:${String(p.sec%60).padStart(2,'0')}</small>`:''}</td>`;};
@@ -93,7 +92,7 @@ async function load(){const st=document.getElementById('st');
    if(x&&x.log){const A=aud[s.sid]||{};out.push(`<div><b>👋 小明: ${x.score}/2</b> ${A.ii1?`<button data-p="${esc(s.sid)}|ii1">▶ 你好</button>`:''}${A.ii2?`<button data-p="${esc(s.sid)}|ii2">▶ 我叫…</button>`:''}<br>${x.log.filter(l=>l.who==='me').map(l=>`<span class="zh">${esc(l.text)}</span> ${l.ok?'✓':'✗'}`).join(' · ')}${(x.notes||[]).length?`<br><small style="color:var(--mu)">${x.notes.map(esc).join(' · ')}</small>`:''}</div>`);}
    return out.length?`<div class="det"><h3>${esc(s.name)}</h3>${out.join('')}</div>`:'';}).join('');
   document.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{const [sid,item]=b.dataset.p.split('|');b.textContent='…';
-   try{const r=await fetch(API+'play?hw=u5&sid='+encodeURIComponent(sid)+'&item='+item+'&key='+encodeURIComponent(KEY));if(!r.ok)throw 0;new Audio(URL.createObjectURL(await r.blob())).play();b.textContent='▶ ещё раз';}catch(e){b.textContent='нет записи';}});
+   try{const r=await fetch(API+'play?hw=u5&sid='+encodeURIComponent(sid)+'&item='+item);if(!r.ok)throw 0;new Audio(URL.createObjectURL(await r.blob())).play();b.textContent='▶ ещё раз';}catch(e){b.textContent='нет записи';}});
   document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
  }catch(e){st.textContent='· нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
 const refBtn=document.getElementById('ref');

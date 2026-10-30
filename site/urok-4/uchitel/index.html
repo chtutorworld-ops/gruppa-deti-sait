@@ -52,7 +52,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
  </div>
 </div>
 <script>
-const KEY=new URLSearchParams(location.search).get('key')||'';document.getElementById('zl').href='../zadaniya/?key='+encodeURIComponent(KEY);
+document.getElementById('zl').href='../zadaniya/?uchitel';
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
 const T=['Повторение','3 + 3','3 + 4','Имя','小明','Дикт. 2','Выбери слог','Дикт. 3','Дикт. 4','Дикт. 5','Дикт. 6','Дикт. 7'];
 const PLAN=[[0,5,'Подключение и задание № 1','Слайды 1–5 · QR, инициали урока 3, № 1 повторение (3 мин), разминка хором'],
@@ -72,8 +72,7 @@ setInterval(paintPlan,1000);paintPlan();
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 async function load(){const st=document.getElementById('st');
- if(!KEY){st.textContent='— откройте кабинет по ссылке с ключом';return;}
- try{const r=await fetch(API+'list?hw=u4&key='+encodeURIComponent(KEY)+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
+ try{const r=await fetch(API+'list?hw=u4&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
   const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
   st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   const cell=p=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}${p.sec?`<small>${Math.floor(p.sec/60)}:${String(p.sec%60).padStart(2,'0')}</small>`:''}</td>`;};

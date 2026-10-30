@@ -38,8 +38,8 @@ td .nm{font-weight:800;color:var(--ink);text-decoration:underline dotted;cursor:
 .sub{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:16px 0 6px}
 </style></head><body><div class="w">
 <div class="top n"><span class="zh">老师</span><div><h1>Панель учителя · ДЗ 1</h1><small>Пиньинь, слоги, тоны · кто что сделал и где ошибаются</small></div>
- <div class="r"><input class="in" id="key" placeholder="Ключ учителя"><button class="btn" id="load">Показать</button><button class="btn g" id="ref">↻ Обновить</button><span id="info" style="font-weight:700;color:var(--mu)"></span></div></div>
-<div id="out"><div class="empty">Введите ключ учителя</div></div>
+ <div class="r"><button class="btn g" id="ref">↻ Обновить</button><span id="info" style="font-weight:700;color:var(--mu)"></span></div></div>
+<div id="out"><div class="empty">Загружаю…</div></div>
 </div>
 <div class="modal" id="modal"><div class="box n" id="mbox"></div></div>
 <script>
@@ -64,8 +64,7 @@ const when=t=>t?new Date(t).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit
 const PLAT={ios:'iPhone',and:'Android',win:'Windows',mac:'Mac'};
 const pct=(a,b)=>b?Math.round(a/b*100):0;
 const col=p=>p>=80?'var(--ok)':p>=50?'var(--mid)':'var(--no)';
-let KEY='';try{KEY=new URLSearchParams(location.search).get('key')||localStorage.getItem('dzkey')||''}catch(e){}
-document.getElementById('key').value=KEY;let DATA=null,cur=null;
+let DATA=null,cur=null;
 
 function wrongPick(arr,c){let b=null;arr.forEach((v,k)=>{if(k!==c&&v>0&&(b===null||v>arr[b]))b=k;});return b;}
 function chip(val,of,goodAt){if(val==null)return '<span class="c none">—</span>';const p=of?val/of:1;return `<span class="c ${p>=(goodAt||.8)?'ok':p>=.5?'mid':'no'}">${val}${of?'/'+of:''}</span>`;}
@@ -119,7 +118,7 @@ function render(){const {subs,aud}=DATA;const out=document.getElementById('out')
  </div>`;
  document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>detail(subs[+b.dataset.s]));
  document.querySelectorAll('[data-sid]').forEach(b=>b.onclick=()=>playRec(b,b.dataset.sid,b.dataset.i));}
-async function playRec(b,sid,i){const t=b.textContent;b.textContent='…';try{const r=await fetch(API+`play?hw=dz1&sid=${sid}&item=${i}&key=${encodeURIComponent(KEY)}`);const bl=await r.blob();cur&&cur.pause();cur=new Audio(URL.createObjectURL(bl));cur.play();}catch(e){alert('Не удалось загрузить запись');}b.textContent=t;}
+async function playRec(b,sid,i){const t=b.textContent;b.textContent='…';try{const r=await fetch(API+`play?hw=dz1&sid=${sid}&item=${i}`);const bl=await r.blob();cur&&cur.pause();cur=new Audio(URL.createObjectURL(bl));cur.play();}catch(e){alert('Не удалось загрузить запись');}b.textContent=t;}
 function detail(s){const p=s.parts||{},au=DATA.aud[s.sid]||{};const lg=(log,f)=>(log||[]).map(f).join('');
  const m=document.getElementById('modal');document.getElementById('mbox').innerHTML=`<button class="x" id="mx">✕</button><h3>${esc(s.name)}</h3><p style="color:var(--mu);font-weight:700">${esc(PLAT[p.hello&&p.hello.plat]||'')} · последний раз ${when(s.updated)}</p>
  <div class="sub">Клавиатура</div>${p.kbd&&p.kbd.ok?`✓ напечатал(а): <span class="zh">${esc(p.kbd.typed)}</span>`:'не сделано'}
@@ -134,10 +133,9 @@ function detail(s){const p=s.parts||{},au=DATA.aud[s.sid]||{};const lg=(log,f)=>
  ${p.theory&&p.theory.ans?TQ.map((q,i)=>`<div style="font-size:14px;margin:4px 0">${p.theory.ans[i]?'✅':'❌'} ${esc(q[0])}${!p.theory.ans[i]&&p.theory.pick&&p.theory.pick[i]!=null?` <small style="color:#B8264F">— выбрал(а): «${esc(q[1][p.theory.pick[i]])}»</small>`:''}</div>`).join(''):'нет данных'}`;
  m.classList.add('on');document.getElementById('mx').onclick=()=>m.classList.remove('on');m.onclick=e=>{if(e.target===m)m.classList.remove('on');};
  document.querySelectorAll('[data-sid2]').forEach(b=>b.onclick=()=>playRec(b,s.sid,b.dataset.sid2));}
-async function load(){KEY=document.getElementById('key').value.trim();try{localStorage.setItem('dzkey',KEY)}catch(e){}
- const info=document.getElementById('info');info.textContent='Загружаю…';
- try{const r=await fetch(API+'list?hw=dz1&key='+encodeURIComponent(KEY));const d=await r.json();if(!r.ok)throw new Error(d.error==='key'?'неверный ключ':d.error);
+async function load(){ const info=document.getElementById('info');info.textContent='Загружаю…';
+ try{const r=await fetch(API+'list?hw=dz1');const d=await r.json();if(!r.ok)throw new Error(d.error);
   DATA=d;info.textContent='обновлено '+new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});render();}
  catch(e){info.textContent='⚠ '+e.message;}}
-document.getElementById('load').onclick=load;document.getElementById('ref').onclick=load;if(KEY)load();
+document.getElementById('ref').onclick=load;load();
 </script></body></html>

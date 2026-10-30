@@ -137,7 +137,7 @@ function home(){shell(`<h2>Какое задание открыть?</h2><p clas
  <div class="list">${TASKS.map((x,i)=>x&&`<button class="ti n" data-n="${i}"><span class="no" style="background:${i===1?'var(--t2)':'var(--ac)'}">${i}</span><span><b>${x.t}</b><small>${x.d}</small></span><span class="st">${DONE[i]?'✓ '+DONE[i]:''}</span></button>`).join('')}</div>`);
  document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>location.hash='#'+b.dataset.n);}
 /* the teacher closes the page between lessons; with the teacher key it stays open */
-const LOCKED=false,TKEY=(k=>{let h=0x811c9dc5;for(const c of new TextEncoder().encode(k||'')){h^=c;h=Math.imul(h,0x01000193)>>>0;}return h.toString(16).padStart(8,'0');})(new URLSearchParams(location.search).get('key'))==='6521a6d8';
+const LOCKED=false,TKEY=new URLSearchParams(location.search).has('uchitel');
 function route(){if(LOCKED&&!TKEY){$('#app').innerHTML=`<div class="top n"><span class="zh">课堂任务</span><div><h1>Задания урока 4</h1></div></div><div class="main n" style="text-align:center"><div style="font-size:64px">🔒</div><h2>Задания пока закрыты</h2><p class="lead">Учитель откроет их на следующем уроке. До встречи! 再见！</p></div>`;return;}
  if(!S.name)return login();const n=+location.hash.slice(1);if(TASKS[n])TASKS[n].run();else home();}
 addEventListener('hashchange',route);

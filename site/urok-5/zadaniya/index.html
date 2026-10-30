@@ -205,10 +205,9 @@ const tag=n=>`<span class="tag">Задание № ${n}</span>`;
 let TM=[];const later=(f,ms)=>{const t=setTimeout(f,ms);TM.push(t);return t;};
 function stopAll(){TM.forEach(clearTimeout);TM=[];try{curA&&curA.pause()}catch(e){}}
 /* the teacher closes the page between lessons; with the teacher key it stays open */
-const LOCKED=true;let TKEY=(k=>{let h=0x811c9dc5;for(const c of new TextEncoder().encode(k||'')){h^=c;h=Math.imul(h,0x01000193)>>>0;}return h.toString(16).padStart(8,'0');})(new URLSearchParams(location.search).get('key'))==='6521a6d8';
-// opened from the teacher's cabinet: the key is checked by the server, then remembered on this device
-try{if(localStorage.getItem('zh-u5-t')==='1')TKEY=true;}catch(e){}
-(k=>{if(!k||TKEY)return;fetch(API+'list?hw='+HW+'&key='+encodeURIComponent(k)).then(r=>{if(!r.ok)return;TKEY=true;try{localStorage.setItem('zh-u5-t','1')}catch(e){}route();}).catch(()=>{});})(new URLSearchParams(location.search).get('key'));
+const LOCKED=true;let TKEY=new URLSearchParams(location.search).has('uchitel');
+// opened from the teacher's cabinet (?uchitel), then remembered on this device
+try{if(TKEY)localStorage.setItem('zh-u5-t','1');else if(localStorage.getItem('zh-u5-t')==='1')TKEY=true;}catch(e){}
 // a task opens only when the one before it is done
 const open_=n=>true;
 function home(){const nx=TASKS.findIndex((x,i)=>x&&!DONE[i]);
