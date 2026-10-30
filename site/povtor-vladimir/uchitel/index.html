@@ -1,0 +1,45 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Повторение Владимира · учитель</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:20px 14px 40px}
+.w{max-width:860px;margin:0 auto}.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+h1{font-size:24px;font-weight:800;color:var(--ink)}h2{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 10px}
+.top{display:flex;align-items:center;gap:14px;padding:16px 20px;flex-wrap:wrap}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+button{font:inherit;border:0;cursor:pointer;padding:11px 18px;border-radius:16px;font-weight:800;background:var(--ac);color:#fff;margin-left:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}td{padding:10px 12px;border-bottom:1px solid #D6DBE6}td:last-child{text-align:right;font-weight:800;white-space:nowrap}
+.box{padding:16px 18px;margin-top:14px}.g{color:#14855E}.y{color:#A8740B}.e{color:var(--mu)}
+.bar{height:10px;border-radius:6px;background:#D6DBE6;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok))}
+.rep{white-space:pre-wrap;font-size:15px;line-height:1.55;background:#fff;border-radius:16px;padding:14px 16px;margin-top:10px}
+.log{font-size:15px;line-height:1.6}.zh{font-family:'LXGW WenKai GB','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-size:18px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+let KEY=new URLSearchParams(location.search).get('key')||'';try{if(KEY)localStorage.setItem('zh-pv-vl-t',KEY);else KEY=localStorage.getItem('zh-pv-vl-t')||'';}catch(e){}
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]);
+const ORDER=[['tones','Разминка: какой тон'],['asp','p или b: с выдохом и без'],['dict','Диктант на слух'],['mix','3 + 3 или 3 + 4'],['pict','Древний знак → иероглиф'],['rad','Игра «Ключи»'],
+ ['w-ni','Пропись 你 (×3)'],['w-wo','Пропись 我 (×3)'],['w-hao','Пропись 好 (×3)'],['w-jiao','Пропись 叫 (×3)'],['name','Пропись имени 弗拉基米尔'],['xm','Разговор с 小明'],['zcs','z c s zh ch sh']];
+const when=t=>t?new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
+async function load(){$('#app').innerHTML=`<div class="top n"><div><h1>Повторение для Владимира</h1><small>уроки 4 и 5 · кабинет учителя</small></div><button id="rf">↻ Обновить</button></div><div id="out" class="box n">Загружаю…</div>`;
+ $('#rf').onclick=load;
+ if(!KEY){$('#out').textContent='Откройте страницу по ссылке с ключом учителя (?key=…).';return;}
+ let j;try{const r=await fetch(API+'list?hw=pv-vl&key='+encodeURIComponent(KEY));j=await r.json();if(j.error==='key'){$('#out').textContent='Ключ не подошёл.';return;}}catch(e){$('#out').textContent='Сервер не ответил. Нажмите «↻ Обновить» чуть позже.';return;}
+ const subs=(j.subs||[]).sort((a,b)=>(b.updated||0)-(a.updated||0));
+ if(!subs.length){$('#out').innerHTML='Владимир ещё не начинал повторение. Ссылка для него: <b>https://chtutorworld-ops.github.io/gruppa-deti-sait/povtor-vladimir/</b>';return;}
+ // several devices → merge, newest part wins
+ const P={};subs.slice().reverse().forEach(s=>Object.entries(s.parts||{}).forEach(([k,v])=>{if(!P[k]||(v.ts||0)>=(P[k].ts||0))P[k]=v;}));
+ const st=P.step||{},max=st.max||0,of=st.of||24;
+ const rows=ORDER.map(([k,t])=>{const v=P[k];if(!v)return `<tr><td>${t}</td><td class="e">не делал</td></tr>`;
+  const good=v.score>=v.of-1;return `<tr><td>${t}${v.mist!=null?` <small class="e">ошибок в чертах: ${v.mist}</small>`:''}${v.miss&&v.miss.length?` <small class="e">ошибки: ${v.miss.map(esc).join(', ')}</small>`:''}</td><td class="${good?'g':'y'}">${v.score} / ${v.of}</td></tr>`;}).join('');
+ const xm=P.xm;const done=ORDER.filter(([k])=>P[k]);const weak=ORDER.filter(([k])=>P[k]&&P[k].score<P[k].of-1).map(x=>x[1]);
+ const rep=`Владимир проходит повторение уроков 4 и 5: ${max>=of?'прошёл всё до конца':'дошёл до шага '+max+' из '+of}. Выполнено проверок: ${done.length} из ${ORDER.length}.`+
+  (done.length?` Хорошо получилось: ${ORDER.filter(([k])=>P[k]&&P[k].score>=P[k].of-1).map(x=>x[1].toLowerCase()).join(', ')||'—'}.`:'')+
+  (weak.length?` Можно повторить для закрепления: ${weak.map(x=>x.toLowerCase()).join(', ')}.`:'')+(xm?` С ИИ-собеседником 小明 поздоровался и представился по-китайски.`:'');
+ $('#out').outerHTML=`<div class="box n"><b>Прогресс:</b> шаг ${max} из ${of}${st.title?' · последний открытый: «'+esc(st.title)+'»':''} · ${when(subs[0].updated)}<div class="bar"><i style="width:${Math.min(100,max/of*100)}%"></i></div></div>
+  <h2>Проверки</h2><div class="box n"><table>${rows}</table></div>
+  ${xm&&xm.log?`<h2>Разговор с 小明</h2><div class="box n log">${xm.log.map(l=>`<div>${l.who==='xm'?'小明':'Владимир'}: <span class="zh">${esc(l.text)}</span>${l.who==='me'?(l.ok?' ✓':' ·'):''}</div>`).join('')}${xm.notes&&xm.notes.length?`<div class="e" style="margin-top:6px">Заметки: ${xm.notes.map(esc).join('; ')}</div>`:''}</div>`:''}
+  <h2>Отчёт для родителей</h2><div class="box n"><div class="rep" id="rep">${esc(rep)}</div><button id="cp" style="margin-top:10px">Скопировать</button></div>`;
+ $('#cp').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(rep);$('#cp').textContent='✓ Скопировано';};}
+load();
+</script></body></html>
