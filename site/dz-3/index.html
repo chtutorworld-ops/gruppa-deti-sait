@@ -1,5 +1,5 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>作业 — Домашнее задание 3</title>
+<title>作业 — Домашнее задание 4</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@700;800;900&display=swap">
 <style>
 <style>
@@ -109,7 +109,7 @@ h3{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 8px}
 .toast.on{opacity:1}
 .login{max-width:460px;margin:8vh auto 0;padding:28px 24px;text-align:center}
 .login input{width:100%;font:inherit;font-size:20px;padding:14px 18px;border:0;outline:none;margin-top:18px;color:var(--ink)}
-/* ---- ДЗ 3: tone pairs, dialogue, AI trainer ---- */
+/* ---- ДЗ 4: tone pairs, dialogue, AI trainer ---- */
 .wg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}@media(min-width:640px){.wg{grid-template-columns:repeat(3,1fr)}}
 .wc{padding:12px 10px;border-radius:18px;text-align:center;display:grid;gap:2px;justify-items:center}
 .wc .py{font-size:23px;color:var(--ac2)}.wc .sd{font-size:13px;font-weight:700;color:var(--mu)}.wc .sd b{font-family:Nunito;font-weight:900}.wc .ru{font-size:13.5px;font-weight:700;color:var(--t)}
@@ -279,7 +279,7 @@ const ROCK=(seed)=>{const pts=[];const n=11;for(let i=0;i<n;i++){const a=i/n*Mat
  return `<svg viewBox="0 0 100 100" width="92" height="92"><defs><radialGradient id="rk${seed}" cx="35%" cy="30%"><stop offset="0" stop-color="#C9B3A3"/><stop offset=".6" stop-color="#8A6E5E"/><stop offset="1" stop-color="#4E3B33"/></radialGradient></defs>
  <polygon points="${pts.join(' ')}" fill="url(#rk${seed})" stroke="#3A2C26" stroke-width="2"/><circle cx="36" cy="40" r="8" fill="#6E5649" opacity=".7"/><circle cx="64" cy="62" r="11" fill="#6E5649" opacity=".6"/><circle cx="62" cy="32" r="5" fill="#6E5649" opacity=".7"/></svg>`;};
 
-/* ===================== ДЗ 3: words, tone pairs ===================== */
+/* ===================== ДЗ 4: words, tone pairs ===================== */
 // only what lesson 4 covered: initials b p m f d t n l g k h, finals a o e i u, 3 + 3, 3 + 4, 你好, 我叫
 const W33=[['打鼓','dǎ gǔ','dá gǔ','бить в барабан'],['打卡','dǎ kǎ','dá kǎ','отметиться'],['母马','mǔ mǎ','mú mǎ','кобыла'],['马匹','mǎ pǐ','má pǐ','лошади'],['打靶','dǎ bǎ','dá bǎ','стрелять в мишень'],['你好','nǐ hǎo','ní hǎo','привет']];
 const W34=[['可怕','kě pà','','страшно'],['马路','mǎ lù','','дорога'],['可乐','kě lè','','кола'],['土地','tǔ dì','','земля'],['理发','lǐ fà','','стричься'],['打破','dǎ pò','','разбить'],['我叫','wǒ jiào','','меня зовут']];
@@ -335,7 +335,7 @@ const NT=TASKS.filter(x=>!x.extra).length;const NEED={rec:3};
 const status=id=>{const d=S.done[id];if(!d)return '';if(NEED[id])return Object.keys(d.items||{}).length+'/'+NEED[id];if(id==='game')return '🏆 '+(d.best||0);if(id==='ai')return (d.passed||0)+'/'+PAIRS.length;if(id==='brief')return '✓';return d.score+'/'+d.of;};
 const doneCnt=()=>TASKS.filter(x=>!x.extra&&(NEED[x.id]?Object.keys((S.done[x.id]||{}).items||{}).length>=NEED[x.id]:S.done[x.id])).length;
 const STEP='<span class="stepn">Задание 0 из 0</span>';
-function shell(h,idx){if(idx!=null&&!TASKS[idx].extra)h=h.replace(/(<span class="stepn">)Задание \d+ из \d+/,'$1Задание '+(idx+1)+' из '+NT);stopAll();$('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 3</h1><small>Сочетания тонов · 你好 · 我叫</small></div><button class="me n" id="me">${esc(S.name)} ✎</button></div>
+function shell(h,idx){if(idx!=null&&!TASKS[idx].extra)h=h.replace(/(<span class="stepn">)Задание \d+ из \d+/,'$1Задание '+(idx+1)+' из '+NT);stopAll();$('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 4</h1><small>Сочетания тонов · 你好 · 我叫</small></div><button class="me n" id="me">${esc(S.name)} ✎</button></div>
  <div class="main n">${isTest()?'<div class="banner">🧑‍🏫 Режим учителя — ответы и записи не сохраняются</div>':''}${h}
  ${idx!=null?`<div class="nextbar"><button class="btn g" onclick="location.hash=''">‹ Все задания</button>${idx<TASKS.length-1?`<button class="btn nx" onclick="location.hash='#${TASKS[idx+1].id}'">Дальше: ${TASKS[idx+1].t} →</button>`:''}</div>`:''}</div>`;
  $('#me').onclick=()=>login();scrollTo(0,0);}
@@ -343,7 +343,7 @@ function home(){shell(`<h2>Привет, ${esc(S.name)}! 👋</h2><p class="lead
  <div class="prog">Сделано ${doneCnt()} из ${NT}<div class="bar"><i style="width:${doneCnt()/NT*100}%"></i></div></div>
  <div class="list">${TASKS.map((x,i)=>`${x.g?`<div class="grp">${x.g}</div>`:''}<button class="ti n" data-go="${x.id}"><span class="e" style="background:${x.bg}">${x.e}</span><span><b>${x.extra?'':(i+1)+'. '}${x.t}</b><small>${x.d}</small></span><span class="st ${S.done[x.id]?'ok':''}">${status(x.id)}</span></button>`).join('')}</div>`);
  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash='#'+b.dataset.go);}
-function login(){stopAll();$('#app').innerHTML=`<div class="login n"><div class="zh" style="font-size:44px;color:var(--ac2)">作业</div><h2>Домашнее задание 3</h2>
+function login(){stopAll();$('#app').innerHTML=`<div class="login n"><div class="zh" style="font-size:44px;color:var(--ac2)">作业</div><h2>Домашнее задание 4</h2>
  <p class="lead">Напиши имя и первую букву фамилии — так же, как на уроке (например, <b>Маша П.</b>)</p>
  <input id="nm" class="in" maxlength="40" placeholder="Имя и буква фамилии" value="${esc(S.name||'')}"><div class="row" style="justify-content:center"><button class="btn" id="go">Начать →</button></div></div>`;
  const go=()=>{const v=$('#nm').value.trim();if(v.length<2){toast('Напиши имя');return;}S.name=v;S.sid=S.sid||(Date.now().toString(36)+Math.random().toString(36).slice(2,8));keep();send('hello',{ua:navigator.userAgent.slice(0,60)});if(location.hash)history.replaceState(null,'',location.pathname+location.search);home();};

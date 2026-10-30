@@ -248,7 +248,7 @@ const wid=py=>py.split(' ').map(x=>SYL.plain(x)+SYL.tone(x)).join('');
 const urlW=hz=>{const w=[...W33,...W34,['你好','nǐ hǎo'],['我叫','wǒ jiào']].find(x=>x[0]===hz);const k=w&&wid(w[1]);return k&&VOK&&VOK[k]?VOICE+k+'.wav':fn(hz);};
 const playW=(hz,el)=>playList(hz.split(' ').map(urlW),el);      // '你好 我叫 达莉娅' = a phrase from pieces
 
-/* ===================== pitch (YIN), as in ДЗ 2 ===================== */
+/* ===================== pitch (YIN), as in ДЗ 3 ===================== */
 async function toPCM(ab){const buf=await new Promise((ok,bad)=>{const p=acx().decodeAudioData(ab,ok,bad);p&&p.catch&&p.catch(bad);});
  const sr=16000,len=Math.ceil(buf.duration*sr);const oc=new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,len,sr);
  const src=oc.createBufferSource();src.buffer=buf;src.connect(oc.destination);src.start();const r=await oc.startRendering();return r.getChannelData(0);}
@@ -509,7 +509,7 @@ const STEPS=[
   <h2>${NAME()?NAME()+', ты':'Ты'} догнал группу! 🎉</h2>
   <p class="lead">Теперь ты знаешь всё, что прошли на уроке 4: сочетания тонов <b>3 + 3</b> и <b>3 + 4</b>, фразы <span class="zh-i">你好</span> и <span class="zh-i">我叫</span>. На следующем уроке продолжим все вместе.</p>
   ${R.length?`<h3>Твои проверки</h3><div class="sumr">${R.map(r=>`<div class="n"><span>${r.t}</span><b class="${r.ok>=r.of-1?'g':'y'}">${r.ok} / ${r.of}${r.ok>=r.of-1?' ✓':' · можно повторить для закрепления'}</b></div>`).join('')}</div>`:''}
-  <div class="row" style="justify-content:center;margin-top:24px"><a class="btn okb" id="godz" href="../dz-3/" style="font-size:19px;padding:18px 30px">Домашнее задание 3 → <span id="cd">через 10 с</span></a></div>
+  <div class="row" style="justify-content:center;margin-top:24px"><a class="btn okb" id="godz" href="../dz-3/" style="font-size:19px;padding:18px 30px">Домашнее задание 4 → <span id="cd">через 10 с</span></a></div>
   <p class="lead" style="text-align:center;font-size:15px;color:var(--mu)">Сейчас откроется домашнее задание. Там напиши своё имя и первую букву фамилии — так учитель увидит твою работу.</p>`;},
   on:()=>{let n=10;const t=setInterval(()=>{const c=$('#cd');if(!c){clearInterval(t);return;}n--;c.textContent=n>0?'через '+n+' с':'';if(n<=0){clearInterval(t);location.href='../dz-3/';}},1000);}}
 ];

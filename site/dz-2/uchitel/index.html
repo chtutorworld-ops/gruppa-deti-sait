@@ -1,5 +1,5 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Кабинет учителя — ДЗ 2</title>
+<title>Кабинет учителя — ДЗ 3</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
 <style>
 :root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--sh1:#C5CBD8;--sh2:#fff}
@@ -30,7 +30,7 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.85}
 .rep{width:100%;min-height:230px;margin-top:8px;padding:12px 14px;border:0;border-radius:14px;font:500 14.5px/1.5 Manrope;color:var(--t);background:#F4F6FB;resize:vertical}
 .tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
 </style></head><body><div class="app">
-<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 2 «Инициали b p m f d t n l g k h»</h1><small>Новые результаты — по кнопке «↻ Обновить» · <span id="st"></span></small></div>
+<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 3 «Инициали b p m f d t n l g k h»</h1><small>Новые результаты — по кнопке «↻ Обновить» · <span id="st"></span></small></div>
  <div style="margin-left:auto;display:flex;gap:10px"><button class="btn" id="ref" style="background:var(--ac);color:#fff">↻ Обновить</button><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
 <div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
  <div class="tip">Звуки инициалей: 1 = b p m f · 2 = d t n l · 3 = g k h. Цепочки: каждая буква — отдельная запись (bā…bà, pā…pà, dā…dà, tā…tà, gē…gè, kē…kè). Нажмите на кружок, чтобы послушать. <b>Нажмите на имя ученика — откроется его досье и готовый отчёт для родителей.</b> Ученики с одинаковым именем (зашли с разных устройств) собраны в одну строку. Имя «учитель» сюда не попадает.</div></div>
@@ -61,7 +61,7 @@ async function load(){const st=document.getElementById('st');
   document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>1 · Слог по частям</th><th>2 · Тоны в словах</th><th>3 · 🗣️ Скажи тон</th><th>4 · Бриф</th><th>5 · Выдох</th><th>6 · Диктант</th><th>7 · 🎤 Звуки инициалей</th><th>8 · 🎶 Цепочки тонов</th><th>9 · 🏮 Китай</th><th>10 · 🚀 Шутер</th></tr>`+
    (rows.length?rows.map((g,gi)=>`<tr><td class="nm"><button class="nmb" data-g="${gi}">${esc([...g.names].join(' / '))}</button><small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>
     ${sc(g.parts.parts)}${sc(g.parts.words)}${spk(g.parts.speak)}<td class="${g.parts.brief?'g':'e'}">${g.parts.brief?'✓':'—'}</td>${sc(g.parts.air)}${sc(g.parts.dict)}${recs(g,'rec',['r1','r2','r3'])}${recs(g,'chain',['c1','c2','c3','c4','c5','c6'],'bpdtgk')}${sc(g.parts.china)}
-    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 2.</td></tr>');
+    <td class="${g.parts.game?'g':'e'}">${g.parts.game?`🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small>`:'—'}</td></tr>`).join(''):'<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 3.</td></tr>');
   document.querySelectorAll('.pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
   ROWS=rows;document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>dossier(rows[+b.dataset.g]));
   const done=f=>rows.filter(f).length;
@@ -92,7 +92,7 @@ function dossier(g,keep){const nm=[...g.names].join(' / ');OPEN=first([...g.name
   return `<div class="sec"><div class="hd">${i+1}. ${e} ${t}<span class="v ${f.l}">${f.v}</span></div><div class="ds">${ds}</div>${ch}</div>`;}).join('');
  const dn=T.filter(([id])=>info(g,id).done).length;
  document.getElementById('mbox').innerHTML=`<button class="x" id="mx">✕</button><h3>📁 ${esc(nm)}</h3>
-  <div class="ds" style="color:var(--mu);font-weight:700;margin-top:4px">ДЗ 2 · сделано ${dn} из 10 · последний раз ${dt(g.upd)} · устройств: ${Math.max(1,g.sids.length)}</div>
+  <div class="ds" style="color:var(--mu);font-weight:700;margin-top:4px">ДЗ 3 · сделано ${dn} из 10 · последний раз ${dt(g.upd)} · устройств: ${Math.max(1,g.sids.length)}</div>
   ${secs}
   <div class="sec" style="background:#F0F3FF"><div class="hd">📄 Отчёт для родителей<button class="btn" id="cp" style="margin-left:auto;padding:8px 14px">Скопировать</button></div><div class="ds">Текст можно поправить прямо здесь перед копированием.</div><textarea class="rep" id="rep">${esc(report(g,nm,dn))}</textarea></div>
   <div style="margin-top:14px;text-align:right"><button class="btn" id="hide" style="color:#B0284F">🙈 Это не ученик — скрыть из кабинета</button></div>`;
@@ -102,7 +102,7 @@ function dossier(g,keep){const nm=[...g.names].join(' / ');OPEN=first([...g.name
  document.getElementById('cp').onclick=async()=>{const t=document.getElementById('rep');try{await navigator.clipboard.writeText(t.value);}catch(e){t.select();document.execCommand('copy');}document.getElementById('cp').textContent='✓ Скопировано';};
  document.getElementById('hide').onclick=()=>{if(!confirm('Скрыть «'+nm+'» из кабинета на этом устройстве?'))return;HIDE_LS=HIDE_LS.concat(g.sids);try{localStorage.setItem('dz2-hide',JSON.stringify(HIDE_LS))}catch(e){}close();load();};}
 function report(g,nm,dn){const P=g.parts,L=[];const name=[...g.names][0];
- L.push(`${name} — домашнее задание 2 «Инициали b p m f d t n l g k h»`);L.push(`Выполнено заданий: ${dn} из 10.`);L.push('');
+ L.push(`${name} — домашнее задание 3 «Инициали b p m f d t n l g k h»`);L.push(`Выполнено заданий: ${dn} из 10.`);L.push('');
  const good=[],ok=[],todo=[];
  T.forEach(([id,e,t])=>{const f=info(g,id);if(id==='rec'||id==='chain')return;if(!f.done){todo.push(t);return;}
   if(id==='brief')good.push(`${t} — изучено`);else if(id==='game')good.push(`${t} — рекорд ${P.game.best||0}`);else if(f.l==='g')good.push(`${t} — ${f.v}`);else ok.push(`${t} — ${f.v}`);});

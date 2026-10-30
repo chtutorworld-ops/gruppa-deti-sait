@@ -329,7 +329,7 @@ const wid=py=>py.split(' ').map(x=>SYL.plain(x)+SYL.tone(x)).join('');
 const urlW=hz=>{const w=[...W33,...W34,['你好','nǐ hǎo'],['我叫','wǒ jiào']].find(x=>x[0]===hz);const k=w&&wid(w[1]);return k&&VOK&&VOK[k]?VOICE+k+'.wav':fn(hz);};
 const playW=(hz,el)=>playList(hz.split(' ').map(urlW),el);      // '你好 我叫 达莉娅' = a phrase from pieces
 
-/* ===================== pitch (YIN), as in ДЗ 2 ===================== */
+/* ===================== pitch (YIN), as in ДЗ 3 ===================== */
 async function toPCM(ab){const buf=await new Promise((ok,bad)=>{const p=acx().decodeAudioData(ab,ok,bad);p&&p.catch&&p.catch(bad);});
  const sr=16000,len=Math.ceil(buf.duration*sr);const oc=new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,len,sr);
  const src=oc.createBufferSource();src.buffer=buf;src.connect(oc.destination);src.start();const r=await oc.startRendering();return r.getChannelData(0);}

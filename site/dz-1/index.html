@@ -1,5 +1,5 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>作业 — Домашнее задание 1</title>
+<title>作业 — Домашнее задание 2</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@700;800;900&display=swap">
 <style>
 :root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--ok:#2DBE8C;--no:#FF5C8A;--sh1:#C5CBD8;--sh2:#fff;
@@ -253,7 +253,7 @@ function status(id){const d=S.done;
  if(id==='theory')return d.theory?[`✓ ${d.theory.score}/12`,1]:['',0];}
 let view='home';
 function shell(inner){const done=TASKS.filter(t=>status(t.id)[1]).length;
- $('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 1</h1><small>Пиньинь, слоги, тоны, финали a o e i u</small></div><button class="me n" id="who">${esc(S.name)}</button></div>${isTest()?'<div class="tip" style="margin:-6px 0 16px;font-weight:700">🧑‍🏫 Режим учителя: всё работает как у детей, но ответы и записи никуда не отправляются. Чтобы выйти — нажмите на имя справа вверху.</div>':''}
+ $('#app').innerHTML=`<div class="top n"><span class="zh">作业</span><div><h1>Домашнее задание 2</h1><small>Пиньинь, слоги, тоны, финали a o e i u</small></div><button class="me n" id="who">${esc(S.name)}</button></div>${isTest()?'<div class="tip" style="margin:-6px 0 16px;font-weight:700">🧑‍🏫 Режим учителя: всё работает как у детей, но ответы и записи никуда не отправляются. Чтобы выйти — нажмите на имя справа вверху.</div>':''}
  <div class="lay ${view==='home'?'home':'task'}"><div class="side n">
   <div class="prog">Сделано ${done} из ${TASKS.length}<div class="bar"><i style="width:${done/TASKS.length*100}%"></i></div></div>
   ${TASKS.map(t=>{const [s,ok]=status(t.id);return `<button class="ti ${view===t.id?'cur':''}" data-go="${t.id}"><span class="e" style="background:${t.c}">${t.e}</span><span><b>${t.t}</b><small>${t.s}</small></span><span class="st ${ok?'ok':''}">${s}</span></button>`}).join('')}
@@ -444,7 +444,7 @@ function askT(){if(T.i>=TQ.length){const sc=T.res.filter(Boolean).length;const p
   const fb=$('#tfb');fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ Верно!':'Правильный ответ подсвечен зелёным.')+'<br><button class="btn" id="tnx" style="margin-top:12px">Следующий вопрос →</button>';$('#tnx').onclick=()=>{T.i++;askT();};});}
 
 /* ---------- finish ---------- */
-function summary(){return `ДЗ 1 — ${S.name}\n`+TASKS.map(t=>`${status(t.id)[1]?'✅':'⬜'} ${t.t}: ${status(t.id)[0]||'не сделано'}`).join('\n');}
+function summary(){return `ДЗ 2 — ${S.name}\n`+TASKS.map(t=>`${status(t.id)[1]?'✅':'⬜'} ${t.t}: ${status(t.id)[0]||'не сделано'}`).join('\n');}
 function finishV(){const all=TASKS.every(t=>status(t.id)[1]);
  shell(`${backBtn}<h2><span class="zh">完成</span>${all?'Всё сделано! 🎉':'Итог'}</h2><p class="lead">${all?'Молодец! Учитель уже видит твои ответы.':'Ещё не всё готово — задания без ✓ можно доделать.'}</p>
  <pre class="in" style="white-space:pre-wrap;padding:16px;margin-top:14px;font:600 15px/1.6 Manrope">${esc(summary())}</pre>
@@ -452,13 +452,13 @@ function finishV(){const all=TASKS.every(t=>status(t.id)[1]);
  <div class="row"><button class="btn" id="share">📨 Отправить через мессенджер</button><button class="btn g" id="copy">Скопировать итог</button></div>`);
  $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(summary());toast('Скопировано');}catch(e){toast('Не получилось скопировать');}};
  $('#share').onclick=async()=>{const files=Object.entries(blobs).map(([id,b])=>new File([b],`${S.name}-${id}.${/mp4/.test(b.type)?'m4a':'webm'}`,{type:b.type}));
-  try{if(files.length&&navigator.canShare&&navigator.canShare({files}))await navigator.share({title:'ДЗ 1',text:summary(),files});
-   else if(navigator.share)await navigator.share({title:'ДЗ 1',text:summary()});
+  try{if(files.length&&navigator.canShare&&navigator.canShare({files}))await navigator.share({title:'ДЗ 2',text:summary(),files});
+   else if(navigator.share)await navigator.share({title:'ДЗ 2',text:summary()});
    else{files.forEach(f=>{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();});await navigator.clipboard.writeText(summary());toast('Записи скачаны, итог скопирован — отправь учителю');}}
   catch(e){}};}
 
 /* ---------- login ---------- */
-function login(){$('#app').innerHTML=`<div class="login n"><div class="zh" style="font-size:54px;color:var(--ac2)">作业</div><span class="py" style="color:var(--ac)">zuòyè</span><h2 style="margin-top:8px">Домашнее задание 1</h2><p class="lead">Напиши своё имя и фамилию, чтобы учитель знал, чьё это задание.</p>
+function login(){$('#app').innerHTML=`<div class="login n"><div class="zh" style="font-size:54px;color:var(--ac2)">作业</div><span class="py" style="color:var(--ac)">zuòyè</span><h2 style="margin-top:8px">Домашнее задание 2</h2><p class="lead">Напиши своё имя и фамилию, чтобы учитель знал, чьё это задание.</p>
  <input class="in" id="nm" placeholder="Имя Фамилия" autocomplete="name"><button class="btn" id="go" style="width:100%;margin-top:16px">Начать</button></div>`;
  const go2=()=>{const v=$('#nm').value.trim();if(v.length<2){toast('Напиши имя');return;}S.name=v.slice(0,60);S.sid=S.sid||(Date.now().toString(36)+Math.random().toString(36).slice(2,8));S.done=S.done||{};keep();send('hello',{plat:PLAT});go('home');};
  $('#go').onclick=go2;$('#nm').onkeydown=e=>{if(e.key==='Enter')go2();};}
