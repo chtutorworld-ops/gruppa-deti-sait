@@ -1,0 +1,142 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — ДЗ 4</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1200px;margin:0 auto;display:grid;gap:18px}.box{padding:18px 20px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.btn{padding:10px 16px;border-radius:14px;font-weight:800;font-size:14px;background:var(--bg);color:var(--ac2);box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2);text-decoration:none}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);padding:4px;text-align:center}th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 6px;border-radius:10px;font:800 15px Nunito}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;white-space:nowrap}td.nm small{display:block;font-size:11px;color:var(--mu);font-weight:600}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.85}
+.pl{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:1px;border-radius:50%;background:#fff;color:var(--ac2);font-size:13px;font-weight:800;box-shadow:2px 2px 6px var(--sh1)}
+.pl.on{background:var(--ac);color:#fff}.pl.no{opacity:.25;cursor:default}
+.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+.nmb{font:inherit;font-weight:800;color:var(--ink);text-decoration:underline dotted;cursor:pointer;text-align:left}
+.modal{position:fixed;inset:0;background:rgba(30,35,80,.4);display:none;align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto;z-index:9}.modal.on{display:flex}
+.mb{max-width:820px;width:100%;padding:22px 24px}.mb h3{font-size:22px;color:var(--ink)}.mb .x{float:right;font-size:22px;font-weight:800;color:var(--mu)}
+.sec{margin-top:14px;padding:12px 14px;border-radius:16px;background:#fff}.sec .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:800;color:var(--ink)}
+.sec .hd .v{margin-left:auto;font:900 15px Nunito;padding:3px 10px;border-radius:10px}.v.g{background:#DDF5EC;color:#14855E}.v.m{background:#FFF1D6;color:#9A6400}.v.b{background:#FFE3EB;color:#B0284F}.v.e{background:#E3E6EE;color:#9AA2BC}
+.sec .ds{font-size:13.5px;color:var(--mu);font-weight:600;margin-top:4px;line-height:1.5}
+.chipz{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.chipz span{padding:3px 9px;border-radius:9px;font:800 13px Nunito}.chipz .ok{background:#DDF5EC;color:#14855E}.chipz .no{background:#FFE3EB;color:#B0284F}
+.rep{width:100%;min-height:230px;margin-top:8px;padding:12px 14px;border:0;border-radius:14px;font:500 14.5px/1.5 Manrope;color:var(--t);background:#F4F6FB;resize:vertical}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+</style></head><body><div class="app">
+<div class="box n top"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 4 «Тоны, придыхание, иероглифы 你 我 好 叫»</h1><small>Новые результаты — по кнопке «↻ Обновить» · <span id="st"></span></small></div>
+ <div style="margin-left:auto;display:flex;gap:10px"><button class="btn" id="ref" style="background:var(--ac);color:#fff">↻ Обновить</button><a class="btn" href="../" target="_blank">Открыть ДЗ как ученик ↗</a></div></div>
+<div class="box n"><h2>📊 Кто что сделал</h2><div class="kpi" id="kpi"></div><div style="overflow-x:auto"><table id="tb"></table></div>
+ <div class="tip">Записи: p = pā…pà · t = tā…tà · k = kā…kà · 1 = kě pà · 2 = tǔ dì · 3 = dǎ pò. Нажмите на кружок, чтобы послушать. Прописи — сколько иероглифов из 8 написано не больше чем с одной ошибкой (в каждой прописи 2 круга по 你 我 好 叫). 小明 и Ли На — голосовые ответы ребёнка тоже можно послушать в досье. <b>Нажмите на имя ученика — откроется досье, мини-диалог ребёнка и готовый отчёт для родителей.</b> Имя «учитель» сюда не попадает.</div></div>
+<div class="box n"><h2>❌ Где ошибались чаще всего</h2><div class="miss" id="miss">—</div></div>
+</div>
+<div class="modal" id="modal"><div class="mb n" id="mbox"></div></div>
+<script>
+const HW='dz4';
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+// sessions the teacher opened herself to check (not students)
+const HIDE_SID=new Set([]);let HIDE_LS=[];try{HIDE_LS=JSON.parse(localStorage.getItem('dz4-hide')||'[]')}catch(e){}
+const first=n=>(n||'?').trim().split(/\s+/)[0].toLowerCase().replace(/ё/g,'е');
+let curA=null;
+function play(sid,item,el){try{curA&&curA.pause()}catch(e){}document.querySelectorAll('.pl.on').forEach(x=>x.classList.remove('on'));
+ const a=new Audio(API+`play?hw=${HW}&sid=${sid}&item=${item}`);curA=a;el.classList.add('on');a.onended=a.onerror=()=>el.classList.remove('on');a.play().catch(()=>el.classList.remove('on'));}
+// the same order as the children see
+const T=[['zvuk','🎵','Как это звучит? (3 + 3, 3 + 4)'],['ai','🤖','ИИ-тренер: пары слогов'],['asp','💨','b/p, d/t, g/k на слух'],['rec','🎤','Записи голоса (обязательно)'],['brief','📖','Что прошли на уроке 5'],
+ ['kq','🔑','Что значит ключ?'],['p1','✍️','Пропись 1: смотри и обводи'],['box','📦','Разложи по ящикам'],['p2','✍️','Пропись 2: по контуру'],['alch','⚗️','Алхимия: ключ + звук'],['p3','✍️','Пропись 3: бледный контур'],
+ ['pairs','🃏','Пары по ключу'],['p4','✍️','Пропись 4: без контура'],['hunt','🔍','Охота на ключ'],['p5','🏅','Пропись 5: по памяти'],['xm','👦','Разговор с 小明'],['ln','👧','Сценка с Ли На (здоровается первым)'],['mini','📝','Мини-диалог пиньинем'],['game','🚀','Шутер: иероглиф с ключом']];
+const SHORT={zvuk:'Звучит',ai:'🤖 ИИ',asp:'💨 b/p',rec:'🎤 Записи',brief:'Бриф',kq:'Ключи',p1:'✍️1',box:'📦',p2:'✍️2',alch:'⚗️',p3:'✍️3',pairs:'🃏',p4:'✍️4',hunt:'🔍',p5:'✍️5',xm:'小明',ln:'Ли На',mini:'📝',game:'🚀'};
+const REC={rec:[['r1','p'],['r2','t'],['r3','k'],['r4','1'],['r5','2'],['r6','3']]};
+const RECL={r1:'pā…pà',r2:'tā…tà',r3:'kā…kà',r4:'kě pà',r5:'tǔ dì',r6:'dǎ pò'};
+const TALK={xm:[['xm1','你好'],['xm2','我叫…']],ln:[['ln1','你好'],['ln2','我叫…']]};
+const SPN={lu3ma3:'lǔ mǎ',ba3ku4:'bǎ kù',du3ka3:'dǔ kǎ',ti3li4:'tǐ lì',mi3fu3:'mǐ fǔ',ku3da4:'kǔ dà',nv3ke3:'nǚ kě',nü3ke3:'nǚ kě',pu3te4:'pǔ tè'};
+const WHY={'a-flat':'1-й слог не поднялся','a-full3':'1-й слог «галочкой»','b-high':'2-й слог не опустился','a-rise':'1-й слог поднялся','a-high':'1-й слог высоко','b-flat':'2-й слог не упал'};
+const PROPS=['p1','p2','p3','p4','p5'];
+const lvl=(a,b)=>!b?'e':a/b>=.8?'g':a/b>=.5?'m':'b';
+const dt=t=>t?new Date(t).toLocaleString('ru',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
+let ROWS=[],OPEN=null;
+async function load(){const st=document.getElementById('st');
+ try{const r=await fetch(API+'list?hw='+HW+'&_='+Date.now());if(!r.ok)throw 0;const j=await r.json();
+  const by={};(j.subs||[]).filter(s=>!isTest(s.name)&&!HIDE_SID.has(s.sid)&&!HIDE_LS.includes(s.sid)).forEach(s=>{const k=first(s.name);const g=by[k]=by[k]||{names:new Set(),parts:{},sids:[],upd:0,audio:{}};g.names.add(s.name);g.sids.push(s.sid);g.upd=Math.max(g.upd,s.updated||0);
+   for(const it of Object.keys((j.aud||{})[s.sid]||{}))g.audio[it]=s.sid;
+   for(const [p,v] of Object.entries(s.parts||{})){const o=g.parts[p];if(p==='rec'){g.parts[p]=g.parts[p]||{items:{}};for(const [it,t] of Object.entries(v.items||{}))g.parts[p].items[it]={sid:s.sid,t};}
+    else if(p==='game'){if(!o||(v.best||0)>(o.best||0))g.parts.game={...v,games:((o&&o.games)||0)+(v.games||0),miss:((o&&o.miss)||[]).concat(v.miss||[])};else{o.games+=(v.games||0);o.miss=(o.miss||[]).concat(v.miss||[]);}}
+    else if(p==='ai'){if(!o||(v.passed||0)>=(o.passed||0))g.parts[p]=v;}
+    else if(p==='xm'||p==='ln'){g.parts[p]={...v,sid:s.sid};}
+    else if(!o||(v.score||0)>=(o.score||0))g.parts[p]={...v,sid:s.sid,tries:(v.tries||1)+((o&&o.tries)||0)};else o.tries=(o.tries||1)+(v.tries||1);}});
+  const rows=Object.values(by).sort((a,b)=>[...a.names][0].localeCompare([...b.names][0],'ru'));
+  const cell=(g,id)=>{if(id==='rec'){const it=(g.parts.rec||{}).items||{};const ids=REC.rec;const n=ids.filter(([x])=>it[x]).length;return `<td class="${n>=ids.length?'g':n?'m':'e'}">${ids.map(([x,lb])=>it[x]?`<button class="pl" data-sid="${it[x].sid}" data-it="${x}">${lb}▶</button>`:`<span class="pl no">${lb}</span>`).join('')}<small>${n}/${ids.length}</small></td>`;}
+   const f=info(g,id);if(!f.done)return '<td class="e">—</td>';if(id==='brief')return '<td class="g">✓</td>';if(id==='game')return `<td class="g">🏆 ${g.parts.game.best}<small>игр: ${g.parts.game.games||1}</small></td>`;
+   return `<td class="${f.l}">${f.v.replace(' / ','/')}${g.parts[id].tries>1?`<small>попыток: ${g.parts[id].tries}</small>`:''}</td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th>${T.map(([id],i)=>`<th>${i+1} · ${SHORT[id]}</th>`).join('')}</tr>`+
+   (rows.length?rows.map((g,gi)=>`<tr><td class="nm"><button class="nmb" data-g="${gi}">${esc([...g.names].join(' / '))}</button><small>${new Date(g.upd).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></td>${T.map(([id])=>cell(g,id)).join('')}</tr>`).join(''):`<tr><td colspan="${T.length+1}" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал ДЗ 4.</td></tr>`);
+  document.querySelectorAll('#tb .pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
+  ROWS=rows;document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>dossier(rows[+b.dataset.g]));
+  const done=f=>rows.filter(f).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${rows.length}</b>учеников начали</div><div><b>${done(g=>info(g,'rec').done)}</b>сдали все записи</div><div><b>${done(g=>PROPS.every(p=>g.parts[p]))}</b>прошли все 10 кругов прописи</div><div><b>${done(g=>g.parts.mini&&g.parts.mini.score>=4)}</b>написали мини-диалог</div><div><b>${done(g=>g.parts.game)}</b>играли в шутер</div>`;
+  const miss={};rows.forEach(g=>['zvuk','asp','kq','box','alch','hunt','game'].concat(PROPS).forEach(p=>((g.parts[p]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,20);document.getElementById('miss').innerHTML=top.length?top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'Пока нет ошибок 🙂';
+  st.textContent='обновлено '+new Date().toLocaleTimeString('ru');
+  if(OPEN){const g=rows.find(x=>first([...x.names][0])===OPEN);if(g)dossier(g,true);}}catch(e){st.textContent='нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
+function info(g,id){const p=g.parts[id];if(id==='rec'){const it=(p&&p.items)||{},m=REC.rec.length,n=REC.rec.filter(([x])=>it[x]).length;return {done:n>=m,v:n+' / '+m,l:n>=m?'g':n?'m':'e',n,m};}
+ if(!p)return {done:false,v:'—',l:'e'};
+ if(id==='brief')return {done:true,v:'✓',l:'g'};
+ if(id==='game')return {done:true,v:'🏆 '+(p.best||0),l:'g'};
+ if(id==='ai')return {done:true,v:(p.passed||0)+' / '+p.of,l:lvl(p.passed||0,p.of)};
+ return {done:true,v:p.score+' / '+p.of,l:lvl(p.score,p.of),k:p.of?p.score/p.of:0};}
+function dossier(g,keep){const nm=[...g.names].join(' / ');OPEN=first([...g.names][0]);const P=g.parts;
+ const secs=T.map(([id,e,t],i)=>{const f=info(g,id),p=P[id];let ds='',ch='';
+  if(id==='rec'){ch=`<div class="chipz">${REC.rec.map(([k])=>{const it=((p&&p.items)||{})[k];return it?`<button class="pl" style="width:auto;padding:0 10px;border-radius:12px" data-sid="${it.sid}" data-it="${k}">${RECL[k]} ▶</button>`:`<span class="no">${RECL[k]} — нет</span>`;}).join('')}</div>`;ds=f.n>=f.m?'Все записи отправлены — нажмите, чтобы послушать. Слушайте придыхание в p t k.':f.n?`Отправлено ${f.n} из ${f.m}.`:'Записи ещё не отправлены.';}
+  else if(!p)ds='Ещё не делал(а).';
+  else if(id==='brief')ds='Прочитал(а) и прослушал(а) материал урока.'+(p.ts?' · '+dt(p.ts):'');
+  else if(id==='game'){ds=`Рекорд: ${p.best||0}, сыграно игр: ${p.games||1}.`;const m=[...new Set(p.miss||[])];if(m.length)ch=`<div class="ds">Путал(а) в игре:</div><div class="chipz">${m.slice(0,12).map(x=>`<span class="no">${esc(x)}</span>`).join('')}</div>`;}
+  else if(id==='ai'){ds=`Засчитано ${p.passed||0} из ${p.of} пар, всего попыток: ${p.tries||0}.`;const st=p.stat||{};const ks=[...new Set(Object.keys(SPN).map(k=>SPN[k]))];ch=`<div class="chipz">${Object.keys(st).concat(Object.keys(SPN).filter(k=>!st[k]&&!(k==='nv3ke3'||k==='nü3ke3'))).filter((k,i,a)=>a.indexOf(k)===i).map(k=>{const v=st[k];return v?`<span class="${v.ok?'ok':'no'}">${SPN[k]||k} ${v.ok?'✓':'✗'} ×${v.tries}${!v.ok&&v.why&&v.why.length?' · '+[...new Set(v.why)].map(w=>WHY[w]||w).join(', '):''}</span>`:`<span style="background:#EEF0F5;color:#A7AFC3">${SPN[k]}</span>`;}).join('')}</div>`;}
+  else if(id==='xm'||id==='ln'){ds=`Понял(а) с первого раза: ${p.score} из 2${p.me?' · имя: '+esc(p.me):''}${p.ts?' · '+dt(p.ts):''}.`;
+   ch=`<div class="chipz">${TALK[id].map(([k,lb])=>g.audio[k]?`<button class="pl" style="width:auto;padding:0 10px;border-radius:12px" data-sid="${g.audio[k]}" data-it="${k}">${lb} ▶</button>`:'').join('')}${(p.log||[]).filter(x=>x.who==='me').map(x=>`<span class="${x.ok?'ok':'no'}">${esc(x.text)}</span>`).join('')}</div>${(p.notes||[]).length?`<div class="ds">Заметки: ${esc(p.notes.join(' · '))}</div>`:''}`;}
+  else if(id==='mini'){ds=`Правильных строчек: ${p.score} из 4${p.ts?' · '+dt(p.ts):''}.`;ch=`<div class="ds" style="color:var(--ink);font-family:Nunito;font-size:16px;font-weight:800;line-height:1.6">${(p.text||[]).map((x,i)=>`${'ABAB'[i]}: ${esc(x||'—')}`).join('<br>')}</div>`;}
+  else{ds=`Лучший результат: ${p.best!=null?p.best:p.score} из ${p.of}${p.tries?`, попыток: ${p.tries}`:''}${p.ts?' · '+dt(p.ts):''}.`;
+   if(PROPS.includes(id)&&p.per)ds+=' Ошибки в чертах: '+Object.entries(p.per).map(([c,m])=>c+' — '+m).join(', ')+'.';
+   const m=[...new Set(p.miss||[])];if(m.length)ch=`<div class="ds">${PROPS.includes(id)?'Трудные иероглифы (3+ ошибок):':'Ошибки:'}</div><div class="chipz">${m.map(x=>`<span class="no">${esc(x)}</span>`).join('')}</div>`;}
+  return `<div class="sec"><div class="hd">${i+1}. ${e} ${t}<span class="v ${f.l}">${f.v}</span></div><div class="ds">${ds}</div>${ch}</div>`;}).join('');
+ const dn=T.filter(([id])=>info(g,id).done).length;
+ const prev=document.getElementById('rep');const keepTxt=keep&&prev?prev.value:null;
+ document.getElementById('mbox').innerHTML=`<button class="x" id="mx">✕</button><h3>📁 ${esc(nm)}</h3>
+  <div class="ds" style="color:var(--mu);font-weight:700;margin-top:4px">ДЗ 4 · сделано ${dn} из ${T.length} · последний раз ${dt(g.upd)} · устройств: ${Math.max(1,g.sids.length)}</div>
+  ${secs}
+  <div class="sec" style="background:#F0F3FF"><div class="hd">📄 Отчёт для родителей<button class="btn" id="cp" style="margin-left:auto;padding:8px 14px">Скопировать</button></div><div class="ds">Текст можно поправить прямо здесь перед копированием.</div><textarea class="rep" id="rep">${esc(keepTxt!=null?keepTxt:report(g,nm,dn))}</textarea></div>
+  <div style="margin-top:14px;text-align:right"><button class="btn" id="hide" style="color:#B0284F">🙈 Это не ученик — скрыть из кабинета</button></div>`;
+ const m=document.getElementById('modal');m.classList.add('on');const close=()=>{m.classList.remove('on');OPEN=null;};
+ document.getElementById('mx').onclick=close;m.onclick=e=>{if(e.target===m)close();};
+ document.querySelectorAll('#mbox .pl[data-sid]').forEach(b=>b.onclick=()=>play(b.dataset.sid,b.dataset.it,b));
+ document.getElementById('cp').onclick=async()=>{const t=document.getElementById('rep');try{await navigator.clipboard.writeText(t.value);}catch(e){t.select();document.execCommand('copy');}document.getElementById('cp').textContent='✓ Скопировано';};
+ document.getElementById('hide').onclick=()=>{if(!confirm('Скрыть «'+nm+'» из кабинета на этом устройстве?'))return;HIDE_LS=HIDE_LS.concat(g.sids);try{localStorage.setItem('dz4-hide',JSON.stringify(HIDE_LS))}catch(e){}close();load();};}
+function report(g,nm,dn){const P=g.parts,L=[];const name=[...g.names][0];
+ L.push(`${name} — домашнее задание 4 «Тоны, придыхание и первые иероглифы 你 我 好 叫»`);L.push(`Выполнено заданий: ${dn} из ${T.length}.`);L.push('');
+ const good=[],ok=[],todo=[];
+ T.forEach(([id,e,t])=>{const f=info(g,id);if(id==='rec')return;if(!f.done){todo.push(t);return;}
+  if(id==='brief')good.push(`${t} — изучено`);else if(id==='game')good.push(`${t} — рекорд ${P.game.best||0}`);else if(f.l==='g')good.push(`${t} — ${f.v}`);else ok.push(`${t} — ${f.v}`);});
+ if(good.length){L.push('✅ Хорошо получилось:');good.forEach(x=>L.push('• '+x));L.push('');}
+ if(ok.length){L.push('🔁 Стоит пройти ещё раз для закрепления:');ok.forEach(x=>L.push('• '+x));L.push('');}
+ const rr=info(g,'rec');
+ L.push(`🎤 Обязательные записи голоса: ${rr.n} из ${rr.m}.${rr.n>=rr.m?' Всё отправлено — спасибо!':' Пожалуйста, напомните отправить оставшиеся записи.'}`);
+ const pc=PROPS.filter(p=>P[p]).length;L.push(`✍️ Пропись иероглифов 你 我 好 叫: пройдено ${pc*2} кругов из 10.`);
+ if(P.mini&&P.mini.text)L.push(`📝 Мини-диалог ребёнка: ${P.mini.text.filter(Boolean).join(' / ')}`);
+ const tips=[];const lo=id=>P[id]&&P[id].of&&P[id].score/P[id].of<.6;
+ if(lo('zvuk'))tips.push('слышать сочетания тонов 3 + 3 и 3 + 4');if(lo('asp'))tips.push('различать на слух придыхательные p t k и b d g');
+ if(lo('kq')||lo('box')||lo('hunt'))tips.push('узнавать ключи иероглифов');if(lo('alch'))tips.push('правило «слева значение, справа звучание»');
+ const hard=[...new Set([].concat(...PROPS.map(p=>(P[p]&&P[p].miss)||[])))];if(hard.length)tips.push('порядок черт в '+hard.join(', '));
+ if(P.ai){const bad=Object.entries(P.ai.stat||{}).filter(([k,v])=>!v.ok).map(([k])=>k);if(bad.length)tips.push('мелодию пар слогов ('+bad.map(k=>SPN[k]||k).join(', ')+')');}
+ if(tips.length){L.push('');L.push('Над чем поработаем дальше: '+tips.join('; ')+'.');}
+ if(todo.length){L.push('');L.push('⏳ Ещё не сделано: '+todo.join(', ')+'.');}
+ return L.join('\n');}
+const refBtn=document.getElementById('ref');
+refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
+load();
+</script></body></html>
