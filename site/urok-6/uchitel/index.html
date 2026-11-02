@@ -1,0 +1,143 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — Урок 6</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--ok:#2DBE8C;--no:#FF5C8A;--mid:#F5A524;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1300px;margin:0 auto;display:grid;gap:18px}
+.top{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap}
+.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.lay{display:grid;gap:18px}@media(min-width:1000px){.lay{grid-template-columns:420px 1fr;align-items:start}}
+.box{padding:18px 20px}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.btn{padding:10px 18px;border-radius:14px;font-weight:800;font-size:15px;background:var(--ac);color:#fff;box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ac2)}
+.clock{font:900 34px Nunito;color:var(--ac2);min-width:110px}
+.seg{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:10px 12px;border-radius:14px;margin-top:6px;font-size:14px;line-height:1.4}
+.seg b{color:var(--ink)}.seg .tm{font:800 14px Nunito;color:var(--ac)}.seg small{display:block;color:var(--mu);font-weight:600}
+.seg.now{background:#FFF1D6;box-shadow:inset 0 0 0 2px var(--mid)}.seg.past{opacity:.5}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);text-align:center;padding:4px 2px;line-height:1.2}
+th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 4px;border-radius:10px;font-weight:800;font-family:Nunito;font-size:15px}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;padding-left:12px;white-space:nowrap}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.8}
+.st{font-size:13px;font-weight:700;color:var(--mu)}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+.det{margin-top:16px;padding:12px 14px;border-radius:14px;background:#fff;font-size:14px;line-height:1.5}.det h3{font-size:15px;color:var(--ink);margin-bottom:6px}.det .zh{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:18px}.det .py{font:800 15px Nunito}.det button{padding:4px 10px;border-radius:10px;background:var(--bg);font-weight:800;font-size:13px;color:var(--ac2);margin-left:6px}
+.miss{margin-top:14px;font-size:14px;line-height:1.6}.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+
+.dos{margin-top:16px;display:grid;gap:12px}
+.dc{border-radius:16px;background:#fff;overflow:hidden}
+.dc>button{width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;text-align:left;font-weight:800;font-size:16px;color:var(--ink)}
+.dc>button small{margin-left:auto;font-weight:700;color:var(--mu);font-size:13px}
+.dc .bd{display:none;padding:4px 16px 16px;font-size:14px;line-height:1.55}.dc.op .bd{display:block}
+.bd .zh{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:22px;color:var(--ac2)}
+.bd .py{font:800 15px Nunito;color:var(--ac)}
+.bd h4{font-size:14px;color:var(--ink);margin:10px 0 4px}
+.bd audio{width:100%;max-width:420px;margin-top:4px}
+.pbtn{padding:6px 12px;border-radius:10px;background:var(--bg);font-weight:800;font-size:13px;color:var(--ac2)}
+.rep{margin-top:10px;padding:12px 14px;border-radius:12px;background:#F4F6FB;white-space:pre-wrap;font-size:14px;line-height:1.5}
+.svt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}.svt td,.svt th{border-bottom:1px solid #E1E5EE;padding:8px 6px;text-align:left;vertical-align:top;font-family:Manrope;font-weight:600;border-radius:0;background:none;color:var(--t)}
+.svt th{font-weight:800;color:var(--ink);white-space:nowrap}
+.svt td b{color:var(--ink)}
+</style></head><body>
+<div class="app">
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Урок 6 «Мама и папа»</h1><small>Прогресс, записи голоса и ответы ребят обновляются по кнопке «↻ Обновить»</small></div>
+  <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+   <a class="btn g" href="../" target="_blank" style="text-decoration:none">Презентация ↗</a><a class="btn g" id="zl" href="../zadaniya/?uchitel" target="_blank" style="text-decoration:none">Страница заданий ↗</a></div></div>
+ <div class="lay">
+  <div class="box n">
+   <h2>⏱ План урока · 60 минут</h2>
+   <div style="display:flex;gap:12px;align-items:center"><span class="clock" id="clk">00:00</span><button class="btn" id="tgo">▶ Начать урок</button><button class="btn g" id="trs">Сброс</button></div>
+   <div id="plan"></div>
+   <div class="tip">📱 Все задания открыты сразу — назовите детям номер. Проверить задания самой: на странице заданий войдите под именем «учитель» — ничего не сохранится.<br>⚡ Не успеваете? № 9 «Дракон» можно отдать в домашку, а опрос № 10 — сделать дома.</div>
+   <div class="tip" style="background:#E4E8FF;color:#2B3270">🔇 «Хором» — дети повторяют с выключенным микрофоном. 🎤 «По очереди» — каждый читает свою карточку, нажмите на номер, когда ответил.</div>
+  </div>
+  <div class="box n">
+   <h2>📊 Прогресс по заданиям <span class="st" id="st"></span><button class="btn" id="ref" style="margin-left:auto;padding:8px 14px;font-size:14px">↻ Обновить</button></h2>
+   <div class="kpi" id="kpi"></div>
+   <div style="overflow-x:auto"><table id="tb"></table></div>
+   <div class="miss" id="miss"></div>
+   <h2 style="margin-top:20px">🗂 Досье: нажмите на имя</h2>
+   <div class="dos" id="dos"></div>
+   <h2 style="margin-top:22px">💬 Опрос «Как тебе уроки?»</h2>
+   <div style="overflow-x:auto" id="sv"></div>
+  </div>
+ </div>
+</div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const T=['Пропись','По памяти','Выдох','Мама и папа','Запись','Помнишь?','Смысл/звук','妈 爸','Дракон','Опрос'];
+const PLAN=[[0,4,'Подключение','Слайды 1–2 · QR, все открывают страницу заданий'],
+ [4,13,'Повторяем иероглифы и выдох','Слайды 3–5 · № 1 пропись 你 我 好 叫 → № 2 по памяти с подсказками → № 3 «Есть выдох или нет?»'],
+ [13,19,'小美 и фразы 我妈妈叫… / 我爸爸叫…','Слайды 6–9 · 小美 говорит (кнопка или «вперёд»), что она сказала, хором за мной, по очереди'],
+ [19,28,'Имена родителей и запись голоса','Слайды 10–12 · № 4 имена родителей по-китайски, № 5 запись рассказа, опрос класса 你妈妈叫什么名字？'],
+ [28,40,'Иероглифы 妈 и 爸','Слайды 13–21 · № 6 «Помнишь ли ты?», 妈 = 女 + 马, 爸 = 父 + 巴, правило «смысл / звучание», семейки, порядок черт, № 7 и № 8'],
+ [40,55,'z c s zh ch sh','Слайды 22–35 · инициали, язык, «где выдох?», цепочки и пары, i как «ы», c + i и ch + i, № 9 Дракон'],
+ [55,60,'Опрос и прощание','Слайды 36–37 · № 10 опрос «Как тебе уроки?», 再见！']];
+let t0=null;try{t0=+localStorage.getItem('u6-t0')||null}catch(e){}
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function paintPlan(){const m=t0?(Date.now()-t0)/60000:-1;document.getElementById('clk').textContent=t0?fmt(Math.floor((Date.now()-t0)/1000)):'00:00';
+ document.getElementById('plan').innerHTML=PLAN.map(([a,b,h,d])=>`<div class="seg ${m>=a&&m<b?'now':m>=b?'past':''}"><span class="tm">${a}–${b} мин</span><span><b>${h}</b><small>${d}</small></span></div>`).join('');}
+document.getElementById('tgo').onclick=()=>{if(!t0){t0=Date.now();try{localStorage.setItem('u6-t0',t0)}catch(e){}}paintPlan();};
+document.getElementById('trs').onclick=()=>{t0=null;try{localStorage.removeItem('u6-t0')}catch(e){}paintPlan();};
+setInterval(paintPlan,1000);paintPlan();
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SVQ=[['mood','Как тебе уроки'],['like','Нравится'],['dislike','Не очень'],['hard','Трудно'],['easy','Легко'],['more','Хочу больше'],['lack','Мало объяснений / тренировки'],['games','Игры'],['design','Оформление'],['comfy','Удобство'],['idea','Идеи']];
+const sv=v=>v==null?'—':typeof v==='string'?esc(v):[...(v.pick||[]).map(esc),v.text?'<b>«'+esc(v.text)+'»</b>':''].filter(Boolean).join(', ')||'—';
+const OPEN=new Set();
+function report(s){const P=s.parts||{},p=P.parents,lines=[];const nm=(s.name||'').split(/\s+/)[0];
+ lines.push(`Урок 6 «Мама и папа» — ${nm}`);
+ if(P.t1)lines.push('✍️ Прописал(а) иероглифы 你 我 好 叫.');
+ if(P.t2)lines.push(`🧠 Написал(а) по памяти ${P.t2.score} из 4 иероглифов${P.t2.res&&P.t2.res.some(r=>r.hints)?' (с подсказками)':''}.`);
+ if(P.t3)lines.push(`💨 Различает слоги с выдохом и без: ${P.t3.score} из ${P.t3.of}.`);
+ if(p&&p.mom)lines.push(`👨‍👩‍👧 Узнал(а), как по-китайски зовут маму (${p.mom.ru} — ${p.mom.hz}) и папу (${p.dad.ru} — ${p.dad.hz}).`);
+ if(P.t5&&!P.t5.noMic)lines.push('🎙️ Записал(а) рассказ о себе и родителях по-китайски.');
+ if(P.t6)lines.push(`🤔 Тест по иероглифам: ${P.t6.score} из ${P.t6.of}.`);
+ if(P.t8)lines.push('✍️ Научился(ась) писать новые иероглифы 妈 «мама» и 爸 «папа».');
+ if(P.t9)lines.push(`🐉 Игра на слух z c s zh ch sh: ${P.t9.score} из ${P.t9.of}.`);
+ const rep=[...(P.t3&&P.t3.miss||[]),...(P.t9&&P.t9.miss||[])];
+ lines.push(rep.length?`Можно повторить для закрепления: ${[...new Set(rep)].join(', ')}.`:'Отличная работа на уроке!');
+ return lines.join('\n');}
+async function load(){const st=document.getElementById('st');
+ try{const r=await fetch(API+'list?hw=u6&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
+  const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));const aud=j.aud||{};
+  st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const cell=(p,i)=>{if(!p)return '<td class="e">—</td>';if(i===4||i===5||i===10)return `<td class="${p.noMic?'m':'g'}">${p.noMic?'нет микр.':'✓'}</td>`;const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}</td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th>${T.map((x,i)=>`<th>№ ${i+1}<br>${x}</th>`).join('')}<th>🎙️</th></tr>`+
+   (subs.length?subs.map(s=>`<tr><td class="nm">${esc(s.name)}</td>${T.map((_,i)=>cell((s.parts||{})['t'+(i+1)],i+1)).join('')}<td class="${(aud[s.sid]||{}).rec?'g':'e'}">${(aud[s.sid]||{}).rec?'✓':'—'}</td></tr>`).join(''):`<tr><td colspan="12" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не сдал задания. Как только ребёнок закончит задание, он появится здесь.</td></tr>`);
+  const done=k=>subs.filter(s=>(s.parts||{})[k]).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${subs.length}</b>учеников</div><div><b>${done('parents')}</b>ввели имена родителей</div><div><b>${subs.filter(s=>(aud[s.sid]||{}).rec).length}</b>записали голос</div><div><b>${done('survey')}</b>прошли опрос</div>`;
+  const miss={};subs.forEach(s=>['t3','t6','t7','t9'].forEach(k=>(((s.parts||{})[k]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,14);
+  document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
+  document.getElementById('dos').innerHTML=subs.length?subs.map(s=>{const P=s.parts||{},p=P.parents,A=aud[s.sid]||{},out=[];
+   if(p&&p.mom)out.push(`<h4>👨‍👩‍👧 Родители</h4>👩 ${esc(p.mom.ru)} — <span class="zh">${esc(p.mom.hz)}</span> <span class="py">${esc((p.mom.py||[]).join(' '))}</span>${p.mom.dict?'':' <small>(по слогам)</small>'}<br>👨 ${esc(p.dad.ru)} — <span class="zh">${esc(p.dad.hz)}</span> <span class="py">${esc((p.dad.py||[]).join(' '))}</span>${p.dad.dict?'':' <small>(по слогам)</small>'}${p.me?`<br>🙂 сам(а): <span class="zh">${esc(p.me.hz)}</span> <span class="py">${esc((p.me.py||[]).join(' '))}</span>`:''}`);
+   out.push(`<h4>🎙️ Рассказ о себе</h4>${A.rec?`<button class="pbtn" data-p="${esc(s.sid)}">▶ Послушать запись</button> <small>${A.rec.ts?new Date(A.rec.ts).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):''}</small><div data-a="${esc(s.sid)}"></div>`:P.t5&&P.t5.noMic?'микрофон не открылся — расскажет на уроке':'ещё не записал(а)'}`);
+   if(P.t2&&P.t2.res)out.push(`<h4>🧠 По памяти</h4>${P.t2.res.map(r=>`<span class="zh">${esc(r.c)}</span> ${r.show?'👀 смотрел(а) образец':r.hints?'💡 подсказок: '+r.hints:'✓ сам(а)'}`).join(' · ')}`);
+   if(P.t3)out.push(`<h4>💨 Выдох: ${P.t3.score}/${P.t3.of}</h4>${(P.t3.miss||[]).length?'ошибки: <span class="py">'+P.t3.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
+   if(P.t6)out.push(`<h4>🤔 Помнишь ли ты: ${P.t6.score}/${P.t6.of}</h4>${(P.t6.miss||[]).length?'не вспомнил(а): '+P.t6.miss.map(esc).join('; '):'всё помнит'}`);
+   if(P.t7)out.push(`<h4>🔍 Смысл/звучание: ${P.t7.score}/${P.t7.of}</h4>${(P.t7.miss||[]).length?'ошибки в <span class="zh">'+P.t7.miss.map(esc).join(' ')+'</span>':'без ошибок'}`);
+   if(P.t9)out.push(`<h4>🐉 Дракон: ${P.t9.score}/${P.t9.of} · ${P.t9.pts||0} очков</h4>${(P.t9.miss||[]).length?'ошибки: <span class="py">'+P.t9.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
+   out.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
+   return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${Object.keys(P).filter(k=>/^t\d+$/.test(k)).length} из 10 · ${A.rec?'🎙️ ':''}${P.survey?'💬':''}</small></button><div class="bd">${out.join('')}</div></div>`;}).join(''):'';
+  document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
+  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{const sid=b.dataset.p;b.textContent='…';
+   try{const r=await fetch(API+'play?hw=u6&sid='+encodeURIComponent(sid)+'&item=rec');if(!r.ok)throw 0;const u=URL.createObjectURL(await r.blob());
+    const box=document.querySelector(`[data-a="${CSS.escape(sid)}"]`);box.innerHTML=`<audio controls autoplay src="${u}"></audio>`;b.textContent='▶ Загрузить ещё раз';}catch(e){b.textContent='не удалось загрузить';}});
+  document.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{const s=subs.find(x=>x.sid===b.dataset.cp);const t=report(s);
+   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='✓ Скопировано';}).catch(()=>{b.textContent='выделите текст и скопируйте';});});
+  const svs=subs.filter(s=>(s.parts||{}).survey);
+  document.getElementById('sv').innerHTML=svs.length?`<table class="svt"><tr><th>Вопрос</th>${svs.map(s=>`<th>${esc(s.name)}</th>`).join('')}</tr>${SVQ.map(([k,q])=>`<tr><th>${q}</th>${svs.map(s=>`<td>${sv(s.parts.survey[k])}</td>`).join('')}</tr>`).join('')}</table>`:'<p class="st">Опрос пока никто не прошёл.</p>';
+ }catch(e){st.textContent='· нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
+const refBtn=document.getElementById('ref');
+refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
+load();
+</script></body></html>

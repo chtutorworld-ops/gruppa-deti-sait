@@ -23,6 +23,7 @@ import edge_tts, miniaudio
 VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
 RATES = ["-20%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoxiaoNeural", "-15%"   # слова — взрослый женский голос   # для слов из 2+ слогов
+GIRL_VOICE, GIRL_RATE = "zh-CN-XiaoyiNeural", "-10%"   # девочка 小美 (урок 6)
 VERSION = 11
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -162,6 +163,16 @@ async def main():
             d = os.path.join(CAND, f"{WORD_VOICE}{WORD_RATE}"); os.makedirs(d, exist_ok=True)
             words.append((os.path.join(d, k + ".mp3"), os.path.join(OUT, k + ".mp3")))
             jobs.append(tts(t, WORD_VOICE, WORD_RATE, words[-1][0], sem))
+    # голос девочки 小美 (урок 6): фразы целиком, детский голос, имя файла — только иероглифы
+    girl_out = os.path.join(OUT, "girl"); os.makedirs(girl_out, exist_ok=True)
+    gp = os.path.join(HERE, "audio-girl.txt")
+    if os.path.exists(gp):
+        gd = os.path.join(CAND, f"{GIRL_VOICE}{GIRL_RATE}"); os.makedirs(gd, exist_ok=True)
+        for t in (l.strip() for l in open(gp, encoding="utf-8")):
+            if not t or t.startswith("#"): continue
+            k = fname("".join(c for c in t if "\u3400" <= c <= "\u9fff"))
+            words.append((os.path.join(gd, k + ".mp3"), os.path.join(girl_out, k + ".mp3")))
+            jobs.append(tts(t, GIRL_VOICE, GIRL_RATE, words[-1][0], sem))
     await asyncio.gather(*jobs)
     for src, dst in words:
         if os.path.exists(src): shutil.copyfile(src, dst)
