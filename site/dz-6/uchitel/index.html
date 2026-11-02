@@ -1,0 +1,127 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Кабинет учителя — ДЗ 6</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ac2:#2B3270;--ok:#2DBE8C;--no:#FF5C8A;--mid:#F5A524;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:18px}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+.app{max-width:1300px;margin:0 auto;display:grid;gap:18px}
+.top{display:flex;align-items:center;gap:16px;padding:16px 20px;flex-wrap:wrap}
+.top h1{font-size:22px;font-weight:800;color:var(--ink)}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+.lay{display:grid;gap:18px}@media(min-width:1000px){.lay{grid-template-columns:420px 1fr;align-items:start}}
+.box{padding:18px 20px}
+h2{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.btn{padding:10px 18px;border-radius:14px;font-weight:800;font-size:15px;background:var(--ac);color:#fff;box-shadow:5px 5px 12px var(--sh1),-5px -5px 12px var(--sh2)}
+.btn.g{background:var(--bg);color:var(--ac2)}
+.clock{font:900 34px Nunito;color:var(--ac2);min-width:110px}
+.seg{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:10px 12px;border-radius:14px;margin-top:6px;font-size:14px;line-height:1.4}
+.seg b{color:var(--ink)}.seg .tm{font:800 14px Nunito;color:var(--ac)}.seg small{display:block;color:var(--mu);font-weight:600}
+.seg.now{background:#FFF1D6;box-shadow:inset 0 0 0 2px var(--mid)}.seg.past{opacity:.5}
+.tip{margin-top:12px;padding:10px 14px;border-radius:14px;background:#FFF6DC;color:#6B5310;font-size:14px;line-height:1.45}
+table{border-collapse:separate;border-spacing:4px;width:100%;font-size:14px}
+th{font-size:12px;font-weight:800;color:var(--mu);text-align:center;padding:4px 2px;line-height:1.2}
+th.nm,td.nm{text-align:left}
+td{text-align:center;padding:8px 4px;border-radius:10px;font-weight:800;font-family:Nunito;font-size:15px}
+td.nm{font-family:Manrope;color:var(--ink);background:#fff;padding-left:12px;white-space:nowrap}
+td.e{background:#DDE2EC;color:#A7AFC3}td.g{background:#DDF5EC;color:#14855E}td.m{background:#FFF1D6;color:#9A6400}td.b{background:#FFE3EB;color:#B0284F}
+td small{display:block;font-size:11px;font-weight:700;opacity:.8}
+.st{font-size:13px;font-weight:700;color:var(--mu)}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{padding:10px 14px;border-radius:14px;background:#fff;font-weight:700;font-size:13px;color:var(--mu)}.kpi b{display:block;font:900 22px Nunito;color:var(--ac2)}
+.det{margin-top:16px;padding:12px 14px;border-radius:14px;background:#fff;font-size:14px;line-height:1.5}.det h3{font-size:15px;color:var(--ink);margin-bottom:6px}.det .zh{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:18px}.det .py{font:800 15px Nunito}.det button{padding:4px 10px;border-radius:10px;background:var(--bg);font-weight:800;font-size:13px;color:var(--ac2);margin-left:6px}
+.miss{margin-top:14px;font-size:14px;line-height:1.6}.miss span{display:inline-block;margin:2px 4px;padding:2px 8px;border-radius:8px;background:#FFE3EB;color:#B0284F;font:800 14px Nunito}
+
+.dos{margin-top:16px;display:grid;gap:12px}
+.dc{border-radius:16px;background:#fff;overflow:hidden}
+.dc>button{width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;text-align:left;font-weight:800;font-size:16px;color:var(--ink)}
+.dc>button small{margin-left:auto;font-weight:700;color:var(--mu);font-size:13px}
+.dc .bd{display:none;padding:4px 16px 16px;font-size:14px;line-height:1.55}.dc.op .bd{display:block}
+.bd .zh{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:22px;color:var(--ac2)}
+.bd .py{font:800 15px Nunito;color:var(--ac)}
+.bd h4{font-size:14px;color:var(--ink);margin:10px 0 4px}
+.bd audio{width:100%;max-width:420px;margin-top:4px}
+.pbtn{padding:6px 12px;border-radius:10px;background:var(--bg);font-weight:800;font-size:13px;color:var(--ac2)}
+.rep{margin-top:10px;padding:12px 14px;border-radius:12px;background:#F4F6FB;white-space:pre-wrap;font-size:14px;line-height:1.5}
+.svt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}.svt td,.svt th{border-bottom:1px solid #E1E5EE;padding:8px 6px;text-align:left;vertical-align:top;font-family:Manrope;font-weight:600;border-radius:0;background:none;color:var(--t)}
+.svt th{font-weight:800;color:var(--ink);white-space:nowrap}
+.svt td b{color:var(--ink)}
+
+.grpth{background:#E4E8FF;color:var(--ac2)!important;border-radius:10px}
+.wc{display:inline-grid;justify-items:center;margin:3px;padding:4px 6px;border-radius:10px;background:#F4F6FB;min-width:40px}.wc.no{background:#FFE3EB}.wc.ok{background:#DDF5EC}
+.wc small{font:800 10.5px Manrope;color:var(--mu)}
+.chatl{display:grid;gap:4px;margin-top:4px}.chatl div{font-size:13.5px}.chatl .bad{color:#B0284F}
+</style></head><body>
+<div class="app">
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · ДЗ 6 «Мама и папа»</h1><small>Все ответы, записи голоса и подсказки ребят · обновляется по кнопке «↻ Обновить»</small></div>
+  <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap"><a class="btn g" href="../" target="_blank" style="text-decoration:none">Открыть ДЗ ↗</a><button class="btn" id="ref">↻ Обновить</button></div></div>
+ <div class="box n">
+  <h2>📊 Прогресс <span class="st" id="st"></span></h2>
+  <div class="kpi" id="kpi"></div>
+  <div style="overflow-x:auto"><table id="tb"></table></div>
+  <div class="miss" id="miss"></div>
+  <div class="tip">Проверить ДЗ самой: войдите под именем «учитель» — ничего не сохранится. Цвет: зелёный — 80% и больше, жёлтый — 50–79%, розовый — меньше половины (лучшая попытка).</div>
+  <h2 style="margin-top:20px">🗂 Досье: нажмите на имя</h2>
+  <div class="dos" id="dos"></div>
+ </div>
+</div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const HW='dz6';
+const ST=[['Звуки',[['krot','Крот'],['para','Пары'],['row','Строчка 🎙️']]],['Семья 小美',[['light','Лёгкий слог'],['xmt','Древо 小美'],['tree','Моё древо 🎙️']]],
+ ['妈 и 爸',[['facts','Факты'],['sost','Состав'],['alch','Алхимия'],['fam','Семейки'],['prop','Пропись']]],['Слова',[['perev','Перевод'],['troi','Тройки']]],['Узнай',[['lamp','Фонарики']]],
+ ['WeChat',[['wxi','Справка'],['chat','Чат']]],['По памяти',[['cells','Рассказ']]],['z c s zh ch sh',[['zt','Правила'],['ztip','Кончик/загнут'],['zair','Предыхание'],['zi','zi…shi']]],
+ ['Тоны',[['tt','Теория'],['trec','Записи 🎙️']]],['Финал',[['drag','Дракон'],['ninja','Ниндзя']]]];
+const ALL=ST.flatMap(s=>s[1]);const REC=[['row','Строчка b … h'],['tree','Рассказ о себе и семье'],['t33','Тоны 3 + 3'],['t34','Тоны 3 + 4'],['t10','Тоны 1 + лёгкий'],['t40','Тоны 4 + лёгкий']];
+const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct=p=>p&&p.of?(p.best!=null?p.best:p.score)/p.of:0;
+const dt=ts=>ts?new Date(ts).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+const OPEN=new Set();
+function report(s){const P=s.parts||{},L=[];const nm=(s.name||'').split(/\s+/)[0];const sc=k=>P[k]?`${P[k].best!=null?P[k].best:P[k].score} из ${P[k].of}`:'';
+ L.push(`ДЗ 6 «Мама и папа» — ${nm}`);const n=ALL.filter(([k])=>P[k]).length;L.push(`Сделано шагов: ${n} из ${ALL.length}.`);
+ if(P.krot)L.push(`💨 Различает предыхательные p t k и непредыхательные b d g: ${sc('krot')}.`);
+ if(P.tree&&!P.tree.noMic)L.push('🎙️ Рассказал(а) голосом о себе, маме и папе по-китайски.');
+ if(P.prop)L.push('✍️ Научился(ась) писать иероглифы 妈 «мама» и 爸 «папа».');
+ if(P.chat)L.push(`💬 Переписывался(-лась) с китайской девочкой в «WeChat», набирая иероглифы пиньинем: ${sc('chat')}.`);
+ if(P.cells)L.push(`✍️ Написал(а) по памяти рассказ о себе иероглифами: ${sc('cells')} иероглифов без образца.`);
+ if(P.zi||P.ztip)L.push('👂 Тренировал(а) новые звуки z c s zh ch sh на слух.');
+ if(P.trec)L.push(`🎵 Записал(а) голосом слова на сочетания тонов: ${P.trec.best} из 4.`);
+ const rep=[...new Set(['krot','zair','ztip','zi','drag'].flatMap(k=>(P[k]&&P[k].miss)||[]))];
+ L.push(rep.length?`Можно повторить для закрепления: ${rep.slice(0,10).join(', ')}.`:'Отличная работа!');return L.join('\n');}
+async function load(){const st=document.getElementById('st');
+ try{const r=await fetch(API+'list?hw='+HW+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
+  const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));const aud=j.aud||{};
+  st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+  const cell=(p,k)=>{if(!p)return '<td class="e">—</td>';if(p.noMic)return '<td class="m">нет микр.</td>';if(p.of===1)return '<td class="g">✓</td>';const v=pct(p);return `<td class="${v>=.8?'g':v>=.5?'m':'b'}">${p.best!=null?p.best:p.score}/${p.of}${p.tries>1?`<small>${p.tries} поп.</small>`:''}</td>`;};
+  document.getElementById('tb').innerHTML=`<tr><th class="nm"></th>${ST.map(([g,l])=>`<th class="grpth" colspan="${l.length}">${g}</th>`).join('')}</tr><tr><th class="nm">Ученик</th>${ALL.map(([,t])=>`<th>${t}</th>`).join('')}</tr>`+
+   (subs.length?subs.map(s=>`<tr><td class="nm">${esc(s.name)}<small style="font-weight:600">${dt(s.updated)}</small></td>${ALL.map(([k])=>cell((s.parts||{})[k],k)).join('')}</tr>`).join(''):`<tr><td colspan="${ALL.length+1}" style="font-family:Manrope;color:var(--mu)">Пока никто не начал ДЗ 6</td></tr>`);
+  const allDone=subs.filter(s=>ALL.every(([k])=>(s.parts||{})[k])).length;
+  document.getElementById('kpi').innerHTML=`<div><b>${subs.length}</b>начали</div><div><b>${allDone}</b>сделали всё</div><div><b>${subs.filter(s=>Object.keys(aud[s.sid]||{}).length).length}</b>прислали голос</div>`;
+  const miss={};subs.forEach(s=>['krot','para','light','zair','ztip','zi','drag','lamp','ninja','perev','alch'].forEach(k=>(((s.parts||{})[k]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);
+  document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
+  document.getElementById('dos').innerHTML=subs.length?subs.map(s=>{const P=s.parts||{},A=aud[s.sid]||{},o=[];
+   const nm=P.names||(P.tree&&{mom:{ru:P.tree.mom},dad:{ru:P.tree.dad}});
+   if(P.names)o.push(`<h4>👨‍👩‍👧 Семья</h4>🙂 ${esc(P.names.me&&P.names.me.ru)} <span class="zh">${esc(P.names.me&&P.names.me.hz)}</span> · 👩 ${esc(P.names.mom.ru)} <span class="zh">${esc(P.names.mom.hz)}</span> <span class="py">${esc((P.names.mom.py||[]).join(''))}</span> · 👨 ${esc(P.names.dad.ru)} <span class="zh">${esc(P.names.dad.hz)}</span> <span class="py">${esc((P.names.dad.py||[]).join(''))}</span>`);
+   o.push(`<h4>🎙️ Записи голоса</h4>${REC.map(([k,t])=>A[k]?`<div style="margin:4px 0"><button class="pbtn" data-p="${esc(s.sid)}" data-i="${k}">▶ ${t}</button> <small>${dt(A[k].ts)}</small><div data-a="${esc(s.sid)}-${k}"></div></div>`:`<div style="margin:4px 0;color:var(--mu)">— ${t}: ${(k==='row'&&P.row&&P.row.noMic)||(k==='tree'&&P.tree&&P.tree.noMic)||(P.trec&&P.trec.items&&P.trec.items[k]&&P.trec.items[k].noMic)?'нет микрофона, скажет на уроке':'нет записи'}</div>`).join('')}`);
+   const step=(k,t,extra)=>{const p=P[k];if(!p)return;o.push(`<h4>${t}: ${p.of===1?'✓':(p.best!=null?p.best:p.score)+'/'+p.of}${p.tries>1?` · попыток ${p.tries} (последняя ${p.score}/${p.of})`:''}</h4>${(p.miss||[]).length?'ошибки: <span class="py">'+p.miss.map(esc).join(', ')+'</span>':''}${extra?extra(p):''}`);};
+   step('krot','🔨 Крот (предыхание)');step('para','🔤 Пары b–p d–t g–k');step('light','🪶 Лёгкий слог');step('xmt','🌳 Древо 小美');step('sost','🔍 Состав 妈 爸');step('alch','⚗️ Алхимия');step('fam','👪 Семейки');
+   step('prop','✍️ Пропись 妈 爸',p=>`<br>обводка: ошибок в чертах ${p.trace||0}; по памяти: ${(p.res||[]).map(r=>`<span class="wc ${r.show?'no':'ok'}"><span class="zh">${esc(r.c)}</span><small>💡${r.hints} 👀${r.show} ✗${r.mist}</small></span>`).join('')}`);
+   step('perev','⌨️ Перевод с клавиатуры');step('troi','🔗 Тройки',p=>p.err?` ошибок: ${p.err}`:'');step('lamp','🏮 Фонарики',p=>` · ${p.pts} очков`);
+   step('chat','💬 Чат с 小美',p=>`<div class="chatl">${(p.log||[]).map(l=>`<div class="${l.bad?'bad':''}">${l.bad?'✗':'✓'} на «<span class="zh">${esc(l.q)}</span>» ответил(а): <span class="zh">${esc(l.a)}</span></div>`).join('')}</div>`);
+   step('cells','✍️ Рассказ по памяти в клетках',p=>`<br>${(p.res||[]).map(([c,h,sh,m])=>`<span class="wc ${sh?'no':h?'':'ok'}"><span class="zh">${esc(c)}</span><small>💡${h} 👀${sh} ✗${m}</small></span>`).join('')}<br><small>💡 подсказки (черта/контур) · 👀 смотрел(а) весь иероглиф · ✗ ошибки в чертах</small>`);
+   step('ztip','👅 Кончик/загнут');step('zair','💨 c ch: предыхание');step('zi','🔤 zi ci si zhi chi shi');step('drag','🐉 Дракон',p=>` · ${p.pts} очков`);step('ninja','🥷 Ниндзя',p=>` · ${p.pts} очков, по чужим иероглифам: ${p.bad||0}`);
+   o.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
+   return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${ALL.filter(([k])=>P[k]).length} из ${ALL.length} · 🎙️ ${Object.keys(A).length}</small></button><div class="bd">${o.join('')}</div></div>`;}).join(''):'<p class="st">Досье появятся, когда ребята начнут ДЗ.</p>';
+  document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
+  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{const sid=b.dataset.p,it=b.dataset.i;const t=b.textContent;b.textContent='…';
+   try{const r=await fetch(API+'play?hw='+HW+'&sid='+encodeURIComponent(sid)+'&item='+it);if(!r.ok)throw 0;const u=URL.createObjectURL(await r.blob());
+    document.querySelector(`[data-a="${CSS.escape(sid+'-'+it)}"]`).innerHTML=`<audio controls autoplay src="${u}"></audio>`;b.textContent=t;}catch(e){b.textContent='не удалось загрузить';}});
+  document.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{const s=subs.find(x=>x.sid===b.dataset.cp);const t=report(s);
+   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='✓ Скопировано';}).catch(()=>{b.textContent='выделите текст и скопируйте';});});
+ }catch(e){st.textContent='· нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
+const refBtn=document.getElementById('ref');
+refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
+load();
+</script></body></html>
