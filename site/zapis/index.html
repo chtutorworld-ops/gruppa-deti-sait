@@ -147,10 +147,10 @@ function render(){const id=ITEMS[cur],b=id.slice(0,-1),t=+id.slice(-1),done=Obje
   if(!r||r.pk<0.02){$('#msg').className='msg no';$('#msg').textContent='Очень тихо — поднесите телефон ближе и повторите.';return;}
   blob=r.wav;url&&URL.revokeObjectURL(url);url=URL.createObjectURL(blob);$('#cv').innerHTML=chart(curve(r.pcm,r.sr));$('#pl').disabled=false;$('#sv').disabled=false;$('#ml').textContent='Послушайте. Если нравится — «Сохранить». Нет — нажмите 🎤 ещё раз.';new Audio(url).play();}
  $('#sv').onclick=async()=>{const sb=$('#sv');sb.disabled=true;sb.textContent='Сохраняю…';
-  try{const r=await fetch(API+'put?id='+id,{method:'POST',headers:{'Content-Type':'audio/wav'},body:blob});const j=await r.json();if(!r.ok)throw new Error(j.error);
+  try{const body=await blob.arrayBuffer();let r,j,err;for(let k=0;k<4;k++){try{r=await fetch(API+'put?id='+id+'&type=audio%2Fwav',{method:'POST',headers:{'Content-Type':'text/plain'},body});j=await r.json();if(r.ok){err=null;break;}err=new Error(j.error||('код '+r.status));if(r.status<500)break;}catch(e){err=e;}sb.textContent='Сохраняю… попытка '+(k+2);await new Promise(z=>setTimeout(z,1500*(k+1)));}if(err)throw err;
    DONE[id]=1;blob=null;let n=cur;for(let k=1;k<=ITEMS.length;k++){const c=(cur+k)%ITEMS.length;if(!DONE[ITEMS[c]]){n=c;break;}}cur=n;render();
    if(Object.keys(DONE).length===ITEMS.length){$('#msg').className='msg ok';$('#msg').textContent='🎉 Всё записано! Напишите мне в чат «записала» — я подключу ваш голос к заданиям.';}}
-  catch(e){sb.disabled=false;sb.textContent='✓ Сохранить и дальше';$('#msg').className='msg no';$('#msg').textContent='Не сохранилось: '+e.message;}};}
+  catch(e){sb.disabled=false;sb.textContent='✓ Сохранить и дальше';$('#msg').className='msg no';$('#msg').textContent='Не сохранилось ('+e.message+'). Запись не потерялась — нажмите «Сохранить» ещё раз. Если повторяется — проверьте интернет или включите/выключите VPN.';}};}
 async function boot(){
  try{const r=await fetch(API+'list');const j=await r.json();(j.items||[]).forEach(x=>DONE[x.id]=1);}catch(e){}
  const f=ITEMS.findIndex(i=>!DONE[i]);cur=f<0?0:f;render();}
