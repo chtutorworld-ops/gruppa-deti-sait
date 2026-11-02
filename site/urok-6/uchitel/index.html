@@ -73,13 +73,13 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
 </div>
 <script>
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-const T=['Пропись','По памяти','Выдох','Мама и папа','Запись','Помнишь?','Смысл/звук','妈 爸','Дракон','Опрос'];
+const T=['Пропись','По памяти','Предыхание','Мама и папа','Запись','Помнишь?','Смысл/звук','妈 爸','Дракон','Опрос'];
 const PLAN=[[0,4,'Подключение','Слайды 1–2 · QR, все открывают страницу заданий'],
- [4,13,'Повторяем иероглифы и выдох','Слайды 3–5 · № 1 пропись 你 我 好 叫 → № 2 по памяти с подсказками → № 3 «Есть выдох или нет?»'],
- [13,19,'小美 и фразы 我妈妈叫… / 我爸爸叫…','Слайды 6–9 · 小美 говорит (кнопка или «вперёд»), что она сказала, хором за мной, по очереди'],
- [19,28,'Имена родителей и запись голоса','Слайды 10–12 · № 4 имена родителей по-китайски, № 5 запись рассказа, опрос класса 你妈妈叫什么名字？'],
- [28,40,'Иероглифы 妈 и 爸','Слайды 13–21 · № 6 «Помнишь ли ты?», 妈 = 女 + 马, 爸 = 父 + 巴, правило «смысл / звучание», семейки, порядок черт, № 7 и № 8'],
- [40,55,'z c s zh ch sh','Слайды 22–35 · инициали, язык, «где выдох?», цепочки и пары, i как «ы», c + i и ch + i, № 9 Дракон'],
+ [4,13,'Повторяем иероглифы и предыхание','Слайды 3–5 · № 1 пропись 你 我 好 叫 → № 2 по памяти с подсказками → № 3 «Предыхательный или нет?»'],
+ [13,19,'小美 и фразы 我妈妈叫… / 我爸爸叫…','Слайды 6–10 · 小美 говорит (клик по слайду — следующая фраза), мама и папа на всех языках, хором, по очереди'],
+ [19,28,'Имена родителей и запись голоса','Слайды 11–13 · № 4 имена родителей, № 5 запись рассказа, опрос 你妈妈叫什么名字？ (клик — карточка следующего ученика)'],
+ [28,40,'Иероглифы 妈 и 爸','Слайды 14–22 · № 6 «Помнишь ли ты?», 妈 = 女 + 马, 爸 = 父 + 巴, правило «значение / чтение», семейки, порядок черт, № 7 и № 8'],
+ [40,55,'z c s zh ch sh','Слайды 23–35 · инициали, язык, какие предыхательные, правило c ch, хором/по очереди, i как «ы», c + i и ch + i, № 9 «Огненный дракон»'],
  [55,60,'Опрос и прощание','Слайды 36–37 · № 10 опрос «Как тебе уроки?», 再见！']];
 let t0=null;try{t0=+localStorage.getItem('u6-t0')||null}catch(e){}
 const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
@@ -97,7 +97,7 @@ function report(s){const P=s.parts||{},p=P.parents,lines=[];const nm=(s.name||''
  lines.push(`Урок 6 «Мама и папа» — ${nm}`);
  if(P.t1)lines.push('✍️ Прописал(а) иероглифы 你 我 好 叫.');
  if(P.t2)lines.push(`🧠 Написал(а) по памяти ${P.t2.score} из 4 иероглифов${P.t2.res&&P.t2.res.some(r=>r.hints)?' (с подсказками)':''}.`);
- if(P.t3)lines.push(`💨 Различает слоги с выдохом и без: ${P.t3.score} из ${P.t3.of}.`);
+ if(P.t3)lines.push(`💨 Различает предыхательные и непредыхательные слоги: ${P.t3.score} из ${P.t3.of}.`);
  if(p&&p.mom)lines.push(`👨‍👩‍👧 Узнал(а), как по-китайски зовут маму (${p.mom.ru} — ${p.mom.hz}) и папу (${p.dad.ru} — ${p.dad.hz}).`);
  if(P.t5&&!P.t5.noMic)lines.push('🎙️ Записал(а) рассказ о себе и родителях по-китайски.');
  if(P.t6)lines.push(`🤔 Тест по иероглифам: ${P.t6.score} из ${P.t6.of}.`);
@@ -122,10 +122,10 @@ async function load(){const st=document.getElementById('st');
    if(p&&p.mom)out.push(`<h4>👨‍👩‍👧 Родители</h4>👩 ${esc(p.mom.ru)} — <span class="zh">${esc(p.mom.hz)}</span> <span class="py">${esc((p.mom.py||[]).join(' '))}</span>${p.mom.dict?'':' <small>(по слогам)</small>'}<br>👨 ${esc(p.dad.ru)} — <span class="zh">${esc(p.dad.hz)}</span> <span class="py">${esc((p.dad.py||[]).join(' '))}</span>${p.dad.dict?'':' <small>(по слогам)</small>'}${p.me?`<br>🙂 сам(а): <span class="zh">${esc(p.me.hz)}</span> <span class="py">${esc((p.me.py||[]).join(' '))}</span>`:''}`);
    out.push(`<h4>🎙️ Рассказ о себе</h4>${A.rec?`<button class="pbtn" data-p="${esc(s.sid)}">▶ Послушать запись</button> <small>${A.rec.ts?new Date(A.rec.ts).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):''}</small><div data-a="${esc(s.sid)}"></div>`:P.t5&&P.t5.noMic?'микрофон не открылся — расскажет на уроке':'ещё не записал(а)'}`);
    if(P.t2&&P.t2.res)out.push(`<h4>🧠 По памяти</h4>${P.t2.res.map(r=>`<span class="zh">${esc(r.c)}</span> ${r.show?'👀 смотрел(а) образец':r.hints?'💡 подсказок: '+r.hints:'✓ сам(а)'}`).join(' · ')}`);
-   if(P.t3)out.push(`<h4>💨 Выдох: ${P.t3.score}/${P.t3.of}</h4>${(P.t3.miss||[]).length?'ошибки: <span class="py">'+P.t3.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
+   if(P.t3)out.push(`<h4>💨 Предыхание: ${P.t3.score}/${P.t3.of}</h4>${(P.t3.miss||[]).length?'ошибки: <span class="py">'+P.t3.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
    if(P.t6)out.push(`<h4>🤔 Помнишь ли ты: ${P.t6.score}/${P.t6.of}</h4>${(P.t6.miss||[]).length?'не вспомнил(а): '+P.t6.miss.map(esc).join('; '):'всё помнит'}`);
    if(P.t7)out.push(`<h4>🔍 Смысл/звучание: ${P.t7.score}/${P.t7.of}</h4>${(P.t7.miss||[]).length?'ошибки в <span class="zh">'+P.t7.miss.map(esc).join(' ')+'</span>':'без ошибок'}`);
-   if(P.t9)out.push(`<h4>🐉 Дракон: ${P.t9.score}/${P.t9.of} · ${P.t9.pts||0} очков</h4>${(P.t9.miss||[]).length?'ошибки: <span class="py">'+P.t9.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
+   if(P.t9)out.push(`<h4>🐉 Огненный дракон: ${P.t9.score}/${P.t9.of} · ${P.t9.pts||0} очков</h4>${(P.t9.miss||[]).length?'ошибки: <span class="py">'+P.t9.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
    out.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
    return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${Object.keys(P).filter(k=>/^t\d+$/.test(k)).length} из 10 · ${A.rec?'🎙️ ':''}${P.survey?'💬':''}</small></button><div class="bd">${out.join('')}</div></div>`;}).join(''):'';
   document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
