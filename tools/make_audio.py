@@ -20,11 +20,11 @@ import numpy as np
 import edge_tts, miniaudio
 
 # Голоса и скорости, из которых выбираем лучший вариант (можно поменять)
-VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-XiaoyiNeural"]   # только женские голоса
-RATES = ["-20%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
+VOICES = ["zh-CN-XiaoxiaoNeural"]   # один женский голос для всех слогов и слов (просьба Дарьи 2026-11-02)
+RATES = ["-20%", "-30%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoxiaoNeural", "-15%"   # слова — взрослый женский голос   # для слов из 2+ слогов
 GIRL_VOICE, GIRL_RATE = "zh-CN-XiaoyiNeural", "-10%"   # девочка 小美 (урок 6)
-VERSION = 11
+VERSION = 12
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
