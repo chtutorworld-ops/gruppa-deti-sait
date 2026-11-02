@@ -1,0 +1,22 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Проверка связи</title>
+<style>body{font:17px/1.45 system-ui,-apple-system,sans-serif;margin:0;padding:18px;background:#EEF1F7;color:#1E2340}h1{font-size:22px;margin:0 0 6px}p{margin:6px 0 14px;color:#4A5070}
+button{font:700 19px system-ui;padding:14px 26px;border:0;border-radius:16px;background:#5B6CFF;color:#fff}button:disabled{opacity:.5}
+.r{background:#fff;border-radius:14px;padding:10px 14px;margin:8px 0;display:flex;justify-content:space-between;gap:10px}.ok{color:#14915A;font-weight:700}.no{color:#D23B3B;font-weight:700}#sum{margin-top:14px;font-weight:700}</style></head><body>
+<h1>Проверка связи с сервером</h1><p>Нажмите кнопку и подождите около минуты. Потом просто напишите в чат «проверила» — результаты я увижу сама.</p>
+<button id="go">▶ Проверить</button><div id="out"></div><div id="sum"></div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/';
+const T=[['Получение (маленькое)','GET',0],['Отправка 300 байт','POST',300],['Отправка 1 КБ','POST',1024],['Отправка 4 КБ','POST',4096],['Отправка 12 КБ','POST',12288],['Отправка 40 КБ (как запись)','POST',40960],['Отправка 40 КБ как звук','WAV',40960]];
+const tag=Math.random().toString(36).slice(2,7);
+async function one([name,m,n],i){const row=document.createElement('div');row.className='r';row.innerHTML=`<span>${name}</span><span>…</span>`;out.appendChild(row);
+ const ac=new AbortController(),to=setTimeout(()=>ac.abort(),20000),t0=Date.now();let res;
+ try{const u=API+'ping?k='+tag+'-'+i+'-'+m+'-'+n;let r;
+  if(m==='GET')r=await fetch(u,{signal:ac.signal});
+  else r=await fetch(u,{method:'POST',signal:ac.signal,headers:{'Content-Type':m==='WAV'?'audio/wav':'text/plain'},body:new Uint8Array(n).fill(65)});
+  const j=await r.json();res=j.ok?['ok','✓ '+((Date.now()-t0)/1000).toFixed(1)+' с']:['no','✗ '+r.status];}
+ catch(e){res=['no','✗ '+(e.name==='AbortError'?'нет ответа 20 с':e.message)];}
+ clearTimeout(to);row.lastChild.className=res[0];row.lastChild.textContent=res[1];return res[0]==='ok';}
+go.onclick=async()=>{go.disabled=true;out.innerHTML='';sum.textContent='';const r=[];for(let i=0;i<T.length;i++)r.push(await one(T[i],i));
+ fetch(API+'ping?k='+tag+'-itog-'+r.map(x=>x?1:0).join('')+'&ua='+encodeURIComponent(navigator.userAgent.slice(0,120))).catch(()=>{});
+ sum.textContent=r.every(Boolean)?'Всё прошло ✓':'Готово. Напишите в чат «проверила».';go.disabled=false;};
+</script></body></html>
