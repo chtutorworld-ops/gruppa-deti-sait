@@ -1,0 +1,80 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Большое повторение Володи · учитель</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Nunito:wght@800;900&display=swap">
+<style>
+:root{--bg:#E9EDF4;--ink:#1E2350;--t:#3D4560;--mu:#7D86A3;--ac:#5B6BD8;--ok:#2DBE8C;--no:#D9366A;--sh1:#C5CBD8;--sh2:#fff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--t);padding:20px 14px 40px}
+.w{max-width:900px;margin:0 auto}.n{background:var(--bg);border-radius:22px;box-shadow:8px 8px 18px var(--sh1),-8px -8px 18px var(--sh2)}
+h1{font-size:24px;font-weight:800;color:var(--ink)}h2{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 10px}
+.top{display:flex;align-items:center;gap:14px;padding:16px 20px;flex-wrap:wrap}.top small{display:block;color:var(--mu);font-weight:600;font-size:13px}
+button{font:inherit;border:0;cursor:pointer;padding:11px 18px;border-radius:16px;font-weight:800;background:var(--ac);color:#fff}
+.top button{margin-left:auto}
+.box{padding:16px 18px;margin-top:14px}.g{color:#14855E}.y{color:#A8740B}.e{color:var(--mu)}.r{color:var(--no)}
+.bar{height:10px;border-radius:6px;background:#D6DBE6;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok))}
+.lv{margin-top:14px;padding:6px 18px 12px}
+.lv h3{font-size:16px;font-weight:800;color:var(--ink);margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+.seal{width:30px;height:30px;border-radius:8px;display:inline-grid;place-items:center;font-family:'LXGW WenKai GB','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-size:19px;color:#B9BFD0;border:2px dashed #C5CBD8}
+.seal.on{color:#fff;background:#D9363E;border:2px solid #A31F27}
+details{border-bottom:1px solid #D6DBE6;padding:9px 0}details:last-child{border-bottom:0}
+summary{display:flex;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;font-size:15px}summary::-webkit-details-marker{display:none}
+summary b{white-space:nowrap}summary span:first-child:before{content:'▸ ';color:var(--mu)}details[open] summary span:first-child:before{content:'▾ '}
+.lg{font-size:14.5px;line-height:1.65;margin:8px 0 4px 16px}.lg div{border-left:3px solid #D6DBE6;padding-left:10px}
+.zh{font-family:'LXGW WenKai GB','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-size:18px}
+.rep{white-space:pre-wrap;font-size:15px;line-height:1.55;background:#fff;border-radius:16px;padding:14px 16px;margin-top:10px}
+audio{width:100%;max-width:360px;margin-top:6px;display:block}
+.aud{display:grid;gap:10px}@media(min-width:700px){.aud{grid-template-columns:1fr 1fr}}
+.aud div{font-weight:700;font-size:14.5px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';const HW='pv-vova';
+const LINK='https://chtutorworld-ops.github.io/gruppa-deti-sait/povtor-vova/';
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'})[c]);
+const LV=[['声','Тоны',[['tone1','Какой тон? (12 слогов на слух)'],['drg-tone','🐉 Игра «Дракон тонов»']]],
+ ['音','Звуки и предыхание',[['ini','Какой первый звук?'],['asp','Предыхательный или нет?'],['drg-asp','🐉 Игра «Дракон: b p d t g k»'],['dict','Диктант на слух']]],
+ ['好','3 + 3, 3 + 4, 你好 и 我叫',[['mix','3 + 3 или 3 + 4'],['rec','Запись голоса: 你好 и 我叫']]],
+ ['拼','Пиньинь с тонами',[['mean','好 или 叫?'],['py','Напиши пиньинем с тонами']]],
+ ['部','Ключи: смысл и звук',[['box','Разложи по ключам'],['alch','Где смысл, а где звук']]],
+ ['写','Пишем 你 我 好 叫',[['w-ni','Пропись 你 (контур + 2 по памяти)'],['w-wo','Пропись 我'],['w-hao','Пропись 好'],['w-jiao','Пропись 叫'],['memo','По памяти вперемешку']]],
+ ['话','Разговор с 小明',[['xm','Разговор с 小明 (микрофон)']]]];
+const ALL=LV.flatMap(l=>l[2]);
+const when=t=>t?new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
+const mk=ok=>ok?'<span class="g">✓</span>':'<span class="r">✗</span>';
+function detail(k,v){
+ if(v.log&&k==='py')return v.log.map(l=>`<div><span class="zh">${esc(l.line)}</span> → <b>${esc(l.text)}</b> ${mk(l.ok)}</div>`).join('');
+ if(v.log&&k==='xm')return v.log.map(l=>`<div>${l.who==='xm'?'小明':'Володя'}: <span class="zh">${esc(l.text)}</span>${l.who==='me'?' '+mk(l.ok):''}</div>`).join('')+(v.notes&&v.notes.length?`<div class="e">Заметки: ${v.notes.map(esc).join('; ')}</div>`:'');
+ if(v.log)return v.log.map(l=>`<div>${l.again?'🔁 ':''}${esc(l.q)} → ответ: <b>${esc(l.a)}</b> ${mk(l.ok)}</div>`).join('');
+ if(v.res)return v.res.map(r=>`<div><span class="zh">${esc(r.c)}</span>: ошибок в чертах ${r.mist}, подсказок ${r.hints}${r.show?', смотрел образец '+r.show:''} ${mk(!r.hints&&!r.show)}</div>`).join('');
+ if(v.mist!=null)return `<div>Ошибок в чертах за 3 раза: ${v.mist}</div>`;
+ if(v.nomic)return '<div>Нажал «Микрофон не работает» — записей нет</div>';
+ return '';}
+async function load(){$('#app').innerHTML=`<div class="top n"><div><h1>Большое повторение · Володя</h1><small>уроки 1–5 · 7 уровней · кабинет учителя</small></div><button id="rf">↻ Обновить</button></div><div id="out" class="box n">Загружаю…</div>`;
+ $('#rf').onclick=load;
+ let j;try{const r=await fetch(API+'list?hw='+HW);j=await r.json();}catch(e){$('#out').textContent='Сервер не ответил. Нажмите «↻ Обновить» чуть позже.';return;}
+ const subs=(j.subs||[]).sort((a,b)=>(b.updated||0)-(a.updated||0));
+ if(!subs.length){$('#out').innerHTML=`Володя ещё не начинал. Ссылка для него: <b>${LINK}</b> <button id="cl" style="margin-top:10px;display:block">Скопировать ссылку</button>`;$('#cl').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(LINK);$('#cl').textContent='✓ Скопировано';};return;}
+ const P={},SID={};subs.slice().reverse().forEach(s=>Object.entries(s.parts||{}).forEach(([k,v])=>{if(!P[k]||(v.ts||0)>=(P[k].ts||0)){P[k]=v;SID[k]=s.sid;}}));
+ const st=P.step||{},max=st.max||0,of=st.of||25;
+ const good=v=>v&&!v.nomic&&v.score>=v.of-1;
+ const lvHtml=LV.map(([s,t,parts])=>{const done=parts.every(([k])=>P[k]);
+  return `<div class="lv n"><h3><span class="seal${done?' on':''}">${s}</span>${t}</h3>${parts.map(([k,name])=>{const v=P[k];
+   if(!v)return `<details><summary><span>${name}</span><b class="e">не делал</b></summary></details>`;
+   const d=detail(k,v);return `<details><summary><span>${name}${v.miss&&v.miss.length?` <small class="e">· трудно: ${v.miss.map(esc).join(', ')}</small>`:''}</span><b class="${good(v)?'g':'y'}">${v.nomic?'без микрофона':v.score+' / '+v.of}${v.pts!=null?' · ⭐'+v.pts:''}</b></summary>${d?`<div class="lg">${d}</div>`:''}<div class="e" style="font-size:12.5px">${when(v.ts)}</div></details>`;}).join('')}</div>`;}).join('');
+ // recordings
+ const auds=[];Object.entries(j.aud||{}).forEach(([sid,items])=>Object.entries(items).forEach(([it,m])=>auds.push({sid,it,ts:m.ts})));
+ const AN={'rw-0':'你好','rw-1':'我叫','xm1':'小明: приветствие','xm2':'小明: «我叫…»'};
+ const audHtml=auds.sort((a,b)=>b.ts-a.ts).map(a=>`<div>${AN[a.it]||a.it} <small class="e">${when(a.ts)}</small><audio controls preload="none" src="${API}play?hw=${HW}&sid=${a.sid}&item=${a.it}"></audio></div>`).join('');
+ const chk=P.chk&&P.chk.items?Object.entries(P.chk.items).map(([q,r])=>`<div><small class="e">${esc(r.step)}:</small> ${esc(q)} → ${r.a.map(x=>`<b>${esc(x.a)}</b> ${mk(x.ok)}`).join(', ')}</div>`).join(''):'';
+ const doneN=ALL.filter(([k])=>P[k]).length;const goodL=ALL.filter(([k])=>good(P[k])).map(x=>x[1]);const weakL=ALL.filter(([k])=>P[k]&&!good(P[k])&&!P[k].nomic).map(x=>x[1]);
+ const lvN=LV.filter(l=>l[2].every(([k])=>P[k])).length;
+ const rep=`Володя проходит большое повторение уроков 1–5 (тоны, звуки и предыхательные согласные, сочетания тонов 3 + 3 и 3 + 4, 你好 и 我叫, пиньинь с тонами, ключи иероглифов, пропись 你 我 好 叫, разговор по-китайски). Пройдено уровней: ${lvN} из 7, выполнено заданий: ${doneN} из ${ALL.length}.`+
+  (goodL.length?` Хорошо получилось: ${goodL.map(x=>x.replace(/^🐉 /,'').toLowerCase()).join('; ')}.`:'')+(weakL.length?` Можно повторить для закрепления: ${weakL.map(x=>x.replace(/^🐉 /,'').toLowerCase()).join('; ')}.`:'')+
+  (P.xm?' С собеседником 小明 поздоровался и представился по-китайски.':'');
+ $('#out').outerHTML=`<div class="box n"><b>Прогресс:</b> шаг ${max} из ${of}${st.title?' · последний открытый: «'+esc(st.title)+'»':''} · ${when(subs[0].updated)}${P.done?' · <b class="g">дошёл до финиша</b>':''}<div class="bar"><i style="width:${Math.min(100,max/of*100)}%"></i></div>
+  <div class="e" style="margin-top:8px;font-size:13.5px">Нажмите на строку задания — откроются все ответы по порядку (🔁 — вопрос, который вернулся после ошибки).</div></div>
+  <h2>Уровни и ответы</h2>${lvHtml}
+  ${audHtml?`<h2>Записи голоса</h2><div class="box n aud">${audHtml}</div>`:''}
+  ${chk?`<h2>Вопросы на шагах с правилами</h2><div class="box n lg" style="margin-left:0">${chk}</div>`:''}
+  <h2>Отчёт для родителей</h2><div class="box n"><div class="rep" id="rep">${esc(rep)}</div><button id="cp" style="margin-top:10px">Скопировать</button></div>`;
+ $('#cp').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(rep);$('#cp').textContent='✓ Скопировано';};}
+load();
+</script></body></html>
