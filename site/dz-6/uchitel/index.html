@@ -70,7 +70,7 @@ const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-det
 const HW='dz6';
 const ST=[['Звуки',[['krot','Крот'],['para','Пары'],['row','Строчка 🎙️']]],['Семья 小美',[['light','Лёгкий слог'],['xmt','Древо 小美'],['tree','Моё древо 🎙️']]],
  ['妈 и 爸',[['facts','Факты'],['sost','Состав'],['alch','Алхимия'],['fam','Семейки'],['prop','Пропись']]],['Слова',[['perev','Перевод'],['troi','Тройки']]],['Узнай',[['lamp','Фонарики']]],
- ['WeChat',[['wxi','Справка'],['chat','Чат']]],['По памяти',[['cells','Рассказ']]],['z c s zh ch sh',[['zt','Правила'],['ztip','Кончик/загнут'],['zair','Предыхание'],['zi','zi…shi']]],
+ ['WeChat',[['wxi','Справка'],['chat','Чат']]],['По памяти',[['cells','Рассказ']]],['z c s zh ch sh',[['zt','Правила'],['yi','И или Ы'],['ztip','Кончик/загнут'],['zair','Предыхание'],['zi','zi…shi']]],
  ['Тоны',[['tt','Теория'],['trec','Записи 🎙️']]],['Финал',[['drag','Дракон'],['ninja','Ниндзя']]]];
 const ALL=ST.flatMap(s=>s[1]);const REC=[['row','Строчка b … h'],['tree','Рассказ о себе и семье'],['t33','Тоны 3 + 3'],['t34','Тоны 3 + 4'],['t10','Тоны 1 + лёгкий'],['t40','Тоны 4 + лёгкий']];
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
@@ -87,7 +87,7 @@ function report(s){const P=s.parts||{},L=[];const nm=(s.name||'').split(/\s+/)[0
  if(P.cells)L.push(`✍️ Написал(а) по памяти рассказ о себе иероглифами: ${sc('cells')} иероглифов без образца.`);
  if(P.zi||P.ztip)L.push('👂 Тренировал(а) новые звуки z c s zh ch sh на слух.');
  if(P.trec)L.push(`🎵 Записал(а) голосом слова на сочетания тонов: ${P.trec.best} из 4.`);
- const rep=[...new Set(['krot','zair','ztip','zi','drag'].flatMap(k=>(P[k]&&P[k].miss)||[]))];
+ const rep=[...new Set(['krot','zair','ztip','zi','yi','drag'].flatMap(k=>(P[k]&&P[k].miss)||[]))];
  L.push(rep.length?`Можно повторить для закрепления: ${rep.slice(0,10).join(', ')}.`:'Отличная работа!');return L.join('\n');}
 async function load(){const st=document.getElementById('st');
  try{const r=await fetch(API+'list?hw='+HW+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
@@ -98,7 +98,7 @@ async function load(){const st=document.getElementById('st');
    (subs.length?subs.map(s=>`<tr><td class="nm">${esc(s.name)}<small style="font-weight:600">${dt(s.updated)}</small></td>${ALL.map(([k])=>cell((s.parts||{})[k],k)).join('')}</tr>`).join(''):`<tr><td colspan="${ALL.length+1}" style="font-family:Manrope;color:var(--mu)">Пока никто не начал ДЗ 6</td></tr>`);
   const allDone=subs.filter(s=>ALL.every(([k])=>(s.parts||{})[k])).length;
   document.getElementById('kpi').innerHTML=`<div><b>${subs.length}</b>начали</div><div><b>${allDone}</b>сделали всё</div><div><b>${subs.filter(s=>Object.keys(aud[s.sid]||{}).length).length}</b>прислали голос</div>`;
-  const miss={};subs.forEach(s=>['krot','para','light','zair','ztip','zi','drag','lamp','ninja','perev','alch'].forEach(k=>(((s.parts||{})[k]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
+  const miss={};subs.forEach(s=>['krot','para','light','zair','ztip','zi','yi','drag','lamp','ninja','perev','alch'].forEach(k=>(((s.parts||{})[k]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,16);
   document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего ошибались:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
   document.getElementById('dos').innerHTML=subs.length?subs.map(s=>{const P=s.parts||{},A=aud[s.sid]||{},o=[];
@@ -106,12 +106,12 @@ async function load(){const st=document.getElementById('st');
    if(P.names)o.push(`<h4>👨‍👩‍👧 Семья</h4>🙂 ${esc(P.names.me&&P.names.me.ru)} <span class="zh">${esc(P.names.me&&P.names.me.hz)}</span> · 👩 ${esc(P.names.mom.ru)} <span class="zh">${esc(P.names.mom.hz)}</span> <span class="py">${esc((P.names.mom.py||[]).join(''))}</span> · 👨 ${esc(P.names.dad.ru)} <span class="zh">${esc(P.names.dad.hz)}</span> <span class="py">${esc((P.names.dad.py||[]).join(''))}</span>`);
    o.push(`<h4>🎙️ Записи голоса</h4>${REC.map(([k,t])=>A[k]?`<div style="margin:4px 0"><button class="pbtn" data-p="${esc(s.sid)}" data-i="${k}">▶ ${t}</button> <small>${dt(A[k].ts)}</small><div data-a="${esc(s.sid)}-${k}"></div></div>`:`<div style="margin:4px 0;color:var(--mu)">— ${t}: ${(k==='row'&&P.row&&P.row.noMic)||(k==='tree'&&P.tree&&P.tree.noMic)||(P.trec&&P.trec.items&&P.trec.items[k]&&P.trec.items[k].noMic)?'нет микрофона, скажет на уроке':'нет записи'}</div>`).join('')}`);
    const step=(k,t,extra)=>{const p=P[k];if(!p)return;o.push(`<h4>${t}: ${p.of===1?'✓':(p.best!=null?p.best:p.score)+'/'+p.of}${p.tries>1?` · попыток ${p.tries} (последняя ${p.score}/${p.of})`:''}</h4>${(p.miss||[]).length?'ошибки: <span class="py">'+p.miss.map(esc).join(', ')+'</span>':''}${extra?extra(p):''}`);};
-   step('krot','🔨 Крот (предыхание)');step('para','🔤 Пары b–p d–t g–k');step('light','🪶 Лёгкий слог');step('xmt','🌳 Древо 小美');step('sost','🔍 Состав 妈 爸');step('alch','⚗️ Алхимия');step('fam','👪 Семейки');
+   step('krot','🔨 Крот (b–p, d–t, g–k)');step('para','🔤 Пары b–p d–t g–k');step('light','🪶 Лёгкий слог');step('xmt','🌳 Древо 小美');step('sost','🔍 Состав 妈 爸');step('alch','⚗️ Алхимия',p=>` · сварено ${(p.found||[]).join(' ')||'—'}, неверных бросков: ${p.misses||0}`);step('fam','👪 Семейки');
    step('prop','✍️ Пропись 妈 爸',p=>`<br>обводка: ошибок в чертах ${p.trace||0}; по памяти: ${(p.res||[]).map(r=>`<span class="wc ${r.show?'no':'ok'}"><span class="zh">${esc(r.c)}</span><small>💡${r.hints} 👀${r.show} ✗${r.mist}</small></span>`).join('')}`);
    step('perev','⌨️ Перевод с клавиатуры');step('troi','🔗 Тройки',p=>p.err?` ошибок: ${p.err}`:'');step('lamp','🏮 Фонарики',p=>` · ${p.pts} очков`);
    step('chat','💬 Чат с 小美',p=>`<div class="chatl">${(p.log||[]).map(l=>`<div class="${l.bad?'bad':''}">${l.bad?'✗':'✓'} на «<span class="zh">${esc(l.q)}</span>» ответил(а): <span class="zh">${esc(l.a)}</span></div>`).join('')}</div>`);
    step('cells','✍️ Рассказ по памяти в клетках',p=>`<br>${(p.res||[]).map(([c,h,sh,m])=>`<span class="wc ${sh?'no':h?'':'ok'}"><span class="zh">${esc(c)}</span><small>💡${h} 👀${sh} ✗${m}</small></span>`).join('')}<br><small>💡 подсказки (черта/контур) · 👀 смотрел(а) весь иероглиф · ✗ ошибки в чертах</small>`);
-   step('ztip','👅 Кончик/загнут');step('zair','💨 c ch: предыхание');step('zi','🔤 zi ci si zhi chi shi');step('drag','🐉 Дракон',p=>` · ${p.pts} очков`);step('ninja','🥷 Ниндзя',p=>` · ${p.pts} очков, по чужим иероглифам: ${p.bad||0}`);
+   step('yi','🔤 И или Ы?');step('ztip','👅 Кончик/загнут');step('zair','💨 c ch: предыхание');step('zi','🔤 zi ci si zhi chi shi');step('drag','🐉 Дракон',p=>` · ${p.pts} очков`);step('ninja','🥷 Ниндзя',p=>` · ${p.pts} очков, по чужим иероглифам: ${p.bad||0}`);
    o.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
    return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${ALL.filter(([k])=>P[k]).length} из ${ALL.length} · 🎙️ ${Object.keys(A).length}</small></button><div class="bd">${o.join('')}</div></div>`;}).join(''):'<p class="st">Досье появятся, когда ребята начнут ДЗ.</p>';
   document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
