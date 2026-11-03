@@ -24,7 +24,8 @@ VOICES = ["zh-CN-XiaoxiaoNeural"]   # один женский голос для 
 RATES = ["-20%", "-30%", "-40%", "-55%"]   # третий тон берём самый медленный из удачных
 WORD_VOICE, WORD_RATE = "zh-CN-XiaoxiaoNeural", "-15%"   # слова — взрослый женский голос   # для слов из 2+ слогов
 GIRL_VOICE, GIRL_RATE = "zh-CN-XiaoyiNeural", "-10%"   # девочка 小美 (урок 6)
-VERSION = 12
+RU_VOICE, RU_RATE = "ru-RU-SvetlanaNeural", "-12%"   # спокойный русский голос: задания в играх
+VERSION = 13
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "site", "audio")
@@ -173,6 +174,17 @@ async def main():
             k = fname("".join(c for c in t if "\u3400" <= c <= "\u9fff"))
             words.append((os.path.join(gd, k + ".mp3"), os.path.join(girl_out, k + ".mp3")))
             jobs.append(tts(t, GIRL_VOICE, GIRL_RATE, words[-1][0], sem))
+    # русский голос: строки «имя|текст» → site/audio/ru/<имя>.mp3
+    ru_out = os.path.join(OUT, "ru"); os.makedirs(ru_out, exist_ok=True)
+    rp = os.path.join(HERE, "audio-ru.txt")
+    if os.path.exists(rp):
+        rd = os.path.join(CAND, f"{RU_VOICE}{RU_RATE}"); os.makedirs(rd, exist_ok=True)
+        for l in open(rp, encoding="utf-8"):
+            l = l.strip()
+            if not l or l.startswith("#") or "|" not in l: continue
+            k, t = (x.strip() for x in l.split("|", 1))
+            words.append((os.path.join(rd, k + ".mp3"), os.path.join(ru_out, k + ".mp3")))
+            jobs.append(tts(t, RU_VOICE, RU_RATE, words[-1][0], sem))
     await asyncio.gather(*jobs)
     for src, dst in words:
         if os.path.exists(src): shutil.copyfile(src, dst)
