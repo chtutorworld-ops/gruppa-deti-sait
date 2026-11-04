@@ -324,6 +324,7 @@ h3{font-size:18px;font-weight:800;color:var(--ink);margin:22px 0 10px}
 /* ninja canvas */
 .nj{position:relative;height:min(64vh,500px);border-radius:24px;overflow:hidden;margin-top:10px;background:radial-gradient(ellipse at 50% 120%,#3B2F7A 0,#1A1050 50%,#0B0726 100%);touch-action:none;user-select:none}
 .nj canvas{position:absolute;inset:0;width:100%;height:100%}
+@media(max-height:520px){.nj{height:calc(100vh - 16px);height:calc(100dvh - 16px);min-height:260px}}
 .nj .hudin{position:absolute;left:12px;right:12px;top:10px;display:flex;justify-content:space-between;align-items:center;color:#fff;font:900 17px Nunito;z-index:3;pointer-events:none;text-shadow:0 2px 4px rgba(0,0,0,.5)}
 .nj .ord{position:absolute;left:50%;top:44px;transform:translateX(-50%);z-index:3;padding:6px 16px;border-radius:14px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);color:#FFE59A;font:900 19px Nunito;white-space:nowrap;pointer-events:none}
 .nj .ord .zh{font-size:26px;color:#fff}
@@ -376,7 +377,8 @@ html.knoscroll,html.knoscroll body{overflow:hidden;overscroll-behavior:none}
 .opts .opt.yi{font:900 44px Nunito}
 @media(max-width:600px){.zr{padding:16px 14px}.zr .zh1{font-size:20px}.zr .zbig{font-size:18px}.ztab b,.zrule b{font-size:24px}.zduo b{font-size:36px}.zduo span{font-size:24px}.zvs{font-size:14px}.zvs b{font-size:18px}}
 .kst .kturn{display:none}
-.kst.kport .kturn{display:flex;position:absolute;inset:0;z-index:60;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(18,14,50,.94);color:#fff;text-align:center;padding:24px}
+.kst.kport .kturn{display:flex;position:absolute;inset:0;z-index:60;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(18,14,50,.9);color:#fff;text-align:center;padding:24px;pointer-events:none;opacity:0;transition:opacity .5s}
+.kst.kport.khint .kturn{opacity:1}
 .kturn b{font:900 26px Nunito,sans-serif}.kturn span{font-size:16px;opacity:.85}
 .kturn .kph{font-size:72px;animation:kturn 1.8s ease-in-out infinite}
 @keyframes kturn{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
@@ -448,6 +450,8 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
   K.register = g => { K.GAMES.push(g); };
   // координаты указателя на сцене 1280×720 (сцена может быть повёрнута на телефоне)
   K.toXY = (stage, e) => { const q = stage._rot; if (q) return [(e.clientY - q.ty) / q.k, (q.tx - e.clientX) / q.k]; const r = stage.getBoundingClientRect(); return [(e.clientX - r.left) * 1280 / r.width, (e.clientY - r.top) * 720 / r.height]; };
+  // прямоугольник элемента в координатах сцены 1280×720 (и когда сцена повёрнута)
+  K.rectIn = (stage, el) => { const r = el.getBoundingClientRect(), [x1, y1] = K.toXY(stage, {clientX: r.left, clientY: r.top}), [x2, y2] = K.toXY(stage, {clientX: r.right, clientY: r.bottom}); return {x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1), h: Math.abs(y2 - y1)}; };
   K.game = id => K.GAMES.find(g => g.id === id);
   // черты иероглифов: из данных Hanzi Writer, которые вшиты в страницу
   K.HZ = K.HZ || {};
@@ -1250,8 +1254,8 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
         const s = SETS[si], kc = KEYS[k].c;
         res.classList.remove('show'); res.innerHTML = '';
         const o = orbEl || orb(k, kc, sx, sy);
-        const mr = med.getBoundingClientRect(), sr = stage.getBoundingClientRect(), sc = 1280 / sr.width;
-        const px = (mr.left - sr.left + mr.width / 2) * sc, py = (mr.top - sr.top + mr.height / 2) * sc;
+        const mr = K.rectIn(stage, med);
+        const px = mr.x + mr.w / 2, py = mr.y + mr.h / 2;
         const po = orb(s.part, '', px, py, 'part');
         K.sfx('whoosh');
         await Promise.all([fly(o, sx, sy, CX - 24, CY - 8, 620), fly(po, px, py, CX + 24, CY - 8, 680)]);
@@ -1295,11 +1299,11 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
         renderSlots();
         const slot = slots.children[idx];
         if (card && slot && !R && card.animate) {
-          const a = card.getBoundingClientRect(), b = slot.getBoundingClientRect(), sr = stage.getBoundingClientRect(), sc = 1280 / sr.width;
-          const ghost = card.cloneNode(true); ghost.style.cssText = `position:absolute;left:${(a.left - sr.left) * sc}px;top:${(a.top - sr.top) * sc}px;width:${a.width * sc}px;height:${a.height * sc}px;z-index:25;pointer-events:none`;
+          const a = K.rectIn(stage, card), b = K.rectIn(stage, slot);
+          const ghost = card.cloneNode(true); ghost.style.cssText = `position:absolute;left:${a.x}px;top:${a.y}px;width:${a.w}px;height:${a.h}px;z-index:25;pointer-events:none`;
           stage.appendChild(ghost); res.classList.remove('show'); slot.style.opacity = '0';
-          const dx = (b.left - a.left) * sc + (b.width * sc - a.width * sc) / 2, dy = (b.top - a.top) * sc - 20;
-          const an = ghost.animate([{transform: 'none', opacity: 1}, {transform: `translate(${dx}px,${dy}px) scale(${52 / (a.width * sc)})`, opacity: .9}], {duration: 650, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards'});
+          const dx = (b.x - a.x) + (b.w - a.w) / 2, dy = (b.y - a.y) - 20;
+          const an = ghost.animate([{transform: 'none', opacity: 1}, {transform: `translate(${dx}px,${dy}px) scale(${52 / a.w})`, opacity: .9}], {duration: 650, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards'});
           await new Promise(r => { an.onfinish = r; later(r, 750); });
           ghost.remove(); slot.style.opacity = ''; slot.style.animation = '';
         } else res.classList.remove('show');
@@ -1417,7 +1421,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 
       goSet(0); intro();
       // для тестов
-      stage._dbg = {brew: k => { const f = grid.querySelector(`[data-k="${k}"]`); const r = f.getBoundingClientRect(), sr = stage.getBoundingClientRect(), sc = 1280 / sr.width; return brew(k, (r.left - sr.left + r.width / 2) * sc, (r.top - sr.top) * sc + 62); }, state: () => ({si, found: [...found], busy, misses}), burst: c => burst(c || '#E4608C'), goSet, finale, collect: () => { const b = res.querySelector('.al-go'); if (b) b.click(); }};
+      stage._dbg = {brew: k => { const f = grid.querySelector(`[data-k="${k}"]`); const r = K.rectIn(stage, f); return brew(k, r.x + r.w / 2, r.y + 62); }, state: () => ({si, found: [...found], busy, misses}), burst: c => burst(c || '#E4608C'), goSet, finale, collect: () => { const b = res.querySelector('.al-go'); if (b) b.click(); }};
       return { destroy(){ alive = false; cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers.clear(); window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); K.stopVoice(); } };
     }
   });
@@ -1597,12 +1601,15 @@ const KCSS={};
 // игра на сцене 1280×720, сцена сама подгоняется под размер; «на весь экран» — окно целиком, на телефоне просим повернуть боком
 function katMount(id,box,onRes){const g=KAT.game(id);if(!g){box.innerHTML='<p class="lead">Игра не загрузилась, обнови страницу.</p>';return;}
  if(!KCSS[id]){KCSS[id]=1;const st=document.createElement('style');st.textContent=g.css||'';document.head.appendChild(st);}
- box.innerHTML=`<div class="kst"><div class="kstage g-${id}"></div><button class="kfs" title="Во весь экран">⛶</button><button class="kx" title="Выйти">✕</button><div class="kturn"><div class="kph">📱</div><b>Поверни телефон боком</b><span>так игра станет большой</span></div></div><button class="btn kbig">⛶ Играть на весь экран</button>`;
+ box.innerHTML=`<div class="kst"><div class="kstage g-${id}"></div><button class="kfs" title="Во весь экран">⛶</button><button class="kx" title="Выйти">✕</button><div class="kturn"><div class="kph">📱</div><b>Поверни телефон боком</b><span>игра уже лежит на весь экран</span></div></div><button class="btn kbig">⛶ Играть на весь экран</button>`;
  const wrap=box.querySelector('.kst'),stage=box.querySelector('.kstage'),home=box;
- const fit=()=>{const w=wrap.clientWidth,h=wrap.clientHeight;if(!w||!h)return;const k=Math.min(w/1280,h/720);stage.style.transform=`translate(${(w-1280*k)/2}px,${(h-720*k)/2}px) scale(${k})`;
-  wrap.classList.toggle('kport',wrap.classList.contains('kfull')&&h>w);};
- const ro=new ResizeObserver(fit);ro.observe(wrap);fit();
+ // на весь экран, а телефон стоит вертикально (автоповорот выключен или браузер не поворачивает) — сами кладём игру боком на весь экран
+ let kpt=0;const fit=()=>{const w=wrap.clientWidth,h=wrap.clientHeight;if(!w||!h)return;const rot=isFull()&&h>w;
+  if(rot){const k=Math.min(h/1280,w/720),tx=(w+720*k)/2,ty=(h-1280*k)/2,r=wrap.getBoundingClientRect();stage.style.transform=`translate(${tx}px,${ty}px) rotate(90deg) scale(${k})`;stage._rot={tx:r.left+tx,ty:r.top+ty,k};}
+  else{const k=Math.min(w/1280,h/720);stage.style.transform=`translate(${(w-1280*k)/2}px,${(h-720*k)/2}px) scale(${k})`;stage._rot=null;}
+  if(rot!==wrap.classList.contains('kport')){wrap.classList.toggle('kport',rot);clearTimeout(kpt);if(rot){wrap.classList.add('khint');kpt=setTimeout(()=>wrap.classList.remove('khint'),2600);}else wrap.classList.remove('khint');}};
  const isFull=()=>wrap.classList.contains('kfull');
+ const ro=new ResizeObserver(fit);ro.observe(wrap);fit();
  const full=on=>{if(on===isFull())return;
   if(on){document.body.appendChild(wrap);wrap.classList.add('kfull');document.documentElement.classList.add('knoscroll');
    const rq=wrap.requestFullscreen||wrap.webkitRequestFullscreen;if(rq)try{const pr=rq.call(wrap);if(pr&&pr.then)pr.then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{});}catch(e){}}
@@ -1613,7 +1620,8 @@ function katMount(id,box,onRes){const g=KAT.game(id);if(!g){box.innerHTML='<p cl
  document.addEventListener('fullscreenchange',onFs);document.addEventListener('webkitfullscreenchange',onFs);
  wrap.querySelector('.kfs').onclick=()=>full(!isFull());box.querySelector('.kbig').onclick=()=>full(true);wrap.querySelector('.kx').onclick=()=>full(false);
  addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,250));
- wrap.addEventListener('pointerdown',()=>{if(isFull())return;const r=wrap.getBoundingClientRect();if(r.bottom>innerHeight+2||r.top<0)wrap.scrollIntoView({block:'center',behavior:'smooth'});},true);
+ // на телефоне игра всегда открывается на весь экран: первое касание маленькой игры разворачивает её
+ wrap.addEventListener('pointerdown',e=>{if(isFull())return;if(matchMedia('(max-width:899px),(max-height:520px)').matches){e.preventDefault();e.stopPropagation();const bt=e.target.closest&&e.target.closest('button');full(true);if(bt)setTimeout(()=>bt.click(),80);return;}const r=wrap.getBoundingClientRect();if(r.bottom>innerHeight+2||r.top<0)wrap.scrollIntoView({block:'center',behavior:'smooth'});},true);
  KAT.onResult=(gid,r)=>{if(onRes)onRes(r);};
  const inst=g.mount(stage,KAT)||{};stage._inst=inst;
  KCUR={destroy(){ro.disconnect();removeEventListener('resize',fit);document.removeEventListener('fullscreenchange',onFs);document.removeEventListener('webkitfullscreenchange',onFs);
@@ -2187,7 +2195,7 @@ KAT.register({id:'dragon',css:DCSS,mount(stage,K){
  stage._dbg={cur:()=>cur&&!cur.done?cur.ini:null};
  return {destroy(){alive=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout);}};}});
 function dragon(){
- sshell(`<p class="lead">Защити крепость! Слушай слог и жми его инициаль. На телефоне открой игру на весь экран и поверни телефон боком.</p><div id="kg"></div>`);
+ sshell(`<p class="lead">Защити крепость! Слушай слог и жми его инициаль. На телефоне игра сама откроется на весь экран — поверни телефон боком.</p><div id="kg"></div>`);
  katMount('dragon',$('#kg'),r=>{fin('drag',r.hits,r.of,{pts:r.pts,miss:r.miss});const nx=$('#nx');if(nx)nx.classList.remove('g');});}
 
 /* ===================== Final 2: the character ninja (canvas) ===================== */
@@ -2201,7 +2209,7 @@ function ninja(){const best=+(localStorage.getItem('zh-dz6-nj')||0);
  $('#st').onclick=play;
  function play(){sshell(`<div class="nj" id="nj"><canvas id="cv"></canvas><div class="hudin"><span id="np">⭐ 0</span><span id="nc"></span><span id="nl">❤️❤️❤️❤️❤️</span></div><div class="ord" id="no"></div><div class="cover" id="cov"><h3>3</h3></div></div><div class="fb" id="fb"></div>`);
   const box=$('#nj'),cv=$('#cv'),cx=cv.getContext('2d');let W=0,H=0,dpr=Math.min(2,window.devicePixelRatio||1);
-  const fit=()=>{const r=box.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);};fit();
+  const fit=()=>{const r=box.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);};fit();if(innerHeight<=520)box.scrollIntoView({block:'center'});
   const items=[],halves=[],parts=[],trail=[];box._it=items;let pts=0,cmb=0,lives=5,cuts=0,good=0,bad=0,ordI=0,ordCut=0,t0=0,last=0,spawnT=0,slashT=0,slashX=0,slashY=0,over=false,miss=[];
   const orders=shuffle(NORD);let ord=orders[0];const sayOrd=()=>tryURL(AUDIO+'ru/nj'+NORD.indexOf(ord)+'.mp3');
   const setOrd=()=>{ord=orders[ordI%orders.length];$('#no').innerHTML=`${ord.t} <button class="nsay" title="Послушать">🔊</button>`;$('#no .nsay').onclick=sayOrd;sayOrd();};
