@@ -140,4 +140,4 @@ async function load(){const st=document.getElementById('st');
 const refBtn=document.getElementById('ref');
 refBtn.onclick=async()=>{refBtn.disabled=true;refBtn.textContent='↻ Обновляю…';await load();refBtn.disabled=false;refBtn.textContent='↻ Обновить';};
 load();
-</script></body></html>
+</script><style>td.nm{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}</style><script>document.addEventListener("click",e=>{const t=e.target.closest("td.nm");if(!t)return;const n=t.textContent.trim();const d=[...document.querySelectorAll(".dc")].find(x=>{const b=x.querySelector("button");return b&&b.textContent.trim().startsWith(n)});if(!d)return;if(!d.classList.contains("op"))d.querySelector("button").click();d.scrollIntoView({behavior:"smooth",block:"start"});});</script></body></html>
