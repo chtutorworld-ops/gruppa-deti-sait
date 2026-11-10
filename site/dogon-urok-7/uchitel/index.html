@@ -81,7 +81,7 @@ td.nm small{font-family:Nunito;color:var(--mu)}
   <h2 style="margin-top:20px">📝 Контрольная (№ 7) — что написал</h2>
   <div class="lgd"><span class="ok">сам(а)</span><span class="hn">с подсказкой (только 妈 爸)</span><span class="sk">не вспомнил(а)</span></div>
   <div class="kt" id="kt"></div>
-  <h2 style="margin-top:22px">🗂 Все ответы по каждому заданию: нажмите на имя</h2>
+  <h2 style="margin-top:22px">🗂 Карточка ребёнка: нажмите на имя (и в таблице тоже)</h2>
   <div class="dos" id="dos"></div>
  </div>
 </div>
@@ -123,7 +123,7 @@ async function load(){const st=document.getElementById('st');
    if(i===1||i===2)return `<td class="${p.errs<=4?'g':p.errs<=9?'m':'b'}">✓<small>ходов ${p.moves}</small></td>`;
    const k=p.of?p.score/p.of:0;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}${i===10&&p.pts?`<small>${p.pts} очк.</small>`:''}</td>`;};
   document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th>${T.map((x,i)=>`<th>№ ${i+1}<br>${x}</th>`).join('')}</tr>`+
-   (subs.length?subs.map(s=>{const P=s.parts||{},L=left(P),p=Math.round((10-L.length)*10);return `<tr><td class="nm">${esc(s.name)}<small> · ${p}%</small><div class="pp"><i style="width:${p}%"></i></div><div class="lft${L.length?'':' ok'}">${L.length?'не сделал(а): № '+L.join(', '):'✓ всё сделано'}</div></td>${T.map((_,i)=>cell(P['t'+(i+1)],i+1)).join('')}</tr>`;}).join(''):`<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал. Как только ребёнок закончит задание, он появится здесь.</td></tr>`);
+   (subs.length?subs.map(s=>{const P=s.parts||{},L=left(P),p=Math.round((10-L.length)*10);return `<tr><td class="nm" data-open="${esc(s.sid)}" style="cursor:pointer" title="Открыть карточку">👤 ${esc(s.name)}<small> · ${p}%</small><div class="pp"><i style="width:${p}%"></i></div><div class="lft${L.length?'':' ok'}">${L.length?'не сделал(а): № '+L.join(', '):'✓ всё сделано'}</div></td>${T.map((_,i)=>cell(P['t'+(i+1)],i+1)).join('')}</tr>`;}).join(''):`<tr><td colspan="11" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал. Как только ребёнок закончит задание, он появится здесь.</td></tr>`);
   const miss={};subs.forEach(s=>['t3','t4','t8','t9','t10'].forEach(k=>(((s.parts||{})[k]||{}).miss||[]).forEach(x=>miss[x]=(miss[x]||0)+1)));
   const top=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,14);
   document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Ошибки:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
@@ -146,6 +146,7 @@ async function load(){const st=document.getElementById('st');
    out.push(`</div><h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
    return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${10-L.length} из 10</small></button><div class="bd">${out.join('')}</div></div>`;}).join('');
   document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
+  document.querySelectorAll('[data-open]').forEach(td=>td.onclick=()=>{const d=document.querySelector(`.dc[data-sid="${td.dataset.open}"]`);if(!d)return;d.classList.add('op');OPEN.add(d.dataset.sid);d.scrollIntoView({behavior:'smooth',block:'start'});});
   document.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{const s=subs.find(x=>x.sid===b.dataset.cp);const t=report(s);
    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='✓ Скопировано';}).catch(()=>{b.textContent='выделите текст и скопируйте';});});
  }catch(e){st.textContent='· нет связи с хранилищем, нажмите «Обновить» ещё раз';}}
