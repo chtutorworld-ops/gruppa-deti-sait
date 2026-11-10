@@ -62,6 +62,12 @@ td small{display:block;font-size:11px;font-weight:700;opacity:.8}
 .pp{height:10px;border-radius:6px;background:#DDE2EC;overflow:hidden;margin-top:6px;max-width:260px}.pp i{display:block;height:100%;background:linear-gradient(90deg,#2DBE8C,#5B6BD8)}
 .lft{margin-top:6px;font-size:13.5px;font-weight:700;color:#B0284F}.lft.ok{color:#14855E}
 td.nm small{font-family:Nunito;color:var(--mu)}
+.cp1{margin-top:6px}.cpt{display:flex;justify-content:space-between;align-items:baseline}.cpt b{font-size:18px;color:var(--ink)}.cpt span{font:900 26px Nunito;color:var(--ac2)}
+.cpb{height:16px;border-radius:9px;background:#DDE2EC;overflow:hidden;margin-top:6px}.cpb i{display:block;height:100%;background:linear-gradient(90deg,#2DBE8C,#5B6BD8)}
+.cpl{display:grid;gap:6px;margin-top:12px}.cpl>div{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;font-size:16px}
+.cpl .y{background:#DDF5EC;color:#14674A}.cpl .n{background:#FFE3EB;color:#7A1F3D}.cpl .no{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font:900 16px Nunito;color:#fff;background:#2DBE8C}.cpl .n .no{background:#FF5C8A}
+.cpl .tt{font-weight:700}.cpl b{margin-left:auto;font:900 16px Nunito;white-space:nowrap}
+.cpd{font-size:12.5px;opacity:.92}.cpd .bl div{font-size:12px}
 </style></head><body>
 <div class="app">
  <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Догоняем урок 7</h1><small>Для пропустивших урок 7 (Володя). Номера заданий — те же, что видит ребёнок. Данные — по кнопке «↻ Обновить»</small></div>
@@ -127,7 +133,7 @@ async function load(){const st=document.getElementById('st');
     <div class="kc">${testCells(t)}</div>
     <div class="kn">Имена: я — ${esc(n.me||'')}${N.me?` <span class="zh">${esc(N.me.hz)}</span>`:''} · мама — ${esc(n.mom||'')}${N.mom?` <span class="zh">${esc(N.mom.hz)}</span>`:''} · папа — ${esc(n.dad||'')}${N.dad?` <span class="zh">${esc(N.dad.hz)}</span>`:''}</div></div>`;}).join(''):'<p class="st">Контрольную пока никто не написал.</p>';
   document.getElementById('dos').innerHTML=subs.map(s=>{const P=s.parts||{},out=[];const L=left(P);
-   out.push(`<h4>📈 Сделано ${10-L.length} из 10</h4>${L.length?'<span style="color:#B0284F;font-weight:700">Не сделано: '+L.map(i=>'№ '+i+' '+esc(T[i-1])).join(' · ')+'</span>':'✓ всё сделано'}`);
+   const pc=(10-L.length)*10;out.push(`<div class="cp1"><div class="cpt"><b>Выполнено ${10-L.length} из 10</b><span>${pc}%</span></div><div class="cpb"><i style="width:${pc}%"></i></div></div><div class="cpl">${T.map((x,i)=>{const t=P['t'+(i+1)];return `<div class="${t?'y':'n'}"><span class="no">${i+1}</span><span class="tt">${esc(x)}</span><b>${t?'✓ сделал'+(t.of?' · '+t.score+'/'+t.of:''):'✗ не сделал'}</b></div>`;}).join('')}</div><div class="cpd"><h4 style="margin-top:14px">Подробности: как сделал</h4>`);
    [1,2].forEach(n=>{const t=P['t'+n];if(t)out.push(`<h4>🃏 № ${n} ${n===1?'пиньинь':'иероглиф'} ↔ перевод</h4>ходов ${t.moves}, ошибок ${t.errs}, время ${Math.floor((t.sec||0)/60)}:${String((t.sec||0)%60).padStart(2,'0')}${(t.conf||[]).length?'<br>путал(а): '+t.conf.slice(0,10).map(c=>`<b>${esc(c[0])}</b> ↔ ${esc(c[1])}`).join(' · '):''}`);});
    if(P.t3)out.push(`<h4>📖 № 3 Как устроены иероглифы: проверка ${P.t3.score}/${P.t3.of}</h4>${qlist(P.t3)}`);
    if(P.t4)out.push(`<h4>⚡ № 4 Блиц: ${P.t4.score}/${P.t4.of}</h4>${qlist(P.t4)}`);
@@ -137,7 +143,7 @@ async function load(){const st=document.getElementById('st');
    if(P.t8)out.push(`<h4>🔤 № 8 Инициали b p m f…: ${P.t8.score}/${P.t8.of}</h4>${qlist(P.t8)}`);
    if(P.t9)out.push(`<h4>⚠️ № 9 z c s zh ch sh, ci и chi: ${P.t9.score}/${P.t9.of}</h4>${qlist(P.t9)}`);
    if(P.t10)out.push(`<h4>🔨 № 10 Крот: ${P.t10.score}/${P.t10.of} · ${P.t10.pts||0} очков</h4>${(P.t10.miss||[]).length?'ошибки: <span class="py">'+P.t10.miss.map(esc).join(', ')+'</span>':'без ошибок'}`);
-   out.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
+   out.push(`</div><h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
    return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${10-L.length} из 10</small></button><div class="bd">${out.join('')}</div></div>`;}).join('');
   document.querySelectorAll('.dc>button').forEach(b=>b.onclick=()=>{const d=b.parentElement;d.classList.toggle('op');d.classList.contains('op')?OPEN.add(d.dataset.sid):OPEN.delete(d.dataset.sid);});
   document.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{const s=subs.find(x=>x.sid===b.dataset.cp);const t=report(s);
