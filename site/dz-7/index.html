@@ -626,7 +626,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 <script>
 /* ===================== audio ===================== */
 const AUDIO=(/^https?:$/.test(location.protocol)&&!/claude/i.test(location.hostname))&&!/workers\.dev$/.test(location.hostname)?new URL('../audio/',location.href).href:'https://chtutorworld-ops.github.io/gruppa-deti-sait/audio/';
-const VOICE=AUDIO+'voice/';let VOK=null;const VOKP=fetch(VOICE+'index.json?'+Date.now()).then(r=>r.json()).then(j=>VOK=j).catch(()=>{});
+const VOICE=AUDIO+'voice/';let VOK=null;const VOKP=Promise.resolve();
 const fn=t=>AUDIO+[...t].map(c=>c.codePointAt(0).toString(16)).join('-')+'.mp3';
 const $=s=>document.querySelector(s);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
