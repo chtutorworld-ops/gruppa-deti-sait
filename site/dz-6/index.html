@@ -483,7 +483,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 .g-moles{background:#8FD3A8;user-select:none;-webkit-user-select:none}
 .g-moles .ml-bg{position:absolute;inset:0;width:1280px;height:720px}
 .g-moles .ml-field{position:absolute;inset:0}
-.g-moles .ml-field.play{cursor:none}
+.g-moles .ml-field.mlp{cursor:none}
 .g-moles .ml-hole{position:absolute;width:260px;height:300px;margin:-230px 0 0 -130px;transform-origin:130px 230px;pointer-events:none}
 .g-moles .ml-hole svg{position:absolute;left:0;top:0;width:260px;height:300px;overflow:visible}
 .g-moles .ml-clip{position:absolute;left:0;top:-40px;width:260px;height:296px;overflow:hidden}
@@ -508,7 +508,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 .g-moles .ml-mole.dizzy .ml-dz{display:block}
 @keyframes ml-spin{to{transform:rotate(360deg)}}
 .g-moles .ml-hammer{position:absolute;left:0;top:0;width:140px;height:140px;pointer-events:none;transform-origin:70px 130px;z-index:5;display:none;filter:drop-shadow(0 8px 6px rgba(20,30,40,.3))}
-.g-moles .ml-field.play .ml-hammer.on{display:block}
+.g-moles .ml-field.mlp .ml-hammer.on{display:block}
 .g-moles .ml-fx{position:absolute;left:0;top:0;pointer-events:none;z-index:4}
 .g-moles .ml-float{position:absolute;pointer-events:none;z-index:6;font:800 32px var(--sans);color:var(--vio-2);text-shadow:0 2px 0 #fff,0 0 12px rgba(255,255,255,.9);white-space:nowrap;transform:translate(-50%,-50%)}
 .g-moles .ml-float.sm{font:700 20px var(--sans);color:var(--ink-3)}
@@ -826,13 +826,13 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
         state = 'play'; left = DUR; elapsed = 0; lastSec = 99; score = 0; combo = 0; wave = null; gapT = .7; lastPick = '';
         missed = new Set(); asked = [0, 0, 0, 0]; right = [0, 0, 0, 0]; conf = [0, 1, 2, 3].map(() => [0, 0, 0, 0]); heard = new Set();
         scoreEl.textContent = '0'; timerEl.classList.remove('hot');
-        startScr.classList.add('hide'); endScr.classList.add('hide'); hud.classList.remove('off'); field.classList.add('play');
+        startScr.classList.add('hide'); endScr.classList.add('hide'); hud.classList.remove('off'); field.classList.add('mlp');
         root.focus({preventScroll: true});
       }
       const plural = (n, a, b, c) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : c; };
       const withTone = t => (t === 1 ? 'со ' : 'с ') + (t + 1) + '-м';
       function finish(){
-        state = 'end'; if (wave) endWave(0); field.classList.remove('play'); hud.classList.add('off'); K.sfx('win');
+        state = 'end'; if (wave) endWave(0); field.classList.remove('mlp'); hud.classList.add('off'); K.sfx('win');
         let aA = 0, aR = 0, nA = 0, nR = 0; [0, 1, 2, 3].forEach(t => { if (AIR(t)) { aA += asked[t]; aR += right[t]; } else { nA += asked[t]; nR += right[t]; } });
         const totalA = aA + nA, totalR = aR + nR, acc = totalA ? Math.round(totalR / totalA * 100) : 0;
         const missList = [...missed];

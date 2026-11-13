@@ -553,7 +553,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 .g-moles{background:#8FD3A8;user-select:none;-webkit-user-select:none}
 .g-moles .ml-bg{position:absolute;inset:0;width:1280px;height:720px}
 .g-moles .ml-field{position:absolute;inset:0}
-.g-moles .ml-field.play{cursor:none}
+.g-moles .ml-field.mlp{cursor:none}
 .g-moles .ml-hole{position:absolute;width:260px;height:300px;margin:-230px 0 0 -130px;transform-origin:130px 230px;pointer-events:none}
 .g-moles .ml-hole svg{position:absolute;left:0;top:0;width:260px;height:300px;overflow:visible}
 .g-moles .ml-clip{position:absolute;left:0;top:-40px;width:260px;height:296px;overflow:hidden}
@@ -578,7 +578,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 .g-moles .ml-mole.dizzy .ml-dz{display:block}
 @keyframes ml-spin{to{transform:rotate(360deg)}}
 .g-moles .ml-hammer{position:absolute;left:0;top:0;width:140px;height:140px;pointer-events:none;transform-origin:70px 130px;z-index:5;display:none;filter:drop-shadow(0 8px 6px rgba(20,30,40,.3))}
-.g-moles .ml-field.play .ml-hammer.on{display:block}
+.g-moles .ml-field.mlp .ml-hammer.on{display:block}
 .g-moles .ml-fx{position:absolute;left:0;top:0;pointer-events:none;z-index:4}
 .g-moles .ml-float{position:absolute;pointer-events:none;z-index:6;font:800 32px var(--sans);color:var(--vio-2);text-shadow:0 2px 0 #fff,0 0 12px rgba(255,255,255,.9);white-space:nowrap;transform:translate(-50%,-50%)}
 .g-moles .ml-float.sm{font:700 20px var(--sans);color:var(--ink-3)}
@@ -633,7 +633,7 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
 .g-moles .ml-tc .pc{font:700 40px/1 var(--serif);color:var(--c)}
 .g-moles .ml-tc .bar{height:8px;border-radius:5px;background:#EEEAF4;margin:10px 0 8px;overflow:hidden}
 .g-moles .ml-tc .bar i{display:block;height:100%;border-radius:5px;background:var(--c)}
-.g-moles .ml-tc .n{font:600 14px var(--sans);color:var(--muted)}
+.g-moles .ml-tc .ml-n{font:600 14px var(--sans);color:var(--muted)}
 .g-moles .ml-tc .cf{font:600 14px/1.4 var(--sans);color:var(--rose);margin-top:6px;min-height:20px}
 .g-moles .ml-tc .cf.ok{color:var(--jade)}
 .g-moles .ml-syl{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
@@ -902,27 +902,27 @@ var HanziWriter=function(){"use strict";var t,e,r;const i="undefined"==typeof wi
         state = 'play'; left = DUR; elapsed = 0; lastSec = 99; score = 0; combo = 0; wave = null; gapT = .7; lastT = 0; wrong = 0;
         missed = new Set(); heard = new Set(); asked = [0, 0, 0, 0, 0]; right = [0, 0, 0, 0, 0]; conf = [0, 1, 2, 3, 4].map(() => [0, 0, 0, 0, 0]);
         scoreEl.textContent = '0'; timerEl.classList.remove('hot');
-        startScr.classList.add('hide'); endScr.classList.add('hide'); pauseScr.classList.add('hide'); hud.classList.remove('off'); plate.classList.add('on'); field.classList.add('play');
+        startScr.classList.add('hide'); endScr.classList.add('hide'); pauseScr.classList.add('hide'); hud.classList.remove('off'); plate.classList.add('on'); field.classList.add('mlp');
         root.focus({preventScroll: true});
       }
       function pause(){
         if (state !== 'play') return;
         state = 'pause'; K.sfx('click'); if (wave) endWave(.6);
         occ.forEach((o, i) => { if (o) hideMole(i, true); });
-        field.classList.remove('play'); pauseScr.classList.remove('hide');
+        field.classList.remove('mlp'); pauseScr.classList.remove('hide');
       }
       function resume(){
         if (state !== 'pause') return;
-        state = 'play'; last = 0; gapT = .6; pauseScr.classList.add('hide'); field.classList.add('play'); K.sfx('whoosh');
+        state = 'play'; last = 0; gapT = .6; pauseScr.classList.add('hide'); field.classList.add('mlp'); K.sfx('whoosh');
       }
       function finish(){
-        state = 'end'; if (wave) endWave(0); field.classList.remove('play'); hud.classList.add('off'); plate.classList.remove('on'); K.sfx('win');
+        state = 'end'; if (wave) endWave(0); field.classList.remove('mlp'); hud.classList.add('off'); plate.classList.remove('on'); K.sfx('win');
         const totalA = asked.reduce((a, b) => a + b, 0), totalR = right.reduce((a, b) => a + b, 0), acc = totalA ? Math.round(totalR / totalA * 100) : 0;
         const missList = [...missed].slice(0, 12);
         if (KAT.onResult) KAT.onResult('moles8', {right: totalR, of: totalA, score, wrong, miss: missList, tones: [1, 2, 3, 4].map(t => [right[t], asked[t]])});
         const card = t => { const a = asked[t], r = right[t], pc = a ? Math.round(r / a * 100) : null;
           const cf = [1, 2, 3, 4].filter(x => x !== t && conf[t][x]).sort((x, y) => conf[t][y] - conf[t][x])[0];
-          return `<div class="ml-tc" style="--c:${TCOL8[t]}"><h4>${t}-й тон ${mk(t, TCOL8[t], 26)}</h4><div class="ex">${TN[t]}</div><div class="pc">${pc === null ? '—' : pc + '&nbsp;%'}</div><div class="bar"><i style="width:${pc || 0}%"></i></div><div class="n">${a ? `верно ${r} из ${a}` : 'не было'}</div><div class="cf${cf ? '' : ' ok'}">${a ? (cf ? `путал(а) с ${cf}-м тоном` : 'без путаницы') : ''}</div></div>`; };
+          return `<div class="ml-tc" style="--c:${TCOL8[t]}"><h4>${t}-й тон ${mk(t, TCOL8[t], 26)}</h4><div class="ex">${TN[t]}</div><div class="pc">${pc === null ? '—' : pc + '&nbsp;%'}</div><div class="bar"><i style="width:${pc || 0}%"></i></div><div class="ml-n">${a ? `верно ${r} из ${a}` : 'не было'}</div><div class="cf${cf ? '' : ' ok'}">${a ? (cf ? `путал(а) с ${cf}-м тоном` : 'без путаницы') : ''}</div></div>`; };
         const praise = !totalA ? 'Попробуй ещё раз!' : acc >= 85 ? 'Отлично! Значки тонов ты знаешь уверенно 🏆' : acc >= 60 ? 'Хорошо! Посмотри ещё раз на значки — где ты путал(а).' : 'Это можно повторить для закрепления: 1 — ровно, 2 — вверх, 3 — ямка, 4 — вниз.';
         endScr.innerHTML = `<div class="ml-panel">
           <div class="ml-top"><div><div class="ml-kicker">Раунд окончен</div><div class="ml-big">${score.toLocaleString('ru-RU')}</div></div><p class="ml-praise">${praise}</p></div>
