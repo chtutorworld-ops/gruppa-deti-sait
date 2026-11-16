@@ -432,6 +432,12 @@ document.querySelectorAll('#filters button').forEach(b=>b.addEventListener('clic
   filt=b.dataset.f;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));apply();}));
 
 // ---- текст для Claude ----
+// Разбор поля ссылок: адреса отдельно, обычный текст отдельно (как заметка)
+const URLRE=/^(https?:\/\/|www\.)\S+$|^[a-z0-9.-]+\.[a-z]{2,}\/\S*$/i;
+const splitLinks=t=>{const urls=[],notes=[];
+  (t||'').split(/\n+/).forEach(line=>{const words=line.trim().split(/\s+/).filter(Boolean),rest=[];
+    words.forEach(w=>URLRE.test(w)?urls.push(w):rest.push(w));if(rest.length)notes.push(rest.join(' '));});
+  return {urls,note:notes.join(' / ')};};
 const LBL={like:'нравится',maybe:'под вопросом',no:'не моё'};
 const build=()=>{
   const lines=['Мои заметки по каталогу стилей ('+new Date().toLocaleDateString('ru-RU')+')',''];
@@ -443,15 +449,15 @@ const build=()=>{
     groups[k].forEach(([f,s,r])=>{
       lines.push('• '+s.ru+' ('+s.en+') — семейство «'+f.name+'»'+(r.v?', '+LBL[r.v]:''));
       if(r.c.trim())lines.push('  Комментарий: '+r.c.trim().replace(/\n+/g,' / '));
-      r.l.split(/\s+/).filter(x=>x).forEach(u=>lines.push('  Ссылка: '+u));});
+      const sl=splitLinks(r.l);if(sl.note)lines.push('  Заметка: '+sl.note);sl.urls.forEach(u=>lines.push('  Ссылка: '+u));});
     lines.push('');});
   [['like','МОИ НАХОДКИ: НРАВИТСЯ'],['no','МОИ НАХОДКИ: НЕ НРАВИТСЯ']].forEach(([k,h])=>{
     const xs=(st.finds||[]).filter(x=>x.v===k);if(!xs.length)return;lines.push('== '+h+' ==');
     xs.forEach(x=>{lines.push('• '+x.u);if((x.c||'').trim())lines.push('  Комментарий: '+x.c.trim().replace(/\n+/g,' / '));});
     lines.push('');});
   if(st.gnote.trim()){lines.push('== ОБЩИЙ КОММЕНТАРИЙ ==',st.gnote.trim(),'');}
-  const gls=st.glinks.split(/\s+/).filter(x=>x);
-  if(gls.length){lines.push('== ДРУГИЕ ССЫЛКИ ==',...gls,'');}
+  const gl2=splitLinks(st.glinks);
+  if(gl2.urls.length||gl2.note){lines.push('== ДРУГИЕ ССЫЛКИ ==',...gl2.urls);if(gl2.note)lines.push('Заметка: '+gl2.note);lines.push('');}
   if(lines.length<=2)lines.push('(пока ничего не отмечено)');
   return lines.join('\n').trim();
 };
