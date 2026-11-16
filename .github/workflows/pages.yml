@@ -40,6 +40,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 40
         run: |
+          pip install lameenc
           python tools/make_dict.py
           ls site/audio/dict | wc -l
       - name: Сразу сохранить озвучку (если выкладку прервёт новая — не озвучивать заново)

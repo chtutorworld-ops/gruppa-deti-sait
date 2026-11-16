@@ -135,14 +135,12 @@ def reshape(x, tone, seed=1, fry=None):
 
 
 def save_mp3(y, path):
-    import wave, subprocess, tempfile
-    tmp = tempfile.mktemp(suffix=".wav")
-    with wave.open(tmp, "wb") as w:
-        w.setnchannels(1); w.setsampwidth(2); w.setframerate(RSR)
-        w.writeframes((np.clip(y, -1, 1) * 32767).astype("<i2").tobytes())
-    r = subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", tmp, "-codec:a", "libmp3lame", "-q:a", "3", path])
-    os.remove(tmp)
-    return r.returncode == 0 and os.path.exists(path)
+    """mp3 через lameenc (pip, без ffmpeg — на сервере GitHub ffmpeg нет)."""
+    import lameenc
+    e = lameenc.Encoder(); e.set_bit_rate(96); e.set_in_sample_rate(RSR); e.set_channels(1); e.set_quality(2)
+    data = e.encode((np.clip(y, -1, 1) * 32767).astype("<i2").tobytes()) + e.flush()
+    open(path, "wb").write(data)
+    return os.path.getsize(path) > 500
 
 
 def judge(path, want, base):
