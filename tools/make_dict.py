@@ -76,7 +76,7 @@ SHAPE = {1: [(0, 4.6), (1, 4.6)],
 STRETCH = {1: 1.1, 2: 1.15, 3: 1.55, 4: 1.0}
 STEP = 2.4
 # варианты «кряхтения» (пробуем по очереди, оставляем первый, где программа слышит ямку; иначе — ямка без кряхтения)
-FRYS = [(0.55, 0.68, 0.65, 0.4), (0.56, 0.67, 0.7, 0.3)]
+FRYS = [(0.55, 0.68, 0.65, 0.4), (0.56, 0.67, 0.7, 0.3), (0.57, 0.66, 0.75, 0.25)]
 
 
 def _load(path, sr):
@@ -219,10 +219,13 @@ async def main():
         if want == 3 or not b["ok"]:
             done = False
             try:
-                x = _load(b["p"], RSR)
-                tries = ([(f, sd) for f in FRYS for sd in (1, 2, 3)] if want == 3 else []) + [(None, 1)]
-                for fr, sd in tries:
-                    y = reshape(x, want, sd, fr)
+                # источники: лучший вариант, потом другие скорости того же голоса
+                srcs = [b["p"]] + [p for v, r, p in plan[k] if v == voice and p != b["p"] and os.path.exists(p)]
+                tries = [(sp, f, sd) for sp in srcs for f in ((FRYS if want == 3 else []) + [None]) for sd in ((1, 2, 3) if f else (1,))]
+                xs = {}
+                for sp, fr, sd in tries:
+                    if sp not in xs: xs[sp] = _load(sp, RSR)
+                    y = reshape(xs[sp], want, sd, fr)
                     if y is None or not save_mp3(y, dst): continue
                     j = judge(dst, want, bases.get(voice + b["rate"]))
                     if j and j["ok"]:
