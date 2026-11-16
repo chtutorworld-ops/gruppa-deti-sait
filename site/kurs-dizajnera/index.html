@@ -72,6 +72,12 @@ h3.sub{font-size:24px;margin:44px 0 14px}
 .know{flex:none;font:inherit;font-size:12.5px;border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:999px;padding:3px 10px;cursor:pointer;white-space:nowrap}
 .know:hover{border-color:var(--ok);color:var(--ok)}
 .term.known .know{background:var(--ok);border-color:var(--ok);color:#fff}
+.ex{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.ex span{margin-right:2px}
+.ex a{text-decoration:none;color:var(--accent-ink);border:1px solid #d3d7f2;background:#fafbff;border-radius:7px;padding:3px 9px}
+.ex a::after{content:" ↗";color:var(--muted)}
+.ex a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ex a:hover::after{color:#fff}
 .empty{color:var(--muted);padding:20px 0}
 .hidden{display:none!important}
 
@@ -310,7 +316,7 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
   <h1>Курс молодого веб-дизайнера</h1>
   <p class="lead">Короткий курс для человека, который не собирается работать дизайнером, но хочет понимать, о чём говорят в рилсах и в мастерской, видеть косяки и ставить задачу ИИ точными словами. Термины объяснены через школу и тетрадь, многие можно потрогать прямо здесь: двигай ползунки и нажимай кнопки.</p>
   <div class="toc">
-    <a href="#slovar"><b>1</b><span>Словарь: 134 термина с живыми примерами</span></a>
+    <a href="#slovar"><b>1</b><span>Словарь: 153 термина с живыми примерами</span></a>
     <a href="#etapy"><b>2</b><span>Как делают сайт: от задачи до запуска</span></a>
     <a href="#vzglyad"><b>3</b><span>Насмотренность: где смотреть и как разбирать</span></a>
     <a href="#bloki"><b>4</b><span>Собрать лендинг из блоков: где брать каждый</span></a>
@@ -350,6 +356,7 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
     <input id="q" type="search" placeholder="Найти термин: кегль, лендинг, easing…" aria-label="Поиск по словарю">
     <label><input type="checkbox" id="onlyNew"> Только незнакомые</label>
     <label><input type="checkbox" id="onlyDemo"> Только с живым примером</label>
+    <label><input type="checkbox" id="onlyEx"> Только со ссылками на примеры</label>
   </div>
   <div id="dict"></div>
 </section>
@@ -674,6 +681,7 @@ cube:`<div class="stage cube-s"><div class="cube"><b></b><b></b><b></b><b></b><b
 /* ---------- словарь ---------- */
 const CATS = [
  ['page','Части сайта','Из чего складывается страница, как из этапов урока.'],
+ ['ui','Элементы интерфейса','Кнопки, переключатели, окна: детали, из которых собран любой сайт и приложение. У каждого есть ссылки на галереи с сотнями живых примеров.'],
  ['layout','Раскладка и сетка','Где что лежит и сколько между ними места.'],
  ['type','Шрифт и текст','Типографика: всё, что связано с буквами.'],
  ['color','Цвет, свет, материал','Палитра, контраст, тени и фактуры.'],
@@ -686,6 +694,25 @@ const CATS = [
 ];
 // [кат, термин, англ, суть, как в школе, сказать Claude, демо]
 const T = [
+['ui','Кнопка','button','Элемент, на который нажимают, чтобы что-то сделать. Бывает главная (залитая), вторичная (контурная) и текстовая.','Звонок на урок: нажал, и что-то произошло.','Кнопки трёх уровней: главная, вторичная, текстовая.',''],
+['ui','Чекбокс (флажок)','checkbox','Квадратик-галочка: можно выбрать несколько вариантов сразу.','Отметить в анкете все подходящие ответы.','',''],
+['ui','Радиокнопка','radio button','Кружок-переключатель: из группы можно выбрать только один вариант.','Тест с одним правильным ответом.','',''],
+['ui','Переключатель (тогл)','toggle switch','Выключатель «вкл / выкл», действует сразу, без кнопки «Сохранить».','Выключатель света в классе.','',''],
+['ui','Поле ввода','text input','Прямоугольник, куда печатают текст: имя, телефон, поиск. У хорошего поля подпись над ним и подсказка об ошибке под ним.','Строчка в анкете «Фамилия ______».','',''],
+['ui','Выпадающий список','select, dropdown','Свёрнутый список вариантов, раскрывается по клику.','Выбор класса из списка в журнале.','',''],
+['ui','Вкладки (табы)','tabs','Переключение между разделами внутри одного блока без перехода на другую страницу.','Разделители в папке с бумагами.','',''],
+['ui','Тултип (подсказка)','tooltip','Маленькая подсказка, которая появляется при наведении на элемент.','Сноска внизу страницы учебника.','',''],
+['ui','Аккордеон','accordion','Список заголовков, каждый раскрывается по клику. Обычно так делают блок вопросов и ответов.','Гармошка: развернул нужную складку.','Вопросы аккордеоном, открыт только один за раз.',''],
+['ui','Карусель, слайдер','carousel','Ряд карточек или картинок, которые листают вбок. Часто их почти никто не долистывает, так что важное туда не прячут.','Диафильм.','',''],
+['ui','Уведомление (тост)','toast','Короткое сообщение, которое всплывает в углу и само исчезает: «Сохранено», «Заявка отправлена».','Учитель на ходу говорит «молодец» и идёт дальше.','',''],
+['ui','Хлебные крошки','breadcrumbs','Строка «Главная → Курсы → Китайский для детей», которая показывает, где ты находишься.','Адрес на конверте: страна, город, улица.','',''],
+['ui','Пагинация','pagination','Номера страниц внизу длинного списка: 1, 2, 3, дальше.','Нумерация страниц в учебнике.','',''],
+['ui','Аватар','avatar','Маленькая круглая фотография или инициалы пользователя.','Фото на пропуске.','',''],
+['ui','Бейдж (метка)','badge','Маленькая плашка с меткой или числом: «Новое», «3».','Наклейка-звёздочка на тетради.','',''],
+['ui','Прогресс-бар','progress bar','Полоска, которая показывает, сколько пройдено: загрузка, курс, шаги анкеты.','Шкала «пройдено 5 уроков из 12».','',''],
+['ui','Выезжающая панель','drawer','Панель, которая выезжает сбоку поверх страницы: меню, фильтры, корзина.','Ящик стола: выдвинул, взял, задвинул.','',''],
+['ui','Пустое состояние','empty state','Что показываем, когда данных ещё нет: «Пока нет домашних заданий» с подсказкой, что делать.','Чистая страница тетради с подписью «Здесь будет первая работа».','Продумай пустые состояния кабинета ученика.',''],
+['ui','Степпер','stepper','Шаги процесса с номерами: 1 Данные, 2 Оплата, 3 Готово.','План урока на доске с отметкой, где мы сейчас.','',''],
 ['page','Сайт и страница','website, web page','Сайт: набор страниц по одному адресу. Страница: один документ, который листают вниз.','Сайт как учебник, страница как одна глава.','',''],
 ['page','Лендинг','landing page','Одностраничный сайт с одной целью: записаться, купить, оставить заявку. Всё на нём ведёт к одной кнопке.','Объявление о наборе в группу: один лист, одна мысль, внизу телефон.','Лендинг для записи на пробный урок, одна цель: заявка.',''],
 ['page','Многостраничный сайт','multi-page website','Несколько разделов со своим меню: о школе, курсы, цены, блог, кабинет.','Школьный журнал с вкладками по предметам.','',''],
@@ -831,6 +858,58 @@ const T = [
 ['launch','Персональные данные','personal data, 152-ФЗ','Имя, телефон, почта из форм. В РФ хранятся на российских серверах, на сайте нужна политика обработки и согласие.','','Формы сохраняют данные только на российском сервере.','']
 ];
 
+/* ---------- ссылки на живые примеры ---------- */
+const UV = q=>['Uiverse','https://uiverse.io/elements?search='+encodeURIComponent(q)];
+const UVc = c=>['Uiverse','https://uiverse.io/'+c];
+const CG = c=>['Component Gallery','https://component.gallery/components/'+c];
+const DR = q=>['Dribbble','https://dribbble.com/search/'+encodeURIComponent(q)];
+const CP = q=>['CodePen','https://codepen.io/search/pens?q='+encodeURIComponent(q)];
+const LINKS = {
+'Кнопка':[UVc('buttons'),CG('button'),DR('button'),CP('button')],
+'Чекбокс (флажок)':[UVc('checkboxes'),CG('checkbox'),DR('checkbox')],
+'Радиокнопка':[UVc('radio-buttons'),CG('radio-button'),DR('radio button')],
+'Переключатель (тогл)':[UVc('switches'),CG('toggle'),DR('toggle switch')],
+'Поле ввода':[UV('input'),CG('text-input'),DR('input field')],
+'Выпадающий список':[UV('dropdown'),CG('select'),['Component Gallery: меню','https://component.gallery/components/dropdown-menu'],DR('dropdown')],
+'Вкладки (табы)':[UV('tabs'),CG('tabs'),DR('tabs')],
+'Тултип (подсказка)':[UVc('tooltips'),CG('tooltip'),DR('tooltip')],
+'Аккордеон':[UV('accordion'),CG('accordion'),DR('accordion faq')],
+'Карусель, слайдер':[UV('carousel'),CG('carousel'),DR('carousel')],
+'Уведомление (тост)':[UV('notification'),CG('toast'),DR('toast notification')],
+'Хлебные крошки':[CG('breadcrumbs'),DR('breadcrumbs')],
+'Пагинация':[UV('pagination'),CG('pagination'),DR('pagination')],
+'Аватар':[UV('avatar'),CG('avatar'),DR('avatar')],
+'Бейдж (метка)':[UV('badge'),CG('badge'),DR('badge ui')],
+'Прогресс-бар':[UV('progress'),CG('progress-bar'),DR('progress bar')],
+'Выезжающая панель':[CG('drawer'),DR('drawer menu')],
+'Пустое состояние':[CG('empty-state'),DR('empty state')],
+'Степпер':[CG('stepper'),DR('stepper')],
+'Хедер (шапка)':[['Navbar Gallery','https://www.navbar.gallery/'],CG('header'),DR('header')],
+'Hero, первый экран':[CG('hero'),['Godly: секции','https://godly.design/sections'],DR('hero section')],
+'Футер (подвал)':[['Footer Gallery','https://www.footer.design/'],CG('footer'),DR('footer')],
+'CTA, призыв к действию':[['CTA Gallery','https://www.cta.gallery/'],DR('call to action')],
+'Навигация, меню, бургер':[['Navbar Gallery','https://www.navbar.gallery/'],CG('navigation'),UV('menu'),DR('burger menu')],
+'Карточка':[UVc('cards'),CG('card'),DR('card ui'),CP('card')],
+'Модальное окно, поп-ап':[UV('modal'),CG('modal'),DR('modal'),CP('modal')],
+'Форма':[UV('form'),CG('form'),DR('form'),CP('form')],
+'Лоадер, скелетон':[UVc('loaders'),CG('skeleton'),CG('spinner'),CP('loader')],
+'Иконка':[CG('icon'),DR('icon set')],
+'Микровзаимодействие':[UV('like'),DR('microinteraction'),CP('microinteraction')],
+'Ховер':[UVc('buttons'),CP('hover effect')],
+'Состояния':[CG('button'),DR('button states')],
+'Параллакс':[CP('parallax'),DR('parallax')],
+'Скролл-анимация':[CP('scroll animation')],
+'Изинг, кривая скорости':[['easings.net','https://easings.net/'],CP('easing')],
+'Размытие':[UV('glass'),DR('glassmorphism')],
+'Тень':[UV('shadow'),DR('soft shadow')],
+'Градиент':[UV('gradient'),DR('gradient')],
+'Тёмная тема':[DR('dark mode'),UV('dark')],
+'3D-модель':[DR('3d web'),['Spline: сообщество','https://community.spline.design/']],
+'Шейдер':[CP('shader'),DR('shader')],
+'Выравнивание':[DR('typography layout')],
+'Иллюстрация':[DR('illustration'),['Behance','https://www.behance.net/search/projects/illustration']]
+};
+
 const LS = 'kurs-wd-v1';
 let st = {known:{},checks:{}};
 try{ const s = JSON.parse(localStorage.getItem(LS)||'null'); if(s) st = Object.assign(st,s); }catch(e){}
@@ -846,12 +925,14 @@ function renderDict(){
   const q = document.getElementById('q').value.trim().toLowerCase();
   const onlyNew = document.getElementById('onlyNew').checked;
   const onlyDemo = document.getElementById('onlyDemo').checked;
+  const onlyEx = document.getElementById('onlyEx').checked;
   let html = '', total = 0;
   for(const c of CATS){
     if(curCat!=='all' && curCat!==c[0]) continue;
     const items = T.filter(t=>t[0]===c[0]).filter(t=>{
       if(onlyNew && st.known[t[1]]) return false;
       if(onlyDemo && !t[6]) return false;
+      if(onlyEx && !LINKS[t[1]]) return false;
       if(q && !(t[1]+' '+t[2]+' '+t[3]).toLowerCase().includes(q)) return false;
       return true;
     });
@@ -861,7 +942,7 @@ function renderDict(){
       const k = st.known[t[1]];
       return `<article class="term${k?' known':''}" data-id="${esc(t[1])}">
         <div class="hd"><div><h4>${t[1]}</h4><div class="en">${t[2]}</div></div><button class="know" aria-pressed="${!!k}">${k?'Знаю ✓':'Знаю'}</button></div>
-        <p>${t[3]}</p>${t[4]?`<p class="sch">${t[4]}</p>`:''}${t[6]?`<div class="demo">${DEMOS[t[6]]}</div>`:''}${t[5]?`<p class="ai">${t[5]}</p>`:''}
+        <p>${t[3]}</p>${t[4]?`<p class="sch">${t[4]}</p>`:''}${t[6]?`<div class="demo">${DEMOS[t[6]]}</div>`:''}${t[5]?`<p class="ai">${t[5]}</p>`:''}${LINKS[t[1]]?`<div class="ex"><span>Посмотреть примеры:</span>${LINKS[t[1]].map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>`:''}
         ${t[1]==='Названия стилей'?'<p><a href="../katalog-stiley/">Открыть каталог стилей →</a></p>':''}
       </article>`;}).join('') + '</div>';
   }
@@ -880,7 +961,7 @@ catsEl.addEventListener('click',e=>{
   catsEl.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', x===b));
   renderDict();
 });
-['q','onlyNew','onlyDemo'].forEach(id=>document.getElementById(id).addEventListener('input',renderDict));
+['q','onlyNew','onlyDemo','onlyEx'].forEach(id=>document.getElementById(id).addEventListener('input',renderDict));
 
 document.getElementById('dict').addEventListener('click',e=>{
   const kb = e.target.closest('.know');
