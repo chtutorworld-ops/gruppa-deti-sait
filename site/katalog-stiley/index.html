@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог стилей дизайна</title>
+<style>
+:root{
+  --bg:#f7f6f3; --card:#ffffff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e6e4df;
+  --accent:#4a5bd4; --chip:#eeedf8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+header.top{max-width:1080px;margin:0 auto;padding:40px 20px 8px}
+h1{font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin:0 0 8px}
+.lead{color:var(--muted);max-width:720px;margin:0}
+nav.fam{position:sticky;top:0;z-index:5;background:rgba(247,246,243,.92);backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.fam .in{max-width:1080px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav.fam a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;padding:7px 13px;border-radius:999px;
+  border:1px solid var(--line);background:#fff;white-space:nowrap}
+nav.fam a:hover{border-color:var(--accent);color:var(--accent)}
+.tools{max-width:1080px;margin:0 auto;padding:16px 20px 0}
+.tools input{width:100%;max-width:420px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+  font:inherit;background:#fff;color:var(--ink)}
+main{max-width:1080px;margin:0 auto;padding:8px 20px 60px}
+section.family{margin-top:36px}
+section.family h2{font-size:22px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+section.family .fdesc{color:var(--muted);margin:0 0 16px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column}
+.card h3{margin:0;font-size:18px;font-weight:600}
+.card .en{color:var(--muted);font-size:13px;margin:2px 0 10px}
+.card p{margin:0 0 8px;font-size:15px}
+.card .when{font-size:14px;color:#3b3b40;background:var(--chip);border-radius:10px;padding:8px 10px;margin:4px 0 12px}
+.card .when b{font-weight:600}
+.card ul{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.card li a{display:inline-block;font-size:13px;text-decoration:none;color:var(--accent);
+  border:1px solid #d9dcf5;border-radius:8px;padding:4px 9px;background:#fafbff}
+.card li a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hidden{display:none!important}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}header.top{padding-top:28px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Каталог стилей дизайна</h1>
+  <p class="lead">Основные направления в дизайне интерфейсов, сайтов и графики, собранные в семейства. У каждого: суть в двух-трёх строках, когда он уместен, и 3–5 ссылок на живые примеры и подборки. Это обзор для знакомства, а не рекомендация: любые стили можно смешивать.</p>
+</header>
+<nav class="fam"><div class="in" id="nav"></div></nav>
+<div class="tools"><input id="q" type="search" placeholder="Поиск по стилям: стекло, 3D, ретро…"></div>
+<main id="main"></main>
+<footer>Ссылки проверены поиском 16 ноября 2026. Подборки Dribbble, Behance и Awwwards пополняются, поэтому примеры в них со временем меняются. Pinterest намеренно не используется.</footer>
+
+<script>
+const D = s => 'https://dribbble.com/search/' + s;
+const B = s => 'https://www.behance.net/search/projects/' + encodeURIComponent(s);
+const FAM = [
+{id:'material',name:'Объём и материал',desc:'Интерфейс как физическая вещь: тени, стекло, глина, пластик, реальные предметы.',items:[
+ {ru:'Скевоморфизм',en:'Skeuomorphism',
+  t:'Интерфейс подражает настоящим предметам: кожа, металл, кнопки с фаской, крутилки, бумага. Был основой iOS до 2013 года, сейчас возвращается в более аккуратном виде.',
+  w:'когда нужно «потрогать» объект: игры, тренажёры, музыкальные и детские приложения.',
+  l:[['One Page Love: подборка','https://onepagelove.com/style/skeuomorphism'],['Статья NN/g','https://www.nngroup.com/articles/skeuomorphism/'],['Figma: что это','https://www.figma.com/resource-library/what-is-skeuomorphism/'],['Dribbble',D('skeuomorphism')]]},
+ {ru:'Неоморфизм (Soft UI)',en:'Neumorphism',
+  t:'Элементы выдавлены из фона того же цвета мягкими светлой и тёмной тенями. Очень спокойный и «пластиковый», но низкий контраст ухудшает читаемость.',
+  w:'небольшие панели управления, плееры, умный дом; как акцент, а не основа всего сайта.',
+  l:[['neumorphism.io','https://neumorphism.io/'],['Демо-набор компонентов','https://demo.themesberg.com/neumorphism-ui/'],['Hype4: разбор','https://hype4.academy/articles/design/neumorphism-in-user-interfaces'],['Dribbble',D('neumorphism')]]},
+ {ru:'Глассморфизм',en:'Glassmorphism',
+  t:'Полупрозрачные «матовые стёкла» поверх яркого или размытого фона, тонкая светлая обводка. Даёт глубину и лёгкость.',
+  w:'карточки поверх фото или градиента, дашборды, премиальные лендинги.',
+  l:[['Superdesign: рецепт и примеры','https://superdesign.dev/styles/glassmorphism'],['Behance',B('glassmorphism')],['Dribbble',D('glassmorphism')]]},
+ {ru:'Жидкое стекло',en:'Liquid Glass (Apple, 2025)',
+  t:'Новый материал Apple: стекло, которое преломляет и бликует содержимое под собой и плавно перетекает при движении. Развитие глассморфизма с живой оптикой.',
+  w:'приложения и сайты, которые хотят выглядеть «как iOS сегодня»; навигация, плавающие панели.',
+  l:[['Apple Developer: Liquid Glass','https://developer.apple.com/documentation/technologyoverviews/liquid-glass'],['WWDC25: Meet Liquid Glass','https://developer.apple.com/videos/play/wwdc2025/219/'],['190+ примеров','https://liquidglassdesign.com/'],['Dribbble',D('liquid-glass')]]},
+ {ru:'Клеймофизм',en:'Claymorphism',
+  t:'Пухлые формы «из пластилина»: большие скругления, двойная тень, внутреннее свечение, часто вместе с 3D-персонажами.',
+  w:'дружелюбные продукты, обучение, детские версии, игровые элементы.',
+  l:[['Hype4: разбор','https://hype4.academy/articles/design/claymorphism-in-user-interfaces'],['Superdesign: рецепт','https://superdesign.dev/styles/claymorphism'],['LogRocket: статья','https://blog.logrocket.com/ux-design/what-is-claymorphism-web-design/'],['Dribbble',D('claymorphism')]]},
+ {ru:'Индустриальный «предмет»',en:'Tactile / hardware UI',
+  t:'Интерфейс как прибор: кнопки-клавиши, шкалы, моноширинные подписи, технические выноски. Эстетика бытовой электроники и синтезаторов.',
+  w:'бренды, которые хотят выглядеть точными и «сделанными руками инженера».',
+  l:[['Teenage Engineering','https://teenage.engineering/'],['Nothing','https://nothing.tech/'],['Dribbble',D('hardware-ui')],['Behance',B('tactile ui')]]},
+ {ru:'3D и иммерсивный',en:'3D / WebGL / immersive',
+  t:'Объёмные сцены прямо в браузере: предметы вращаются, реагируют на мышь и прокрутку, сайт превращается в пространство.',
+  w:'вау-эффект на главной, презентация продукта, игры; требует больше ресурсов.',
+  l:[['Awwwards: 3D-сайты','https://www.awwwards.com/websites/3d/'],['Awwwards: WebGL','https://www.awwwards.com/websites/webgl/'],['Bruno Simon (сайт-игра)','https://bruno-simon.com/'],['Lusion','https://lusion.co/'],['Spline (инструмент)','https://spline.design/']]},
+]},
+{id:'grid',name:'Сетка и шрифт',desc:'Стиль держится на типографике, порядке и пустом пространстве.',items:[
+ {ru:'Швейцарский стиль',en:'International Typographic Style',
+  t:'Строгая модульная сетка, гротеск, асимметрия, крупный шрифт как главный образ. Родился в Швейцарии в 1950-х и стал основой современного веба.',
+  w:'когда нужна ясность и солидность: образование, культура, портфолио.',
+  l:[['Designspiration: Swiss Design','https://www.designspiration.com/topics/swiss-design/'],['Print: принципы и шрифты','https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/'],['Dribbble: Swiss Style','https://dribbble.com/tags/swiss-style'],['Behance',B('swiss style web')]]},
+ {ru:'Минимализм',en:'Minimalism',
+  t:'Только необходимое: много воздуха, сдержанная палитра, одна мысль на экран. Красота за счёт пропорций и деталей.',
+  w:'почти везде; особенно премиум-бренды и продукты, где важен контент.',
+  l:[['Minimal Gallery','https://minimal.gallery/'],['Siiimple','https://siiimple.com/'],['Awwwards: Minimal','https://www.awwwards.com/websites/minimal/'],['Superdesign: разбор','https://superdesign.dev/styles/minimalist-web-design']]},
+ {ru:'Бенто-сетка',en:'Bento grid',
+  t:'Экран собран из прямоугольных «ячеек коробки бенто» разного размера: в каждой одна функция или факт. Популяризировала Apple.',
+  w:'рассказ о возможностях продукта, личный кабинет, сводка курса.',
+  l:[['BentoGrids','https://bentogrids.com/'],['One Page Love: Bento','https://onepagelove.com/tag/bento'],['Superdesign: рецепт','https://superdesign.dev/styles/bento-grid'],['Dribbble','https://dribbble.com/tags/bento-grids']]},
+ {ru:'Журнальный (editorial)',en:'Editorial',
+  t:'Сайт как разворот журнала: крупные заголовки (часто с засечками), колонки, подписи к фото, ритм текста и изображений.',
+  w:'блоги, истории, медиа, «премиальная» подача уроков и статей.',
+  l:[['Siteinspire: Editorial','https://www.siteinspire.com/websites/category/editorial'],['Tubik: 13 примеров','https://tubikstudio.com/blog/media-editorial-website-design/'],['Awwwards: editorial layout','https://www.awwwards.com/inspiration/editorial-layout'],['Dribbble','https://dribbble.com/tags/editorial-website']]},
+ {ru:'Кинетическая типографика',en:'Kinetic typography',
+  t:'Буквы двигаются: растягиваются, бегут строкой, собираются при прокрутке. Шрифт становится анимацией и главным героем.',
+  w:'обложки, промо, заставки; для китайского интересно с иероглифами.',
+  l:[['Awwwards: типографика','https://www.awwwards.com/websites/typography/'],['Awwwards: коллекция','https://www.awwwards.com/awwwards/collections/typography-in-web-design/'],['Пример: Sennep','https://www.awwwards.com/inspiration/kinetic-typography-animation-sennep'],['Dribbble',D('kinetic-typography')]]},
+ {ru:'Плоский дизайн',en:'Flat design',
+  t:'Без теней и объёма: чистые цвета, простые формы, плоские иконки. Ответ скевоморфизму в 2010-х.',
+  w:'простые и быстрые интерфейсы, инфографика, иконки.',
+  l:[['Википедия','https://en.wikipedia.org/wiki/Flat_design'],['Justinmind: flat vs Material','https://www.justinmind.com/blog/flat-design-vs-material-design-differences/'],['Dribbble',D('flat-design')]]},
+ {ru:'Системные стили (Material, Fluent)',en:'Design systems',
+  t:'Готовые «языки» больших компаний: Material Design у Google, Fluent у Microsoft. Продуманные правила цвета, движения и компонентов.',
+  w:'как база для удобных форм, кабинетов и приложений.',
+  l:[['Material Design 3','https://m3.material.io/'],['Fluent 2','https://fluent2.microsoft.design/'],['Apple: Design','https://developer.apple.com/design/']]},
+]},
+{id:'bold',name:'Дерзкие и экспериментальные',desc:'Нарочитая грубость, яркость и нарушение правил.',items:[
+ {ru:'Брутализм',en:'Brutalism',
+  t:'Сырой, «недоделанный» вид: системные шрифты, голые рамки, резкие контрасты, никакого украшательства.',
+  w:'арт-проекты, портфолио, бренды с характером.',
+  l:[['Brutalist Websites','https://brutalistwebsites.com/'],['One Page Love: Brutalism','https://onepagelove.com/style/brutalism'],['Awwwards: коллекция','https://www.awwwards.com/awwwards/collections/brutalism/'],['Superdesign: разбор','https://superdesign.dev/styles/brutalism']]},
+ {ru:'Необрутализм',en:'Neobrutalism',
+  t:'Дружелюбная версия брутализма: толстые чёрные обводки, жёсткие тени без размытия, яркие плашки, крупный шрифт.',
+  w:'стартапы, молодёжные и креативные продукты, игровые задания.',
+  l:[['NN/g: определение','https://www.nngroup.com/articles/neobrutalism/'],['Neubrutalism.com','https://neubrutalism.com/'],['Gumroad (живой пример)','https://gumroad.com/'],['Dribbble','https://dribbble.com/tags/neo-brutalism']]},
+ {ru:'Экспериментальный / антидизайн',en:'Experimental / anti-design',
+  t:'Сознательный хаос: наложения, необычная навигация, ломаная сетка. Цель — удивить и запомниться.',
+  w:'фестивали, арт-проекты; в учебных продуктах только точечно.',
+  l:[['Awwwards: Experimental','https://www.awwwards.com/websites/experimental/'],['Siteinspire','https://www.siteinspire.com/'],['Dribbble',D('anti-design')]]},
+ {ru:'Мемфис',en:'Memphis',
+  t:'Стиль группы «Мемфис» 1980-х: геометрия, зигзаги, горошек, кислотные цвета. Игривый и шумный.',
+  w:'детские и праздничные материалы, промо, паттерны и фоны.',
+  l:[['Creative Bloq: 10 примеров','https://www.creativebloq.com/inspiration/10-iconic-examples-of-memphis-design'],['GraphicMama: 60+ примеров','https://graphicmama.com/blog/memphis-design-examples/'],['Википедия: группа Memphis','https://en.wikipedia.org/wiki/Memphis_Group'],['Behance',B('memphis design')]]},
+ {ru:'Коллаж / скрапбук',en:'Collage / scrapbook',
+  t:'Сайт как альбом: вырезки, скотч, наклейки, фото «полароид», рукописные пометки, слои внахлёст.',
+  w:'личные истории, путешествия, детские и творческие проекты.',
+  l:[['Designmodo: скрапбук в вебе','https://designmodo.com/scrapbook-website-design/'],['Dribbble: Scrapbook','https://dribbble.com/tags/scrapbook'],['Behance',B('collage website')]]},
+]},
+{id:'retro',name:'Ретро и исторические школы',desc:'Стили, которые берут язык прошлых эпох и переосмысляют его.',items:[
+ {ru:'Y2K',en:'Y2K aesthetic',
+  t:'Эстетика рубежа 2000-х: хром, блестящий пластик, прозрачные капли, переливы, «будущее глазами 1999 года».',
+  w:'молодёжные бренды, музыка, мода, игровые акценты.',
+  l:[['Web Design Museum: Y2K','https://www.webdesignmuseum.org/exhibitions/y2k-aesthetic-in-web-design'],['Webflow: как сделать','https://webflow.com/blog/y2k-aesthetic'],['Behance',B('y2k website')],['Dribbble',D('y2k')]]},
+ {ru:'Ретрофутуризм',en:'Retrofuturism',
+  t:'Будущее, каким его видели в 1950–80-х: космос, ракеты, хромированные панели, экраны терминалов.',
+  w:'научные и космические темы, игры, промо.',
+  l:[['LogRocket: ретрофутуризм в UX','https://blog.logrocket.com/ux-design/retro-futuristic-ux-designs-bringing-back-the-future/'],['Behance',B('retro futurism')],['Dribbble',D('retro-futuristic-ui')],['Википедия','https://en.wikipedia.org/wiki/Retrofuturism']]},
+ {ru:'Вейпорвейв и киберпанк',en:'Vaporwave / cyberpunk',
+  t:'Неон на тёмном, сетки-горизонты, глитч, розово-бирюзовые закаты (вейпорвейв) или жёсткий хай-тек (киберпанк).',
+  w:'игры, музыка, ночные промо; для обучения обычно слишком шумно.',
+  l:[['Dribbble: Vaporwave','https://dribbble.com/tags/vaporwave'],['Adobe: о стиле','https://blog.adobe.com/en/publish/2021/05/25/explore-the-lighthearted-retro-futurism-of-vintage-vaporwave-design'],['Behance',B('cyberpunk ui')]]},
+ {ru:'Ретро-компьютер и пиксель',en:'Retro OS / pixel',
+  t:'Окна старых Mac и Windows, пиксельные шрифты и иконки, 8-битные игры.',
+  w:'игровые задания, ностальгические промо, мини-игры.',
+  l:[['Superdesign: Retro','https://superdesign.dev/styles/retro'],['Poolsuite (живой пример)','https://poolsuite.net/'],['Dribbble',D('pixel-art-ui')]]},
+ {ru:'Баухаус',en:'Bauhaus',
+  t:'Немецкая школа 1920-х: круг, квадрат, треугольник, основные цвета, функциональность и геометрия.',
+  w:'яркие, но строгие плакаты, обложки, логотипы.',
+  l:[['Adobe: что такое Баухаус','https://www.adobe.com/uk/express/learn/blog/what-is-bauhaus'],['Википедия','https://en.wikipedia.org/wiki/Bauhaus'],['Dribbble',D('bauhaus-website')],['Behance',B('bauhaus')]]},
+ {ru:'Ар-деко',en:'Art Deco',
+  t:'Роскошь 1920–30-х: золото, симметрия, веерные лучи, ступенчатые формы, высокие узкие шрифты.',
+  w:'премиальные, праздничные и «отельные» бренды, приглашения.',
+  l:[['Creative Market: история и примеры','https://creativemarket.com/blog/art-deco-design-style-examples'],['99designs: подборка','https://99designs.com/inspiration/designs/art-deco'],['Dribbble',D('art-deco-website')]]},
+ {ru:'Модерн (ар-нуво)',en:'Art Nouveau',
+  t:'Плавные растительные линии, орнаменты, декоративные рамки и буквы (рубеж XIX–XX веков).',
+  w:'декоративные акценты, упаковка, культурные проекты.',
+  l:[['Википедия','https://en.wikipedia.org/wiki/Art_Nouveau'],['Behance',B('art nouveau')],['Dribbble',D('art-nouveau')]]},
+ {ru:'Конструктивизм',en:'Constructivism',
+  t:'Советский авангард 1920-х: диагонали, красный и чёрный, фотомонтаж, мощная типографика.',
+  w:'плакаты, яркие обложки, выразительные заголовки.',
+  l:[['Википедия','https://en.wikipedia.org/wiki/Constructivism_(art)'],['Behance',B('constructivism poster')],['Dribbble',D('constructivism')]]},
+ {ru:'Модернизм середины века',en:'Mid-century modern',
+  t:'1950–60-е: тёплые приглушённые цвета, простые формы, иллюстрации, оптимизм.',
+  w:'тёплые бренды, иллюстрации, детские книги.',
+  l:[['Википедия','https://en.wikipedia.org/wiki/Mid-century_modern'],['Behance',B('mid century illustration')],['Dribbble',D('mid-century')]]},
+]},
+{id:'nature',name:'Природа и спокойствие',desc:'Мягкие формы, натуральные цвета и фактуры.',items:[
+ {ru:'Органический',en:'Organic / fluid',
+  t:'Плавные «капли», волны, неровные края, натуральные оттенки, фото природы. Никаких жёстких углов.',
+  w:'wellness, эко, спокойные образовательные продукты.',
+  l:[['Dribbble: Organic Shapes','https://dribbble.com/tags/organic-shapes'],['Betelguise: статья','https://www.betelguise.com/why-use-organic-shapes-in-web-design/'],['Behance',B('organic web design')]]},
+ {ru:'Japandi',en:'Japandi',
+  t:'Смесь японской и скандинавской эстетики: светлое дерево, лён, бежевый и графит, минимум деталей, спокойствие.',
+  w:'премиальные и «азиатские» бренды без клише, сайты школ и студий.',
+  l:[['Kittl: гид по стилю','https://www.kittl.com/blogs/japandi-style-design/'],['Dribbble: Japandi','https://dribbble.com/tags/japandi'],['MUJI (живой пример)','https://www.muji.com/'],['Behance',B('japandi')]]},
+ {ru:'Скандинавский',en:'Scandinavian',
+  t:'Светло, функционально, уютно: белый, серый, приглушённые пастели, простые шрифты и много света.',
+  w:'семейные, детские и домашние бренды, онлайн-сервисы.',
+  l:[['HAY (живой пример)','https://www.hay.com/'],['Behance',B('scandinavian web design')],['Dribbble',D('scandinavian')]]},
+ {ru:'Ваби-саби',en:'Wabi-sabi',
+  t:'Японская красота несовершенства: фактура бумаги и глины, асимметрия, следы руки, приглушённые цвета.',
+  w:'ремесло, чай, культура, медитативные продукты.',
+  l:[['Википедия','https://en.wikipedia.org/wiki/Wabi-sabi'],['Behance',B('wabi sabi')],['Dribbble',D('wabi-sabi')]]},
+]},
+{id:'light',name:'Свет, цвет и фактура',desc:'Стиль задают переливы, градиенты, зерно или игра света и тени.',items:[
+ {ru:'Перламутр и голография',en:'Iridescent / holographic',
+  t:'Переливающиеся поверхности: перламутр, фольга, мыльный пузырь. Часто вместе со стеклом и 3D-объектами.',
+  w:'бьюти, мода, «предметы из будущего», праздничные акценты.',
+  l:[['Dribbble: iridescent UI',D('iridescent-ui')],['Behance',B('holographic')],['Dribbble: holographic',D('holographic')]]},
+ {ru:'Аврора и сетчатые градиенты',en:'Aurora / mesh gradients',
+  t:'Мягкие размытые пятна цвета, перетекающие как северное сияние. Часто анимированы.',
+  w:'фоны для главной, технологичные и «ИИ» продукты.',
+  l:[['Superdesign: Aurora','https://superdesign.dev/styles/aurora'],['Stripe (живой пример)','https://stripe.com/'],['Библиотека mesh-градиентов','https://randomgen.eu/mesh-gradient-library/'],['Dribbble',D('aurora-gradient')]]},
+ {ru:'Зерно и шум',en:'Grain / noise',
+  t:'Лёгкое «плёночное» зерно поверх градиентов и фото. Убирает стерильность цифровой картинки.',
+  w:'почти к любому стилю как тонкий слой; особенно editorial и градиенты.',
+  l:[['CSS-Tricks: Grainy Gradients','https://css-tricks.com/grainy-gradients/'],['Kittl: тренд градиентов','https://www.kittl.com/blogs/gradient-design-trend-stl/'],['Dribbble',D('grainy-gradient')]]},
+ {ru:'Тихая роскошь',en:'Quiet luxury',
+  t:'Дорого без крика: светлые фоны, тонкие шрифты, крупные красивые фото, много воздуха, минимум цвета.',
+  w:'премиальные услуги и школы, бренды с высоким чеком.',
+  l:[['Awwwards: Luxury','https://www.awwwards.com/websites/luxury/'],['Rise: статья','https://rise.co/blog/the-quiet-luxury-aesthetic-in-web-design-why-minimalism-converts-better'],['Aesop (живой пример)','https://www.aesop.com/'],['Dribbble',D('quiet-luxury')]]},
+ {ru:'Тёмная роскошь',en:'Dark luxury',
+  t:'Чёрный или графит, золото и бронза, драматичный свет, медленная анимация.',
+  w:'вечерние и премиальные темы; как тёмная версия светлого стиля.',
+  l:[['Dark Mode Design','https://www.darkmodedesign.com/'],['dark.design','https://dark.design/'],['Awwwards: Dark mode','https://www.awwwards.com/awwwards/collections/dark-mode/'],['Dribbble',D('luxury-dark-website')]]},
+ {ru:'Тёмный tech со свечением',en:'Dark tech / glow',
+  t:'Тёмный фон, тонкие светящиеся линии и подсветка карточек, аккуратный гротеск. Типичен для современных IT-продуктов.',
+  w:'сервисы, приложения, «умные» инструменты.',
+  l:[['Linear (живой пример)','https://linear.app/'],['Superdesign: Dark mode','https://superdesign.dev/styles/dark-mode'],['Dribbble',D('dark-saas')]]},
+]},
+{id:'illu',name:'Иллюстрация и игра',desc:'Стиль держится на рисунке, персонажах и игровых механиках.',items:[
+ {ru:'Рисованный',en:'Hand-drawn',
+  t:'Рукописные подписи, наброски, неровные линии, дудлы. Ощущение тепла и живого человека.',
+  w:'обучение, детские версии, дружелюбные бренды.',
+  l:[['One Page Love: Hand drawn','https://onepagelove.com/tag/hand-drawn'],['A1 Gallery: 60+ примеров','https://www.a1.gallery/style/hand-drawn'],['Oatly (живой пример)','https://www.oatly.com/'],['Dribbble',D('hand-drawn-website')]]},
+ {ru:'Изометрия',en:'Isometric',
+  t:'Объекты в «аксонометрии» под углом 30°: маленькие миры, комнаты, города, без перспективных искажений.',
+  w:'объяснение процессов, карты курса, игровые уровни.',
+  l:[['Dribbble',D('isometric')],['Behance',B('isometric illustration')],['Dribbble: isometric UI',D('isometric-ui')]]},
+ {ru:'Игровой / геймификация',en:'Playful / gamified',
+  t:'Сочные цвета, персонажи-маскоты, очки, серии, уровни, весёлая анимация за каждое действие.',
+  w:'языковые и детские приложения, домашние задания, тренажёры.',
+  l:[['Duolingo (живой пример)','https://www.duolingo.com/'],['UX Planet: геймификация Duolingo','https://uxplanet.org/ux-and-gamification-in-duolingo-40d55ee09359'],['Headspace (живой пример)','https://www.headspace.com/'],['Dribbble',D('gamification')]]},
+]},
+{id:'space',name:'Пространство и движение',desc:'Стили, где главное — глубина, сцена и анимация.',items:[
+ {ru:'Пространственный (visionOS)',en:'Spatial UI',
+  t:'Парящие окна из стекла, мягкие тени, глубина, элементы реагируют на взгляд. Язык Apple Vision Pro, всё чаще переходит в веб.',
+  w:'современный «воздушный» интерфейс, презентации, кабинеты.',
+  l:[['Apple: Designing for visionOS','https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos'],['WWDC23: Principles of spatial design','https://developer.apple.com/videos/play/wwdc2023/10072/'],['Dribbble: статья о spatial UI','https://dribbble.com/stories/2023/06/14/spatial_ui_design'],['Dribbble',D('visionos')]]},
+ {ru:'Скроллителлинг',en:'Scrollytelling',
+  t:'История, которая разворачивается при прокрутке: картинки сменяются, графики оживают, текст появляется по шагам.',
+  w:'объяснение темы шаг за шагом, лендинг курса, рассказы о культуре.',
+  l:[['27 лучших примеров','https://scrollytelling.ai/examples/'],['Awwwards: Scrolling','https://www.awwwards.com/websites/scrolling/'],['The Pudding','https://pudding.cool/'],['Maglr: 10 примеров','https://www.maglr.com/blog/best-scrollytelling-examples']]},
+ {ru:'Моушн и микроанимации',en:'Motion / micro-interactions',
+  t:'Кнопки, иконки и персонажи мягко реагируют на каждое действие: пружинят, меняют форму, радуются.',
+  w:'везде, где важна обратная связь: задания, игры, формы.',
+  l:[['Rive (инструмент)','https://rive.app/'],['LottieFiles','https://lottiefiles.com/'],['Dribbble',D('micro-interaction')]]},
+]},
+];
+
+const nav=document.getElementById('nav'), main=document.getElementById('main');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+FAM.forEach(f=>{
+  nav.insertAdjacentHTML('beforeend',`<a href="#${f.id}">${f.name} · ${f.items.length}</a>`);
+  const cards=f.items.map(s=>`<article class="card" data-k="${esc((s.ru+' '+s.en+' '+s.t+' '+s.w).toLowerCase())}">
+    <h3>${s.ru}</h3><div class="en">${s.en}</div><p>${s.t}</p>
+    <div class="when"><b>Когда подходит:</b> ${s.w}</div>
+    <ul>${s.l.map(([n,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${n}</a></li>`).join('')}</ul></article>`).join('');
+  main.insertAdjacentHTML('beforeend',`<section class="family" id="${f.id}"><h2>${f.name}</h2><p class="fdesc">${f.desc}</p><div class="grid">${cards}</div></section>`);
+});
+document.getElementById('q').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',q&&!c.dataset.k.includes(q)));
+  document.querySelectorAll('section.family').forEach(s=>s.classList.toggle('hidden',!s.querySelector('.card:not(.hidden)')));
+});
+</script>
+</body>
+</html>
