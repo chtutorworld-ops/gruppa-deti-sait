@@ -83,7 +83,22 @@ section.family .fdesc{color:var(--muted);margin:0 0 16px;font-size:15px}
 .fitem .del.sure{background:#a14a2a;color:#fff;border-color:#a14a2a}
 .fitem .votes{margin-bottom:4px}.fitem .votes button{font-size:12px;padding:4px 9px}
 .fitem textarea{margin:0;min-height:36px}
-@media (max-width:760px){.fcols{grid-template-columns:1fr}}
+.fcols{grid-template-columns:repeat(3,1fr)}
+.fcol.hard{background:#f8eeee}.fitem.hard{border-left:4px solid #8e1f2c}
+.votes button[data-v="hard"].on{background:#8e1f2c;border-color:#8e1f2c;color:#fff}
+.fv button[data-v="no"].on{background:#f6e6e0;border-color:#c98a77;color:#8a3b25}
+.fareas{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.fareas button{font:inherit;font-size:12.5px;padding:5px 10px;border-radius:999px;border:1px dashed #c9c7c1;background:#fff;color:var(--muted);cursor:pointer}
+.fareas button.on{border-style:solid;border-color:var(--accent);background:var(--chip);color:var(--accent)}
+.fitem .tags{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.fitem .tags span{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.fitem .date{font-size:11.5px;color:var(--muted)}
+.fn{font-weight:400;color:var(--muted);font-size:14px}
+.ebtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.ebtns .sec{font:inherit;font-weight:600;padding:12px 18px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.save-note{font-size:14px!important}
+.cloud{font-size:13px;color:#1f5f30;margin:0 0 10px}.cloud.bad{color:#a14a2a}
+@media (max-width:900px){.fcols{grid-template-columns:1fr}}
 #out{min-height:160px;font-family:ui-monospace,Menlo,Consolas,monospace!important;font-size:13px!important}
 footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
 @media (max-width:520px){.grid{grid-template-columns:1fr}header.top{padding-top:28px}}
@@ -101,31 +116,29 @@ footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
   </div></div>
 <main id="main"></main>
 <section id="finds"><div class="box">
-  <h2>Мои находки</h2>
-  <p>Сюда можно быстро сохранить любой дизайн, который попался на глаза: вставь ссылку и напиши, что именно зацепило, что бы ты поменяла или почему точно нет.</p>
+  <h2>Мои «да» и «нет»</h2>
+  <div id="cloudst" class="cloud">Подключаюсь к облаку…</div>
+  <p>Кидай сюда ссылку на любую работу или сайт, отметь «да», «нет» или «жирное нет» и напиши, что именно зацепило или оттолкнуло. Из этих записей Claude соберёт правила, что делать и чего не делать в дизайне для тебя.</p>
+  <div class="fform" id="fform">
+    <input type="url" id="furl" placeholder="Ссылка на дизайн (Behance, Dribbble, любой сайт)">
+    <div class="votes fv" id="fverd"><button type="button" data-v="like">♥ Да, хочу так</button><button type="button" data-v="no">✕ Нет, непривлекательно</button><button type="button" data-v="hard">⛔ Жирное нет</button></div>
+    <div class="fareas" id="fareas"></div>
+    <textarea id="fcom" rows="3" placeholder="Что именно нравится или что не так: «заменить кнопки и цвет обводки было бы клёво», «такие иконки — треш»"></textarea>
+    <button type="button" class="addbtn" id="fadd">Сохранить</button><span class="fmsg" id="fmsg"></span>
+  </div>
   <div class="fcols">
-    <div class="fcol yes"><h3>♥ Нравится</h3>
-      <div class="fform" data-v="like">
-        <input type="url" placeholder="Ссылка на дизайн (Behance, Dribbble, любой сайт)">
-        <textarea rows="2" placeholder="Комментарий: что нравится или что бы поменяла («заменить кнопки и цвет обводки было бы клёво»)"></textarea>
-        <button class="addbtn">Добавить в «Нравится»</button><span class="fmsg"></span>
-      </div>
-      <div class="flist" data-v="like"></div></div>
-    <div class="fcol no"><h3>✕ Не нравится</h3>
-      <div class="fform" data-v="no">
-        <input type="url" placeholder="Ссылка на дизайн">
-        <textarea rows="2" placeholder="Комментарий: что именно не так («вот это прям точно нет»)"></textarea>
-        <button class="addbtn">Добавить в «Не нравится»</button><span class="fmsg"></span>
-      </div>
-      <div class="flist" data-v="no"></div></div>
+    <div class="fcol yes"><h3>♥ Да <span class="fn" data-n="like"></span></h3><div class="flist" data-v="like"></div></div>
+    <div class="fcol no"><h3>✕ Нет <span class="fn" data-n="no"></span></h3><div class="flist" data-v="no"></div></div>
+    <div class="fcol hard"><h3>⛔ Жирное нет <span class="fn" data-n="hard"></span></h3><div class="flist" data-v="hard"></div></div>
   </div>
 </div></section>
 <section id="export"><div class="box">
   <h2>Мои заметки для Claude</h2>
-  <p>Отметки, комментарии и ссылки сохраняются в этом браузере сами. Здесь можно добавить общие мысли и ссылки, которые не относятся к одному стилю. Потом нажми кнопку и вставь текст в чат.</p>
+  <p>Здесь можно добавить общие мысли и ссылки, которые не относятся к одному стилю. Потом нажми кнопку и вставь текст в чат.</p>
   <textarea id="gnote" rows="3" placeholder="Общий комментарий: что зацепило, что смешать, какое настроение хочется…"></textarea>
   <textarea id="glinks" rows="3" placeholder="Любые понравившиеся ссылки с других сайтов, каждая с новой строки"></textarea>
-  <button id="copy">Скопировать всё для Claude</button><span id="copyok"></span>
+  <p class="save-note">Отметки, комментарии и ссылки сохраняются в облако сами и видны на любом устройстве по этой ссылке. Claude читает их оттуда напрямую. Файл нужен только как запасная копия или чтобы прикрепить его в чат.</p>
+  <div class="ebtns"><button id="copy">Скопировать всё для Claude</button><button id="dlmd" class="sec">Скачать файл</button><label class="sec" for="upjson">Загрузить файл</label><input type="file" id="upjson" accept=".json,application/json" hidden></div><span id="copyok"></span>
   <textarea id="out" readonly rows="8" placeholder="Здесь появится текст для вставки в чат"></textarea>
 </div></section>
 <footer>Ссылки проверены поиском 16 ноября 2026. Подборки Dribbble, Behance и Awwwards пополняются, поэтому примеры в них со временем меняются. Pinterest намеренно не используется.</footer>
@@ -357,7 +370,7 @@ const nav=document.getElementById('nav'), main=document.getElementById('main');
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 FAM.forEach(f=>{
   nav.insertAdjacentHTML('beforeend',`<a href="#${f.id}">${f.name} · ${f.items.length}</a>`);
-  if(f===FAM[FAM.length-1])nav.insertAdjacentHTML('beforeend','<a href="#finds" style="border-color:var(--accent);color:var(--accent)">Мои находки ↓</a><a href="#export" style="border-color:var(--accent);color:var(--accent)">Скопировать для Claude ↓</a>');
+  if(f===FAM[FAM.length-1])nav.insertAdjacentHTML('beforeend','<a href="#finds" style="border-color:var(--accent);color:var(--accent)">Мои «да» и «нет» ↓</a><a href="#export" style="border-color:var(--accent);color:var(--accent)">Скопировать для Claude ↓</a>');
   const cards=f.items.map(s=>`<article class="card" data-k="${esc((s.ru+' '+s.en+' '+s.t+' '+s.w).toLowerCase())}">
     <h3>${s.ru}</h3><div class="en">${s.en}</div><p>${s.t}</p>
     <div class="when"><b>Когда подходит:</b> ${s.w}</div>
@@ -373,7 +386,7 @@ FAM.forEach(f=>{
 const KEY='katalog-stiley-v1';
 let st={styles:{},gnote:'',glinks:''};
 try{const r=localStorage.getItem(KEY);if(r)st=Object.assign(st,JSON.parse(r));}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}if(window.cloudPush)cloudPush();};
 const rec=id=>st.styles[id]||(st.styles[id]={v:'',c:'',l:''});
 const paint=m=>{const r=st.styles[m.dataset.id]||{};const card=m.closest('.card');
   m.querySelectorAll('.votes button').forEach(b=>b.classList.toggle('on',b.dataset.v===r.v));
@@ -382,40 +395,103 @@ document.querySelectorAll('.mine').forEach(m=>{
   const r=st.styles[m.dataset.id]||{};
   m.querySelector('.cm').value=r.c||'';m.querySelector('.lk').value=r.l||'';paint(m);
   m.querySelectorAll('.votes button').forEach(b=>b.addEventListener('click',()=>{
-    const x=rec(m.dataset.id);x.v=(x.v===b.dataset.v)?'':b.dataset.v;save();paint(m);}));
-  m.querySelector('.cm').addEventListener('input',e=>{rec(m.dataset.id).c=e.target.value;save();});
-  m.querySelector('.lk').addEventListener('input',e=>{rec(m.dataset.id).l=e.target.value;save();});
+    const x=rec(m.dataset.id);x.v=(x.v===b.dataset.v)?'':b.dataset.v;x.m=Date.now();save();paint(m);}));
+  m.querySelector('.cm').addEventListener('input',e=>{const x=rec(m.dataset.id);x.c=e.target.value;x.m=Date.now();save();});
+  m.querySelector('.lk').addEventListener('input',e=>{const x=rec(m.dataset.id);x.l=e.target.value;x.m=Date.now();save();});
 });
 const gn=document.getElementById('gnote'),gl=document.getElementById('glinks');
 gn.value=st.gnote||'';gl.value=st.glinks||'';
-gn.addEventListener('input',()=>{st.gnote=gn.value;save();});
-gl.addEventListener('input',()=>{st.glinks=gl.value;save();});
+gn.addEventListener('input',()=>{st.gnote=gn.value;st.gm=Date.now();save();});
+gl.addEventListener('input',()=>{st.glinks=gl.value;st.gm=Date.now();save();});
 
-// ---- мои находки ----
+// ---- мои «да» и «нет» ----
+const AREAS=['Общее настроение','Цвет','Шрифт','Иконки','Иллюстрации и фото','Композиция и сетка','Кнопки и интерфейс','Анимация и движение','3D и объём','Иероглифы и пиньинь','Тексты и тон'];
+const FV={like:'да',no:'нет',hard:'жирное нет'};
 if(!Array.isArray(st.finds))st.finds=[];
-st.finds.forEach(x=>{if(x.v!=='no')x.v='like';});
+if(!Array.isArray(st.del))st.del=[];
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+st.finds.forEach(x=>{if(!FV[x.v])x.v='like';if(!Array.isArray(x.a))x.a=[];if(!x.id)x.id=newId();if(!x.m)x.m=1;});
 const safeUrl=u=>/^https?:\/\//i.test(u)?u:'https://'+u;
+let fverd='',fsel=new Set();
+const fvBtns=document.querySelectorAll('#fverd button');
+fvBtns.forEach(b=>b.addEventListener('click',()=>{fverd=b.dataset.v;fvBtns.forEach(x=>x.classList.toggle('on',x===b));}));
+const fa=document.getElementById('fareas');
+AREAS.forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;
+  b.addEventListener('click',()=>{fsel.has(t)?fsel.delete(t):fsel.add(t);b.classList.toggle('on',fsel.has(t));});fa.appendChild(b);});
 const renderFinds=()=>{
+  document.querySelectorAll('.fn').forEach(n=>{const k=st.finds.filter(x=>x.v===n.dataset.n).length;n.textContent=k?'· '+k:'';});
   document.querySelectorAll('.flist').forEach(list=>{list.innerHTML='';
     st.finds.filter(x=>x.v===list.dataset.v).reverse().forEach(it=>{
       const d=document.createElement('div');d.className='fitem '+it.v;
-      d.innerHTML='<div class="ftop"><a target="_blank" rel="noopener"></a><button class="del">Удалить</button></div><textarea rows="2" placeholder="Комментарий"></textarea>';
-      const a=d.querySelector('a');a.href=safeUrl(it.u);a.textContent=it.u;
-      const ta=d.querySelector('textarea');ta.value=it.c||'';ta.addEventListener('input',()=>{it.c=ta.value;save();});
+      d.innerHTML='<div class="ftop"><a target="_blank" rel="noopener"></a><button class="del">Удалить</button></div><div class="tags"></div><textarea rows="2" placeholder="Комментарий"></textarea><div class="votes"><button data-v="like">да</button><button data-v="no">нет</button><button data-v="hard">жирное нет</button></div><span class="date"></span>';
+      const a=d.querySelector('a');a.href=safeUrl(it.u);a.textContent=it.u.replace(/^https?:\/\/(www\.)?/,'');
+      d.querySelector('.tags').innerHTML=(it.a||[]).map(t=>'<span>'+esc(t)+'</span>').join('');
+      if(it.d)d.querySelector('.date').textContent=new Date(it.d).toLocaleDateString('ru-RU');
+      const ta=d.querySelector('textarea');ta.value=it.c||'';ta.addEventListener('input',()=>{it.c=ta.value;it.m=Date.now();save();});
+      d.querySelectorAll('.votes button').forEach(b=>{b.classList.toggle('on',b.dataset.v===it.v);
+        b.addEventListener('click',()=>{if(it.v===b.dataset.v)return;it.v=b.dataset.v;it.m=Date.now();save();renderFinds();});});
       const del=d.querySelector('.del');
       del.addEventListener('click',()=>{
         if(!del.classList.contains('sure')){del.classList.add('sure');del.textContent='Точно удалить?';
           setTimeout(()=>{del.classList.remove('sure');del.textContent='Удалить';},3000);return;}
-        st.finds=st.finds.filter(x=>x!==it);save();renderFinds();});
+        st.finds=st.finds.filter(x=>x!==it);st.del.push(it.id);save();renderFinds();});
       list.appendChild(d);});});
 };
-document.querySelectorAll('.fform').forEach(f=>{
-  const inp=f.querySelector('input'),ta=f.querySelector('textarea'),m=f.querySelector('.fmsg');
-  f.querySelector('.addbtn').addEventListener('click',()=>{
-    const u=inp.value.trim();if(!u){m.textContent='Вставь ссылку';return;}
-    st.finds.push({u,v:f.dataset.v,c:ta.value.trim()});save();renderFinds();inp.value='';ta.value='';m.textContent='';});
+document.getElementById('fadd').addEventListener('click',()=>{
+  const inp=document.getElementById('furl'),ta=document.getElementById('fcom'),m=document.getElementById('fmsg');
+  const u=inp.value.trim(),c=ta.value.trim();
+  if(!u){m.textContent='Вставь ссылку';inp.focus();return;}
+  if(!fverd){m.textContent='Выбери «да», «нет» или «жирное нет»';return;}
+  if(!c){m.textContent='Напиши пару слов, что именно нравится или нет';ta.focus();return;}
+  st.finds.push({id:newId(),u,v:fverd,c,a:[...fsel],d:new Date().toISOString(),m:Date.now()});save();renderFinds();
+  inp.value='';ta.value='';fverd='';fsel.clear();fvBtns.forEach(x=>x.classList.remove('on'));fa.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+  m.style.color='#1f5f30';m.textContent='Сохранено';setTimeout(()=>{m.textContent='';m.style.color='';},2500);
 });
 renderFinds();
+
+// ---- облако: одно и то же на телефоне и компьютере ----
+// Хранится в том же хранилище, что и домашки (Cloudflare KV, воркер gruppa-deti).
+const CLOUD=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const CHW='katalog-stiley',CSID='daria';
+const cst=document.getElementById('cloudst');
+const setC=(t,bad)=>{cst.textContent=t;cst.className='cloud'+(bad?' bad':'');};
+const refreshAll=()=>{
+  document.querySelectorAll('.mine').forEach(m=>{const r=st.styles[m.dataset.id]||{};
+    const cm=m.querySelector('.cm'),lk=m.querySelector('.lk');
+    if(document.activeElement!==cm)cm.value=r.c||'';if(document.activeElement!==lk)lk.value=r.l||'';paint(m);});
+  if(document.activeElement!==gn)gn.value=st.gnote||'';if(document.activeElement!==gl)gl.value=st.glinks||'';
+  if(!document.activeElement||!document.activeElement.closest('.flist'))renderFinds();apply();};
+const merge=r=>{ // r: состояние из облака
+  if(!r)return false;let ch=false;
+  Object.entries(r.styles||{}).forEach(([k,v])=>{const c=st.styles[k];if(!c||(v.m||0)>(c.m||0)){st.styles[k]=v;ch=true;}});
+  if((r.gm||0)>(st.gm||0)){st.gnote=r.gnote||'';st.glinks=r.glinks||'';st.gm=r.gm;ch=true;}
+  const del=new Set([...(st.del||[]),...(r.del||[])]);if(del.size!==st.del.length)ch=true;st.del=[...del];
+  const by=new Map(st.finds.map(x=>[x.id,x]));
+  (r.finds||[]).forEach(x=>{const c=by.get(x.id);if(!c||(x.m||0)>(c.m||0)){by.set(x.id,x);ch=true;}});
+  const before=st.finds.length;st.finds=[...by.values()].filter(x=>!del.has(x.id)).sort((a,b)=>(a.d||'').localeCompare(b.d||''));
+  if(st.finds.length!==before)ch=true;return ch;};
+const pull=async()=>{const r=await fetch(CLOUD+'list?hw='+CHW,{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();
+  const sub=(j.subs||[]).find(x=>x.sid===CSID);return sub&&sub.parts&&sub.parts.state;};
+let pushT=null,pushing=false,again=false,ready=false;
+const doPush=async()=>{if(pushing){again=true;return;}pushing=true;setC('Сохраняю в облако…');
+  try{const r=await fetch(CLOUD+'save',{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({hw:CHW,sid:CSID,name:'Дарья',part:'state',data:{styles:st.styles,finds:st.finds,del:st.del,gnote:st.gnote,glinks:st.glinks,gm:st.gm||0}})});
+    const j=await r.json().catch(()=>({}));
+    if(r.status===413)setC('Записей стало слишком много для облака, напиши Claude',true);
+    else if(!r.ok)throw 0;else setC('✓ Сохранено в облаке, видно на всех устройствах');}
+  catch(e){setC('Нет связи: сохранено на этом устройстве, отправлю позже',true);}
+  pushing=false;if(again){again=false;doPush();}};
+window.cloudPush=()=>{if(!ready)return;clearTimeout(pushT);setC('Есть изменения…');pushT=setTimeout(doPush,1200);};
+const sync=async(first)=>{try{const r=await pull();const ch=merge(r);
+    if(ch){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}refreshAll();}
+    ready=true;
+    // отправляем, если на этом устройстве есть то, чего нет в облаке
+    const need=!r||JSON.stringify({s:st.styles,f:st.finds.length,d:st.del.length,g:st.gm||0})!==JSON.stringify({s:r.styles||{},f:(r.finds||[]).length,d:(r.del||[]).length,g:r.gm||0});
+    if(need)doPush();else setC('✓ Всё в облаке, видно на всех устройствах');}
+  catch(e){ready=true;setC('Нет связи с облаком: пока сохраняю на этом устройстве',true);}};
+sync(true);
+addEventListener('pageshow',e=>{if(e.persisted)sync();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')sync();});
 
 // ---- поиск и фильтр ----
 let filt='all';
@@ -451,9 +527,9 @@ const build=()=>{
       if(r.c.trim())lines.push('  Комментарий: '+r.c.trim().replace(/\n+/g,' / '));
       const sl=splitLinks(r.l);if(sl.note)lines.push('  Заметка: '+sl.note);sl.urls.forEach(u=>lines.push('  Ссылка: '+u));});
     lines.push('');});
-  [['like','МОИ НАХОДКИ: НРАВИТСЯ'],['no','МОИ НАХОДКИ: НЕ НРАВИТСЯ']].forEach(([k,h])=>{
+  [['like','МОИ ССЫЛКИ: ДА'],['no','МОИ ССЫЛКИ: НЕТ'],['hard','МОИ ССЫЛКИ: ЖИРНОЕ НЕТ']].forEach(([k,h])=>{
     const xs=(st.finds||[]).filter(x=>x.v===k);if(!xs.length)return;lines.push('== '+h+' ==');
-    xs.forEach(x=>{lines.push('• '+x.u);if((x.c||'').trim())lines.push('  Комментарий: '+x.c.trim().replace(/\n+/g,' / '));});
+    xs.forEach(x=>{lines.push('• '+x.u+((x.a||[]).length?' ['+x.a.join(', ')+']':''));if((x.c||'').trim())lines.push('  Комментарий: '+x.c.trim().replace(/\n+/g,' / '));});
     lines.push('');});
   if(st.gnote.trim()){lines.push('== ОБЩИЙ КОММЕНТАРИЙ ==',st.gnote.trim(),'');}
   const gl2=splitLinks(st.glinks);
@@ -468,6 +544,25 @@ document.getElementById('copy').addEventListener('click',async()=>{
   if(!done){try{out.focus();out.select();done=document.execCommand('copy');}catch(e){}}
   ok.textContent=done?'Скопировано, вставь в чат':'Выдели текст ниже и скопируй вручную';
 });
+
+// ---- файл: скачать и загрузить ----
+document.getElementById('dlmd').addEventListener('click',()=>{
+  const day=new Date().toISOString().slice(0,10);
+  const blob=new Blob([JSON.stringify({kind:'katalog-stiley',saved:new Date().toISOString(),text:build(),data:st},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='moi-da-net-'+day+'.json';document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  document.getElementById('copyok').textContent='Файл скачан';});
+document.getElementById('upjson').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{const ok=document.getElementById('copyok');
+    try{const j=JSON.parse(r.result),d=j.data||j;if(!d||typeof d!=='object'||!d.styles)throw 0;
+      const have=new Set(st.finds.map(x=>x.u+'|'+x.c));
+      (d.finds||[]).forEach(x=>{if(!have.has(x.u+'|'+x.c))st.finds.push({...x,id:x.id||newId(),m:Date.now()});});
+      Object.entries(d.styles||{}).forEach(([k,v])=>{const cur=st.styles[k];if(!cur||!(cur.v||cur.c||cur.l))st.styles[k]=v;});
+      if(!st.gnote&&d.gnote)st.gnote=d.gnote;if(!st.glinks&&d.glinks)st.glinks=d.glinks;
+      save();location.reload();}
+    catch(_){ok.style.color='#a14a2a';ok.textContent='Это не тот файл: нужен файл, скачанный кнопкой «Скачать файл»';}};
+  r.readAsText(f);e.target.value='';});
 </script>
 </body>
 </html>
