@@ -61,6 +61,29 @@ section.family .fdesc{color:var(--muted);margin:0 0 16px;font-size:15px}
 #export textarea{width:100%;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#fcfcfb;color:var(--ink)}
 #copy{font:inherit;font-weight:600;padding:12px 20px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer}
 #copyok{margin-left:10px;color:#1f5f30;font-size:14px}
+#finds{max-width:1080px;margin:0 auto 20px;padding:0 20px}
+#finds .box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+#finds h2{margin:0 0 6px;font-size:22px;font-weight:600}
+#finds>.box>p{color:var(--muted);margin:0 0 14px;font-size:15px}
+.fform input,.fform textarea,.fitem textarea{width:100%;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fcfcfb;color:var(--ink);margin-bottom:8px}
+.fform .votes{margin-bottom:8px}
+.votes button[data-v="but"].on{background:#eef0fb;border-color:#8f9be0;color:#2d3a99}
+.addbtn{font:inherit;font-weight:600;padding:10px 18px;border-radius:12px;border:0;background:var(--ink);color:#fff;cursor:pointer}
+#fmsg{margin-left:10px;font-size:14px;color:#a14a2a}
+.fcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.fcols h3{font-size:16px;font-weight:600;margin:0 0 8px}
+.flist:empty::after{content:'Пока пусто';color:var(--muted);font-size:14px}
+.fitem{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px;background:#fff}
+.fitem.like{border-left:4px solid #7bb88a}.fitem.no{border-left:4px solid #a9a9ae}
+.fcol{border-radius:14px;padding:14px}.fcol.yes{background:#f3f9f4}.fcol.no{background:#f4f4f5}
+.fmsg{margin-left:10px;font-size:14px;color:#a14a2a}
+.fitem .ftop{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.fitem a{color:var(--accent);font-size:14px;word-break:break-all}
+.fitem .del{flex:none;font:inherit;font-size:12px;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;padding:3px 8px;cursor:pointer}
+.fitem .del.sure{background:#a14a2a;color:#fff;border-color:#a14a2a}
+.fitem .votes{margin-bottom:4px}.fitem .votes button{font-size:12px;padding:4px 9px}
+.fitem textarea{margin:0;min-height:36px}
+@media (max-width:760px){.fcols{grid-template-columns:1fr}}
 #out{min-height:160px;font-family:ui-monospace,Menlo,Consolas,monospace!important;font-size:13px!important}
 footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
 @media (max-width:520px){.grid{grid-template-columns:1fr}header.top{padding-top:28px}}
@@ -77,6 +100,26 @@ footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
     <button data-f="all" class="on">Все</button><button data-f="like">Нравится</button><button data-f="maybe">Под вопросом</button><button data-f="no">Не моё</button><button data-f="none">Ещё не отмечено</button>
   </div></div>
 <main id="main"></main>
+<section id="finds"><div class="box">
+  <h2>Мои находки</h2>
+  <p>Сюда можно быстро сохранить любой дизайн, который попался на глаза: вставь ссылку и напиши, что именно зацепило, что бы ты поменяла или почему точно нет.</p>
+  <div class="fcols">
+    <div class="fcol yes"><h3>♥ Нравится</h3>
+      <div class="fform" data-v="like">
+        <input type="url" placeholder="Ссылка на дизайн (Behance, Dribbble, любой сайт)">
+        <textarea rows="2" placeholder="Комментарий: что нравится или что бы поменяла («заменить кнопки и цвет обводки было бы клёво»)"></textarea>
+        <button class="addbtn">Добавить в «Нравится»</button><span class="fmsg"></span>
+      </div>
+      <div class="flist" data-v="like"></div></div>
+    <div class="fcol no"><h3>✕ Не нравится</h3>
+      <div class="fform" data-v="no">
+        <input type="url" placeholder="Ссылка на дизайн">
+        <textarea rows="2" placeholder="Комментарий: что именно не так («вот это прям точно нет»)"></textarea>
+        <button class="addbtn">Добавить в «Не нравится»</button><span class="fmsg"></span>
+      </div>
+      <div class="flist" data-v="no"></div></div>
+  </div>
+</div></section>
 <section id="export"><div class="box">
   <h2>Мои заметки для Claude</h2>
   <p>Отметки, комментарии и ссылки сохраняются в этом браузере сами. Здесь можно добавить общие мысли и ссылки, которые не относятся к одному стилю. Потом нажми кнопку и вставь текст в чат.</p>
@@ -314,7 +357,7 @@ const nav=document.getElementById('nav'), main=document.getElementById('main');
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 FAM.forEach(f=>{
   nav.insertAdjacentHTML('beforeend',`<a href="#${f.id}">${f.name} · ${f.items.length}</a>`);
-  if(f===FAM[FAM.length-1])nav.insertAdjacentHTML('beforeend','<a href="#export" style="border-color:var(--accent);color:var(--accent)">Мои заметки ↓</a>');
+  if(f===FAM[FAM.length-1])nav.insertAdjacentHTML('beforeend','<a href="#finds" style="border-color:var(--accent);color:var(--accent)">Мои находки ↓</a><a href="#export" style="border-color:var(--accent);color:var(--accent)">Скопировать для Claude ↓</a>');
   const cards=f.items.map(s=>`<article class="card" data-k="${esc((s.ru+' '+s.en+' '+s.t+' '+s.w).toLowerCase())}">
     <h3>${s.ru}</h3><div class="en">${s.en}</div><p>${s.t}</p>
     <div class="when"><b>Когда подходит:</b> ${s.w}</div>
@@ -348,6 +391,32 @@ gn.value=st.gnote||'';gl.value=st.glinks||'';
 gn.addEventListener('input',()=>{st.gnote=gn.value;save();});
 gl.addEventListener('input',()=>{st.glinks=gl.value;save();});
 
+// ---- мои находки ----
+if(!Array.isArray(st.finds))st.finds=[];
+st.finds.forEach(x=>{if(x.v!=='no')x.v='like';});
+const safeUrl=u=>/^https?:\/\//i.test(u)?u:'https://'+u;
+const renderFinds=()=>{
+  document.querySelectorAll('.flist').forEach(list=>{list.innerHTML='';
+    st.finds.filter(x=>x.v===list.dataset.v).reverse().forEach(it=>{
+      const d=document.createElement('div');d.className='fitem '+it.v;
+      d.innerHTML='<div class="ftop"><a target="_blank" rel="noopener"></a><button class="del">Удалить</button></div><textarea rows="2" placeholder="Комментарий"></textarea>';
+      const a=d.querySelector('a');a.href=safeUrl(it.u);a.textContent=it.u;
+      const ta=d.querySelector('textarea');ta.value=it.c||'';ta.addEventListener('input',()=>{it.c=ta.value;save();});
+      const del=d.querySelector('.del');
+      del.addEventListener('click',()=>{
+        if(!del.classList.contains('sure')){del.classList.add('sure');del.textContent='Точно удалить?';
+          setTimeout(()=>{del.classList.remove('sure');del.textContent='Удалить';},3000);return;}
+        st.finds=st.finds.filter(x=>x!==it);save();renderFinds();});
+      list.appendChild(d);});});
+};
+document.querySelectorAll('.fform').forEach(f=>{
+  const inp=f.querySelector('input'),ta=f.querySelector('textarea'),m=f.querySelector('.fmsg');
+  f.querySelector('.addbtn').addEventListener('click',()=>{
+    const u=inp.value.trim();if(!u){m.textContent='Вставь ссылку';return;}
+    st.finds.push({u,v:f.dataset.v,c:ta.value.trim()});save();renderFinds();inp.value='';ta.value='';m.textContent='';});
+});
+renderFinds();
+
 // ---- поиск и фильтр ----
 let filt='all';
 const apply=()=>{
@@ -375,6 +444,10 @@ const build=()=>{
       lines.push('• '+s.ru+' ('+s.en+') — семейство «'+f.name+'»'+(r.v?', '+LBL[r.v]:''));
       if(r.c.trim())lines.push('  Комментарий: '+r.c.trim().replace(/\n+/g,' / '));
       r.l.split(/\s+/).filter(x=>x).forEach(u=>lines.push('  Ссылка: '+u));});
+    lines.push('');});
+  [['like','МОИ НАХОДКИ: НРАВИТСЯ'],['no','МОИ НАХОДКИ: НЕ НРАВИТСЯ']].forEach(([k,h])=>{
+    const xs=(st.finds||[]).filter(x=>x.v===k);if(!xs.length)return;lines.push('== '+h+' ==');
+    xs.forEach(x=>{lines.push('• '+x.u);if((x.c||'').trim())lines.push('  Комментарий: '+x.c.trim().replace(/\n+/g,' / '));});
     lines.push('');});
   if(st.gnote.trim()){lines.push('== ОБЩИЙ КОММЕНТАРИЙ ==',st.gnote.trim(),'');}
   const gls=st.glinks.split(/\s+/).filter(x=>x);
