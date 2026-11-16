@@ -22,7 +22,7 @@ header.top{padding:56px 0 28px}
 .kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
 h1{font-size:clamp(34px,5.4vw,58px);line-height:1.05;margin:0 0 18px;max-width:14ch}
 .lead{font-size:18px;color:var(--ink2);max-width:62ch;margin:0}
-.toc{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:34px}
+.toc{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:34px}
 .toc a{background:var(--card);padding:16px 16px 18px;text-decoration:none;color:var(--ink);display:block}
 .toc a:hover{background:#fff}
 .toc b{display:block;font-family:var(--serif);font-weight:500;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px}
@@ -217,6 +217,34 @@ h3.sub{font-size:24px;margin:44px 0 14px}
 .week li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
 .week li::before{counter-increment:d;content:"День " counter(d);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
 
+/* лендинг из блоков */
+.lb{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:start}
+.lb-map{position:sticky;top:76px;display:flex;flex-direction:column;gap:4px}
+.lb-map a{display:flex;justify-content:space-between;text-decoration:none;color:var(--ink);font-size:13px;border-radius:6px;padding:8px 10px;background:#ece9e1}
+.lb-map a:hover{outline:1.5px solid var(--accent)}
+.lb-map a.hero{background:#dfe2f6;padding:22px 10px}
+.lb-map a.foot{background:#2a2925;color:#d8d5cc}
+.lb-map a.cta{background:var(--accent);color:#fff}
+.lb-map span{color:inherit;opacity:.6}
+.blocks{display:flex;flex-direction:column;gap:10px}
+.blk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;scroll-margin-top:80px}
+.blk h4{grid-column:1/-1;margin:0 0 2px;font:500 21px var(--serif)}
+.blk h4 small{font:13px var(--sans);color:var(--muted);margin-left:8px}
+.blk p{margin:0;font-size:14.5px}
+.blk .oops{color:var(--warn);font-size:14px}
+.blk .where{font-size:14px}
+.blk .where b{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:3px}
+.blk .where a{margin-right:10px;white-space:nowrap}
+.howto{list-style:none;counter-reset:h;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.howto li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.howto li::before{counter-increment:h;content:"Шаг " counter(h);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.quilt{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quilt > div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.quilt h4{margin:0 0 8px;font:500 18px var(--serif)}
+.qpage{display:flex;flex-direction:column;gap:4px}
+.qpage i{display:block;height:26px;border-radius:4px}
+.promptbox{background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre-wrap;margin:0}
+
 /* ИИ */
 .formula{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;counter-reset:f}
 .formula div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14px}
@@ -254,8 +282,8 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
 
 @media (max-width:820px){
   .toc{grid-template-columns:1fr 1fr}
-  .toc a:last-child{grid-column:1/-1}
-  .roles,.builder{grid-template-columns:1fr}
+  .roles,.builder,.lb,.blk,.quilt{grid-template-columns:1fr}
+  .lb-map{position:static}
   .step .row{grid-template-columns:1fr}
   .ladder{grid-template-columns:1fr}
   .ladder div{min-height:0!important}
@@ -285,13 +313,14 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
     <a href="#slovar"><b>1</b><span>Словарь: 134 термина с живыми примерами</span></a>
     <a href="#etapy"><b>2</b><span>Как делают сайт: от задачи до запуска</span></a>
     <a href="#vzglyad"><b>3</b><span>Насмотренность: где смотреть и как разбирать</span></a>
-    <a href="#ii"><b>4</b><span>Как ставить задачу ИИ профессиональными словами</span></a>
-    <a href="#kosyaki"><b>5</b><span>Чек-лист косяков, которые стоит замечать</span></a>
+    <a href="#bloki"><b>4</b><span>Собрать лендинг из блоков: где брать каждый</span></a>
+    <a href="#ii"><b>5</b><span>Как ставить задачу ИИ профессиональными словами</span></a>
+    <a href="#kosyaki"><b>6</b><span>Чек-лист косяков, которые стоит замечать</span></a>
   </div>
 </header>
 
 <nav class="bar"><div class="wrap">
-  <a href="#slovar">Словарь</a><a href="#etapy">Этапы</a><a href="#vzglyad">Насмотренность</a><a href="#ii">Задача для ИИ</a><a href="#kosyaki">Косяки</a>
+  <a href="#slovar">Словарь</a><a href="#etapy">Этапы</a><a href="#vzglyad">Насмотренность</a><a href="#bloki">Лендинг из блоков</a><a href="#ii">Задача для ИИ</a><a href="#kosyaki">Косяки</a>
   <span class="prog"><span id="progtxt">Знаю 0</span><span class="meter"><i id="progbar"></i></span></span>
 </div></nav>
 
@@ -407,9 +436,74 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
   </ol>
 </section>
 
+<!-- ============ 4. ЛЕНДИНГ ИЗ БЛОКОВ ============ -->
+<section class="part" id="bloki">
+  <div class="ph"><div class="num">4</div><div>
+    <h2>Собрать лендинг из блоков</h2>
+    <p>Популярный в рилсах приём: лендинг делят на стандартные блоки, для каждого блока ищут лучший пример на отдельной галерее (меню на одной, первый экран на другой, цены на третьей), а потом отдают все примеры Claude и просят собрать одну страницу. Приём рабочий, потому что у лендинга почти всегда одни и те же части, и для каждой есть специальные коллекции. Но есть ловушка, о ней ниже.</p>
+  </div></div>
+
+  <h3 class="sub" style="margin-top:0">Анатомия лендинга и где смотреть каждый блок</h3>
+  <div class="lb">
+    <nav class="lb-map" aria-label="Блоки лендинга">
+      <a href="#b-head">Хедер, меню <span>1</span></a>
+      <a href="#b-hero" class="hero">Hero, первый экран <span>2</span></a>
+      <a href="#b-feat">Преимущества, как проходит <span>3</span></a>
+      <a href="#b-proof">Отзывы и доверие <span>4</span></a>
+      <a href="#b-price">Цены <span>5</span></a>
+      <a href="#b-faq">Вопросы (FAQ) <span>6</span></a>
+      <a href="#b-cta" class="cta">Заявка, CTA <span>7</span></a>
+      <a href="#b-foot" class="foot">Футер <span>8</span></a>
+    </nav>
+    <div class="blocks" id="blocks"></div>
+  </div>
+  <div class="note">Целые страницы, чтобы увидеть, как блоки стыкуются между собой: <a href="https://land-book.com/" target="_blank" rel="noopener">Land-book</a>, <a href="https://www.lapa.ninja/" target="_blank" rel="noopener">Lapa Ninja</a>, <a href="https://saaslandingpage.com/" target="_blank" rel="noopener">SaaS Landing Page</a>, <a href="https://mobbin.com/" target="_blank" rel="noopener">Mobbin</a>. Галереи по отдельным блокам: <a href="https://www.unsection.com/" target="_blank" rel="noopener">Unsection</a> (любые секции) и <a href="https://godly.design/sections" target="_blank" rel="noopener">Godly: секции</a>.</div>
+
+  <h3 class="sub">Как делать по шагам</h3>
+  <ol class="howto">
+    <li><b>Сначала один главный референс стиля.</b> Целый сайт, который нравится по настроению: шрифты, цвета, воздух. Он задаёт характер всей страницы.</li>
+    <li><b>Список блоков под свою цель.</b> Для пробного урока: хедер, hero, как проходит урок, преподаватель, отзывы, цены, вопросы, заявка, футер. Лишние блоки не берём.</li>
+    <li><b>Для каждого блока 1–2 примера.</b> Смотри на галереях выше. Сохраняй скриншот и подпиши, что берёшь: «раскладку цен в три колонки», а не «вот это».</li>
+    <li><b>Отдай Claude всё вместе.</b> Главный референс стиля + скриншоты блоков + твои тексты. Тексты лучше свои, хотя бы черновые.</li>
+    <li><b>Попроси единую систему.</b> Из блоков брать только структуру, а шрифты, цвета, отступы, скругления и иконки свести к одному набору токенов.</li>
+    <li><b>Сначала вайрфрейм, потом стиль.</b> Проверь порядок и смысл блоков на серой схеме, и только потом крась.</li>
+    <li><b>Прищур-тест на лоскутность.</b> Прокрути готовую страницу, прищурившись. Если блоки выглядят как разные сайты, проси выровнять.</li>
+  </ol>
+
+  <h3 class="sub">Ловушка: лоскутное одеяло</h3>
+  <div class="quilt">
+    <div><h4>Восемь блоков с восьми сайтов</h4><div class="qpage"><i style="background:#2a2925"></i><i style="background:linear-gradient(90deg,#ff2fd0,#4a3bff);height:46px"></i><i style="background:#e9f6ee;border-radius:14px"></i><i style="background:#fff3c9;border-radius:0"></i><i style="background:#1d3b8a;border-radius:20px"></i><i style="background:#f6e3e3"></i><i style="background:#00c896;border-radius:0"></i><i style="background:#c9c7c0"></i></div><p style="font-size:14px;margin:10px 0 0">У каждого блока свои шрифты, цвета, скругления и отступы. По отдельности красиво, вместе как вещи из разных магазинов.</p></div>
+    <div><h4>Те же блоки в одной системе</h4><div class="qpage"><i style="background:#e4e1d8"></i><i style="background:#dfe2f6;height:46px"></i><i style="background:#f0eee8"></i><i style="background:#f0eee8"></i><i style="background:#e8eaf8"></i><i style="background:#f0eee8"></i><i style="background:#3f4bb8"></i><i style="background:#2a2925"></i></div><p style="font-size:14px;margin:10px 0 0">Раскладки взяты из разных мест, но цвет, шрифт, скругление и шаг отступов общие. Один акцент на заявке.</p></div>
+  </div>
+  <div class="note">Из чужих сайтов берём идеи раскладки и устройство блока. Тексты, фото, иллюстрации и логотипы не копируем: это чужая собственность, и для школы всё должно быть своим.</div>
+
+  <h3 class="sub">Пример запроса к Claude</h3>
+  <pre class="promptbox" id="lbPrompt">Собери лендинг пробного урока китайского для родителей детей 8–12 лет и взрослых новичков. Одна цель: оставить заявку.
+
+Главный референс стиля: [ссылка]. Из него взять настроение, шрифты, воздух и спокойную палитру. Не брать тёмные секции.
+
+Блоки по порядку и откуда брать структуру (только раскладку, не стиль):
+1. Хедер: [скриншот 1], логотип слева, 3 пункта меню, кнопка «Записаться» справа, липкий.
+2. Hero: [скриншот 2], слева заголовок и одна CTA, справа фото.
+3. Как проходит урок: [скриншот 3], 3 шага в ряд.
+4. Преподаватель: фото и короткий рассказ.
+5. Отзывы: [скриншот 4], 3 карточки с именем и фото.
+6. Цены: [скриншот 5], 3 тарифа, средний выделен.
+7. Вопросы: аккордеон из 6 пунктов.
+8. Заявка: [скриншот 6], форма из 3 полей.
+9. Футер: [скриншот 7], контакты, документы, соцсети.
+
+Тексты: [мои тексты ниже].
+
+Главное: всё в одной дизайн-системе. Шрифты, цвета, отступы, скругления и иконки вынеси в токены и используй только их. Блоки не должны выглядеть как разные сайты. Один акцентный цвет только на кнопках заявки.
+
+Сначала покажи вайрфрейм всей страницы, после моего «ок» стиль. В конце перечисли, что взял из каждого референса.</pre>
+  <div class="acts" style="margin-top:8px"><button class="btn" id="lbCopy">Скопировать запрос</button> <span id="lbCopied" style="font-size:13px;color:var(--ok)"></span></div>
+</section>
+
 <!-- ============ 4. ИИ ============ -->
 <section class="part" id="ii">
-  <div class="ph"><div class="num">4</div><div>
+  <div class="ph"><div class="num">5</div><div>
     <h2>Как ставить задачу ИИ</h2>
     <p>Claude не видит, что у тебя в голове. На «сделай красивенько» он выдаст среднее по интернету, то есть тот самый ИИ-штамп. Чем точнее слова, тем меньше он угадывает. Точные слова это не жаргон, а числа, названия и примеры.</p>
   </div></div>
@@ -485,7 +579,7 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
 
 <!-- ============ 5. КОСЯКИ ============ -->
 <section class="part" id="kosyaki">
-  <div class="ph"><div class="num">5</div><div>
+  <div class="ph"><div class="num">6</div><div>
     <h2>Чек-лист косяков</h2>
     <p>Пройди по нему любой результат: свой, от Claude или чужой сайт. Отмечай то, что уже умеешь замечать сама. Галочки сохраняются.</p>
   </div></div>
@@ -889,6 +983,25 @@ const siteCard = s=>`<div class="site"><span class="tag">${s[2]}</span><a href="
 document.getElementById('sitesIntl').innerHTML = S_INTL.map(siteCard).join('');
 document.getElementById('sitesRu').innerHTML = S_RU.map(siteCard).join('');
 document.getElementById('sitesType').innerHTML = S_TYPE.map(siteCard).join('');
+
+/* ---------- блоки лендинга ---------- */
+const L = (n,u)=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`;
+const BLOCKS = [
+['b-head','Хедер, меню','header, navbar','Логотип, 3–5 пунктов меню, иногда кнопка заявки. Помогает не потеряться и всегда видеть главное действие.','Слишком много пунктов меню; меню, которое закрывает пол-экрана при прокрутке.',[['Navbar Gallery','https://www.navbar.gallery/']]],
+['b-hero','Hero, первый экран','hero section','Главный заголовок, одна строка пояснения, одна главная кнопка, изображение. За 5 секунд отвечает: что это, для кого и что делать.','Абстрактный заголовок вроде «Новый взгляд на обучение» и три кнопки сразу.',[['Godly: секции','https://godly.design/sections'],['Web Anatomy: hero','https://www.webanatomy.ai/best-landing-pages/sections/hero'],['Unsection','https://www.unsection.com/']]],
+['b-feat','Преимущества, как проходит','features, how it works','3–4 пункта о главном: почему у вас, как проходит урок, что человек получит. Часто шаги или карточки.','Шесть одинаковых карточек «иконка + заголовок + две строки»: главный ИИ-штамп.',[['Unsection','https://www.unsection.com/'],['Land-book','https://land-book.com/']]],
+['b-proof','Отзывы и доверие','testimonials, social proof','Отзывы с именами и фото, цифры (сколько учеников, лет опыта), дипломы. Отвечает на вопрос «а можно ли вам верить».','Отзывы без имён и лиц; бегущая лента, которую невозможно прочитать.',[['Unsection','https://www.unsection.com/'],['SaaS Landing Page','https://saaslandingpage.com/']]],
+['b-price','Цены','pricing','Обычно 2–3 тарифа в колонках, один выделен как рекомендуемый. Что входит, сколько стоит, кнопка.','Пять тарифов с таблицей из 30 строк; нет понятной разницы между вариантами.',[['Pricing Pages','https://pricingpages.design/'],['SaaS Landing Page: цены','https://saaslandingpage.com/pricing/']]],
+['b-faq','Вопросы (FAQ)','faq, accordion','Ответы на частые сомнения: возраст, формат, что если пропустил, как оплатить. Обычно аккордеон: вопрос раскрывается по клику.','Вопросы, которые никто не задаёт; ответы на полстраницы.',[['Unsection','https://www.unsection.com/'],['Lapa Ninja','https://www.lapa.ninja/']]],
+['b-cta','Заявка, CTA','call to action, form','Финальный призыв и форма: короткий заголовок, 2–3 поля, одна кнопка, рядом что будет дальше («перезвоним в течение дня»).','Форма из 8 полей; кнопка «Отправить» вместо «Записаться на урок».',[['CTA Gallery','https://www.cta.gallery/']]],
+['b-foot','Футер','footer','Контакты, соцсети, реквизиты ИП, ссылки на политику персональных данных и оферту.','Футер-свалка из 40 ссылок; нет документов, которые обязательны для школы.',[['Footer Gallery','https://www.footer.design/'],['Awwwards: футеры','https://www.awwwards.com/websites/footer-design/']]]
+];
+document.getElementById('blocks').innerHTML = BLOCKS.map((b,i)=>`<div class="blk" id="${b[0]}"><h4>${i+1}. ${b[1]}<small>${b[2]}</small></h4><p>${b[3]}</p><div class="where"><b>Где смотреть</b>${b[5].map(x=>L(x[0],x[1])).join('')}</div><p class="oops">Частая ошибка: ${b[4]}</p></div>`).join('');
+document.getElementById('lbCopy').addEventListener('click',async()=>{
+  const m=document.getElementById('lbCopied'), t=document.getElementById('lbPrompt').textContent;
+  try{ await navigator.clipboard.writeText(t); m.textContent='Скопировано'; }catch(e){ m.textContent='Выдели текст и скопируй вручную'; }
+  setTimeout(()=>m.textContent='',2000);
+});
 
 /* ---------- было → стало ---------- */
 const PAIRS = [
