@@ -41,6 +41,27 @@ section.family .fdesc{color:var(--muted);margin:0 0 16px;font-size:15px}
   border:1px solid #d9dcf5;border-radius:8px;padding:4px 9px;background:#fafbff}
 .card li a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .hidden{display:none!important}
+.mine{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px}
+.votes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.votes button{font:inherit;font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;color:var(--ink);cursor:pointer}
+.votes button[data-v="like"].on{background:#e7f3ea;border-color:#7bb88a;color:#1f5f30}
+.votes button[data-v="maybe"].on{background:#f4efe2;border-color:#c9b27a;color:#6b5420}
+.votes button[data-v="no"].on{background:#f1f1f2;border-color:#a9a9ae;color:#55555a}
+.mine textarea{width:100%;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;
+  padding:8px 10px;resize:vertical;min-height:40px;margin-top:6px;background:#fcfcfb;color:var(--ink)}
+.card.v-like{border-color:#9fcfaa}.card.v-no{opacity:.75}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.filters button{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+#export{max-width:1080px;margin:0 auto 30px;padding:0 20px}
+#export .box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+#export h2{margin:0 0 6px;font-size:22px;font-weight:600}
+#export p{color:var(--muted);margin:0 0 12px;font-size:15px}
+#export textarea{width:100%;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#fcfcfb;color:var(--ink)}
+#copy{font:inherit;font-weight:600;padding:12px 20px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+#copyok{margin-left:10px;color:#1f5f30;font-size:14px}
+#out{min-height:160px;font-family:ui-monospace,Menlo,Consolas,monospace!important;font-size:13px!important}
 footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
 @media (max-width:520px){.grid{grid-template-columns:1fr}header.top{padding-top:28px}}
 </style>
@@ -51,8 +72,19 @@ footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
   <p class="lead">Основные направления в дизайне интерфейсов, сайтов и графики, собранные в семейства. У каждого: суть в двух-трёх строках, когда он уместен, и 3–5 ссылок на живые примеры и подборки. Это обзор для знакомства, а не рекомендация: любые стили можно смешивать.</p>
 </header>
 <nav class="fam"><div class="in" id="nav"></div></nav>
-<div class="tools"><input id="q" type="search" placeholder="Поиск по стилям: стекло, 3D, ретро…"></div>
+<div class="tools"><input id="q" type="search" placeholder="Поиск по стилям: стекло, 3D, ретро…">
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">Все</button><button data-f="like">Нравится</button><button data-f="maybe">Под вопросом</button><button data-f="no">Не моё</button><button data-f="none">Ещё не отмечено</button>
+  </div></div>
 <main id="main"></main>
+<section id="export"><div class="box">
+  <h2>Мои заметки для Claude</h2>
+  <p>Отметки, комментарии и ссылки сохраняются в этом браузере сами. Здесь можно добавить общие мысли и ссылки, которые не относятся к одному стилю. Потом нажми кнопку и вставь текст в чат.</p>
+  <textarea id="gnote" rows="3" placeholder="Общий комментарий: что зацепило, что смешать, какое настроение хочется…"></textarea>
+  <textarea id="glinks" rows="3" placeholder="Любые понравившиеся ссылки с других сайтов, каждая с новой строки"></textarea>
+  <button id="copy">Скопировать всё для Claude</button><span id="copyok"></span>
+  <textarea id="out" readonly rows="8" placeholder="Здесь появится текст для вставки в чат"></textarea>
+</div></section>
 <footer>Ссылки проверены поиском 16 ноября 2026. Подборки Dribbble, Behance и Awwwards пополняются, поэтому примеры в них со временем меняются. Pinterest намеренно не используется.</footer>
 
 <script>
@@ -257,16 +289,80 @@ const nav=document.getElementById('nav'), main=document.getElementById('main');
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 FAM.forEach(f=>{
   nav.insertAdjacentHTML('beforeend',`<a href="#${f.id}">${f.name} · ${f.items.length}</a>`);
+  if(f===FAM[FAM.length-1])nav.insertAdjacentHTML('beforeend','<a href="#export" style="border-color:var(--accent);color:var(--accent)">Мои заметки ↓</a>');
   const cards=f.items.map(s=>`<article class="card" data-k="${esc((s.ru+' '+s.en+' '+s.t+' '+s.w).toLowerCase())}">
     <h3>${s.ru}</h3><div class="en">${s.en}</div><p>${s.t}</p>
     <div class="when"><b>Когда подходит:</b> ${s.w}</div>
-    <ul>${s.l.map(([n,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${n}</a></li>`).join('')}</ul></article>`).join('');
+    <ul>${s.l.map(([n,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${n}</a></li>`).join('')}</ul>
+    <div class="mine" data-id="${esc(s.en)}">
+      <div class="votes"><button data-v="like">♥ Нравится</button><button data-v="maybe">? Под вопросом</button><button data-v="no">✕ Не моё</button></div>
+      <textarea class="cm" rows="2" placeholder="Мой комментарий"></textarea>
+      <textarea class="lk" rows="2" placeholder="Мои ссылки на примеры, каждая с новой строки"></textarea>
+    </div></article>`).join('');
   main.insertAdjacentHTML('beforeend',`<section class="family" id="${f.id}"><h2>${f.name}</h2><p class="fdesc">${f.desc}</p><div class="grid">${cards}</div></section>`);
 });
-document.getElementById('q').addEventListener('input',e=>{
-  const q=e.target.value.trim().toLowerCase();
-  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',q&&!c.dataset.k.includes(q)));
+// ---- мои отметки (хранятся в этом браузере) ----
+const KEY='katalog-stiley-v1';
+let st={styles:{},gnote:'',glinks:''};
+try{const r=localStorage.getItem(KEY);if(r)st=Object.assign(st,JSON.parse(r));}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+const rec=id=>st.styles[id]||(st.styles[id]={v:'',c:'',l:''});
+const paint=m=>{const r=st.styles[m.dataset.id]||{};const card=m.closest('.card');
+  m.querySelectorAll('.votes button').forEach(b=>b.classList.toggle('on',b.dataset.v===r.v));
+  card.classList.remove('v-like','v-maybe','v-no');if(r.v)card.classList.add('v-'+r.v);card.dataset.v=r.v||'';};
+document.querySelectorAll('.mine').forEach(m=>{
+  const r=st.styles[m.dataset.id]||{};
+  m.querySelector('.cm').value=r.c||'';m.querySelector('.lk').value=r.l||'';paint(m);
+  m.querySelectorAll('.votes button').forEach(b=>b.addEventListener('click',()=>{
+    const x=rec(m.dataset.id);x.v=(x.v===b.dataset.v)?'':b.dataset.v;save();paint(m);}));
+  m.querySelector('.cm').addEventListener('input',e=>{rec(m.dataset.id).c=e.target.value;save();});
+  m.querySelector('.lk').addEventListener('input',e=>{rec(m.dataset.id).l=e.target.value;save();});
+});
+const gn=document.getElementById('gnote'),gl=document.getElementById('glinks');
+gn.value=st.gnote||'';gl.value=st.glinks||'';
+gn.addEventListener('input',()=>{st.gnote=gn.value;save();});
+gl.addEventListener('input',()=>{st.glinks=gl.value;save();});
+
+// ---- поиск и фильтр ----
+let filt='all';
+const apply=()=>{
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{
+    const v=c.dataset.v||'';
+    const okF=filt==='all'||(filt==='none'?!v:v===filt);
+    c.classList.toggle('hidden',!okF||(q&&!c.dataset.k.includes(q)));});
   document.querySelectorAll('section.family').forEach(s=>s.classList.toggle('hidden',!s.querySelector('.card:not(.hidden)')));
+};
+document.getElementById('q').addEventListener('input',apply);
+document.querySelectorAll('#filters button').forEach(b=>b.addEventListener('click',()=>{
+  filt=b.dataset.f;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));apply();}));
+
+// ---- текст для Claude ----
+const LBL={like:'нравится',maybe:'под вопросом',no:'не моё'};
+const build=()=>{
+  const lines=['Мои заметки по каталогу стилей ('+new Date().toLocaleDateString('ru-RU')+')',''];
+  const groups={like:[],maybe:[],no:[],'':[]};
+  FAM.forEach(f=>f.items.forEach(s=>{const r=st.styles[s.en];
+    if(!r||!(r.v||r.c.trim()||r.l.trim()))return;groups[r.v||''].push([f,s,r]);}));
+  [['like','НРАВИТСЯ'],['maybe','ПОД ВОПРОСОМ'],['no','НЕ МОЁ'],['','БЕЗ ОЦЕНКИ, НО С ЗАМЕТКОЙ']].forEach(([k,h])=>{
+    if(!groups[k].length)return;lines.push('== '+h+' ==');
+    groups[k].forEach(([f,s,r])=>{
+      lines.push('• '+s.ru+' ('+s.en+') — семейство «'+f.name+'»'+(r.v?', '+LBL[r.v]:''));
+      if(r.c.trim())lines.push('  Комментарий: '+r.c.trim().replace(/\n+/g,' / '));
+      r.l.split(/\s+/).filter(x=>x).forEach(u=>lines.push('  Ссылка: '+u));});
+    lines.push('');});
+  if(st.gnote.trim()){lines.push('== ОБЩИЙ КОММЕНТАРИЙ ==',st.gnote.trim(),'');}
+  const gls=st.glinks.split(/\s+/).filter(x=>x);
+  if(gls.length){lines.push('== ДРУГИЕ ССЫЛКИ ==',...gls,'');}
+  if(lines.length<=2)lines.push('(пока ничего не отмечено)');
+  return lines.join('\n').trim();
+};
+document.getElementById('copy').addEventListener('click',async()=>{
+  const t=build(),out=document.getElementById('out'),ok=document.getElementById('copyok');out.value=t;
+  let done=false;
+  try{await navigator.clipboard.writeText(t);done=true;}catch(e){}
+  if(!done){try{out.focus();out.select();done=document.execCommand('copy');}catch(e){}}
+  ok.textContent=done?'Скопировано, вставь в чат':'Выдели текст ниже и скопируй вручную';
 });
 </script>
 </body>
