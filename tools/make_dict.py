@@ -99,13 +99,13 @@ async def main():
             sc = MA.scores(c, hz, bases.get(v + r))
             got = min(sc, key=sc.get)
             margin = min(d for t, d in sc.items() if t != want) / max(sc[want], 1e-6)
-            ok = got == want and margin >= 1.3
+            ok = bool(got == want and margin >= 1.3)
             dp = dip(c) if want == 3 else 0.0
-            if want == 3: ok = ok and dp >= 1.2              # ямка обязательна
+            if want == 3: ok = bool(ok and dp >= 1.2)              # ямка обязательна
             q = margin + (dp * 0.4 + cr * 3 if want == 3 else 0)
             cur = best[v].get(k)
-            rec = {"ok": ok, "q": round(q, 2), "rate": r, "p": p, "got": got, "m": round(margin, 2),
-                   "dip": round(dp, 1), "creak": round(cr, 2), "dur": round(dur, 2)}
+            rec = {"ok": ok, "q": round(float(q), 2), "rate": r, "p": p, "got": int(got), "m": round(float(margin), 2),
+                   "dip": round(float(dp), 1), "creak": round(float(cr), 2), "dur": round(float(dur), 2)}
             if cur is None or (ok, q) > (cur["ok"], cur["q"]): best[v][k] = rec
     def vscore(v):
         b = best[v].values()
@@ -116,7 +116,7 @@ async def main():
                    "t3ok": sum(x["ok"] for k, x in best[v].items() if tones[k]["t"] == 3),
                    "t3of": sum(1 for k in best[v] if tones[k]["t"] == 3),
                    "t3creak": sum(x["ok"] and x["creak"] >= 0.08 for k, x in best[v].items() if tones[k]["t"] == 3),
-                   "score": round(vscore(v), 1)} for v in voices}
+                   "score": round(float(vscore(v)), 1)} for v in voices}
     voice = max(voices, key=vscore)
     report = {}
     for k in plan:
