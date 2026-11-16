@@ -69,7 +69,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 <body>
 <header class="top">
   <h1>Каталог стилей дизайна</h1>
-  <p class="lead">Основные направления в дизайне интерфейсов, сайтов и графики, собранные в семейства. У каждого: суть в двух-трёх строках, когда он уместен, и 3–5 ссылок на живые примеры и подборки. Это обзор для знакомства, а не рекомендация: любые стили можно смешивать.</p>
+  <p class="lead">Основные направления в дизайне интерфейсов, сайтов и графики, собранные в семейства. У каждого: суть в двух-трёх строках, когда он уместен, и ссылки на галереи работ: Behance, Dribbble, Awwwards и другие подборки, а также живые сайты. Это обзор для знакомства, а не рекомендация: любые стили можно смешивать.</p>
 </header>
 <nav class="fam"><div class="in" id="nav"></div></nav>
 <div class="tools"><input id="q" type="search" placeholder="Поиск по стилям: стекло, 3D, ретро…">
@@ -273,7 +273,7 @@ const FAM = [
  {ru:'Пространственный (visionOS)',en:'Spatial UI',
   t:'Парящие окна из стекла, мягкие тени, глубина, элементы реагируют на взгляд. Язык Apple Vision Pro, всё чаще переходит в веб.',
   w:'современный «воздушный» интерфейс, презентации, кабинеты.',
-  l:[['Apple: Designing for visionOS','https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos'],['WWDC23: Principles of spatial design','https://developer.apple.com/videos/play/wwdc2023/10072/'],['Dribbble: статья о spatial UI','https://dribbble.com/stories/2023/06/14/spatial_ui_design'],['Dribbble',D('visionos')]]},
+  l:[['Apple Vision Pro (живой пример)','https://www.apple.com/apple-vision-pro/'],['Apple: Designing for visionOS','https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos'],['WWDC23: Principles of spatial design','https://developer.apple.com/videos/play/wwdc2023/10072/'],['Dribbble: статья о spatial UI','https://dribbble.com/stories/2023/06/14/spatial_ui_design'],['Dribbble',D('visionos')]]},
  {ru:'Скроллителлинг',en:'Scrollytelling',
   t:'История, которая разворачивается при прокрутке: картинки сменяются, графики оживают, текст появляется по шагам.',
   w:'объяснение темы шаг за шагом, лендинг курса, рассказы о культуре.',
@@ -285,6 +285,31 @@ const FAM = [
 ]},
 ];
 
+// Поисковые слова для Behance и Dribbble (по английскому названию стиля) и вторая подборка Behance
+const Q={
+ 'Skeuomorphism':['skeuomorphism'],'Neumorphism':['neumorphism'],'Glassmorphism':['glassmorphism',['glassmorphism ui','в интерфейсах']],
+ 'Liquid Glass (Apple, 2025)':['liquid glass'],'Claymorphism':['claymorphism',['3d clay ui','3D-глина']],'Tactile / hardware UI':['tactile ui'],
+ '3D / WebGL / immersive':['3d website'],'International Typographic Style':['swiss style',['swiss poster','плакаты']],'Minimalism':['minimalist website'],
+ 'Bento grid':['bento grid'],'Editorial':['editorial website'],'Kinetic typography':['kinetic typography'],'Flat design':['flat design',['flat illustration','иллюстрации']],
+ 'Design systems':['material design'],'Brutalism':['brutalism website'],'Neobrutalism':['neobrutalism'],'Experimental / anti-design':['experimental website'],
+ 'Memphis':['memphis design',['memphis pattern','узоры']],'Collage / scrapbook':['collage website',['collage poster','плакаты']],'Y2K aesthetic':['y2k design'],
+ 'Retrofuturism':['retro futurism',['retro futuristic ui','в интерфейсах']],'Vaporwave / cyberpunk':['vaporwave',['cyberpunk ui','киберпанк в интерфейсах']],
+ 'Retro OS / pixel':['pixel ui'],'Bauhaus':['bauhaus',['bauhaus poster','плакаты']],'Art Deco':['art deco'],'Art Nouveau':['art nouveau',['art nouveau poster','плакаты']],
+ 'Constructivism':['constructivism',['constructivism poster','плакаты']],'Mid-century modern':['mid century modern',['mid century illustration','иллюстрации']],
+ 'Organic / fluid':['organic web design',['organic shapes branding','брендинг']],'Japandi':['japandi'],'Scandinavian':['scandinavian design'],
+ 'Wabi-sabi':['wabi sabi',['wabi sabi branding','брендинг']],'Iridescent / holographic':['iridescent',['holographic','голография']],
+ 'Aurora / mesh gradients':['aurora gradient'],'Grain / noise':['grainy gradient',['grain texture poster','плакаты']],'Quiet luxury':['quiet luxury'],
+ 'Dark luxury':['dark luxury website'],'Dark tech / glow':['dark ui'],'Hand-drawn':['hand drawn website'],'Isometric':['isometric illustration',['isometric ui','в интерфейсах']],
+ 'Playful / gamified':['gamification app'],'Spatial UI':['visionos',['spatial ui','в интерфейсах']],'Scrollytelling':['scrollytelling'],'Motion / micro-interactions':['micro interaction'],
+};
+// Убираем англоязычные статьи и справочники, оставляем галереи работ и живые сайты
+const ARTICLE=/nngroup|resource-library|hype4|setproduct|logrocket|printmag|tubikstudio|creativebloq|graphicmama|wikipedia|webflow\.com\/blog|adobe\.com|creativemarket\.com\/blog|kittl|betelguise|css-tricks|rise\.co|uxplanet|maglr|justinmind|designmodo|developer\.apple|superdesign|dribbble\.com|behance\.net/;
+FAM.forEach(f=>f.items.forEach(s=>{
+  const [q,q2]=Q[s.en]||[s.en.toLowerCase()];
+  const out=[['Behance',B(q)],['Dribbble',D(q.replace(/\s+/g,'-'))]];
+  if(q2)out.push(['Behance: '+q2[1],B(q2[0])]);
+  s.l=out.concat(s.l.filter(([n,u])=>!ARTICLE.test(u)));
+}));
 const nav=document.getElementById('nav'), main=document.getElementById('main');
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 FAM.forEach(f=>{
