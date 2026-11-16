@@ -15,7 +15,7 @@
 .g button small{display:block;font:700 12px Manrope;color:var(--mu)}.g button.pl{background:#FFF1B8}
 </style></head><body><div class="w">
 <h1>🎙 Голос для диктанта</h1>
-<p class="lead">Один голос для всех диктантов: говорит протяжно, 3-й тон с ямкой и «кряхтением». Голос выбран автоматически: у него больше всего слогов звучат ярко и правильно (проверяет программа по мелодии голоса). Ниже можно послушать все голоса-кандидаты и сравнить.</p>
+<p class="lead">Один голос для всех диктантов: говорит протяжно, 3-й тон с ямкой и «кряхтением». Голос выбран автоматически: у него больше всего слогов звучат ярко и правильно (проверяет программа по мелодии голоса). У выбранного голоса 3-й тон дополнительно «перерисован» по учебнику: вниз — низ с кряхтением — вверх; тембр тот же. Ниже можно послушать все голоса-кандидаты и сравнить.</p>
 <div id="out"><p class="lead">Загружаю…</p></div></div>
 <script>
 const A='../audio/dict/';const code=c=>[...c].map(x=>x.codePointAt(0).toString(16)).join('-');
@@ -24,8 +24,8 @@ let cur=null;
 fetch(A+'check.json?'+Date.now()).then(r=>r.json()).then(j=>{
  const it=Object.values(j.items);const py={};it.forEach(x=>py[x.c]=x.s);
  document.getElementById('out').innerHTML=Object.entries(j.voices).sort((a,b)=>b[1].score-a[1].score).map(([v,s])=>`<div class="v${v===j.voice?' on':''}">
-  <div class="vh"><b>${NM[v]||v}</b>${v===j.voice?'<span class="tag">✓ выбран для диктантов</span>':''}<span class="st">ярко и верно: ${s.ok} из ${s.of} слогов · 3-й тон: ${s.t3ok} из ${s.t3of}, с кряхтением ${s.t3creak}</span></div>
-  <div class="g">${[...j.sample].map(c=>`<button data-u="${A}cmp/${v}/${code(c)}.mp3">${py[c]||c}<small>${c}</small></button>`).join('')}</div></div>`).join('');
+  <div class="vh"><b>${NM[v]||v}</b>${v===j.voice?'<span class="tag">✓ выбран для диктантов</span>':''}<span class="st">${v===j.voice&&j.final?`в диктанте: ярко и верно ${j.final.ok} из ${j.final.of} слогов · 3-й тон с ямкой: ${j.final.t3ok} из ${j.final.t3of}, с кряхтением ${j.final.t3creak}`:`сам синтезатор: ярко и верно ${s.ok} из ${s.of} · 3-й тон с ямкой ${s.t3ok} из ${s.t3of}`}</span></div>
+  <div class="g">${[...j.sample].map(c=>`<button data-u="${v===j.voice?A+code(c)+'.mp3':A+'cmp/'+v+'/'+code(c)+'.mp3'}">${py[c]||c}<small>${c}</small></button>`).join('')}</div></div>`).join('');
  document.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{try{cur&&cur.pause()}catch(e){}document.querySelectorAll('.pl').forEach(x=>x.classList.remove('pl'));b.classList.add('pl');cur=new Audio(b.dataset.u);cur.onended=()=>b.classList.remove('pl');cur.play().catch(()=>b.classList.remove('pl'));});
 }).catch(()=>{document.getElementById('out').innerHTML='<p class="lead">Голоса ещё готовятся — обновите страницу через 10–15 минут.</p>';});
 </script></body></html>
