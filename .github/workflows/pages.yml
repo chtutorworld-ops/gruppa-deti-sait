@@ -27,7 +27,7 @@ jobs:
           path: |
             site/audio
             .audio-cand
-          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py') }}
+          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py') }}
           restore-keys: audio2-
       - name: Озвучить новые слоги (голос Microsoft Edge)
         continue-on-error: true
@@ -36,6 +36,20 @@ jobs:
           pip install edge-tts numpy miniaudio
           python tools/make_audio.py
           ls site/audio | wc -l
+      - name: Голос для диктантов (один голос, протяжно, 3-й тон — ямка с кряхтением)
+        continue-on-error: true
+        timeout-minutes: 40
+        run: |
+          python tools/make_dict.py
+          ls site/audio/dict | wc -l
+      - name: Сразу сохранить озвучку (если выкладку прервёт новая — не озвучивать заново)
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            site/audio
+            .audio-cand
+          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py') }}
       - name: Эталонные тоны (перерисовать мелодию по учебнику)
         continue-on-error: true
         timeout-minutes: 10
