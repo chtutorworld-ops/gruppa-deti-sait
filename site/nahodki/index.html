@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AIKITAY Находки</title>
+<style>
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(fonts/onest-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(fonts/onest-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Onest";font-weight:500;font-display:swap;src:url(fonts/onest-cyrillic-500-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Onest";font-weight:500;font-display:swap;src:url(fonts/onest-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Onest";font-weight:600;font-display:swap;src:url(fonts/onest-cyrillic-600-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Onest";font-weight:600;font-display:swap;src:url(fonts/onest-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Onest";font-weight:700;font-display:swap;src:url(fonts/onest-cyrillic-700-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Onest";font-weight:700;font-display:swap;src:url(fonts/onest-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0400-045F}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-cyrillic-500-normal.woff2) format("woff2");unicode-range:U+0400-045F}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+/* Раскладка: рабочий стол-«прибор»: верхняя панель с вкладками, сетка карточек с живыми превью.
+   Цвета рабочие, палитра школы ещё не утверждена. */
+:root{
+  --bg:#ECEAE5; --surface:#F8F7F4; --sunk:#E3E0DA; --ink:#1C1E23; --muted:#686B73; --line:rgba(28,30,35,.12);
+  --accent:#2B47D1; --accent-ink:#FFFFFF; --ok:#2F7D5B; --warn:#A35A12; --love:#C2456B;
+  --shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 1px 2px rgba(28,30,35,.08), 0 8px 24px -12px rgba(28,30,35,.18);
+  --press:inset 0 2px 4px rgba(28,30,35,.14);
+  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141519; --surface:#1D1F25; --sunk:#111216; --ink:#ECEDF0; --muted:#9A9DA6; --line:rgba(236,237,240,.12);
+  --accent:#7D93FF; --accent-ink:#0E1020; --ok:#6CC59B; --warn:#E3A25E; --love:#F07FA0;
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 8px 24px -12px rgba(0,0,0,.6); --press:inset 0 2px 4px rgba(0,0,0,.5);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141519; --surface:#1D1F25; --sunk:#111216; --ink:#ECEDF0; --muted:#9A9DA6; --line:rgba(236,237,240,.12);
+  --accent:#7D93FF; --accent-ink:#0E1020; --ok:#6CC59B; --warn:#E3A25E; --love:#F07FA0;
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 8px 24px -12px rgba(0,0,0,.6); --press:inset 0 2px 4px rgba(0,0,0,.5);
+  color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-ui);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{margin:0;text-wrap:balance}
+a{color:var(--accent)}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:baseline;gap:12px}
+.brand b{font-weight:700;letter-spacing:.14em;font-size:15px}
+.brand span{color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:4px;padding:4px;background:var(--sunk);border-radius:12px;box-shadow:var(--press)}
+.tab{border:0;background:none;padding:8px 14px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:500}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+.btn{border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-radius:11px;padding:9px 15px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:active{box-shadow:var(--press);transform:translateY(1px)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.ghost{background:none;box-shadow:none}
+.btn.danger{color:var(--love)}
+.btn.small{padding:6px 11px;font-size:13px}
+
+.intro{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
+.intro h1{font-size:clamp(26px,4vw,38px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.intro p{margin:8px 0 0;color:var(--muted);max-width:62ch}
+@media (max-width:640px){.intro{grid-template-columns:1fr}}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{border:1px solid var(--line);background:none;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toolbar .count{margin-left:auto;font:13px var(--f-mono);color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-width:0;cursor:pointer;transition:transform .15s}
+.card:hover{transform:translateY(-2px)}
+.stage{position:relative;aspect-ratio:4/3;max-width:100%;background:var(--sunk);overflow:hidden}
+.stage.dark{background:#0d0e12}
+.stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+.stage.page iframe{width:1280px;height:960px;transform-origin:0 0}
+.stage img{width:100%;height:100%;object-fit:cover;display:block}
+.stage .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;color:var(--muted);font-size:13px}
+.badge{position:absolute;left:8px;top:8px;font:11px/1 var(--f-mono);padding:5px 7px;border-radius:6px;background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.badge.err{color:var(--warn)}
+.meta{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.meta h3{font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.tag{font:11px/1 var(--f-mono);padding:4px 7px;border-radius:6px;background:var(--sunk);color:var(--muted)}
+.tag.love{color:var(--love)}
+.tag.example{color:var(--warn)}
+.cl{font-size:13px;border-left:2px solid var(--accent);padding-left:9px;color:var(--ink)}
+.cl small{display:block;color:var(--muted);font:11px var(--f-mono);letter-spacing:.04em}
+.fit-yes{color:var(--ok)} .fit-maybe{color:var(--warn)} .fit-no{color:var(--love)}
+
+.empty{border:1.5px dashed var(--line);border-radius:var(--r);padding:40px 20px;text-align:center;color:var(--muted)}
+.notice{font-size:13px;color:var(--warn)}
+
+/* панель добавления / просмотр */
+.sheet{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;background:rgba(10,11,14,.35)}
+.panel{width:min(980px,100%);height:100%;background:var(--bg);overflow:auto;padding:22px max(16px,env(safe-area-inset-right,0px)) 40px 22px;display:flex;flex-direction:column;gap:16px;box-shadow:-20px 0 60px rgba(0,0,0,.25)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.panel-head h2{font-size:22px;font-weight:600}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.lbl{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.field .hint{font-size:12px;color:var(--muted)}
+input[type=text],input[type=url],textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;box-shadow:var(--press)}
+textarea{font:13px/1.45 var(--f-mono);resize:vertical;min-height:90px}
+textarea#f-code{min-height:220px}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface)}
+details summary{cursor:pointer;font-weight:500}
+details[open]>.stack{margin-top:12px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.big-stage{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:12px;overflow:hidden;background:var(--sunk);border:1px solid var(--line)}
+.big-stage.dark{background:#0d0e12}
+.big-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.big-stage.page iframe{width:1280px;height:960px;transform-origin:0 0}
+.big-stage img{width:100%;height:100%;object-fit:contain}
+.status{font:12px var(--f-mono);color:var(--muted);min-height:1.4em}
+.status.err{color:var(--warn)}
+.status.ok{color:var(--ok)}
+.drop{border:1.5px dashed var(--line);border-radius:10px;padding:12px;font-size:13px;color:var(--muted);text-align:center;cursor:pointer}
+.drop img{max-height:120px;margin:6px auto 0;display:block;border-radius:6px}
+pre.code{margin:0;max-height:320px;overflow:auto;background:var(--sunk);border-radius:10px;padding:12px;font:12px/1.45 var(--f-mono);white-space:pre}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* источники */
+.src-group{display:flex;flex-direction:column;gap:12px}
+.src-group>h2{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.src{display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);text-decoration:none;color:var(--ink);min-width:0;transition:transform .15s}
+.src:hover{transform:translateY(-2px)}
+.src .dom{font:13px var(--f-mono);color:var(--accent);display:flex;justify-content:space-between;gap:8px}
+.src .what{font-size:14px}
+.src .how{font-size:12px;color:var(--muted)}
+.pv{font:11px/1 var(--f-mono);padding:4px 7px;border-radius:6px;align-self:flex-start}
+.pv.auto{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.pv.try{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.pv.pic{color:var(--muted);background:var(--sunk)}
+.guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.guide div{padding:14px 16px;border-radius:var(--r);background:var(--sunk);font-size:14px}
+.guide b{display:block;margin-bottom:4px}
+@media (prefers-reduced-motion:reduce){.card,.src{transition:none}.card:hover,.src:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>AIKITAY</b><span>копилка UI-находок</span></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-cat" aria-selected="true">Каталог</button>
+      <button class="tab" role="tab" id="tab-src" aria-selected="false">Где искать</button>
+    </div>
+  </header>
+
+  <!-- КАТАЛОГ -->
+  <section id="view-cat" class="wrap" style="gap:18px">
+    <div class="intro">
+      <div>
+        <h1>Находки для приложения, сайта и уроков</h1>
+        <p>Вставьте код понравившейся штуки и ссылку на неё. Превью соберётся само, скриншоты не нужны. Работает с любого устройства: телефона, рабочего и домашнего компьютера. Claude читает всё отсюда и потом разбирает подборку: что подходит, что сочетается, как скомпоновать.</p>
+      </div>
+      <button class="btn primary" id="add-btn">＋ Добавить находку</button>
+    </div>
+    <div class="toolbar"><div class="toolbar" id="filters" style="flex:1"></div><button class="btn small" id="reload">↻ Обновить</button></div>
+    <div id="db-note" class="notice" hidden></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      <p><b>Пока пусто.</b> Нажмите «Добавить находку», вставьте код и ссылку. Карточка с живым превью появится здесь.</p>
+    </div>
+  </section>
+
+  <!-- ИСТОЧНИКИ -->
+  <section id="view-src" class="wrap" style="gap:26px" hidden>
+    <div class="intro" style="grid-template-columns:1fr">
+      <div>
+        <h1>Где искать красивое</h1>
+        <p>Метка у каждого сайта говорит, что будет с превью: <span class="pv auto">само</span> код вставляется и сразу показывается, <span class="pv try">попробует</span> код на React, превью соберётся у большинства, <span class="pv pic">картинка</span> кода нет, добавьте ссылку и скриншот (можно просто Ctrl+V).</p>
+      </div>
+    </div>
+    <div class="guide">
+      <div><b>1. Нашли штуку</b>Откройте её на сайте и найдите кнопку «Code», «Copy» или «&lt;/&gt;».</div>
+      <div><b>2. Скопировали</b>Если код разбит на HTML и CSS, вставьте их в разные поля («Ещё поля»).</div>
+      <div><b>3. Вставили сюда</b>Добавьте ссылку и пару слов, чем нравится. Превью появится справа.</div>
+      <div><b>CodePen</b>Если в окошке написано SCSS или Pug, нажмите на стрелку ▾ у окошка → «View Compiled» и копируйте уже оттуда.</div>
+    </div>
+    <div id="sources"></div>
+  </section>
+</div>
+
+<!-- Панель: добавить / изменить -->
+<div class="sheet" id="sheet-form" hidden>
+  <form class="panel" id="form" autocomplete="off">
+    <div class="panel-head">
+      <h2 id="form-title">Новая находка</h2>
+      <button type="button" class="btn ghost" id="form-close">Закрыть</button>
+    </div>
+    <div class="two">
+      <div class="stack">
+        <div class="field"><label for="f-url">Ссылка на источник</label><input type="url" id="f-url" placeholder="https://uiverse.io/…"></div>
+        <div class="field"><label for="f-title">Название</label><input type="text" id="f-title" placeholder="Например: стеклянная кнопка с бликом"></div>
+        <div class="field"><span class="lbl">Что это</span><div class="seg" id="f-kind"></div></div>
+        <div class="field">
+          <label for="f-code">Код</label>
+          <textarea id="f-code" spellcheck="false" placeholder="Вставьте сюда код: HTML, или HTML вместе с &lt;style&gt;, или компонент React (с import … from 'react')"></textarea>
+          <span class="hint">Подходит HTML, CSS, JavaScript и компоненты React/Tailwind. Тип кода определяется сам.</span>
+        </div>
+        <details id="more">
+          <summary>Ещё поля: отдельный CSS, JS, фон превью, картинка</summary>
+          <div class="stack">
+            <div class="field"><label for="f-css">CSS отдельно</label><textarea id="f-css" spellcheck="false" placeholder=".button { … }"></textarea></div>
+            <div class="field"><label for="f-js">JavaScript отдельно</label><textarea id="f-js" spellcheck="false"></textarea></div>
+            <div class="field"><label for="f-demo">Как показать компонент (для React, необязательно)</label><textarea id="f-demo" spellcheck="false" placeholder="&lt;SplitText text=&quot;你好&quot; /&gt;"></textarea><span class="hint">Если на сайте есть блок «Usage» или «Пример», скопируйте его сюда.</span></div>
+            <div class="field"><span class="lbl">Фон превью</span><div class="seg" id="f-bg"></div></div>
+            <div class="field"><span class="lbl">Размер превью</span><div class="seg" id="f-scale"></div><span class="hint">«Целый экран» уменьшает страницу 1280 px до размера карточки. Для фонов и макетов.</span></div>
+            <div class="field"><span class="lbl">Картинка, если кода нет (Spline, Dribbble, Mobbin)</span>
+              <div class="drop" id="f-drop" tabindex="0">Нажмите, перетащите файл или вставьте скриншот (Ctrl+V)<div id="f-img"></div></div>
+              <input type="file" id="f-file" accept="image/*,video/mp4" hidden>
+            </div>
+          </div>
+        </details>
+        <div class="field"><label for="f-note">Чем нравится</label><textarea id="f-note" style="font-family:var(--f-ui);font-size:14px;min-height:64px" placeholder="Например: блик как на фарфоре, хочу для кнопки «Проверить»"></textarea></div>
+        <div class="field"><span class="lbl">Насколько нравится</span><div class="seg" id="f-love"></div></div>
+      </div>
+      <div class="stack" style="position:sticky;top:0">
+        <span class="lbl">Превью</span>
+        <div class="big-stage" id="f-stage"><div class="ph" style="position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px">Вставьте код слева</div></div>
+        <div class="status" id="f-status"></div>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="f-save">Сохранить в каталог</button>
+          <button type="button" class="btn ghost" id="f-cancel">Отмена</button>
+        </div>
+        <div class="status" id="f-savestatus"></div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Панель: просмотр -->
+<div class="sheet" id="sheet-view" hidden>
+  <div class="panel" id="view">
+    <div class="panel-head">
+      <h2 id="v-title"></h2>
+      <button type="button" class="btn ghost" id="v-close">Закрыть</button>
+    </div>
+    <div class="big-stage" id="v-stage" style="aspect-ratio:16/10"></div>
+    <div class="status" id="v-status"></div>
+    <div class="row" id="v-row"></div>
+    <div id="v-note"></div>
+    <div id="v-claude"></div>
+    <details><summary>Код</summary><div class="stack"><pre class="code" id="v-code"></pre></div></details>
+    <div class="actions">
+      <button class="btn" id="v-edit">Изменить</button>
+      <button class="btn danger" id="v-del">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- справочники ---------- */
+const KINDS=[["bg","Фон"],["button","Кнопка, переключатель"],["card","Карточка"],["3d","3D"],["anim","Анимация"],["text","Эффект текста"],["layout","Макет экрана"],["other","Другое"]];
+const PAGE_KINDS=new Set(["bg","layout"]);
+const LOVES=[["like","Нравится"],["love","Очень"],["maybe","Сомневаюсь"]];
+const BGS=[["light","Светлый"],["dark","Тёмный"]];
+const SCALES=[["auto","Сам решит"],["el","Элемент"],["page","Целый экран"]];
+const FITS={yes:["fit-yes","подходит"],maybe:["fit-maybe","под вопросом"],no:["fit-no","не наш стиль"]};
+
+const SOURCES=[
+ {g:"Компоненты, которые копируются кодом",items:[
+  ["uiverse.io","https://uiverse.io","Кнопки, переключатели, чекбоксы, карточки, загрузчики. Всё на HTML и CSS.","Кнопка «Code» под элементом. Копируйте HTML и CSS в разные поля.","auto"],
+  ["codepen.io","https://codepen.io/search/pens?q=glass","Чего только нет. Ищите: glass, 3d, gradient background, neumorphism, porcelain, ink.","Копируйте три окошка: HTML, CSS, JS. SCSS открывайте через «View Compiled».","auto"],
+  ["hyperui.dev","https://www.hyperui.dev","Готовые блоки на Tailwind: шапки, карточки, формы, разделы сайта.","Вкладка «HTML», кнопка копирования.","auto"],
+  ["reactbits.dev","https://reactbits.dev","Живые фоны, эффекты текста, красивые карточки, курсоры.","Вкладка «Code», вариант «JS + CSS». Блок «Usage» вставьте в поле «Как показать».","try"],
+  ["ui.aceternity.com","https://ui.aceternity.com/components","Премиальные эффекты: сияние, лучи, 3D-карточки, бенто-сетки.","Раздел «Installation» → «Manual». Копируйте код компонента и пример.","try"],
+  ["magicui.design","https://magicui.design/docs/components","Анимированные фоны, бегущие строки, блестящие кнопки, бенто.","Вкладка «Code» у компонента, затем пример со страницы.","try"],
+  ["21st.dev","https://21st.dev","Огромная витрина современных блоков от разных авторов: хиро, карточки, меню.","Кнопка «Copy code» на странице блока.","try"],
+  ["motion-primitives.com","https://motion-primitives.com","Аккуратные анимации интерфейса: появления, морфинг, курсоры.","Вкладка «Code».","try"],
+  ["cult-ui.com","https://www.cult-ui.com","Необычные «физические» элементы: кнопки-тумблеры, панели как у приборов. Близко к hardware UI.","Вкладка «Code».","try"],
+ ]},
+ {g:"Фоны и градиенты",items:[
+  ["shaders.paper.design","https://shaders.paper.design","Живые шейдерные фоны: меш-градиенты, зерно, перламутр, металл. Очень премиально.","Настройте ползунки, скопируйте код. Если не соберётся, Claude соберёт сам по ссылке.","try"],
+  ["shadergradient.co","https://www.shadergradient.co/customize","Объёмные 3D-градиенты, похожие на шёлк и стекло.","Ссылка с настройками + скриншот. Claude сделает лёгкую версию.","pic"],
+  ["fffuel.co","https://www.fffuel.co","Генераторы SVG: зерно, пятна, волны, мягкие градиенты, узоры.","Кнопка «Copy SVG», вставьте в поле «Код».","auto"],
+  ["haikei.app","https://app.haikei.app","Слои, волны, капли, блобы для фонов разделов.","Скачайте SVG, откройте блокнотом, вставьте как код.","auto"],
+  ["unicorn.studio","https://www.unicorn.studio","WebGL-эффекты: свет, преломление, интерактивные фоны.","Ссылка + скриншот или видео. Перенести код Claude поможет отдельно.","pic"],
+ ]},
+ {g:"3D-фигуры и сцены",items:[
+  ["spline.design","https://community.spline.design","Объёмные сцены и фигуры: стекло, фарфор, мягкий свет.","Ссылка + скриншот. Claude превратит в картинку или видео, чтобы не тормозило.","pic"],
+  ["threejs.org/examples","https://threejs.org/examples/","Официальные примеры three.js: материалы, стекло, частицы.","Ссылка на пример, этого достаточно.","pic"],
+  ["sketchfab.com","https://sketchfab.com/3d-models?features=downloadable","Тысячи 3D-моделей, многие бесплатно для скачивания.","Ссылка + скриншот. Смотрите на лицензию (CC).","pic"],
+  ["poly.pizza","https://poly.pizza","Бесплатные простые low-poly модели.","Ссылка + скриншот.","pic"],
+ ]},
+ {g:"Лёгкие анимации и реакции «молодец»",items:[
+  ["lottiefiles.com","https://lottiefiles.com/free-animations/success","Галочки, звёздочки, конфетти. Лёгкие и быстрые.","Ссылка на анимацию. Claude скачает файл сам.","pic"],
+  ["rive.app","https://rive.app/community/files/","Интерактивные анимации: реагируют на касание и состояние. Хорошо для детских наград.","Ссылка + скриншот.","pic"],
+  ["animista.net","https://animista.net/play","Каталог CSS-анимаций появления и акцента.","Кнопка «{ }» генерирует CSS. Вставьте с небольшим HTML.","auto"],
+ ]},
+ {g:"Готовые макеты приложений и сайтов",items:[
+  ["ui.shadcn.com/blocks","https://ui.shadcn.com/blocks","Готовые экраны: вход, личный кабинет, дашборды, боковые меню.","Вкладка «Code». Хорошая основа для кабинета ученика.","try"],
+  ["mobbin.com","https://mobbin.com","Настоящие экраны тысяч приложений (Duolingo и другие). Лучшее место смотреть, как устроены экраны.","Нужна регистрация. Скриншот + ссылка.","pic"],
+  ["refero.design","https://refero.design","База экранов сайтов и приложений с поиском по типу экрана.","Скриншот + ссылка.","pic"],
+  ["dribbble.com","https://dribbble.com/search/education-app","Концепты дизайнеров. Красиво, но не всегда реально. Хорошо для настроения.","Скриншот + ссылка.","pic"],
+  ["godly.website","https://godly.website","Самые красивые анимированные сайты. Для будущего сайта школы.","Ссылка (+ скриншот момента, который понравился).","pic"],
+  ["figma.com/community","https://www.figma.com/community/ui-kits","Бесплатные наборы интерфейсов в Фигме.","Ссылка на файл, Claude откроет сам.","pic"],
+ ]},
+ {g:"Специально для китайского",items:[
+  ["hanziwriter.org","https://hanziwriter.org","Анимация порядка черт иероглифа, проверка, как ученик пишет. Можно встроить в задания.","Ссылка на демо и что понравилось.","pic"],
+ ]},
+];
+const PV_LABEL={auto:"само",try:"попробует",pic:"картинка"};
+
+/* ---------- утилиты ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch{return ""}};
+const kindName=k=>(KINDS.find(x=>x[0]===k)||[,"Другое"])[1];
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const safeJSON=s=>JSON.stringify(s).replace(/</g,"\\u003c").replace(/[\u2028\u2029]/g,c=>c==="\u2028"?"\\u2028":"\\u2029");
+
+/* ---------- сборка превью ---------- */
+const LIB=f=>new URL("lib/"+f,location.href).href;
+const CDN={
+  react:LIB("react.production.min.js"), reactdom:LIB("react-dom.production.min.js"), babel:LIB("babel.min.js"),
+  tw:LIB("tailwind-browser.js"), motion:LIB("framer-motion.js"), gsap:LIB("gsap.min.js"), st:LIB("ScrollTrigger.min.js"),
+  three:LIB("three.min.js"), lucide:LIB("lucide-react.min.js"),
+};
+function isReact(code){
+  return /(^|\n)\s*(import\s[^;]*from\s*['"]|import\s*['"]|export\s+(default|const|function))|["']use client["']/.test(code) || /return\s*\(\s*<[A-Za-z]/.test(code) || /className=/.test(code);
+}
+function wantsTailwind(html){
+  const cls=(html.match(/class(Name)?="([^"]*)"/g)||[]).join(" ");
+  const hits=cls.match(/\b(flex|grid|items-center|justify-|gap-\d|p[xytrbl]?-\d|m[xytrbl]?-\d|w-(full|\d)|h-(full|\d)|bg-[a-z]+|text-(xs|sm|lg|xl|\d?xl|[a-z]+-\d00)|rounded(-[a-z0-9]+)?|shadow(-[a-z]+)?|border(-[a-z0-9]+)?)\b/g)||[];
+  return hits.length>=4;
+}
+function previewDoc(it,token){
+  const code=it.code||"", css=it.css||"", js=it.js||"", dark=it.bg==="dark";
+  const all=code+"\n"+js;
+  const scripts=[];
+  const base=`html,body{margin:0;min-height:100%;height:100%}body{background:${dark?"#0d0e12":"#f6f5f2"};color:${dark?"#eceef2":"#1c1e23"};font-family:system-ui,sans-serif}`;
+  const report=`<script>(function(){var T=${safeJSON(token)};window.__rep=function(s,m){if(s==="error")window.__bad=1;else if(window.__bad)return;try{parent.postMessage({__nahodka:T,s:s,m:String(m||"").slice(0,300)},"*")}catch(e){}};window.addEventListener("error",function(e){__rep("error",e.message||("Не загрузилось: "+(e.target&&e.target.src||"")))},true);window.addEventListener("unhandledrejection",function(e){__rep("error",e.reason&&e.reason.message||e.reason)});})()<\/script>`;
+  if(isReact(code)){
+    scripts.push(CDN.react,CDN.reactdom,CDN.babel,CDN.tw);
+    if(/framer-motion|motion\/react|from\s*['"]motion['"]/.test(all)) scripts.push(CDN.motion);
+    if(/gsap/.test(all)) scripts.push(CDN.gsap,CDN.st);
+    if(/from\s*['"]three['"]|THREE\./.test(all)) scripts.push(CDN.three);
+    if(/lucide-react/.test(all)) scripts.push(CDN.lucide);
+    const demo=(it.demo||"").trim();
+    return `<!doctype html><html${dark?' class="dark"':""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${report}
+<style type="text/tailwindcss">@custom-variant dark (&:where(.dark, .dark *));</style>
+${scripts.map(s=>`<script src="${s}"><\/script>`+(s===CDN.reactdom?`<script>window.react=window.React;window["react-dom"]=window.ReactDOM<\/script>`:"")).join("")}
+<style>${base}#root{min-height:100%;height:100%;display:flex;align-items:center;justify-content:center}#root>*{max-width:100%}${css}</style></head><body><div id="root"></div>
+<script>
+(function(){
+var SRC=${safeJSON(code)}, DEMO=${safeJSON(demo)};
+function cn(){var o=[];(function w(a){for(var i=0;i<a.length;i++){var x=a[i];if(!x)continue;if(Array.isArray(x))w(x);else if(typeof x==="object"){for(var k in x)if(x[k])o.push(k)}else o.push(String(x))}})(arguments);return o.join(" ")}
+function esm(m){return new Proxy(m,{get:function(t,k){if(k==="__esModule")return true;if(k==="default")return t.default||t;return t[k]}})}
+var missing=[];
+function stubC(n){var C=function(p){return React.createElement("span",{"data-stub":n},p&&p.children)};C.displayName=n;return C}
+function anyMod(name){missing.push(name);return new Proxy({},{get:function(t,k){if(k==="__esModule")return true;if(typeof k!=="string")return undefined;return stubC(k)}})}
+var NextImage=React.forwardRef(function(p,r){var q=Object.assign({},p);delete q.fill;delete q.priority;delete q.quality;delete q.placeholder;return React.createElement("img",Object.assign({ref:r},q))});
+var NextLink=React.forwardRef(function(p,r){return React.createElement("a",Object.assign({ref:r},p))});
+var cva=function(base,cfg){return function(props){props=props||{};var out=[base];var v=(cfg&&cfg.variants)||{},d=(cfg&&cfg.defaultVariants)||{};for(var k in v){var val=props[k]!=null?props[k]:d[k];if(val!=null&&v[k][val])out.push(v[k][val])}out.push(props.className);return cn(out)}};
+var M={react:React,"react-dom":ReactDOM,"react-dom/client":ReactDOM,"react/jsx-runtime":{jsx:React.createElement,jsxs:React.createElement,Fragment:React.Fragment},clsx:{default:cn,clsx:cn},classnames:{default:cn},"tailwind-merge":{twMerge:cn,default:cn},"class-variance-authority":{cva:cva},"next/image":{default:NextImage},"next/link":{default:NextLink}};
+if(window.Motion){M["framer-motion"]=Motion;M["motion/react"]=Motion;M["motion"]=Motion;M["motion/react-client"]=Motion}
+if(window.gsap){M.gsap={default:gsap,gsap:gsap};M["gsap/ScrollTrigger"]={ScrollTrigger:window.ScrollTrigger,default:window.ScrollTrigger};M["gsap/all"]={gsap:gsap,ScrollTrigger:window.ScrollTrigger};if(window.ScrollTrigger)gsap.registerPlugin(ScrollTrigger)}
+if(window.THREE)M.three=THREE;
+if(window.LucideReact)M["lucide-react"]=LucideReact;
+function req(n){if(/\\.(css|scss|sass|less)$/.test(n))return{};if(/(^@\\/|\\/)lib\\/utils|^@\\/utils|\\/utils$/.test(n))return{cn:cn};if(M[n])return esm(M[n]);return anyMod(n)}
+try{
+  var full=SRC+(DEMO?"\\nexport const __Demo = () => (<>"+DEMO+"</>);":"");
+  var out=Babel.transform(full,{filename:"c.tsx",presets:[["react",{runtime:"classic"}],"typescript"],plugins:["transform-modules-commonjs"]}).code;
+  window.__mod={exports:{}};window.__req=req;
+  var s=document.createElement("script");
+  s.textContent="(function(require,module,exports){"+out+"\\n})(window.__req,window.__mod,window.__mod.exports);window.__ran=1;";
+  document.body.appendChild(s);
+  if(!window.__ran)return;
+  var ex=__mod.exports, C=ex.__Demo||ex.default;
+  if(!C){for(var k in ex){if(/^[A-Z]/.test(k)&&typeof ex[k]!=="undefined"&&k!=="__esModule"){C=ex[k];break}}}
+  if(!C){__rep("error","Не нашёл компонент для показа. Добавьте пример в поле «Как показать».");return}
+  var EB=class extends React.Component{constructor(p){super(p);this.state={e:null}}static getDerivedStateFromError(e){return{e:e}}componentDidCatch(e){__rep("error",e.message)}render(){return this.state.e?null:this.props.children}};
+  ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(EB,null,React.createElement(C)));
+  setTimeout(function(){__rep(missing.length?"partial":"ok",missing.length?"Не хватает библиотек: "+missing.filter(function(v,i,a){return a.indexOf(v)===i}).join(", "):"")},600);
+}catch(e){__rep("error",e.message)}
+})();
+<\/script></body></html>`;
+  }
+  // обычный HTML / CSS / JS
+  let html=code, tw=wantsTailwind(code);
+  if(/THREE\./.test(all)) scripts.push(CDN.three);
+  if(/gsap\./.test(all)) scripts.push(CDN.gsap,CDN.st);
+  if(tw) scripts.push(CDN.tw);
+  const head=`${report}${scripts.map(s=>`<script src="${s}"><\/script>`).join("")}`;
+  const done=`<script>setTimeout(function(){__rep("ok","")},500)<\/script>`;
+  if(/<html[\s>]/i.test(html)){
+    html=html.replace(/<head([^>]*)>/i,`<head$1>${head}<style>${css}</style>`);
+    if(!/<head/i.test(html)) html=head+`<style>${css}</style>`+html;
+    return html.replace(/<\/body>/i,`<script>${js}<\/script>${done}</body>`)+(/<\/body>/i.test(html)?"":`<script>${js}<\/script>${done}`);
+  }
+  const center=/^\s*<svg/i.test(html)?"body{display:block}svg{width:100%;height:100%}":"body{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:16px}";
+  return `<!doctype html><html${dark?' class="dark"':""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${head}<style>${base}${center}${css}</style></head><body>${html}<script>${js}<\/script>${done}</body></html>`;
+}
+
+/* превью: iframe + отчёт о сборке */
+const frames=new Map(); // token -> callback
+window.addEventListener("message",e=>{const d=e.data;if(d&&d.__nahodka&&frames.has(d.__nahodka)){frames.get(d.__nahodka)(d.s,d.m)}});
+function scaleMode(it){return it.scale&&it.scale!=="auto"?it.scale:(PAGE_KINDS.has(it.kind)?"page":"el")}
+function mountPreview(box,it,onStatus){
+  box.querySelectorAll("iframe,img,.ph").forEach(n=>n.remove());
+  box.classList.toggle("dark",it.bg==="dark");
+  const hasCode=(it.code||"").trim()||(it.css||"").trim();
+  if(!hasCode){
+    const isrc=imgSrc(it);if(isrc){const im=new Image();im.src=isrc;im.alt=it.title||"";im.onerror=()=>{im.remove();ph(box,"Картинка не загрузилась")};box.appendChild(im);onStatus&&onStatus("ok","Картинка");return}
+    ph(box,it.url?"Только ссылка: "+host(it.url):"Нет кода и картинки");onStatus&&onStatus("none","");return;
+  }
+  const page=scaleMode(it)==="page";
+  box.classList.toggle("page",page);
+  const f=document.createElement("iframe");
+  f.setAttribute("sandbox","allow-scripts");
+  f.setAttribute("title","Превью: "+(it.title||""));
+  f.setAttribute("loading","lazy");
+  const token=newId();
+  let settled=false;
+  frames.set(token,(s,m)=>{settled=true;onStatus&&onStatus(s,m)});
+  setTimeout(()=>{if(!settled&&onStatus)onStatus("slow","Собирается дольше обычного…")},9000);
+  f.srcdoc=previewDoc(it,token);
+  box.appendChild(f);
+  if(page){const fit=()=>{const w=box.clientWidth;if(w){f.style.transform=`scale(${w/1280})`;f.style.height=(box.clientHeight/(w/1280))+"px"}};fit();new ResizeObserver(fit).observe(box)}
+}
+function ph(box,t){const d=document.createElement("div");d.className="ph";d.textContent=t;box.appendChild(d)}
+
+/* ---------- состояние ---------- */
+let items=[], filter="all", editing=null, formImg=null, formImgBlob=null;
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!e.target.__mounted){e.target.__mounted=true;const it=items.find(x=>x.id===e.target.dataset.id);if(it)mountPreview(e.target.querySelector(".stage"),it,(s,m)=>badge(e.target,s,m))}}),{rootMargin:"200px"});
+function badge(card,s,m){const st=card.querySelector(".stage");st.querySelector(".badge")?.remove();if(s==="error"||s==="partial"||s==="slow"){const b=document.createElement("span");b.className="badge err";b.textContent=s==="partial"?"частично":s==="slow"?"медленно":"не собралось";b.title=m;st.appendChild(b)}}
+
+function renderFilters(){
+  const counts={};items.forEach(i=>counts[i.kind]=(counts[i.kind]||0)+1);
+  const opts=[["all","Все"],["love","♥ Очень"],...KINDS.filter(k=>counts[k[0]])];
+  $("#filters").innerHTML=opts.map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${esc(n)}${k!=="all"&&k!=="love"?` · ${counts[k]}`:""}</button>`).join("")+`<span class="count">${items.length} находок</span>`;
+}
+function renderGrid(){
+  renderFilters();
+  const list=items.filter(i=>filter==="all"||(filter==="love"?i.love==="love":i.kind===filter));
+  $("#empty").hidden=items.length>0;
+  const g=$("#grid");g.innerHTML="";
+  list.forEach(it=>{
+    const c=document.createElement("article");c.className="card";c.dataset.id=it.id;c.tabIndex=0;
+    const fit=it.fit&&FITS[it.fit];
+    c.innerHTML=`<div class="stage"></div><div class="meta"><h3>${esc(it.title||host(it.url)||"Без названия")}</h3>
+      <div class="row"><span class="tag">${esc(kindName(it.kind))}</span>${it.love==="love"?'<span class="tag love">♥ очень</span>':it.love==="maybe"?'<span class="tag">сомневаюсь</span>':""}${it.example?'<span class="tag example">пример</span>':""}${host(it.url)?`<span>${esc(host(it.url))}</span>`:""}</div>
+      ${it.note?`<div class="row" style="color:var(--ink);font-size:13px">${esc(it.note)}</div>`:""}
+      ${it.claude?`<div class="cl"><small>CLAUDE${fit?` · <span class="${fit[0]}">${fit[1]}</span>`:""}</small>${esc(it.claude)}</div>`:""}</div>`;
+    c.onclick=()=>openView(it.id);c.onkeydown=e=>{if(e.key==="Enter")openView(it.id)};
+    g.appendChild(c);io.observe(c);
+  });
+}
+$("#filters").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filter=b.dataset.f;renderGrid()}};
+
+/* ---------- вкладки ---------- */
+function show(tab){const cat=tab!=="src";$("#tab-cat").setAttribute("aria-selected",cat);$("#tab-src").setAttribute("aria-selected",!cat);$("#view-cat").hidden=!cat;$("#view-src").hidden=cat}
+$("#tab-cat").onclick=()=>{location.hash="";show("cat")};$("#tab-src").onclick=()=>{location.hash="istochniki";show("src")};
+window.addEventListener("hashchange",()=>show(location.hash==="#istochniki"?"src":"cat"));
+show(location.hash==="#istochniki"?"src":"cat");
+$("#sources").innerHTML=SOURCES.map(g=>`<div class="src-group" style="margin-bottom:26px"><h2>${esc(g.g)}</h2><div class="src-grid">${g.items.map(([n,u,w,h,p])=>`<a class="src" href="${esc(u)}" target="_blank" rel="noopener"><span class="dom"><span>${esc(n)}</span><span aria-hidden="true">↗</span></span><span class="what">${esc(w)}</span><span class="how">${esc(h)}</span><span class="pv ${p}">${PV_LABEL[p]}</span></a>`).join("")}</div></div>`).join("");
+
+/* ---------- форма ---------- */
+function seg(el,opts,val){el.innerHTML=opts.map(([k,n])=>`<button type="button" class="chip" data-v="${k}" aria-pressed="${k===val}">${esc(n)}</button>`).join("");el.onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;el.querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b));schedule()}}
+const segVal=el=>el.querySelector('[aria-pressed="true"]')?.dataset.v;
+function formItem(){return{url:$("#f-url").value.trim(),title:$("#f-title").value.trim(),kind:segVal($("#f-kind"))||"other",code:$("#f-code").value,css:$("#f-css").value,js:$("#f-js").value,demo:$("#f-demo").value,bg:segVal($("#f-bg"))||"light",scale:segVal($("#f-scale"))||"auto",love:segVal($("#f-love"))||"like",note:$("#f-note").value.trim(),imgV:formImg}}
+let tmr=null;function schedule(){clearTimeout(tmr);tmr=setTimeout(livePreview,450)}
+function livePreview(){
+  const it=formItem();it.id=editing;if(formImgBlob)it.imgLocal=URL.createObjectURL(formImgBlob);
+  const st=$("#f-status");st.className="status";st.textContent=(it.code.trim()||it.css.trim())?(isReact(it.code)?"Собираю компонент React…":"Показываю…"):"";
+  mountPreview($("#f-stage"),it,(s,m)=>{st.className="status "+(s==="ok"?"ok":s==="none"?"":"err");st.textContent=s==="ok"?(m||"Превью готово"):s==="partial"?"Собралось частично. "+m:s==="error"?"Не собралось: "+m+". Сохраните всё равно: Claude соберёт сам.":s==="slow"?m:""});
+}
+["#f-code","#f-css","#f-js","#f-demo"].forEach(s=>$(s).addEventListener("input",schedule));
+$("#f-url").addEventListener("change",()=>{if(!$("#f-title").value.trim()){const u=$("#f-url").value;try{const p=new URL(u).pathname.split("/").filter(Boolean).pop()||"";$("#f-title").placeholder=(p.replace(/[-_]/g," ")||host(u))}catch{}}});
+function openForm(it){
+  editing=it?it.id:null;formImg=it?.imgV||null;formImgBlob=null;
+  $("#form-title").textContent=it?"Изменить находку":"Новая находка";$("#f-title").placeholder="Например: стеклянная кнопка с бликом";
+  $("#f-url").value=it?.url||"";$("#f-title").value=it?.title||"";$("#f-code").value=it?.code||"";$("#f-css").value=it?.css||"";$("#f-js").value=it?.js||"";$("#f-demo").value=it?.demo||"";$("#f-note").value=it?.note||"";
+  seg($("#f-kind"),KINDS,it?.kind||"button");seg($("#f-bg"),BGS,it?.bg||"light");seg($("#f-scale"),SCALES,it?.scale||"auto");seg($("#f-love"),LOVES,it?.love||"like");
+  $("#more").open=!!(it&&(it.css||it.js||it.demo||it.img||it.bg==="dark"));
+  showImg();$("#f-savestatus").textContent="";
+  $("#sheet-view").hidden=true;$("#sheet-form").hidden=false;livePreview();$("#f-url").focus();
+}
+function showImg(){const box=$("#f-img");box.innerHTML="";const src=formImgBlob?URL.createObjectURL(formImgBlob):formImg?API+"/api/nh/img?id="+editing+"&v="+formImg:null;if(src){const i=new Image();i.src=src;box.appendChild(i)}}
+function takeFile(f){if(!f||!/^image\/|^video\/mp4/.test(f.type))return;formImgBlob=f;showImg();schedule()}
+$("#f-drop").onclick=()=>$("#f-file").click();$("#f-drop").onkeydown=e=>{if(e.key==="Enter")$("#f-file").click()};
+$("#f-file").onchange=e=>takeFile(e.target.files[0]);
+$("#f-drop").ondragover=e=>e.preventDefault();$("#f-drop").ondrop=e=>{e.preventDefault();takeFile(e.dataTransfer.files[0])};
+document.addEventListener("paste",e=>{if($("#sheet-form").hidden)return;const f=[...(e.clipboardData?.files||[])][0];if(f&&f.type.startsWith("image/")){e.preventDefault();$("#more").open=true;takeFile(f)}});
+const closeForm=()=>{$("#sheet-form").hidden=true;$("#f-stage").querySelectorAll("iframe").forEach(f=>f.remove())};
+$("#form-close").onclick=closeForm;$("#f-cancel").onclick=closeForm;
+$("#sheet-form").onclick=e=>{if(e.target.id==="sheet-form")closeForm()};
+$("#add-btn").onclick=()=>openForm(null);
+$("#form").onsubmit=async e=>{
+  e.preventDefault();
+  const it=formItem(), ss=$("#f-savestatus");
+  if(!it.url&&!it.code.trim()&&!it.css.trim()&&!formImgBlob&&!formImg){ss.className="status err";ss.textContent="Добавьте хотя бы ссылку или код.";return}
+  $("#f-save").disabled=true;ss.className="status";ss.textContent="Сохраняю…";
+  try{
+    const id=editing||newId(), prev=items.find(x=>x.id===id)||{};
+    if(formImgBlob){const data=await shrink(formImgBlob);const v=newId();await sendChunks(id,v,data,3000,"img",(a,b)=>ss.textContent=`Сохраняю картинку: ${a} из ${b}`);it.imgV=v}
+    const doc={...prev,...it,id,updatedAt:Date.now(),createdAt:prev.createdAt||Date.now()};
+    delete doc.example;delete doc.imgLocal;
+    if(!doc.title)doc.title=$("#f-title").placeholder&&!$("#f-title").placeholder.startsWith("Например")?$("#f-title").placeholder:host(doc.url)||"Без названия";
+    await sendChunks(id,newId(),JSON.stringify(doc),1000,"item",(a,b)=>ss.textContent=b>1?`Сохраняю: ${a} из ${b}`:"Сохраняю…");
+    items=[doc,...items.filter(x=>x.id!==id)];cacheSave();renderGrid();
+    ss.className="status ok";ss.textContent="Сохранено";closeForm();
+  }catch(err){ss.className="status err";ss.textContent="Не сохранилось: "+(err.message||err)+". Проверьте интернет или VPN и нажмите ещё раз."}
+  finally{$("#f-save").disabled=false}
+};
+
+/* ---------- просмотр ---------- */
+let viewing=null;
+function openView(id){
+  const it=items.find(x=>x.id===id);if(!it)return;viewing=id;
+  $("#v-title").textContent=it.title||"Без названия";
+  const vs=$("#v-status");vs.className="status";vs.textContent="";
+  mountPreview($("#v-stage"),it,(s,m)=>{vs.className="status "+(s==="ok"?"ok":"err");vs.textContent=s==="ok"?"":s==="partial"?"Собралось частично. "+m:s==="error"?"Не собралось: "+m:s==="slow"?m:""});
+  $("#v-stage").querySelectorAll("iframe").forEach(f=>f.style.pointerEvents="auto");
+  const fit=it.fit&&FITS[it.fit];
+  $("#v-row").innerHTML=`<span class="tag">${esc(kindName(it.kind))}</span>${it.love==="love"?'<span class="tag love">♥ очень</span>':""}${it.url?`<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(host(it.url)||it.url)} ↗</a>`:""}`;
+  $("#v-note").innerHTML=it.note?`<p style="margin:0">${esc(it.note)}</p>`:"";
+  $("#v-claude").innerHTML=it.claude?`<div class="cl"><small>CLAUDE${fit?` · <span class="${fit[0]}">${fit[1]}</span>`:""}</small>${esc(it.claude)}</div>`:"";
+  $("#v-code").textContent=[it.code,it.css&&"/* CSS */\n"+it.css,it.js&&"/* JS */\n"+it.js,it.demo&&"/* Как показать */\n"+it.demo].filter(Boolean).join("\n\n")||"Кода нет";
+  $("#v-del").textContent="Удалить";$("#v-del").dataset.arm="";
+  $("#sheet-view").hidden=false;
+}
+const closeView=()=>{$("#sheet-view").hidden=true;$("#v-stage").innerHTML="";viewing=null};
+$("#v-close").onclick=closeView;$("#sheet-view").onclick=e=>{if(e.target.id==="sheet-view")closeView()};
+$("#v-edit").onclick=()=>{const it=items.find(x=>x.id===viewing);closeView();openForm(it)};
+$("#v-del").onclick=async()=>{
+  const b=$("#v-del");if(!b.dataset.arm){b.dataset.arm="1";b.textContent="Точно удалить?";return}
+  try{const r=await fetch(API+"/api/nh/del?id="+encodeURIComponent(viewing),{method:"POST"});if(!r.ok)throw 0;items=items.filter(x=>x.id!==viewing);cacheSave();renderGrid();closeView()}catch(err){b.textContent="Не удалилось, ещё раз?";b.dataset.arm="1"}
+};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#sheet-form").hidden)closeForm();else if(!$("#sheet-view").hidden)closeView()}});
+
+/* ---------- хранилище: Cloudflare KV через воркер gruppa-deti ---------- */
+const API="https://gruppa-deti.ch-tutor-world.workers.dev";
+function imgSrc(it){return it.imgLocal||(it.imgV&&it.id?API+"/api/nh/img?id="+encodeURIComponent(it.id)+"&v="+it.imgV:null)}
+// Через VPN отправки больше ~4 КБ режутся, поэтому шлём кусочками и просим сервер собрать.
+async function post(url,body){
+  for(let a=0;a<4;a++){
+    try{const r=await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body});if(r.ok)return r;if(r.status<500&&r.status!==409)throw new Error("сервер ответил "+r.status)}catch(e){if(a===3)throw e}
+    await new Promise(r=>setTimeout(r,700*(a+1)));
+  }
+  throw new Error("сервер не отвечает");
+}
+async function sendChunks(id,v,str,size,what,prog){
+  const n=Math.max(1,Math.ceil(str.length/size));
+  for(let k=0;k<n;k++){prog&&prog(k+1,n);await post(`${API}/api/nh/chunk?id=${id}&v=${v}&n=${k}`,str.slice(k*size,(k+1)*size))}
+  for(let a=0;a<4;a++){
+    const r=await fetch(`${API}/api/nh/commit?id=${id}&v=${v}&count=${n}&what=${what}`,{method:"POST"}).catch(()=>null);
+    if(r&&r.ok)return;
+    await new Promise(res=>setTimeout(res,1200*(a+1)));
+  }
+  throw new Error("не удалось собрать на сервере");
+}
+// Скриншот уменьшаем до 900 px по ширине (JPEG), чтобы отправка была быстрой
+function shrink(file){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const w=Math.min(900,im.naturalWidth),h=Math.round(im.naturalHeight*w/im.naturalWidth);const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);res(c.toDataURL("image/jpeg",.72))};im.onerror=()=>rej(new Error("картинка не читается"));im.src=URL.createObjectURL(file)})}
+const CACHE="nahodki-cache-v1";
+function cacheSave(){try{localStorage.setItem(CACHE,JSON.stringify(items))}catch{}}
+function sortItems(){items.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))}
+async function loadAll(){
+  const note=$("#db-note"),btn=$("#reload");btn.disabled=true;btn.textContent="Загружаю…";
+  try{
+    const r=await fetch(API+"/api/nh/all",{cache:"no-store"});if(!r.ok)throw new Error(r.status);
+    items=(await r.json()).items||[];sortItems();cacheSave();note.hidden=true;renderGrid();
+  }catch(e){note.hidden=false;note.textContent=items.length?"Не удалось обновить каталог, показана сохранённая на этом устройстве копия. Проверьте интернет или VPN и нажмите «Обновить».":"Каталог не загрузился. Проверьте интернет или VPN и нажмите «Обновить»."}
+  finally{btn.disabled=false;btn.textContent="↻ Обновить"}
+}
+try{items=JSON.parse(localStorage.getItem(CACHE)||"[]");sortItems()}catch{}
+renderGrid();
+$("#reload").onclick=loadAll;
+loadAll();
+</script>
+</body>
+</html>
