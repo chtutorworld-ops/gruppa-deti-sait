@@ -1,0 +1,124 @@
+/* ВИЗУАЛ ЗАДАНИЙ (ДЗ и задания в классе) — утверждён Дарьей 2026-11-17 02:13.
+   Слои применяются по порядку: 1) базовые переменные; 2) белые карточки/тонкие линии; 3) тёмные плашки; 4) неоморфизм-тени + жемчуг + кнопка звука.
+   Где утверждено: /mnt/project-files/dz-9-palitra/neomorfizm-proba-2.png; живой образец: istochniki/dz-9/src.html. */
+
+/* 1) базовые переменные (часть перекрывается слоем 2) */
+:root{
+ --bg:#F8F6F2; --surface:#FFFFFF; --shade-dark:#DEDBEC; --shade-light:#FFFFFF;
+ --ink:#181838; --ink-2:#3B3B66; --muted:#55557A;
+ --accent:#4C3DB8; --accent-ink:#FFFFFF; --accent-tint:#ECE9FB; --accent-line:#C9C2F2;
+ --salmon:#FF9E8A; --salmon-tint:#FFE6DF; --salmon-line:#FFB8A8; --salmon-ink:#B5372A;
+ --mint:#8FE0C6; --mint-tint:#DCF5EC; --mint-line:#9EE3CC; --mint-ink:#0B6650;
+ /* «сейчас» (текущее задание, шаг): проба синий / голубой / малиновый — выбирает Дарья */
+ --now:#4F8BF0; --now-tint:#E3EEFF; --now-ink:#1F4FB0;
+ /* «попробуй ещё»: мягкий малиновый */
+ --wrong:#E8558A; --wrong-tint:#FCE6EF; --wrong-ink:#A3124A; --wrong-a:#FFF2F7; --wrong-b:#F9D2E1;
+ /* нежный лосось: «осталось сделать», пометки */
+ --ok:var(--mint); --hint:var(--wrong);
+ --tone-1:#1F5FD6; --tone-2:#0B7285; --tone-3:#A61E8A; --tone-4:#C2185B; --tone-0:#68688A;
+ --part-mean:#7048E8; --part-read:#1971C2;
+ --grid:#E4E1EF; --hole:#D9D4EE; --hole-2:#C3BCE6; --mole:#B9AEEA; --mole-2:#8E80D6;
+ --sans:Onest,system-ui,sans-serif; --han:'LXGW WenKai GB','LXGW WenKai',serif;
+ --r1:8px; --r2:14px; --r3:24px; --r4:999px;
+ --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+/* 2) */
+/* ===== ПРЕМИУМ-ПРОБА: спокойно, дорого. Индиго дозированно (только главное действие и «сейчас»),
+   остальное — белое и тёплый светлый фон, тонкие линии, мягкие тени. Без градиентов и кислотных цветов. ===== */
+:root{
+ --bg:#F7F5F0; --surface:#FFFFFF; --line:rgba(23,23,47,.10); --line-2:rgba(23,23,47,.16);
+ --ink:#17172F; --ink-2:#44445E; --muted:#6B6B84;
+ --accent:#443C97; --accent-deep:#302870; --accent-tint:#F2F0F9; --accent-line:#D6D1EE;
+ --now:var(--accent); --now-tint:var(--accent-tint); --now-ink:var(--accent);
+ --mint:#BFDCCF; --mint-tint:#EDF5F1; --mint-line:#BFDCCF; --mint-ink:#2D6A56;
+ --wrong:#D9A3B6; --wrong-tint:#F8ECF0; --wrong-ink:#94304F;
+ --salmon:#E8C3B6; --salmon-tint:#F8EDE8; --salmon-ink:#9A4F3D;
+ --grid:#E9E5DD; --hole:#E6E1D7; --hole-2:#D8D1C4; --mole:#C8C1E2; --mole-2:#A79DD0;
+ --sh1:0 1px 2px rgba(23,23,47,.05),0 4px 14px -6px rgba(23,23,47,.12);
+ --sh2:0 1px 2px rgba(23,23,47,.06),0 12px 28px -12px rgba(23,23,47,.22);
+ --shade-dark:rgba(23,23,47,.10);
+}
+/* все кнопки и карточки: плоский белый, тонкая линия, мягкая тень */
+.key,.tile,.snd,.help,.main.soft,.prog,.wbox,.hud span,.mc .fa,.slot,.inp{
+ background-image:none!important;background-color:var(--surface)!important;
+ border:1px solid var(--line)!important;box-shadow:var(--sh1)!important;text-shadow:none}
+.key:active,.tile:active,.snd:active,.help:active,.main:active{transform:scale(.98);box-shadow:0 1px 2px rgba(23,23,47,.08)!important}
+@media (hover:hover){.key:hover,.tile:hover{border-color:var(--line-2)!important;transform:none}}
+/* главная кнопка: сплошной глубокий индиго, без 3D-низа */
+.main:not(.soft){background-image:none!important;background-color:var(--accent)!important;border:0!important;border-radius:16px;margin-bottom:0;
+ box-shadow:0 1px 2px rgba(42,34,112,.25),0 10px 22px -10px rgba(42,34,112,.55)!important;text-shadow:none;letter-spacing:.01em}
+.main:not(.soft):active{transform:scale(.985)}
+.main:not(.soft)[disabled]{opacity:1;background-color:#ECEAF2!important;color:#9A98AE;box-shadow:none!important}
+.main.soft{color:var(--accent)}
+/* заголовок задания: белая плашка с тонкой линией, номер — индиго */
+.plq{background:var(--surface);border:1px solid var(--line);box-shadow:var(--sh1);border-radius:18px}
+.num{background-image:none!important;background-color:var(--accent);color:#fff;box-shadow:none!important}
+.tile .num{background-color:var(--accent-tint)!important;color:var(--accent)}
+.tile.now{border:1.5px solid var(--accent)!important}
+.tile.now .num{background-color:var(--accent)!important;color:#fff}
+.tile.now .st{color:var(--accent)}
+.tile.done{background-color:var(--surface)!important}
+.tile.done .num{background-color:var(--mint-tint)!important;color:var(--mint-ink)}
+.tile.done .st{color:var(--mint-ink)}
+/* ответы: верно — едва заметная шалфейная заливка, ошибка — пыльная роза */
+.key.ok{background-color:var(--mint-tint)!important;border-color:var(--mint-line)!important;color:var(--mint-ink)}
+.key.hint{background-color:var(--wrong-tint)!important;border-color:var(--wrong)!important}
+.fb.ok{background:var(--mint-tint);color:var(--mint-ink)}
+.fb.hint{background:var(--wrong-tint);color:var(--wrong-ink)}
+.snd:not(.sm){background-color:var(--accent)!important;color:#fff;border:0!important;box-shadow:0 10px 24px -10px rgba(42,34,112,.6)!important}
+.pbar{background:#ECE9E2}
+.pbar i,.pbar span,.pbar b{background:var(--accent)!important}
+.steps3 span{background:#EFECE6;color:var(--ink-2)}
+.steps3 span.on{background:var(--accent);color:#fff;box-shadow:none}
+.field{background:#F1EEE8}
+.hole .lip{background:#F1EEE8}
+.mc .ba{background:var(--accent-tint);color:var(--accent);border:1px solid var(--accent-line);box-shadow:var(--sh1)}
+
+
+/* 3) */
+/* ===== «НОЧНОЙ ИНДИГО» — выбран Дарьей 2026-11-17: тёмная шапка и плашки-заголовки с мягким свечением, белые карточки, нежный лосось = «сейчас» ===== */
+.plq{background:#352D76!important;border:0!important;box-shadow:0 10px 24px -12px rgba(42,34,112,.6)!important}
+.plq h1{color:#fff}
+.plq .num{background-color:#fff!important;color:#302870!important}
+.top{margin:0 -16px;padding:20px 16px 18px;border-radius:0 0 26px 26px}
+.top .lab{color:#C9C2F2!important}.top h1{color:#fff}.top .who{color:#D9D5F0}.top .who b{color:#fff}.top .who a,.top .who button{color:#fff!important;text-decoration:underline;text-underline-offset:3px}
+.tile.now{border:1.5px solid #E9A08C!important}
+.tile.now .num{background-color:#F6D3C8!important;color:#8E3F2E!important}
+.tile.now .st{color:#B0533F!important}
+.steps3 span.on{background:#F6D3C8!important;color:#8E3F2E!important}
+.target .fin,.tbadge{background:#F6D3C8!important;color:#8E3F2E!important;box-shadow:none!important}
+.plq,.top{background:#352D76!important}
+
+/* 4) */
+/* ===== ВИД УТВЕРЖДЁН ДАРЬЕЙ 2026-11-17 02:13. Неоморфизм в тенях: цвета прежние (белые карточки, мята/роза для ответов), объём — двойной тенью ===== */
+:root{--neu-l:#FFFFFF;--neu-d:#DCD6CC}
+.key,.tile,.prog,.wbox,.main.soft,.snd.sm,.help,.hud span,.mc .fa,.slot,.inp{border:0!important;
+ box-shadow:7px 7px 15px var(--neu-d),-7px -7px 15px var(--neu-l)!important}
+.key:active,.tile:active,.main.soft:active,.snd.sm:active{transform:none;box-shadow:inset 5px 5px 10px var(--neu-d),inset -5px -5px 10px var(--neu-l)!important}
+.key.ok{box-shadow:inset 4px 4px 9px rgba(45,106,86,.18),inset -4px -4px 9px rgba(255,255,255,.9)!important}
+.key.hint{box-shadow:inset 4px 4px 9px rgba(148,48,79,.16),inset -4px -4px 9px rgba(255,255,255,.9)!important}
+.tile.now{box-shadow:7px 7px 15px var(--neu-d),-7px -7px 15px var(--neu-l),inset 0 0 0 2px #E9A08C!important}
+.tile .num{box-shadow:inset 3px 3px 6px rgba(68,60,151,.16),inset -3px -3px 6px #fff!important}
+.pbar{box-shadow:inset 3px 3px 6px var(--neu-d),inset -3px -3px 6px var(--neu-l)}
+.steps3 span{box-shadow:4px 4px 8px var(--neu-d),-4px -4px 8px var(--neu-l)}
+/* ===== жемчужные: главная кнопка, шапка, плашки заданий ===== */
+.main:not(.soft),.plq,.top{position:relative;overflow:hidden;background:#352D76!important;color:rgba(255,255,255,.95)!important;border:0!important;
+ box-shadow:inset 0 .3rem .9rem rgba(255,255,255,.3),inset 0 -.1rem .3rem rgba(0,0,0,.6),inset 0 -.4rem .9rem rgba(255,255,255,.4),0 14px 22px -8px rgba(53,45,118,.55),0 6px 8px -5px rgba(20,16,60,.6)!important}
+.main:not(.soft){border-radius:100px!important}
+.plq{border-radius:100px!important}
+.main:not(.soft)::before,.plq::before,.top::before{content:'';position:absolute;left:-15%;right:-15%;bottom:25%;top:-100%;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none;transition:all .3s ease}
+.main:not(.soft)::after,.plq::after,.top::after{content:'';position:absolute;left:6%;right:6%;top:12%;bottom:40%;border-radius:22px 22px 0 0;box-shadow:inset 0 10px 8px -10px rgba(255,255,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,rgba(0,0,0,0) 50%);pointer-events:none;transition:all .3s ease}
+.top::after{top:6%;bottom:55%}
+.plq>*,.top>*{position:relative;z-index:1}
+.main:not(.soft):active{transform:translateY(4px)}
+.main:not(.soft)[disabled]{background:#ECEAF2!important;color:#9A98AE!important;box-shadow:inset 4px 4px 8px var(--neu-d),inset -4px -4px 8px var(--neu-l)!important}
+.main:not(.soft)[disabled]::before,.main:not(.soft)[disabled]::after{display:none}
+/* ===== кнопка звука: по образцу Дарьи (кольцо, неоморфизм), при звучании — фиолетовая и «дышит» ===== */
+.snd:not(.sm){position:relative;width:132px!important;height:132px!important;border-radius:50%;background:linear-gradient(145deg,#FFFFFF,#ECE8E2)!important;color:#8A879B!important;
+ border:4px solid #F4F1EC!important;box-shadow:12px 12px 24px var(--neu-d),-12px -12px 24px var(--neu-l),inset 2px 2px 0 #fff,inset -2px -2px 0 #E2DDD4!important}
+.snd:not(.sm) svg.i{width:60px!important;height:60px!important;stroke-width:2.2}
+.snd:not(.sm):active{box-shadow:inset 6px 6px 12px var(--neu-d),inset -6px -6px 12px var(--neu-l)!important}
+.snd:not(.sm).on{color:#443C97!important;animation:sndBorder .6s linear alternate-reverse infinite!important;box-shadow:inset -2px -2px 0 #fff,inset 2px 2px 0 #E2DDD4,12px 12px 24px var(--neu-d),-12px -12px 24px var(--neu-l)!important}
+@keyframes sndBorder{from{border-color:rgba(68,60,151,.45)}to{border-color:rgba(68,60,151,.12)}}
+
