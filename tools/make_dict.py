@@ -18,7 +18,7 @@ import numpy as np
 import miniaudio
 import make_audio as MA
 
-DICT_VOICE = ""          # пусто = выбрать автоматически (2026-11-16 выбран zh-CN-XiaoyiNeural)
+DICT_VOICE = "zh-CN-XiaoyiNeural"   # закреплён 2026-11-17 (выбран автоматически 2026-11-16); пусто = выбирать заново
 VOICES = ["zh-CN-YunyangNeural", "zh-CN-YunxiNeural", "zh-CN-YunjianNeural", "zh-CN-XiaoyiNeural"]
 RATES = ["-35%", "-50%"]                 # протяжно
 SAMPLE = "妈麻马骂八拔把爸搭达打大逼鼻笔必坡婆叵破"   # для страницы сравнения голосов
