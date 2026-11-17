@@ -18,9 +18,9 @@ import numpy as np
 import miniaudio
 import make_audio as MA
 
-DICT_VOICE = ""          # пусто = выбрать автоматически (2026-11-16 выбран zh-CN-XiaoyiNeural)
-VOICES = ["zh-CN-YunyangNeural", "zh-CN-YunxiNeural", "zh-CN-YunjianNeural", "zh-CN-XiaoyiNeural"]
-RATES = ["-35%", "-50%"]                 # протяжно
+DICT_VOICE = "zh-CN-XiaoxiaoNeural"   # 2026-11-17 Дарья: голос Xiaoyi с перерисованными тонами путает даже её. Xiaoxiao — самый чёткий (живые тоны верны в 219 из 253)
+VOICES = ["zh-CN-XiaoxiaoNeural", "zh-CN-YunyangNeural", "zh-CN-YunxiNeural", "zh-CN-YunjianNeural", "zh-CN-XiaoyiNeural"]
+RATES = ["-30%", "-45%", "-60%"]         # протяжно
 SAMPLE = "妈麻马骂八拔把爸搭达打大逼鼻笔必坡婆叵破"   # для страницы сравнения голосов
 HERE = MA.HERE
 OUT = os.path.join(MA.OUT, "dict")
@@ -215,8 +215,8 @@ async def main():
         if not b: continue
         dst = os.path.join(OUT, k + ".mp3"); want = tones[k]["t"]
         rec = {x: y for x, y in b.items() if x != "p"}; rec["fix"] = False
-        # 3-й тон — всегда «учебная» ямка с кряхтением; остальные — если синтезатор сказал невнятно
-        if want == 3 or not b["ok"]:
+        # живой голос оставляем, если тон верный (у 3-го — с ямкой); перерисовываем только невнятные слоги
+        if not b["ok"]:
             done = False
             try:
                 # источники: лучший вариант, потом другие скорости того же голоса
