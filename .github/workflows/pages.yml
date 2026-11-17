@@ -27,7 +27,7 @@ jobs:
           path: |
             site/audio
             .audio-cand
-          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py') }}
+          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py', 'tools/make_tp.py') }}
           restore-keys: audio2-
       - name: Озвучить новые слоги (голос Microsoft Edge)
         continue-on-error: true
@@ -43,6 +43,10 @@ jobs:
           pip install lameenc
           python tools/make_dict.py
           ls site/audio/dict | wc -l
+      - name: Живые голоса для диктантов (Tone Perfect, носители, все слоги в 4 тонах)
+        continue-on-error: true
+        timeout-minutes: 25
+        run: python tools/make_tp.py
       - name: Сразу сохранить озвучку (если выкладку прервёт новая — не озвучивать заново)
         continue-on-error: true
         uses: actions/cache/save@v4
@@ -50,7 +54,7 @@ jobs:
           path: |
             site/audio
             .audio-cand
-          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py') }}
+          key: audio2-${{ hashFiles('tools/audio-list.txt', 'tools/audio-tones.json', 'tools/make_audio.py', 'tools/make_dict.py', 'tools/make_tp.py') }}
       - name: Эталонные тоны (перерисовать мелодию по учебнику)
         continue-on-error: true
         timeout-minutes: 10
