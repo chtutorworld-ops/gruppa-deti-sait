@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AIKITAY Референсы приложений</title>
+<style>
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(../nahodki/fonts/onest-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0400-045F,U+2116}
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(../nahodki/fonts/onest-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Onest";font-weight:600;font-display:swap;src:url(../nahodki/fonts/onest-cyrillic-600-normal.woff2) format("woff2");unicode-range:U+0400-045F,U+2116}
+@font-face{font-family:"Onest";font-weight:600;font-display:swap;src:url(../nahodki/fonts/onest-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(../nahodki/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(../nahodki/fonts/ibm-plex-mono-cyrillic-400-normal.woff2) format("woff2");unicode-range:U+0400-045F}
+/* Рабочие цвета инструмента, палитра школы ещё не утверждена */
+:root{
+  --bg:#ECEAE5; --surface:#F8F7F4; --sunk:#E3E0DA; --ink:#1C1E23; --muted:#686B73; --line:rgba(28,30,35,.12);
+  --accent:#2B47D1; --accent-ink:#FFFFFF; --ok:#2F7D5B; --warn:#A35A12; --love:#C2456B;
+  --shadow:0 1px 0 rgba(255,255,255,.9) inset,0 1px 2px rgba(28,30,35,.08),0 8px 24px -12px rgba(28,30,35,.18);
+  --press:inset 0 2px 4px rgba(28,30,35,.14);
+  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141519; --surface:#1D1F25; --sunk:#111216; --ink:#ECEDF0; --muted:#9A9DA6; --line:rgba(236,237,240,.12);
+  --accent:#7D93FF; --accent-ink:#0E1020; --ok:#6CC59B; --warn:#E3A25E; --love:#F07FA0;
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 8px 24px -12px rgba(0,0,0,.6); --press:inset 0 2px 4px rgba(0,0,0,.5);
+  color-scheme:dark}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-ui);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2{margin:0;text-wrap:balance}
+a{color:var(--accent)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.brand b{font-weight:600;letter-spacing:.14em}.brand span{color:var(--muted);margin-left:10px;font-size:14px}
+h1{font-size:clamp(26px,4vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.lead{color:var(--muted);max-width:64ch;margin:8px 0 0}
+h2{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+.btn{border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-radius:11px;padding:9px 15px;cursor:pointer;font-weight:600;white-space:nowrap;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:active{box-shadow:var(--press);transform:translateY(1px)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.small{padding:6px 11px;font-size:13px;font-weight:400}
+.btn.danger{color:var(--love)}
+/* форма */
+.form{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px 18px}
+@media (max-width:760px){.form{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.lbl{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+input[type=url],textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;box-shadow:var(--press)}
+textarea{min-height:76px;resize:vertical}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:none;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.drop{border:1.5px dashed var(--line);border-radius:10px;padding:14px;font-size:13px;color:var(--muted);text-align:center;cursor:pointer;min-height:92px;display:grid;place-items:center}
+.drop img{max-height:160px;max-width:100%;border-radius:8px;display:block;margin:6px auto 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;grid-column:1/-1}
+.status{font:12px var(--f-mono);color:var(--muted)}.status.err{color:var(--warn)}.status.ok{color:var(--ok)}
+/* список референсов */
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar .count{margin-left:auto;font:13px var(--f-mono);color:var(--muted)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-items:start}
+.ref{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ref .shot{aspect-ratio:3/4;background:var(--sunk);display:block;max-width:100%}
+.ref .shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.ref .shot.none{display:grid;place-items:center;color:var(--muted);font:13px var(--f-mono);aspect-ratio:auto;padding:22px 12px}
+.ref .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ref .dom{font:13px var(--f-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{font:11px/1 var(--f-mono);padding:4px 7px;border-radius:6px;background:var(--sunk);color:var(--muted);align-self:flex-start}
+.cl{font-size:13px;border-left:2px solid var(--accent);padding-left:9px}
+.cl small{display:block;color:var(--muted);font:11px var(--f-mono)}
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:30px 16px;text-align:center;color:var(--muted)}
+/* источники */
+.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.src{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.src a.name{font:600 15px var(--f-ui);text-decoration:none;display:flex;justify-content:space-between}
+.src p{margin:0;font-size:14px}
+.q{display:flex;flex-wrap:wrap;gap:5px}
+.q button{font:12px var(--f-mono);border:0;background:var(--sunk);color:var(--ink);border-radius:6px;padding:4px 7px;cursor:pointer}
+.tip{background:var(--sunk);border-radius:14px;padding:14px 16px;font-size:14px;max-width:80ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><b>AIKITAY</b><span>референсы приложений</span></div>
+    <a class="btn small" href="../nahodki/">Каталог находок с кодом →</a>
+  </header>
+
+  <div>
+    <h1>Экраны приложений, которые нравятся</h1>
+    <p class="lead">Нашли красивый экран в приложении: вставьте ссылку, при желании скриншот (Ctrl+V) и пару слов. Видно с любого устройства, Claude читает всё отсюда.</p>
+  </div>
+
+  <section>
+    <form class="form" id="form" autocomplete="off">
+      <div class="field" style="grid-column:1/-1"><label for="f-url">Ссылка на экран или приложение</label><input type="url" id="f-url" placeholder="https://mobbin.com/screens/…" required></div>
+      <div class="field">
+        <span class="lbl">Какой экран</span><div class="seg" id="f-kind"></div>
+        <label for="f-note" style="margin-top:8px">Что нравится</label>
+        <textarea id="f-note" placeholder="Например: шкала прогресса как прибор, крупная карточка задания"></textarea>
+      </div>
+      <div class="field"><span class="lbl">Скриншот (необязательно)</span>
+        <div class="drop" id="f-drop" tabindex="0">Нажмите, перетащите или вставьте Ctrl+V<div id="f-img"></div></div>
+        <input type="file" id="f-file" accept="image/*" hidden>
+      </div>
+      <div class="actions"><button class="btn primary" id="f-save" type="submit">Сохранить</button><span class="status" id="f-status"></span></div>
+    </form>
+  </section>
+
+  <section>
+    <div class="bar"><h2>Мои референсы</h2><span class="count" id="count"></span><button class="btn small" id="reload" type="button">↻ Обновить</button></div>
+    <div class="bar" id="filters"></div>
+    <div class="status err" id="note" hidden></div>
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty" hidden>Пока пусто. Вставьте первую ссылку в форму выше.</div>
+  </section>
+
+  <section>
+    <h2>Где искать</h2>
+    <div class="tip">Ищите не только «приложения для учёбы». Самые красивые экраны обычно у приложений про финансы, здоровье, медитацию и музыку. Понравился экран банка или фитнеса: тоже сохраняйте, стиль перенесём на наши задания. Нажмите на запрос, чтобы скопировать его.</div>
+    <div class="src-grid" id="sources"></div>
+  </section>
+</div>
+
+<script>
+const KINDS=[["home","Главный экран"],["task","Задание, квиз"],["progress","Прогресс"],["reward","Награда, «молодец»"],["onboard","Первый вход"],["profile","Профиль, кабинет"],["list","Список уроков"],["other","Другое"]];
+const SOURCES=[
+ ["mobbin.com","https://mobbin.com/discover/apps/ios/latest","Лучший вариант: настоящие экраны топовых приложений. Фильтры по iOS, типу экрана и приложению. Бесплатной версии хватит.",["Quiz","Progress","Onboarding","Home","Streak","Achievement"]],
+ ["screensdesign.com","https://screensdesign.com","Экраны и видео прохождения реальных iOS-приложений.",["language learning","education","habit"]],
+ ["pageflows.com","https://pageflows.com","Целые сценарии в приложениях, как на видео: от входа до результата.",["onboarding","quiz","progress"]],
+ ["dribbble.com","https://dribbble.com/search/education-app-ui","Концепты дизайнеров. Сразу ставьте фильтр Popular.",["education app ui","language learning app","ios app light","glassmorphism app","bento ui"]],
+ ["behance.net","https://www.behance.net/search/projects/education%20app%20ui","Раздел UI/UX. Часто целые проекты с десятками экранов.",["education app ui","language learning app","ios app light"]],
+ ["pinterest.com","https://www.pinterest.com/search/pins/?q=premium%20app%20ui%20light","Подборки скриншотов по настроению.",["premium app ui light","ios 26 liquid glass app","learning app ui violet"]],
+ ["refero.design","https://refero.design","База экранов приложений и сайтов с поиском по типу экрана.",["quiz","progress","streak"]],
+ ["theuiindex.com","https://theuiindex.com","Экраны реальных сайтов: вход, тарифы, личный кабинет.",["dashboard","onboarding"]],
+ ["land-book.com","https://land-book.com","Красивые сайты. Полезно для идей фона и подачи.",["education","app landing"]],
+ ["godly.website","https://godly.website","Самые красивые анимированные сайты.",["education","minimal"]],
+];
+const API="https://gruppa-deti.ch-tutor-world.workers.dev";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch{return u}};
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const kindName=k=>(KINDS.find(x=>x[0]===k)||[,"Другое"])[1];
+let items=[],filter="all",imgBlob=null;
+
+/* источники */
+$("#sources").innerHTML=SOURCES.map(([n,u,w,q])=>`<div class="src"><a class="name" href="${esc(u)}" target="_blank" rel="noopener"><span>${esc(n)}</span><span aria-hidden="true">↗</span></a><p>${esc(w)}</p><div class="q">${q.map(x=>`<button type="button" data-q="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>`).join("");
+$("#sources").onclick=async e=>{const b=e.target.closest("[data-q]");if(!b)return;const t=b.dataset.q;try{await navigator.clipboard.writeText(t);b.textContent="скопировано";setTimeout(()=>b.textContent=t,1200)}catch{}};
+
+/* форма */
+$("#f-kind").innerHTML=KINDS.map(([k,n],i)=>`<button type="button" class="chip" data-v="${k}" aria-pressed="${i===0}">${esc(n)}</button>`).join("");
+$("#f-kind").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#f-kind").querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b))};
+function takeFile(f){if(!f||!f.type.startsWith("image/"))return;imgBlob=f;$("#f-img").innerHTML="";const i=new Image();i.src=URL.createObjectURL(f);$("#f-img").appendChild(i)}
+$("#f-drop").onclick=()=>$("#f-file").click();$("#f-drop").onkeydown=e=>{if(e.key==="Enter")$("#f-file").click()};
+$("#f-file").onchange=e=>takeFile(e.target.files[0]);
+$("#f-drop").ondragover=e=>e.preventDefault();$("#f-drop").ondrop=e=>{e.preventDefault();takeFile(e.dataTransfer.files[0])};
+document.addEventListener("paste",e=>{const f=[...(e.clipboardData?.files||[])][0];if(f&&f.type.startsWith("image/")){e.preventDefault();takeFile(f)}});
+
+/* хранилище: тот же воркер, что у каталога находок; кусочки до 3 КБ, чтобы проходило через VPN */
+async function post(url,body){
+  for(let a=0;a<4;a++){
+    try{const r=await fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body});if(r.ok)return r;if(r.status<500&&r.status!==409)throw new Error("сервер ответил "+r.status)}catch(e){if(a===3)throw e}
+    await new Promise(r=>setTimeout(r,700*(a+1)));
+  }
+  throw new Error("сервер не отвечает");
+}
+async function sendChunks(id,v,str,size,what,prog){
+  const n=Math.max(1,Math.ceil(str.length/size));
+  for(let k=0;k<n;k++){prog&&prog(k+1,n);await post(`${API}/api/nh/chunk?id=${id}&v=${v}&n=${k}`,str.slice(k*size,(k+1)*size))}
+  for(let a=0;a<4;a++){const r=await fetch(`${API}/api/nh/commit?id=${id}&v=${v}&count=${n}&what=${what}`,{method:"POST"}).catch(()=>null);if(r&&r.ok)return;await new Promise(res=>setTimeout(res,1200*(a+1)))}
+  throw new Error("не удалось собрать на сервере");
+}
+function shrink(file){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const w=Math.min(900,im.naturalWidth),h=Math.round(im.naturalHeight*w/im.naturalWidth);const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);res(c.toDataURL("image/jpeg",.72))};im.onerror=()=>rej(new Error("картинка не читается"));im.src=URL.createObjectURL(file)})}
+
+$("#form").onsubmit=async e=>{
+  e.preventDefault();const st=$("#f-status"),url=$("#f-url").value.trim();
+  if(!url){st.className="status err";st.textContent="Вставьте ссылку.";return}
+  $("#f-save").disabled=true;st.className="status";st.textContent="Сохраняю…";
+  try{
+    const id="ref-"+newId();
+    const doc={id,kind:"ref",screen:$("#f-kind [aria-pressed=true]")?.dataset.v||"other",url,title:host(url),note:$("#f-note").value.trim(),createdAt:Date.now(),updatedAt:Date.now()};
+    if(imgBlob){const v=newId();await sendChunks(id,v,await shrink(imgBlob),3000,"img",(a,b)=>st.textContent=`Сохраняю скриншот: ${a} из ${b}`);doc.imgV=v}
+    await sendChunks(id,newId(),JSON.stringify(doc),1000,"item");
+    items=[doc,...items];cacheSave();render();
+    $("#f-url").value="";$("#f-note").value="";imgBlob=null;$("#f-img").innerHTML="";
+    st.className="status ok";st.textContent="Сохранено";
+  }catch(err){st.className="status err";st.textContent="Не сохранилось: "+(err.message||err)+". Проверьте интернет или VPN и нажмите ещё раз."}
+  finally{$("#f-save").disabled=false}
+};
+
+/* список */
+function render(){
+  const counts={};items.forEach(i=>counts[i.screen]=(counts[i.screen]||0)+1);
+  $("#filters").innerHTML=[["all","Все"],...KINDS.filter(k=>counts[k[0]])].map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${esc(n)}${k!=="all"?" · "+counts[k]:""}</button>`).join("");
+  $("#count").textContent=items.length+" шт.";
+  const list=items.filter(i=>filter==="all"||i.screen===filter);
+  $("#empty").hidden=items.length>0;
+  $("#list").innerHTML=list.map(it=>`<article class="ref">
+    ${it.imgV?`<a class="shot" href="${esc(it.url)}" target="_blank" rel="noopener"><img loading="lazy" alt="" src="${API}/api/nh/img?id=${encodeURIComponent(it.id)}&v=${it.imgV}"></a>`:`<a class="shot none" href="${esc(it.url)}" target="_blank" rel="noopener">открыть ${esc(host(it.url))} ↗</a>`}
+    <div class="body"><span class="tag">${esc(kindName(it.screen))}</span>
+      <a class="dom" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(host(it.url))} ↗</a>
+      ${it.note?`<div>${esc(it.note)}</div>`:""}
+      ${it.claude?`<div class="cl"><small>CLAUDE</small>${esc(it.claude)}</div>`:""}
+      <div><button class="btn small danger" data-del="${esc(it.id)}">Удалить</button></div></div></article>`).join("");
+}
+$("#filters").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filter=b.dataset.f;render()}};
+$("#list").onclick=async e=>{
+  const b=e.target.closest("[data-del]");if(!b)return;
+  if(!b.dataset.arm){b.dataset.arm="1";b.textContent="Точно удалить?";return}
+  try{const r=await fetch(API+"/api/nh/del?id="+encodeURIComponent(b.dataset.del),{method:"POST"});if(!r.ok)throw 0;items=items.filter(x=>x.id!==b.dataset.del);cacheSave();render()}catch{b.textContent="Не удалилось, ещё раз?"}
+};
+const CACHE="referensy-cache-v1";
+function cacheSave(){try{localStorage.setItem(CACHE,JSON.stringify(items))}catch{}}
+async function loadAll(){
+  const btn=$("#reload"),note=$("#note");btn.disabled=true;btn.textContent="Загружаю…";
+  try{const r=await fetch(API+"/api/nh/all",{cache:"no-store"});if(!r.ok)throw 0;items=((await r.json()).items||[]).filter(x=>x.kind==="ref").sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));cacheSave();note.hidden=true;render()}
+  catch{note.hidden=false;note.textContent="Не удалось обновить список. Проверьте интернет или VPN и нажмите «Обновить»."}
+  finally{btn.disabled=false;btn.textContent="↻ Обновить"}
+}
+try{items=JSON.parse(localStorage.getItem(CACHE)||"[]")}catch{}
+render();$("#reload").onclick=loadAll;loadAll();
+</script>
+</body>
+</html>

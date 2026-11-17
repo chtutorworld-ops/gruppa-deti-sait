@@ -148,7 +148,7 @@ pre.code{margin:0;max-height:320px;overflow:auto;background:var(--sunk);border-r
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><b>AIKITAY</b><span>копилка UI-находок</span></div>
+    <div class="brand"><b>AIKITAY</b><span>копилка UI-находок</span> · <a href="../referensy/">референсы приложений</a></span></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tab-cat" aria-selected="true">Каталог</button>
       <button class="tab" role="tab" id="tab-src" aria-selected="false">Где искать</button>
@@ -569,7 +569,7 @@ async function loadAll(){
   const note=$("#db-note"),btn=$("#reload");btn.disabled=true;btn.textContent="Загружаю…";
   try{
     const r=await fetch(API+"/api/nh/all",{cache:"no-store"});if(!r.ok)throw new Error(r.status);
-    items=(await r.json()).items||[];sortItems();cacheSave();note.hidden=true;renderGrid();
+    items=((await r.json()).items||[]).filter(x=>x.kind!=="ref");sortItems();cacheSave();note.hidden=true;renderGrid();
   }catch(e){note.hidden=false;note.textContent=items.length?"Не удалось обновить каталог, показана сохранённая на этом устройстве копия. Проверьте интернет или VPN и нажмите «Обновить».":"Каталог не загрузился. Проверьте интернет или VPN и нажмите «Обновить»."}
   finally{btn.disabled=false;btn.textContent="↻ Обновить"}
 }
