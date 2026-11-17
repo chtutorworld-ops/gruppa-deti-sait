@@ -105,6 +105,9 @@ header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field label,.lbl{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .field .hint{font-size:12px;color:var(--muted)}
+.howto{display:flex;flex-direction:column;gap:4px;font-size:13px;background:var(--sunk);border-radius:10px;padding:10px 12px}
+.howto b{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.howto code{font:12px var(--f-mono);background:var(--surface);padding:1px 4px;border-radius:4px}
 input[type=text],input[type=url],textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;box-shadow:var(--press)}
 textarea{font:13px/1.45 var(--f-mono);resize:vertical;min-height:90px}
 textarea#f-code{min-height:220px}
@@ -199,13 +202,16 @@ pre.code{margin:0;max-height:320px;overflow:auto;background:var(--sunk);border-r
     </div>
     <div class="two">
       <div class="stack">
-        <div class="field"><label for="f-url">Ссылка на источник</label><input type="url" id="f-url" placeholder="https://uiverse.io/…"></div>
+        <div class="field"><label for="f-url">Ссылка на источник</label><input type="url" id="f-url" placeholder="https://uiverse.io/…"><span class="hint">Адрес из строки браузера. Если вы что-то настраивали на сайте и адрес стал длинным (с #, = и &amp;), берите его целиком: в нём ваши настройки.</span></div>
         <div class="field"><label for="f-title">Название</label><input type="text" id="f-title" placeholder="Например: стеклянная кнопка с бликом"></div>
         <div class="field"><span class="lbl">Что это</span><div class="seg" id="f-kind"></div></div>
         <div class="field">
           <label for="f-code">Код</label>
           <textarea id="f-code" spellcheck="false" placeholder="Вставьте сюда код: HTML, или HTML вместе с &lt;style&gt;, или компонент React (с import … from 'react')"></textarea>
-          <span class="hint">Подходит HTML, CSS, JavaScript и компоненты React/Tailwind. Тип кода определяется сам.</span>
+          <div class="howto"><b>Что сюда вставлять</b>
+            <span>Всё, что на сайте лежит в окошках с кодом: HTML и CSS, или кусок, который начинается с <code>import</code> и заканчивается <code>/&gt;</code>. Его вставляйте целиком.</span>
+            <span>Строку <code>npm i …</code> (установка) не вставляйте, она не нужна. Если попадёт, я её сам уберу.</span>
+            <span>Если на сайте два окошка, HTML и CSS, CSS кладите в «Ещё поля» → «CSS отдельно».</span></div>
         </div>
         <details id="more">
           <summary>Ещё поля: отдельный CSS, JS, фон превью, картинка</summary>
@@ -324,7 +330,7 @@ const LIB=f=>new URL("lib/"+f,location.href).href;
 const CDN={
   react:LIB("react.production.min.js"), reactdom:LIB("react-dom.production.min.js"), babel:LIB("babel.min.js"),
   tw:LIB("tailwind-browser.js"), motion:LIB("framer-motion.js"), gsap:LIB("gsap.min.js"), st:LIB("ScrollTrigger.min.js"),
-  three:LIB("three.min.js"), lucide:LIB("lucide-react.min.js"),
+  three:LIB("three.min.js"), lucide:LIB("lucide-react.min.js"), paper:LIB("paper-shaders-react.js"),
 };
 function isReact(code){
   return /(^|\n)\s*(import\s[^;]*from\s*['"]|import\s*['"]|export\s+(default|const|function))|["']use client["']/.test(code) || /return\s*\(\s*<[A-Za-z]/.test(code) || /className=/.test(code);
@@ -334,7 +340,19 @@ function wantsTailwind(html){
   const hits=cls.match(/\b(flex|grid|items-center|justify-|gap-\d|p[xytrbl]?-\d|m[xytrbl]?-\d|w-(full|\d)|h-(full|\d)|bg-[a-z]+|text-(xs|sm|lg|xl|\d?xl|[a-z]+-\d00)|rounded(-[a-z0-9]+)?|shadow(-[a-z]+)?|border(-[a-z0-9]+)?)\b/g)||[];
   return hits.length>=4;
 }
+// Приводим вставленный код в порядок: убираем строки установки (npm i …) и голые ссылки,
+// а если вставлен только пример вида «import …; <Компонент … />», считаем его примером показа.
+function tidy(it){
+  let code=(it.code||"").split("\n").filter(l=>!/^\s*(npm|pnpm|yarn|npx|bun)\s+(i|install|add)\b/.test(l)&&!/^\s*https?:\/\/\S+\s*$/.test(l)).join("\n");
+  let demo=(it.demo||"").trim();
+  if(isReact(code)&&!demo&&!/export\s|function\s|=>|class\s/.test(code.replace(/^\s*import[^\n]*$/gm,""))){
+    const body=code.replace(/^\s*import[^\n]*$/gm,"").trim();
+    if(body.startsWith("<")){demo=body;code=code.match(/^\s*import[^\n]*$/gm).join("\n")}
+  }
+  return {...it,code,demo};
+}
 function previewDoc(it,token){
+  it=tidy(it);
   const code=it.code||"", css=it.css||"", js=it.js||"", dark=it.bg==="dark";
   const all=code+"\n"+js;
   const scripts=[];
@@ -346,6 +364,7 @@ function previewDoc(it,token){
     if(/gsap/.test(all)) scripts.push(CDN.gsap,CDN.st);
     if(/from\s*['"]three['"]|THREE\./.test(all)) scripts.push(CDN.three);
     if(/lucide-react/.test(all)) scripts.push(CDN.lucide);
+    if(/@paper-design\/shaders-react/.test(all)) scripts.push(CDN.paper);
     const demo=(it.demo||"").trim();
     return `<!doctype html><html${dark?' class="dark"':""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${report}
 <style type="text/tailwindcss">@custom-variant dark (&:where(.dark, .dark *));</style>
@@ -367,6 +386,7 @@ if(window.Motion){M["framer-motion"]=Motion;M["motion/react"]=Motion;M["motion"]
 if(window.gsap){M.gsap={default:gsap,gsap:gsap};M["gsap/ScrollTrigger"]={ScrollTrigger:window.ScrollTrigger,default:window.ScrollTrigger};M["gsap/all"]={gsap:gsap,ScrollTrigger:window.ScrollTrigger};if(window.ScrollTrigger)gsap.registerPlugin(ScrollTrigger)}
 if(window.THREE)M.three=THREE;
 if(window.LucideReact)M["lucide-react"]=LucideReact;
+if(window.PaperShaders)M["@paper-design/shaders-react"]=PaperShaders;
 function req(n){if(/\\.(css|scss|sass|less)$/.test(n))return{};if(/(^@\\/|\\/)lib\\/utils|^@\\/utils|\\/utils$/.test(n))return{cn:cn};if(M[n])return esm(M[n]);return anyMod(n)}
 try{
   var full=SRC+(DEMO?"\\nexport const __Demo = () => (<>"+DEMO+"</>);":"");
@@ -405,7 +425,7 @@ try{
 /* превью: iframe + отчёт о сборке */
 const frames=new Map(); // token -> callback
 window.addEventListener("message",e=>{const d=e.data;if(d&&d.__nahodka&&frames.has(d.__nahodka)){frames.get(d.__nahodka)(d.s,d.m)}});
-function scaleMode(it){return it.scale&&it.scale!=="auto"?it.scale:(PAGE_KINDS.has(it.kind)?"page":"el")}
+function scaleMode(it){if(it.scale&&it.scale!=="auto")return it.scale;const w=/width=\{?["']?(\d{3,4})/.exec((it.code||"")+(it.demo||""));return PAGE_KINDS.has(it.kind)||(w&&+w[1]>=900)?"page":"el"}
 function mountPreview(box,it,onStatus){
   box.querySelectorAll("iframe,img,.ph").forEach(n=>n.remove());
   box.classList.toggle("dark",it.bg==="dark");
@@ -476,6 +496,7 @@ function livePreview(){
   mountPreview($("#f-stage"),it,(s,m)=>{st.className="status "+(s==="ok"?"ok":s==="none"?"":"err");st.textContent=s==="ok"?(m||"Превью готово"):s==="partial"?"Собралось частично. "+m:s==="error"?"Не собралось: "+m+". Сохраните всё равно: Claude соберёт сам.":s==="slow"?m:""});
 }
 ["#f-code","#f-css","#f-js","#f-demo"].forEach(s=>$(s).addEventListener("input",schedule));
+$("#f-code").addEventListener("input",()=>{if($("#f-url").value.trim())return;const m=$("#f-code").value.match(/^\s*(https?:\/\/\S+)\s*$/m);if(m){$("#f-url").value=m[1];$("#f-url").dispatchEvent(new Event("change"))}});
 $("#f-url").addEventListener("change",()=>{if(!$("#f-title").value.trim()){const u=$("#f-url").value;try{const p=new URL(u).pathname.split("/").filter(Boolean).pop()||"";$("#f-title").placeholder=(p.replace(/[-_]/g," ")||host(u))}catch{}}});
 function openForm(it){
   editing=it?it.id:null;formImg=it?.imgV||null;formImgBlob=null;
