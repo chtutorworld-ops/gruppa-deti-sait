@@ -202,7 +202,7 @@ pre.code{margin:0;max-height:320px;overflow:auto;background:var(--sunk);border-r
     </div>
     <div class="two">
       <div class="stack">
-        <div class="field"><label for="f-url">Ссылка на источник</label><input type="url" id="f-url" placeholder="https://uiverse.io/…"><span class="hint">Адрес из строки браузера. Если вы что-то настраивали на сайте и ссылка стала длинной (с = и &amp;), вставьте только её, целиком: в ней все ваши настройки. Код тогда не нужен, превью появится само (так работают shadergradient.co и shaders.paper.design).</span></div>
+        <div class="field"><label for="f-url">Ссылка на источник</label><input type="url" id="f-url" placeholder="https://uiverse.io/…"><span class="hint">Адрес из строки браузера. Если вы что-то настраивали на сайте и ссылка стала длинной (с = и &amp;), вставьте только её, целиком: в ней все ваши настройки. Код тогда не нужен, превью появится само (так работают shadergradient.co и shaders.paper.design). Если это готовая картинка (как на fffuel.co/dddepth), вставьте прямую ссылку на неё: правой кнопкой по картинке → «Копировать адрес ссылки».</span></div>
         <div class="field"><label for="f-title">Название</label><input type="text" id="f-title" placeholder="Например: стеклянная кнопка с бликом"></div>
         <div class="field"><span class="lbl">Что это</span><div class="seg" id="f-kind"></div></div>
         <div class="field">
@@ -346,6 +346,9 @@ function wantsTailwind(html){
 function fromUrl(url){
   let u;try{u=new URL(url)}catch{return null}
   const h=u.hostname.replace(/^www\./,"");
+  if(/\.(jpe?g|png|webp|gif|avif|svg)$/i.test(u.pathname)){
+    return {code:`<img src=${JSON.stringify(u.href)} alt="" style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover">`};
+  }
   if(h==="shadergradient.co"&&u.search.length>5){
     const full="https://www.shadergradient.co/customize"+u.search;
     return {code:"import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react';",
