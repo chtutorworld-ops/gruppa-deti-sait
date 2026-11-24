@@ -75,6 +75,10 @@ textarea{min-height:76px;resize:vertical}
 .verd button[aria-pressed="true"][data-v="like"]{background:var(--ok);color:#fff;border-color:transparent;box-shadow:var(--shadow)}
 .verd button[aria-pressed="true"][data-v="dislike"]{background:var(--love);color:#fff;border-color:transparent;box-shadow:var(--shadow)}
 .hint{font-size:12px;color:var(--muted)}
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px 18px}
+.grp{display:flex;flex-direction:column;gap:6px;min-width:0}
+.grp-h{font-size:12px;font-weight:600;color:var(--ink);display:flex;gap:8px;align-items:baseline}
+.grp-h a{font-weight:400;font-size:12px}
 .ref.no{border-color:color-mix(in srgb,var(--love) 45%,transparent)}
 .ref.no .shot img{filter:saturate(.55)}
 .mark{font:600 11px/1 var(--f-ui);padding:5px 8px;border-radius:6px;align-self:flex-start;color:#fff}
@@ -110,7 +114,6 @@ textarea{min-height:76px;resize:vertical}
       <div class="field" style="grid-column:1/-1"><label for="f-url">Ссылка на экран или приложение</label><input type="url" id="f-url" placeholder="https://mobbin.com/screens/…" required></div>
       <div class="field">
         <span class="lbl">Какой экран</span><div class="seg" id="f-kind"></div>
-        <span class="lbl" style="margin-top:8px">Что именно цепляет (можно несколько)</span><div class="seg" id="f-asp"></div>
         <label for="f-note" id="f-note-l" style="margin-top:8px">Что нравится</label>
         <textarea id="f-note" placeholder="Например: шкала прогресса как прибор, крупная карточка задания"></textarea>
         <span class="hint">Даже «не знаю почему, просто фу» полезно: сохраните, разберёмся вместе.</span>
@@ -119,6 +122,7 @@ textarea{min-height:76px;resize:vertical}
         <div class="drop" id="f-drop" tabindex="0">Нажмите, перетащите или вставьте Ctrl+V<div id="f-img"></div></div>
         <input type="file" id="f-file" accept="image/*" hidden>
       </div>
+      <div class="field" style="grid-column:1/-1"><span class="lbl">Что именно цепляет (можно несколько, названия как в курсе)</span><div class="groups" id="f-asp"></div></div>
       <div class="actions"><button class="btn primary" id="f-save" type="submit">Сохранить</button><span class="status" id="f-status"></span></div>
     </form>
   </section>
@@ -159,8 +163,21 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch{return u}};
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const kindName=k=>(KINDS.find(x=>x[0]===k)||[,"Другое"])[1];
-const ASPECTS=[["color","Цвет"],["type","Шрифт"],["layout","Сетка и отступы"],["shape","Форма кнопок и карточек"],["depth","Объём, тени, стекло"],["icons","Иконки и картинки"],["motion","Анимация"],["mood","Настроение в целом"]];
-const aspName=a=>(ASPECTS.find(x=>x[0]===a)||[,a])[1];
+/* Метки = термины курса «Курс молодого дизайнера» (kurs-dizajnera). Храним само название метки. */
+const COURSE="../kurs-dizajnera/";
+const GROUPS=[
+ ["Основы","glaz",["Иерархия","Сетка и отступы","Плотность","Выравнивание","Контраст"]],
+ ["Типографика","glaz",["Заголовок","Основной текст","Сочетание шрифтов","Цифры и подписи"]],
+ ["Цвет и материал","glaz",["Палитра","Акцентный цвет","Тени и объём","Стекло и блики","Фактура"]],
+ ["Элементы экрана","anatomiya",["Кнопки","Карточки","Поля и формы","Иконки","Навигация","Переключатели","Списки","Бенто-сетка"]],
+ ["Поведение","animaciya",["Анимация","Отклик на нажатие","Состояния экрана","Понятный путь"]],
+ ["Типы экранов и слайдов","",["Первый экран","Экран задания","Кабинет","Титульный слайд","Слайд с иероглифом","Слайд-задание","Итоговый слайд"]],
+ ["Картинка","kartinki",["Иллюстрация","Персонаж","3D"]],
+ ["Общее","",["Настроение целиком"]],
+];
+/* старые метки первой версии */
+const OLD={color:"Цвет",type:"Шрифт",layout:"Сетка и отступы",shape:"Форма кнопок и карточек",depth:"Объём, тени, стекло",icons:"Иконки и картинки",motion:"Анимация",mood:"Настроение в целом"};
+const aspName=a=>OLD[a]||a;
 const verdOf=it=>it.verdict==="dislike"?"dislike":"like";
 let items=[],filter="all",vfilter="all",imgBlob=null;
 
@@ -170,7 +187,9 @@ $("#sources").onclick=async e=>{const b=e.target.closest("[data-q]");if(!b)retur
 
 /* форма */
 $("#f-kind").innerHTML=KINDS.map(([k,n],i)=>`<button type="button" class="chip" data-v="${k}" aria-pressed="${i===0}">${esc(n)}</button>`).join("");
-$("#f-asp").innerHTML=ASPECTS.map(([k,n])=>`<button type="button" class="chip" data-a="${k}" aria-pressed="false">${esc(n)}</button>`).join("");
+$("#f-asp").innerHTML=GROUPS.map(([g,slug,ls])=>`<div class="grp"><div class="grp-h">${esc(g)}${slug?`<a data-slug="${slug}" href="${COURSE}${slug}/" target="_blank" rel="noopener" hidden>глава ↗</a>`:""}</div><div class="seg">${ls.map(l=>`<button type="button" class="chip" data-a="${esc(l)}" aria-pressed="false">${esc(l)}</button>`).join("")}</div></div>`).join("");
+/* ссылку на главу показываем, только когда страница курса уже есть */
+[...new Set(GROUPS.map(g=>g[1]).filter(Boolean))].forEach(slug=>fetch(COURSE+slug+"/",{method:"HEAD"}).then(r=>{if(r.ok)document.querySelectorAll(`[data-slug="${slug}"]`).forEach(a=>a.hidden=false)}).catch(()=>{}));
 $("#f-asp").onclick=e=>{const b=e.target.closest("[data-a]");if(b)b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")};
 function setVerd(v){$("#f-verd").querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===v));
   $("#f-note-l").textContent=v==="dislike"?"Что не нравится":"Что нравится";
