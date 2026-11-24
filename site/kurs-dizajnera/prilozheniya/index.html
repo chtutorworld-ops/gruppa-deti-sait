@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как читать приложения</title>
+<meta name="description" content="Учебная страница: как разбирать дизайн приложений по нотам, а не по «нравится / не нравится».">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#fffdf9; --ink:#1c1b19; --ink2:#3b3a36; --muted:#6e6b64; --line:#e4e0d6; --line2:#d6d1c4;
+  --accent:#3f4bb8; --accent-soft:#e8eaf8; --accent-ink:#2c358c; --ok:#2f7a55; --ok-soft:#e4f1ea; --warn:#9a5b16; --warn-soft:#f6ecdc; --bad:#9b2c2c; --bad-soft:#f6e3e3;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;letter-spacing:-.01em}
+header.top{padding:40px 0 28px}
+.back{font-size:14px;text-decoration:none;color:var(--muted)}
+.back:hover{color:var(--accent)}
+.kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:22px 0 14px}
+h1{font-size:clamp(34px,5.4vw,58px);line-height:1.05;margin:0 0 18px;max-width:16ch}
+.lead{font-size:18px;color:var(--ink2);max-width:64ch;margin:0 0 12px}
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:30px}
+.toc a{background:var(--card);padding:14px 16px 16px;text-decoration:none;color:var(--ink);display:block}
+.toc a:hover{background:#fff}
+.toc b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--accent);line-height:1;margin-bottom:6px}
+.toc span{font-size:14px;line-height:1.35;display:block}
+nav.bar{position:sticky;top:0;z-index:20;background:rgba(246,244,239,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav.bar .wrap{display:flex;align-items:center;gap:4px;height:52px;overflow-x:auto;scrollbar-width:none}
+nav.bar .wrap::-webkit-scrollbar{display:none}
+nav.bar a{flex:none;font-size:14px;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:8px}
+nav.bar a:hover{background:var(--card);color:var(--ink)}
+section.part{padding:60px 0 20px;border-top:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:80px 1fr;gap:8px 20px;margin-bottom:26px}
+.ph .num{font-family:var(--serif);font-size:56px;line-height:.9;color:var(--accent)}
+.ph h2{font-size:clamp(28px,3.6vw,40px);line-height:1.1;margin:0 0 10px}
+.ph p{margin:0 0 8px;color:var(--ink2);max-width:68ch}
+h3.sub{font-size:24px;margin:40px 0 12px}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;margin:16px 0;color:var(--ink2);font-size:15px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card h4{margin:0 0 6px;font-size:20px;line-height:1.2}
+.card p{margin:0 0 6px;font-size:15px}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.btn{font:inherit;font-size:14px;border:0;background:var(--ink);color:#fff;border-radius:9px;padding:9px 16px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.btn:hover{opacity:.9}
+.chip{font:inherit;font-size:14px;border:1px solid var(--line2);background:var(--card);color:var(--ink2);padding:6px 12px;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* пирамида */
+.pyr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.pyr .card{position:relative;padding-top:44px}
+.pyr .tier{position:absolute;top:14px;left:18px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.pyr ul{margin:6px 0 0;padding-left:18px;font-size:14.5px}
+.pyr li{margin:2px 0}
+.ana{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+.ana div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.ana b{display:block;font:500 17px var(--serif);margin-bottom:2px}
+.ana b i{font-style:normal;color:var(--muted);font-family:var(--sans);font-size:13px;font-weight:400}
+
+/* ОРГАН */
+.organ{display:grid;grid-template-columns:330px 1fr;gap:26px;align-items:start}
+.ctrls{display:flex;flex-direction:column;gap:14px}
+.ctrl h5{margin:0 0 6px;font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ctrl h5 small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted);margin-left:6px;font-size:12.5px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:inherit;font-size:13.5px;border:1px solid var(--line2);background:var(--card);color:var(--ink2);padding:5px 11px;border-radius:8px;cursor:pointer}
+.seg button:hover{border-color:var(--accent)}
+.seg button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.presets{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:18px}
+.presets h5{margin:0 0 8px;font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.presets .seg button[aria-pressed=true]{background:var(--ink);border-color:var(--ink)}
+.formula{font-family:var(--mono);font-size:12.5px;line-height:1.6;background:#fbfaf7;border:1px solid var(--line);border-radius:10px;padding:12px 14px;white-space:pre-wrap;margin:10px 0 8px}
+.pdesc{font-size:14.5px;color:var(--ink2);margin:8px 0 0}
+.stagewrap{display:flex;justify-content:center;position:sticky;top:70px}
+
+/* телефон: общая механика */
+.phone{--p:16px;--g:12px;--t:30px;--fs:15px;--r:16px;--rb:12px;
+  --bg:#f5f5f3;--surf:#fff;--ink:#18181b;--ink2:#6b6b73;--acc:#3f4bb8;--on:#fff;--tone:#eeeef2;--line:#e6e6ea;--shd:rgba(20,20,40,.10);--shl:rgba(255,255,255,.95);
+  --ff:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif;--fft:var(--ff);
+  --dur:.28s;--ease:cubic-bezier(.2,.8,.2,1);
+  width:300px;height:620px;border-radius:44px;padding:10px;background:#1b1b1d;box-shadow:0 30px 60px -20px rgba(30,28,50,.35);flex:none;position:relative}
+.phone .scr{text-align:left;position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--ff);font-size:var(--fs);line-height:1.35;transition:background .3s,color .3s}
+.phone.mini{width:220px;height:455px;border-radius:34px;padding:7px}
+.phone.mini .scr{border-radius:28px}
+.phone.mini .inner{transform:scale(.7357);transform-origin:0 0;width:135.9%;height:135.9%}
+.inner{position:relative;width:100%;height:100%;display:flex;flex-direction:column}
+.blobs{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s}
+.blobs i{position:absolute;border-radius:50%;filter:blur(30px)}
+.sb{display:flex;justify-content:space-between;padding:12px 26px 4px;font-size:13px;font-weight:600;position:relative}
+.sb span:last-child{letter-spacing:2px}
+.body{flex:1;overflow:hidden;padding:6px var(--p) 0;display:flex;flex-direction:column;gap:var(--g);position:relative}
+.body > *{flex-shrink:0}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;padding-top:6px}
+.hd small{display:block;color:var(--ink2);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.hd h3{margin:0;font-family:var(--fft);font-size:var(--t);line-height:1.05;font-weight:700;letter-spacing:-.02em}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--tone);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--ink2);flex:none}
+.hero{background:var(--surf);border-radius:var(--r);padding:calc(var(--p) + 2px);display:flex;flex-direction:column;gap:8px;transition:all var(--dur) var(--ease)}
+.hero .k{font-size:12px;color:var(--ink2);font-weight:600}
+.hero .hz{font-size:40px;line-height:1.1;font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif;letter-spacing:.04em}
+.hero .py{font-size:13px;color:var(--ink2)}
+.bar{height:6px;border-radius:6px;background:var(--tone);overflow:hidden}
+.bar i{display:block;height:100%;width:60%;background:var(--acc);border-radius:inherit;transition:width var(--dur) var(--ease)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hrow small{font-size:12px;color:var(--ink2);white-space:nowrap}
+.cta{font:inherit;font-weight:600;font-size:14px;border:0;background:var(--acc);color:var(--on);border-radius:var(--rb);padding:10px 16px;cursor:pointer;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.cta.press{transform:scale(.92)}
+.lbl{font-size:12.5px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.list{background:var(--surf);border-radius:var(--r);overflow:hidden;transition:all .3s}
+.row{display:flex;align-items:center;gap:12px;padding:calc(var(--p) * .75) var(--p);border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.ic{width:30px;height:30px;border-radius:calc(var(--rb) * .7);background:var(--tone);display:grid;place-items:center;flex:none;color:var(--acc)}
+.ic svg{width:17px;height:17px}
+.row .tx{flex:1;min-width:0}
+.row b{display:block;font-weight:600;font-size:var(--fs)}
+.row small{color:var(--ink2);font-size:12.5px}
+.row .st{font-size:12.5px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.row .meta{display:none;font-size:11px;color:var(--ink2);font-family:var(--mono)}
+.stats{display:flex;gap:var(--g)}
+.stat{flex:1;background:var(--surf);border-radius:var(--r);padding:calc(var(--p) * .8) var(--p)}
+.stat b{display:block;font-size:20px;font-family:var(--fft);font-variant-numeric:tabular-nums}
+.stat small{color:var(--ink2);font-size:12px}
+.tabs{display:flex;justify-content:space-around;padding:8px 10px 22px;border-top:1px solid var(--line);background:var(--surf);position:relative;transition:all .3s}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--ink2);font-weight:500}
+.tab svg{width:22px;height:22px}
+.tab.on{color:var(--acc)}
+
+/* плотность */
+.phone[data-dens=air]{--p:20px;--g:16px;--t:34px}
+.phone[data-dens=dense]{--p:11px;--g:7px;--t:22px;--fs:13.5px}
+.phone[data-dens=dense] .hero .hz{font-size:30px}
+.phone[data-dens=dense] .row .meta{display:block}
+.phone[data-dens=dense] .row small{display:none}
+.phone[data-dens=air] .stats{display:none}
+.phone[data-dens=air] .row:nth-child(3){display:none}
+/* шрифт */
+.phone[data-font=serif]{--fft:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+.phone[data-font=serif] .hd h3{font-weight:500;letter-spacing:-.01em}
+.phone[data-font=round]{--ff:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Varela Round","Nunito",-apple-system,"Segoe UI",sans-serif;--fft:var(--ff)}
+.phone[data-font=round] .hd h3{font-weight:800}
+.phone[data-font=mono]{--fft:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.phone[data-font=mono] .hd h3{font-weight:500;text-transform:uppercase;letter-spacing:.02em;font-size:calc(var(--t) * .78)}
+.phone[data-font=mono] .lbl,.phone[data-font=mono] .hero .k,.phone[data-font=mono] .stat b,.phone[data-font=mono] .row .st,.phone[data-font=mono] .tab{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.04em}
+/* форма */
+.phone[data-shape=sharp]{--r:5px;--rb:4px}
+.phone[data-shape=pill]{--r:28px;--rb:999px}
+.phone[data-shape=pill] .ic{border-radius:50%}
+/* цвет */
+.phone[data-color=tonal]{--bg:#fbf7ff;--surf:#efe7fa;--ink:#1d1730;--ink2:#5d5570;--acc:#6750a4;--tone:#e0d3f7;--line:#e3d9f2;--shd:rgba(60,30,110,.12)}
+.phone[data-color=play]{--bg:#ffffff;--surf:#ffffff;--ink:#3b3b3b;--ink2:#7a7a7a;--acc:#1c9ef0;--on:#fff;--tone:#fff1cf;--line:#e7e7e7;--shd:rgba(0,0,0,.08)}
+.phone[data-color=play] .hero,.phone[data-color=play] .list,.phone[data-color=play] .stat{border:2px solid #e7e7e7}
+.phone[data-color=play] .cta{box-shadow:0 4px 0 #1479b8;text-transform:uppercase;letter-spacing:.04em}
+.phone[data-color=play] .cta.press{transform:translateY(4px);box-shadow:0 0 0 #1479b8}
+.phone[data-color=play] .row:nth-child(1) .ic{background:#ffe3d1;color:#f2711c}
+.phone[data-color=play] .row:nth-child(2) .ic{background:#dff5c8;color:#46a302}
+.phone[data-color=play] .row:nth-child(3) .ic{background:#fbdcef;color:#d6338c}
+.phone[data-color=play] .bar i{background:#58b80c}
+.phone[data-color=play] .stat:first-child b{color:#f2711c}
+.phone[data-color=dark]{--bg:#0e0e10;--surf:#18181b;--ink:#ededf0;--ink2:#8a8a93;--acc:#8d95ff;--on:#0e0e10;--tone:#232329;--line:#26262c;--shd:rgba(0,0,0,.55);--shl:rgba(255,255,255,.05)}
+/* материал */
+.phone[data-mat=flat] .hero,.phone[data-mat=flat] .list,.phone[data-mat=flat] .stat{box-shadow:none}
+.phone[data-mat=flat][data-color=mono] .hero,.phone[data-mat=flat][data-color=mono] .list,.phone[data-mat=flat][data-color=mono] .stat{border:1px solid var(--line)}
+.phone[data-mat=flat][data-color=dark] .hero,.phone[data-mat=flat][data-color=dark] .list,.phone[data-mat=flat][data-color=dark] .stat{border:1px solid var(--line)}
+.phone[data-mat=layer] .hero,.phone[data-mat=layer] .list,.phone[data-mat=layer] .stat{box-shadow:0 1px 2px var(--shd),0 8px 24px -8px var(--shd)}
+.phone[data-mat=layer] .tabs{box-shadow:0 -6px 20px -12px var(--shd)}
+.phone[data-mat=neu]{--surf:var(--bg)}
+.phone[data-mat=neu][data-color=mono]{--bg:#e8e8ec}
+.phone[data-mat=neu] .hero,.phone[data-mat=neu] .list,.phone[data-mat=neu] .stat{box-shadow:7px 7px 16px var(--shd),-7px -7px 16px var(--shl);border:0}
+.phone[data-mat=neu][data-color=mono]{--shd:rgba(140,140,160,.45)}
+.phone[data-mat=neu] .list .row{border-top-color:transparent}
+.phone[data-mat=neu] .ic{background:var(--bg);box-shadow:inset 3px 3px 6px var(--shd),inset -3px -3px 6px var(--shl)}
+.phone[data-mat=neu] .bar{box-shadow:inset 2px 2px 4px var(--shd),inset -2px -2px 4px var(--shl)}
+.phone[data-mat=neu] .tabs{border-top:0;box-shadow:0 -6px 14px -8px var(--shd)}
+.phone[data-mat=neu] .cta{box-shadow:4px 4px 10px var(--shd),-4px -4px 10px var(--shl)}
+.phone[data-mat=glass] .blobs{opacity:1}
+.phone[data-mat=glass] .hero,.phone[data-mat=glass] .list,.phone[data-mat=glass] .stat{background:rgba(255,255,255,.45);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.7);box-shadow:0 8px 24px -10px var(--shd), inset 0 1px 0 rgba(255,255,255,.8)}
+.phone[data-mat=glass][data-color=dark] .hero,.phone[data-mat=glass][data-color=dark] .list,.phone[data-mat=glass][data-color=dark] .stat{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.phone[data-mat=glass] .tabs{position:absolute;left:14px;right:14px;bottom:14px;border-radius:999px;padding:8px 10px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.5);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 10px 30px -10px rgba(0,0,0,.25)}
+.phone[data-mat=glass][data-color=dark] .tabs{background:rgba(40,40,46,.55);border-color:rgba(255,255,255,.12)}
+.phone[data-mat=glass] .body{padding-bottom:80px}
+.phone[data-mat=hw][data-color=mono]{--bg:#ecebe6;--surf:#f6f5f1;--tone:#e2e0d9;--line:#dcd9d0}
+.phone[data-mat=hw] .hero,.phone[data-mat=hw] .list,.phone[data-mat=hw] .stat{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 40%),var(--surf);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(0,0,0,.06),0 1px 1px rgba(0,0,0,.08),0 6px 12px -6px var(--shd);border:1px solid var(--line)}
+.phone[data-mat=hw][data-color=dark] .hero,.phone[data-mat=hw][data-color=dark] .list,.phone[data-mat=hw][data-color=dark] .stat{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0) 40%),var(--surf);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 12px -6px #000}
+.phone[data-mat=hw] .cta{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 3px 0 rgba(0,0,0,.28),0 6px 10px -4px rgba(0,0,0,.3)}
+.phone[data-mat=hw] .cta.press{transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 0 rgba(0,0,0,.28)}
+.phone[data-mat=hw] .ic{box-shadow:inset 0 1px 2px rgba(0,0,0,.12),0 1px 0 rgba(255,255,255,.9)}
+.phone[data-mat=hw] .bar{box-shadow:inset 0 1px 2px rgba(0,0,0,.18)}
+.phone[data-mat=hw] .lbl,.phone[data-mat=hw] .hero .k,.phone[data-mat=hw] .tab{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}
+.phone[data-mat=hw] .tabs{background:var(--surf);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.phone[data-mat=hw] .tab.on{color:var(--ink)}
+.phone[data-mat=hw] .tab.on svg{filter:drop-shadow(0 0 4px var(--acc));color:var(--acc)}
+/* иерархия */
+.phone[data-hier=list] .hero{flex-direction:row;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:calc(var(--p) * .75) var(--p)}
+.phone[data-hier=list] .hero .hz{font-size:var(--fs);font-weight:600;letter-spacing:0;font-family:inherit}
+.phone[data-hier=list] .hero .py,.phone[data-hier=list] .hero .bar{display:none}
+.phone[data-hier=list] .hero .k{width:100%}
+.phone[data-hier=list] .hero .hrow{flex:1}
+.phone[data-hier=list] .cta{background:transparent;color:var(--acc);padding:0;box-shadow:none!important;border:0}
+.phone[data-hier=list] .hd h3{font-size:calc(var(--t) * .7)}
+/* движение */
+.phone[data-motion=none]{--dur:0s}
+.phone[data-motion=ease]{--dur:.25s;--ease:cubic-bezier(.2,.8,.2,1)}
+.phone[data-motion=spring]{--dur:.55s;--ease:cubic-bezier(.34,1.7,.5,1)}
+.tapme{font-size:12.5px;color:var(--muted);text-align:center;margin-top:8px}
+
+/* ноты подробно */
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.nt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:7px}
+.nt .lvl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.nt h4{margin:0;font-size:21px;line-height:1.2}
+.nt h4 i{font-style:normal;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-left:6px;font-weight:400}
+.nt p{margin:0;font-size:14.5px}
+.poles{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;font-size:13.5px;background:#faf8f3;border-radius:9px;padding:8px 10px}
+.poles span:nth-child(2){color:var(--muted)}
+.poles span:last-child{text-align:right}
+.det{font-size:14px;color:var(--accent-ink);background:var(--accent-soft);border-radius:8px;padding:7px 10px}
+.det::before{content:"Детектор: ";font-weight:600}
+.where{font-size:13.5px;color:var(--ink2)}
+.where b{font-weight:600}
+
+/* переводчик */
+.tr{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+.tr div.r{display:grid;grid-template-columns:170px 1fr 1fr;border-top:1px solid var(--line)}
+.tr div.r:first-child{border-top:0;background:#f1eee6;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.tr div.r > *{padding:11px 14px;font-size:14.5px}
+.tr div.r > b{font:500 18px var(--serif);font-style:italic}
+.tr div.r:first-child > *{font:inherit;font-style:normal}
+
+/* почерки */
+.houses{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.house{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:7px}
+.house .t{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.house h4{margin:0;font-size:22px}
+.house p{margin:0;font-size:14.5px}
+.house .sig{display:flex;flex-wrap:wrap;gap:5px}
+.house .sig span{font-size:12.5px;border:1px solid var(--line2);border-radius:999px;padding:2px 9px;color:var(--ink2);background:#faf8f3}
+.house .take{font-size:14px;border-left:2px solid var(--ok);padding-left:10px;color:var(--ink2)}
+.house .take::before{content:"Для AIKITAY: ";font-weight:600;color:var(--ok)}
+.house .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.house .acts a{font-size:13.5px}
+.house .acts button{font:inherit;font-size:13px;border:1px solid var(--line2);background:transparent;border-radius:7px;padding:3px 10px;cursor:pointer;color:var(--ink)}
+.house .acts button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* навигация */
+.navs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.nv{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:74px 1fr;gap:14px;align-items:start}
+.nv .sch{width:74px;height:140px;border:2px solid #2a2925;border-radius:14px;position:relative;overflow:hidden;background:#fff}
+.nv .sch i{position:absolute;display:block}
+.nv h4{margin:0 0 4px;font-size:18px}
+.nv p{margin:0;font-size:13.5px;color:var(--ink2)}
+.nv .en{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+
+/* состояния */
+.states{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.sti{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.sti b{display:block;font:500 17px var(--serif);margin-bottom:2px}
+.sti .mock{height:64px;border-radius:8px;background:#f4f2ec;margin-bottom:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);position:relative;overflow:hidden}
+
+/* протокол и разбор */
+.proto{list-style:none;counter-reset:s;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.proto li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.proto li::before{counter-increment:s;content:"Шаг " counter(s);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.proto li b{display:block;font:500 17px var(--serif);margin-bottom:2px}
+.form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}
+.form label{display:block;font-size:13px;color:var(--ink2);margin-bottom:8px}
+.form label.full{grid-column:1/-1}
+.form input,.form textarea,.form select{width:100%;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:#fff;color:var(--ink);margin-top:3px}
+.form textarea{min-height:58px;resize:vertical}
+.form .acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.verd{display:flex;gap:6px;margin-top:4px}
+.verd button{font:inherit;font-size:13.5px;border:1px solid var(--line2);background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer}
+.verd button[aria-pressed=true][data-v=yes]{background:var(--ok);border-color:var(--ok);color:#fff}
+.verd button[aria-pressed=true][data-v=no]{background:var(--bad);border-color:var(--bad);color:#fff}
+.verd button[aria-pressed=true][data-v=mid]{background:var(--warn);border-color:var(--warn);color:#fff}
+.saved{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sv{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+.sv h5{margin:0;font:500 17px var(--serif)}
+.sv h5 em{font-style:normal;font-family:var(--sans);font-size:12px;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
+.sv pre{grid-column:1/-1;margin:0;font-family:var(--mono);font-size:12px;white-space:pre-wrap;color:var(--ink2)}
+.sv button{font:inherit;font-size:12.5px;border:1px solid var(--line2);background:transparent;border-radius:7px;padding:3px 9px;cursor:pointer;color:var(--ink2)}
+
+/* тренажёр */
+.quiz{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.quiz .pair{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.quiz .pair figure{margin:0;text-align:center;font-size:13px;color:var(--muted)}
+.qq{font:500 22px/1.25 var(--serif);margin:0 0 12px}
+.qopts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.qopts button{font:inherit;font-size:14.5px;border:1px solid var(--line2);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+.qopts button:hover{border-color:var(--accent)}
+.qopts button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.qopts button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.qres{font-size:14.5px;color:var(--ink2);min-height:44px}
+.qscore{font-size:13px;color:var(--muted);margin-top:10px}
+.qmode{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+
+/* неделя */
+.week{counter-reset:d;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.week li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.week li::before{counter-increment:d;content:"День " counter(d);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.week li b{display:block;font:500 17px var(--serif);margin-bottom:2px}
+
+/* профиль */
+.prof{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.prof .card h4{font-size:18px}
+.prof ul{margin:0;padding-left:18px;font-size:14.5px}
+
+/* словарь */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px;font-size:14px}
+.tools input[type=search]{flex:1 1 240px;font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--card)}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:5px}
+.g.known{border-color:#bfdccb;background:#fbfdfb}
+.g .h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.g h4{margin:0;font-size:18px;line-height:1.2}
+.g .en{font-size:12px;color:var(--muted)}
+.g p{margin:0;font-size:14.5px}
+.g .ex{font-size:13.5px;color:var(--ink2);padding-left:10px;border-left:2px solid var(--line2)}
+.know{flex:none;font:inherit;font-size:12.5px;border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:999px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.g.known .know{background:var(--ok);border-color:var(--ok);color:#fff}
+
+/* чек-лист */
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.cgroup{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.cgroup h4{font-size:20px;margin:0 0 8px}
+.cgroup label{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;padding:5px 0;cursor:pointer;line-height:1.45}
+.cgroup input{margin-top:4px;accent-color:var(--ok);flex:none}
+.cgroup small{display:block;color:var(--muted);font-size:13px}
+.cgroup label:has(input:checked){color:var(--muted)}
+.cgroup.edu{border-color:#d3d7f2;background:#fbfbff}
+footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:40px}
+
+@media (max-width:900px){
+  .organ{grid-template-columns:1fr}
+  .stagewrap{position:static;order:-1}
+  .quiz{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  .toc{grid-template-columns:1fr 1fr}
+  .pyr,.grid2,.prof{grid-template-columns:1fr}
+  .ph{grid-template-columns:1fr}
+  .ph .num{font-size:40px}
+  .notes,.houses,.checks,.gl{grid-template-columns:1fr}
+  .tr div.r{grid-template-columns:1fr}
+  .tr div.r:first-child{display:none}
+  .tr div.r > b{padding-bottom:0}
+  .form{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .wrap{padding:0 16px}
+  .phone{width:270px;height:560px}
+  .phone .inner{transform:scale(.893);transform-origin:0 0;width:112%;height:112%}
+  .phone.mini{width:150px;height:310px;border-radius:24px;padding:5px}
+  .phone.mini .scr{border-radius:20px}
+  .phone.mini .inner{transform:scale(.5);width:200%;height:200%}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top wrap">
+  <a class="back" href="../">← Курс молодого веб-дизайнера</a>
+  <p class="kicker">Часть 5 · Приложения</p>
+  <h1>Как читать приложения</h1>
+  <p class="lead">Сказать «красиво» или «что-то не то» умеет любой, так оценивает парфюм человек, который его не знает: «приятно», «резко», «фу». Парфюмер говорит иначе: «бергамот сверху, ирис в сердце, база на мускусе, почерк похож на Эллену». У интерфейса тоже есть ноты, аккорды и почерки. Эта страница учит их различать на слух, то есть на глаз.</p>
+  <p class="lead" style="font-size:16px;color:var(--muted)">Как пользоваться: сначала пирамида нот, потом поиграй с конструктором экрана, дальше разборы и тренажёр. Отметки и твои разборы хранятся только в этом браузере.</p>
+  <div class="toc">
+    <a href="#piramida"><b>1</b><span>Пирамида нот: верх, сердце, база</span></a>
+    <a href="#organ"><b>2</b><span>Орган: собери экран из нот</span></a>
+    <a href="#noty"><b>3</b><span>13 нот подробно, с детекторами</span></a>
+    <a href="#perevod"><b>4</b><span>Переводчик с «приятно / фу»</span></a>
+    <a href="#pocherki"><b>5</b><span>Почерки: дома и мастера</span></a>
+    <a href="#baza"><b>6</b><span>База: навигация и состояния</span></a>
+    <a href="#razbor"><b>7</b><span>Разбор экрана и тренажёр</span></a>
+    <a href="#slova"><b>8</b><span>Словарь и чек-лист экрана</span></a>
+  </div>
+</header>
+
+<nav class="bar"><div class="wrap">
+  <a href="#piramida">Пирамида</a><a href="#organ">Орган</a><a href="#noty">Ноты</a><a href="#perevod">Переводчик</a><a href="#pocherki">Почерки</a><a href="#baza">База</a><a href="#razbor">Разбор</a><a href="#trenazher">Тренажёр</a><a href="#nedelya">Неделя</a><a href="#slova">Словарь</a><a href="#check">Чек-лист</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- 1 -->
+<section class="part" id="piramida" style="border-top:0">
+  <div class="ph"><div class="num">1</div><div>
+    <h2>Пирамида нот</h2>
+    <p>Аромат раскрывается слоями: сначала верхние ноты (первые минуты), потом сердце (час-два), в конце база (то, что остаётся на коже). Приложение раскрывается так же. Через три секунды ты видишь цвет и материал. Через минуту понимаешь шрифт, сетку и плотность. Через неделю пользования чувствуешь навигацию и то, как приложение ведёт себя, когда что-то пошло не так.</p>
+    <p>Новички судят по верхним нотам. Профессионал оценивает все три слоя и знает, что дорогое впечатление чаще всего делают сердце и база, а не яркий верх.</p>
+  </div></div>
+
+  <div class="pyr">
+    <div class="card"><span class="tier">Верхние ноты · 3 секунды</span><h4>Первое впечатление</h4>
+      <ul><li>Цвет и его температура</li><li>Материал и свет: плоско, тени, стекло, «железо»</li><li>Картинки, иллюстрации, 3D</li><li>Форма: острые углы или мягкие</li></ul>
+      <p class="small muted" style="margin-top:8px">Это то, что видно на скриншоте и в рилсах. Именно на это ты сейчас реагируешь «нравится / нет».</p></div>
+    <div class="card"><span class="tier">Сердце · 1 минута</span><h4>Устройство экрана</h4>
+      <ul><li>Иерархия: что главное</li><li>Плотность: сколько всего на экране</li><li>Сетка и ритм отступов</li><li>Типографика</li><li>Иконки и компоненты</li></ul>
+      <p class="small muted" style="margin-top:8px">Видно, если смотреть дольше и сравнивать несколько экранов одного приложения.</p></div>
+    <div class="card"><span class="tier">База · неделя</span><h4>Поведение</h4>
+      <ul><li>Навигация: где я и как вернуться</li><li>Состояния: пусто, загрузка, ошибка, успех</li><li>Движение и отклик на касание</li><li>Голос: как приложение с тобой говорит</li></ul>
+      <p class="small muted" style="margin-top:8px">На скриншоте почти не видно. Поэтому для базы смотрят флоу (цепочки экранов) и видео, а лучше пользуются сами.</p></div>
+  </div>
+
+  <h3 class="sub">Словарь парфюмера → словарь дизайнера</h3>
+  <div class="ana">
+    <div><b>Нота <i>→ свойство</i></b>Одна характеристика экрана: плотность, материал, радиус, шрифт.</div>
+    <div><b>Аккорд <i>→ сочетание</i></b>Несколько нот, которые работают вместе: «стекло + системный шрифт + пружины» звучит как iOS.</div>
+    <div><b>Семейство <i>→ стиль</i></b>Неоморфизм, плоский, скевоморфизм, бенто. Их ты уже знаешь по <a href="../../katalog-stiley/">каталогу стилей</a>.</div>
+    <div><b>Почерк парфюмера <i>→ почерк студии</i></b>Узнаваемая манера: Apple, Linear, Duolingo. Его узнаёшь, даже если логотип закрыт.</div>
+    <div><b>Концентрация <i>→ плотность</i></b>Как парфюм и туалетная вода: сколько всего на единицу площади.</div>
+    <div><b>Шлейф <i>→ последействие</i></b>Что помнишь после закрытия приложения: одна деталь, анимация, звук, тон текстов.</div>
+    <div><b>Блоттер <i>→ скриншот</i></b>Удобно сравнивать, но это не кожа. Настоящее звучание видно только в работе.</div>
+    <div><b>Слепая проба <i>→ без логотипа</i></b>Лучшая тренировка: угадать почерк, не видя названия.</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="part" id="organ">
+  <div class="ph"><div class="num">2</div><div>
+    <h2>Орган: собери экран из нот</h2>
+    <p>Орган парфюмера это стол с сотнями флаконов, по одному на ноту. Здесь то же самое: один и тот же экран «урок дня», и семь нот, которые можно менять по одной. Сначала нажми почерки сверху и посмотри, из каких нот они сложены. Потом меняй по одной ноте и следи, как меняется ощущение. Нажми кнопку «Продолжить» на экране, чтобы услышать ноту движения.</p>
+  </div></div>
+
+  <div class="organ">
+    <div>
+      <div class="presets"><h5>Почерки</h5><div class="seg" id="presets"></div><p class="pdesc" id="pdesc"></p></div>
+      <div class="ctrls" id="ctrls"></div>
+      <div class="formula" id="formula"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyF">Скопировать формулу</button><span id="copiedF" class="small muted"></span></div>
+      <p class="small muted">Формулу можно вставить в заметку к референсу: так через месяц у тебя будет не «красиво», а точное описание.</p>
+    </div>
+    <div class="stagewrap"><div><div class="phone" id="ph"></div><p class="tapme">Нажми «Продолжить» на экране</p></div></div>
+  </div>
+  <div class="note">Заметь главное: <b>один и тот же контент звучит совсем по-разному.</b> Тексты, задания и иероглифы не меняются, меняются только ноты. Поэтому «нравится» почти никогда не про содержание, а про 2–3 конкретные ноты. Найди их, и ты сможешь попросить ровно это.</div>
+</section>
+
+<!-- 3 -->
+<section class="part" id="noty">
+  <div class="ph"><div class="num">3</div><div>
+    <h2>13 нот подробно</h2>
+    <p>У каждой ноты есть два полюса, вопрос-детектор (что спросить себя, глядя на экран) и приложения, где эта нота звучит громко. Хорошее упражнение: выбрать одну ноту на день и смотреть только на неё.</p>
+  </div></div>
+  <div class="notes" id="notes"></div>
+</section>
+
+<!-- 4 -->
+<section class="part" id="perevod">
+  <div class="ph"><div class="num">4</div><div>
+    <h2>Переводчик с «приятно / фу»</h2>
+    <p>Ощущение не враг, а сигнал. «Резко» и «дёшево» почти всегда складываются из одних и тех же нот. Когда что-то не нравится, найди строку с похожим словом и проверь по очереди, какая нота виновата. Даже неверная догадка полезнее, чем «чет не то».</p>
+  </div></div>
+  <div class="tr" id="tr"><div class="r"><span>Ощущение</span><span>Какие ноты обычно его дают</span><span>Что проверить</span></div></div>
+</section>
+
+<!-- 5 -->
+<section class="part" id="pocherki">
+  <div class="ph"><div class="num">5</div><div>
+    <h2>Почерки: дома и мастера</h2>
+    <p>Как у парфюмерных домов, у компаний есть узнаваемая манера. Самые важные «дома» это две платформы: Apple (iOS) и Google (Android). У них свои правила, и почти каждое приложение звучит как вариация одной из них. Дальше идут студии и продукты с сильным собственным почерком. Кнопка «В орган» показывает похожий аккорд на нашем экране.</p>
+  </div></div>
+  <div class="houses" id="houses"></div>
+  <div class="note">Почерки в органе упрощены до семи нот, это не копия приложений, а «аккорд в первом приближении». Настоящие экраны смотри на <a href="https://mobbin.com/" target="_blank" rel="noopener">Mobbin</a> и в других источниках со страницы <a href="../../referensy/">Референсы приложений</a>.</div>
+</section>
+
+<!-- 6 -->
+<section class="part" id="baza">
+  <div class="ph"><div class="num">6</div><div>
+    <h2>База: навигация и состояния</h2>
+    <p>Базовые ноты не видны на красивом скриншоте, но именно они решают, будет ли ученику удобно через неделю. На Dribbble почти все экраны показаны в «счастливом» состоянии: данные загрузились, всё заполнено, ошибок нет. В жизни приложение большую часть времени в других состояниях.</p>
+  </div></div>
+  <h3 class="sub" style="margin-top:0">Паттерны навигации</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:70ch">Паттерн это типовое решение, как узор в вязании. Узнав его, ты сразу понимаешь, как устроено приложение.</p>
+  <div class="navs" id="navs"></div>
+  <h3 class="sub">Состояния экрана</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:70ch">Хорошее приложение продумывает каждое. Когда смотришь референс, ищи не один экран, а флоу (цепочку экранов), и проверяй, есть ли там эти состояния.</p>
+  <div class="states" id="states"></div>
+</section>
+
+<!-- 7 -->
+<section class="part" id="razbor">
+  <div class="ph"><div class="num">7</div><div>
+    <h2>Разбор экрана</h2>
+    <p>Профессиональная оценка аромата идёт по протоколу: на блоттере, через паузы, с записями. Разбор экрана тоже. Семь шагов ниже занимают 5–10 минут. Первые разы будет медленно, через месяц станет автоматически.</p>
+  </div></div>
+  <ol class="proto">
+    <li><b>Три секунды</b>Посмотри и отвернись. Одно-два слова ощущения: «тихо», «дорого», «по-детски». Это верхние ноты.</li>
+    <li><b>Прищур</b>Сощурь глаза. Какое пятно первое, какое второе? Сколько уровней важности? Это иерархия.</li>
+    <li><b>Посчитай</b>Сколько цветов кроме серых? Сколько размеров шрифта? Одинаковые ли радиусы и отступы? Числа честнее впечатлений.</li>
+    <li><b>Свет и материал</b>Откуда падает свет? Есть ли у вещей толщина? Хочется ли нажать пальцем? Плоско, слои, стекло или «железо»?</li>
+    <li><b>Пройди путь</b>Если можешь, открой приложение: нажми, вернись, открой нижний лист. Если только скриншоты, ищи флоу. Это база.</li>
+    <li><b>Сломай</b>Что будет, если пусто, если ошибка, если тёмная тема, если шрифт крупнее? Кто подумал об этом, тот профессионал.</li>
+    <li><b>Формула и вердикт</b>На какой почерк похоже? Запиши 3–5 нот, что взять и что не брать. Разбирай и то, что не нравится: там нота-раздражитель видна лучше всего.</li>
+  </ol>
+
+  <h3 class="sub">Карточка разбора</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:72ch">Заполни по шагам выше. Разборы сохраняются в этом браузере, текст любого можно скопировать в заметку к референсу на странице <a href="../../referensy/">Референсы приложений</a>.</p>
+  <form class="form" id="rform" onsubmit="return false">
+    <label>Приложение<input data-k="app" placeholder="Duolingo"></label>
+    <label>Экран или флоу<input data-k="screen" placeholder="главная, урок, профиль, онбординг…"></label>
+    <label class="full">Вердикт
+      <div class="verd" id="verd"><button type="button" data-v="yes">Нравится</button><button type="button" data-v="mid">Частично</button><button type="button" data-v="no">Не нравится</button></div></label>
+    <label>Три секунды: ощущение<input data-k="feel" placeholder="тихо, дорого, как прибор"></label>
+    <label>Верхние ноты<input data-k="top" placeholder="тёплый серый, стекло, мягкие углы"></label>
+    <label>Сердце<input data-k="heart" placeholder="один герой, воздушно, системный шрифт, 2 размера"></label>
+    <label>База<input data-k="base" placeholder="таб-бар из 4, нижние листы, пружины"></label>
+    <label>Похоже на почерк<input data-k="hand" placeholder="Apple / Things / свой"></label>
+    <label>Нота-причина ощущения<input data-k="why" placeholder="«дорого», потому что один акцент и много воздуха"></label>
+    <label>Взять для AIKITAY<textarea data-k="take"></textarea></label>
+    <label>Не брать<textarea data-k="skip"></textarea></label>
+    <div class="acts"><button type="button" class="btn" id="rsave">Сохранить разбор</button><button type="button" class="btn ghost" id="rclear">Очистить поля</button><button type="button" class="btn ghost" id="rall">Скопировать все разборы</button><span id="rmsg" class="small muted"></span></div>
+  </form>
+  <div class="saved" id="saved"></div>
+
+  <h3 class="sub" id="trenazher">Тренажёр: слепая проба</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:72ch">Два режима. «Какая нота отличается»: два экрана, отличие ровно в одной ноте, как два блоттера рядом. «Чей почерк»: один экран, угадай аккорд. Сначала будет трудно различать плотность и иерархию, это нормально.</p>
+  <div class="quiz">
+    <div class="pair" id="qstage"></div>
+    <div>
+      <div class="qmode" id="qmode"><button class="chip" data-m="diff" aria-pressed="true">Какая нота отличается</button><button class="chip" data-m="hand" aria-pressed="false">Чей почерк</button></div>
+      <p class="qq" id="qq"></p>
+      <div class="qopts" id="qopts"></div>
+      <div class="qres" id="qres"></div>
+      <button class="btn" id="qnext">Следующий</button>
+      <div class="qscore" id="qscore"></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Твой профиль сейчас</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:72ch">Собрано из выбора направления «Фарфоровый инструмент» и твоих 120 находок в каталоге. Это не приговор, а отправная точка: так парфюмер описывает гардероб клиента.</p>
+  <div class="prof">
+    <div class="card"><h4>Твои ноты</h4><ul>
+      <li>Материал «железо» и неоморфизм: тумблеры, клавиши, перламутровые кнопки, стеклянные кубы</li>
+      <li>Иерархия «один герой»: иероглиф как главный предмет</li>
+      <li>Бенто для кабинетов, spatial UI, 3D и движение</li>
+      <li>Светлая основа, тёмная тема как опция</li></ul></div>
+    <div class="card"><h4>Не твоё</h4><ul>
+      <li>Плоский дизайн, швейцарский стиль, брутализм</li>
+      <li>Клеймофизм, мемфис, ретро, рисованное</li>
+      <li>Эффект ради эффекта: смысл иероглифа важнее</li></ul>
+      <p class="small muted" style="margin-top:8px">Отдельная кучка находок: тёмный неон, синтвейв. Это аккорд для игровых экранов, а не для основы.</p></div>
+    <div class="card"><h4>Пока не сформулировано</h4><ul>
+      <li>Плотность кабинета: воздушно или средне?</li>
+      <li>Шрифт интерфейса: системный, свой гротеск или антиква в заголовках?</li>
+      <li>Базовые ноты: какая навигация, как выглядят ошибки и успех</li>
+      <li>Цвета: ты выбираешь сама</li></ul></div>
+  </div>
+
+  <h3 class="sub" id="nedelya">Неделя насмотренности приложений: по 15 минут</h3>
+  <ol class="week">
+    <li><b>Одна нота: материал</b>10 экранов из любых приложений. Для каждого одно слово: плоско, слои, стекло, неоморфизм, железо. Только это.</li>
+    <li><b>Одна нота: плотность</b>Сравни главный экран Things или Apple Заметок со списком задач Linear или Telegram. Сколько строк помещается? Оцени каждый от 1 до 5.</li>
+    <li><b>Пара блоттеров</b>Экран входа или онбординга в Duolingo и в любом банке. Опиши разницу пятью нотами из органа.</li>
+    <li><b>Разобрать «фу»</b>Возьми из референсов экран, который не нравится. Найди в переводчике две ноты, которые раздражают. Запиши в карточку разбора.</li>
+    <li><b>База</b>На Mobbin открой флоу (не экран!) учебного приложения: урок от начала до результата. Найди состояния: загрузка, ошибка, успех.</li>
+    <li><b>Подделка</b>Выбери понравившийся референс и собери его аккорд в органе. Получилось похоже? Если нет, какой ноты не хватает в органе?</li>
+    <li><b>Свой аккорд</b>Перепиши 5 старых заметок «красиво» в формулы. Собери в органе аккорд, который ближе всего к AIKITAY, и скопируй формулу.</li>
+  </ol>
+</section>
+
+<!-- 8 -->
+<section class="part" id="slova">
+  <div class="ph"><div class="num">8</div><div>
+    <h2>Словарь приложений</h2>
+    <p>Слова, которых не было в общем словаре: всё, что относится именно к телефону и приложениям. Нажимай «Знаю», когда слово стало своим.</p>
+  </div></div>
+  <div class="tools"><input id="gq" type="search" placeholder="Найти: шит, таб-бар, хаптика…" aria-label="Поиск по словарю приложений"><label><input type="checkbox" id="gnew"> Только незнакомые</label><span id="gprog" class="muted"></span></div>
+  <div class="gl" id="gl"></div>
+
+  <h3 class="sub" id="check">Чек-лист экрана приложения</h3>
+  <p class="muted" style="margin:0 0 12px;max-width:72ch">Пройди по нему любой экран: свой, присланный или чужой. Последняя группа про учебные экраны, она для заданий, домашек и кабинета ученика. Галочки сохраняются.</p>
+  <div class="checks" id="checks"></div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  Учебная страница для себя. Названия компаний и продуктов упомянуты как примеры для обучения, аккорды в органе упрощены и не повторяют их дизайн. Отметки и разборы хранятся только в этом браузере. Соседние страницы: <a href="../">Курс молодого веб-дизайнера</a> · <a href="../../referensy/">Референсы приложений</a> · <a href="../../nahodki/">Находки</a> · <a href="../../katalog-stiley/">Каталог стилей</a>.
+</footer>
+
+<script>
+const $ = s=>document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LS = 'kurs-prilozheniya-v1';
+let st = {known:{},checks:{},saved:[],score:{ok:0,all:0}};
+try{ const s = JSON.parse(localStorage.getItem(LS)||'null'); if(s) st = Object.assign(st,s); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem(LS, JSON.stringify(st)); }catch(e){} };
+
+/* ---------- ноты органа ---------- */
+const AX = [
+ {k:'dens',n:'Плотность',h:'концентрация',v:[['air','Воздушно'],['mid','Средне'],['dense','Плотно']]},
+ {k:'hier',n:'Иерархия',h:'что звучит первым',v:[['hero','Один герой'],['list','Ровный список']]},
+ {k:'font',n:'Шрифт',h:'голос',v:[['sys','Системный гротеск'],['serif','Антиква в заголовках'],['round','Округлый'],['mono','Моно, технический']]},
+ {k:'shape',n:'Форма',h:'радиусы',v:[['sharp','Острая'],['soft','Мягкая'],['pill','Капсулы']]},
+ {k:'mat',n:'Материал и свет',h:'фактура',v:[['flat','Плоский'],['layer','Слои с тенью'],['neu','Неоморфизм'],['glass','Стекло'],['hw','Железо, прибор']]},
+ {k:'color',n:'Цвет',h:'роль цвета',v:[['mono','Нейтрали + 1 акцент'],['tonal','Тональные контейнеры'],['play','Яркий игровой'],['dark','Тёмный']]},
+ {k:'motion',n:'Движение',h:'нажми кнопку',v:[['none','Без движения'],['ease','Плавно, ease-out'],['spring','Пружина']]}
+];
+const AXK = Object.fromEntries(AX.map(a=>[a.k,a]));
+const vName = (k,v)=> (AXK[k].v.find(x=>x[0]===v)||['',v])[1];
+
+const HANDS = [
+ {id:'apple',n:'Apple, iOS',s:{dens:'mid',hier:'hero',font:'sys',shape:'soft',mat:'glass',color:'mono',motion:'spring'},
+  d:'Системный шрифт, большой жирный заголовок, нейтральный фон и стеклянные панели поверх контента (с iOS 26 это называется Liquid Glass). Плавающий таб-бар, мягкие пружины.'},
+ {id:'material',n:'Google, Material 3',s:{dens:'mid',hier:'hero',font:'round',shape:'pill',mat:'flat',color:'tonal',motion:'spring'},
+  d:'Тональные цветные контейнеры вместо теней, кнопки-капсулы, крупные скругления, цвет подстраивается под обои (динамический цвет). Версия Expressive добавила смелые формы и пружины.'},
+ {id:'linear',n:'Linear',s:{dens:'dense',hier:'list',font:'sys',shape:'sharp',mat:'flat',color:'dark',motion:'ease'},
+  d:'Тёмный, плотный, тонкие линии вместо карточек, маленькие радиусы, всё быстро и коротко. Стиль так узнаваем, что «как Linear» стало названием жанра для рабочих инструментов.'},
+ {id:'things',n:'Things',s:{dens:'air',hier:'list',font:'sys',shape:'soft',mat:'layer',color:'mono',motion:'ease'},
+  d:'Много воздуха, почти нет цвета, лёгкие тени, тщательные мелочи и приятные анимации. Эталон «тихой дороговизны»: ничего лишнего, но всё сделано с любовью.'},
+ {id:'duo',n:'Игровой, как Duolingo',s:{dens:'air',hier:'hero',font:'round',shape:'soft',mat:'flat',color:'play',motion:'spring'},
+  d:'Округлый жирный шрифт, толстые обводки, кнопки с «ступенькой» снизу, которые проваливаются при нажатии, много ярких цветов, персонажи и награды. Детско-взрослый, очень тактильный.'},
+ {id:'hw',n:'Прибор, как Nothing и Teenage Engineering',s:{dens:'dense',hier:'list',font:'mono',shape:'sharp',mat:'hw',color:'mono',motion:'ease'},
+  d:'Интерфейс как физическое устройство: моноширинные подписи капсом, точный мелкий шрифт, почти монохром и одна сигнальная лампочка-акцент, клавиши с ходом.'},
+ {id:'aikitay',n:'Фарфоровый инструмент',s:{dens:'mid',hier:'hero',font:'sys',shape:'soft',mat:'hw',color:'mono',motion:'spring'},
+  d:'Твоё направление в первом приближении: прибор из фарфора, иероглиф как главный герой, клавиши с ходом, пружинистый отклик. Цвета здесь условные, их ты выберешь сама.'}
+];
+let cur = Object.assign({},HANDS[0].s), curHand = 'apple';
+
+const ICO = {
+ words:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="15" rx="2"/><path d="M8 20h10a2 2 0 0 0 2-2V8"/></svg>',
+ tone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>',
+ course:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 6l8-3 8 3-8 3z"/><path d="M7 8v5c0 1.5 2.2 3 5 3s5-1.5 5-3V8"/></svg>',
+ dict:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>',
+ me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg>'
+};
+function phoneHTML(){
+  return `<div class="scr"><div class="inner">
+  <div class="blobs"><i style="width:170px;height:170px;left:-40px;top:60px;background:#9fb0ff"></i><i style="width:150px;height:150px;right:-30px;top:200px;background:#f5b8c9"></i><i style="width:160px;height:160px;left:40px;bottom:40px;background:#ffd59a"></i></div>
+  <div class="sb"><span>9:41</span><span>•••</span></div>
+  <div class="body">
+    <div class="hd"><div><small>Вторник</small><h3>Сегодня</h3></div><div class="ava">Д</div></div>
+    <div class="hero"><span class="k">Урок 8 · Семья</span><span class="hz">爸爸 妈妈</span><span class="py">bàba · māma · папа, мама</span><div class="bar"><i></i></div>
+      <div class="hrow"><small class="cnt">6 из 10</small><button class="cta" type="button">Продолжить</button></div></div>
+    <div class="lbl">Задания</div>
+    <div class="list">
+      <div class="row"><span class="ic">${ICO.words}</span><span class="tx"><b>Слова</b><small>12 карточек</small><span class="meta">ср 18:40 · 4 мин</span></span><span class="st">✓</span></div>
+      <div class="row"><span class="ic">${ICO.tone}</span><span class="tx"><b>Тоны</b><small>3 упражнения</small><span class="meta">чт · 6 мин</span></span><span class="st">2/3</span></div>
+      <div class="row"><span class="ic">${ICO.pen}</span><span class="tx"><b>Пишем черты</b><small>5 минут</small><span class="meta">пт · 5 мин</span></span><span class="st">0/4</span></div>
+    </div>
+    <div class="stats"><div class="stat"><b>5</b><small>дней подряд</small></div><div class="stat"><b>120</b><small>слов</small></div></div>
+  </div>
+  <div class="tabs"><span class="tab on">${ICO.home}Сегодня</span><span class="tab">${ICO.course}Курс</span><span class="tab">${ICO.dict}Словарь</span><span class="tab">${ICO.me}Я</span></div>
+  </div></div>`;
+}
+function applyPhone(el,s){ for(const k in s) el.dataset[k]=s[k]; }
+function initPhone(el,s){ el.innerHTML = phoneHTML(); applyPhone(el,s); }
+document.addEventListener('click',e=>{
+  const b = e.target.closest('.phone .cta'); if(!b) return;
+  const ph = b.closest('.phone'); b.classList.add('press');
+  setTimeout(()=>b.classList.remove('press'), ph.dataset.motion==='none'?0:140);
+  const bar = ph.querySelector('.bar i'), cnt = ph.querySelector('.cnt');
+  let n = parseInt(cnt.textContent)||6; n = n>=10?6:n+1; bar.style.width = (n*10)+'%'; cnt.textContent = n+' из 10';
+});
+
+const ph = $('#ph'); initPhone(ph,cur);
+function formulaText(s){ return AX.map(a=>`${a.n}: ${vName(a.k,s[a.k]).toLowerCase()}`).join('\n'); }
+function renderOrgan(){
+  applyPhone(ph,cur);
+  $('#presets').innerHTML = HANDS.map(h=>`<button data-h="${h.id}" aria-pressed="${h.id===curHand}">${h.n}</button>`).join('');
+  const h = HANDS.find(x=>x.id===curHand);
+  $('#pdesc').textContent = h? h.d : 'Свой аккорд: ты изменила ноты почерка. Посмотри, какое ощущение получилось.';
+  $('#ctrls').innerHTML = AX.map(a=>`<div class="ctrl"><h5>${a.n}<small>${a.h}</small></h5><div class="seg" data-k="${a.k}">${a.v.map(v=>`<button data-v="${v[0]}" aria-pressed="${cur[a.k]===v[0]}">${v[1]}</button>`).join('')}</div></div>`).join('');
+  $('#formula').textContent = (h?`Почерк: ${h.n}\n`:'Свой аккорд\n') + formulaText(cur);
+}
+$('#presets').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; curHand=b.dataset.h; cur=Object.assign({},HANDS.find(h=>h.id===curHand).s); renderOrgan(); });
+$('#ctrls').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const k=b.closest('.seg').dataset.k; cur[k]=b.dataset.v;
+  const m = HANDS.find(h=>AX.every(a=>h.s[a.k]===cur[a.k])); curHand = m? m.id : null; renderOrgan(); });
+async function copyText(t,msgEl){ try{ await navigator.clipboard.writeText(t); msgEl.textContent='Скопировано'; }catch(e){ msgEl.textContent='Не получилось, выдели текст вручную'; } setTimeout(()=>msgEl.textContent='',2200); }
+$('#copyF').addEventListener('click',()=>copyText($('#formula').textContent,$('#copiedF')));
+function toOrgan(id){ curHand=id; cur=Object.assign({},HANDS.find(h=>h.id===id).s); renderOrgan(); document.getElementById('organ').scrollIntoView({behavior:'smooth'}); }
+renderOrgan();
+
+/* ---------- 13 нот ---------- */
+const NOTES = [
+['Сердце','Плотность','density','Сколько информации на единице экрана. Как концентрация в парфюме: духи и лёгкая вода из тех же нот звучат по-разному.','воздух, 5 строк на экран','плотно, 15 строк','Сколько строк списка помещается на экране без прокрутки?','Воздушно: Things, Headspace, Apple Здоровье. Плотно: Linear, Telegram, биржевые приложения.'],
+['Сердце','Иерархия','hierarchy','Порядок, в котором глаз читает экран. Сильная иерархия: одна главная вещь, потом второстепенное. Слабая: всё одинаково важно.','один герой','ровный ряд','Прищурься: какое пятно ты видишь первым? Сколько разных уровней важности?','Герой: Apple Погода, Duolingo (кнопка урока). Ровный ряд: Настройки, почта.'],
+['Сердце','Ритм и сетка','spacing scale, grid','Отступы в хороших приложениях не случайны: они кратны 4 или 8 (4, 8, 12, 16, 24, 32). Поля по краям экрана обычно 16–20 точек. Когда ритм соблюдён, экран выглядит спокойным, даже если ты не знаешь почему.','на глаз','шкала 4/8','Одинаковые ли расстояния между похожими вещами? Стоят ли левые края на одной линии?','Строже всех: iOS-приложения Apple, Linear. Нарушают чаще всего: самодельные приложения школ и курсов.'],
+['Сердце','Типографика','typography','Чем говорит приложение. Системный шрифт (SF Pro на iPhone, Roboto на Android) звучит нейтрально и «родно». Свой шрифт даёт характер, но требует мастерства. Важен контраст размеров: большой заголовок 28–34 и текст 15–17.','системный','свой, фирменный','Сколько размеров шрифта на экране? Есть ли засечки? Цифры моноширинные (в столбик) или нет?','Системный: почти все приложения Apple. Свой: Duolingo (округлый), Airbnb, Т-Банк.'],
+['Верх','Форма','corner radius','Радиусы скруглений. Острые звучат строго и технично, мягкие дружелюбно, капсулы игриво. Профессиональная деталь: вложенные скругления концентричны, то есть внутренний радиус меньше внешнего на величину отступа. Apple ещё и сглаживает сам угол (суперэллипс), поэтому их карточки кажутся «литыми».','острые 4','капсулы','Одинаково ли скруглено всё? Не торчит ли внутренняя кнопка углом из скруглённой карточки?','Острые: Linear, Nothing. Мягкие: iOS. Капсулы: Material 3, Duolingo.'],
+['Верх','Материал и свет','material, elevation','Из чего «сделан» интерфейс. Плоский: краска на бумаге. Слои: листы, лежащие друг на друге, с тенями. Неоморфизм: всё выдавлено из одного пластика. Стекло: полупрозрачные панели над контентом. Железо: прибор с клавишами и лампочками.','плоско','объёмно','Откуда падает свет? Есть ли у вещей толщина? Хочется ли постучать по кнопке пальцем?','Стекло: iOS 26. Слои: Material 2, Things. Железо: Nothing, Teenage Engineering, калькулятор Apple в старых версиях.'],
+['Верх','Цвет как роль','color roles','Профессионал смотрит не «какой цвет», а «какую работу он выполняет»: фон, поверхность, текст, акцент (куда нажать), смысловые цвета (ошибка, успех), тональные контейнеры. Хороший признак: акцент всегда означает одно и то же.','монохром + 1 акцент','много ролей','Сколько цветов кроме серых? Что значит акцент: «нажми сюда» или просто украшение?','Монохром: Things, Linear. Много ролей: Material 3, Duolingo, Т-Банк.'],
+['Сердце','Иконки','icon style','Набор значков с общими правилами: толщина линии, скругление концов, контур или заливка. Правило iOS: активная вкладка залитая, неактивные контурные.','тонкий контур','жирная заливка','Одинакова ли толщина линий у всех иконок? Из одного ли они набора?','SF Symbols у Apple, Material Symbols у Google. Свои цветные иконки: Duolingo, Airbnb с 2025 года (объёмные).'],
+['База','Навигация','navigation','Как устроены переходы: таб-бар внизу, стек экранов (вглубь и назад), нижние листы, меню. Хорошая навигация отвечает на два вопроса в любой момент: где я и как вернуться.','плоская, вкладки','глубокая, вложенная','Где я сейчас? Как вернуться? Сколько нажатий до главного действия?','Таб-бар: почти все iOS-приложения. Боковое меню: старые Android, Gmail. Жесты: Telegram, Instagram.'],
+['База','Состояния','states','Экран бывает пустым, загружается, ломается, радуется успеху, открывается впервые. Каждое состояние нужно нарисовать. Дилетантские приложения продумывают только «всё хорошо».','только «всё хорошо»','все состояния','Что видно, пока данные не загрузились? Что сказано, когда ошибка? Что видит новый ученик?','Сильнее всех: Duolingo (успех и ошибка в уроке), Things (пустые списки), Т-Банк (загрузки).'],
+['База','Движение','motion','Как вещи появляются и исчезают. Важны длительность (интерфейс 150–350 мс), кривая (ease-out: быстрый старт, мягкая остановка), пружины (небольшой перелёт и возврат) и непрерывность: карточка «перетекает» в открытый экран, а не исчезает.','резко, без связи','плавно и связно','Откуда появился новый экран? Видно ли, куда делась карточка? Есть ли отклик на нажатие?','Пружины и непрерывность: iOS, Things. Игровая анимация: Duolingo. Быстро и коротко: Linear.'],
+['База','Голос','UX writing, tone of voice','Как приложение разговаривает: длина фраз, тон, кнопки глаголами. «Начать урок» вместо «ОК», «Не получилось загрузить, попробуй ещё раз» вместо «Ошибка 500».','сухо, официально','живо, по-человечески','Кнопка говорит действие или абстракцию? Ошибка объясняет, что делать?','Живой голос: Duolingo, Т-Банк. Нейтральный: Apple. Сухой: банковские приложения старого образца.'],
+['Шлейф','Игровость','gamification','Механики игры в неигровом продукте: серии дней (стрик), очки опыта, уровни, награды, персонажи. Для учёбы работает, но легко становится приторным или давит на чувство вины.','серьёзно','игра','Есть ли награды, серии, персонажи? Помогают учиться или отвлекают?','Duolingo (эталон и предупреждение одновременно), Apple Фитнес (кольца), Headspace (мягкая версия).']
+];
+$('#notes').innerHTML = NOTES.map(n=>`<article class="nt"><span class="lvl">${n[0]}</span><h4>${n[1]}<i>${n[2]}</i></h4><p>${n[3]}</p><div class="poles"><span>${n[4]}</span><span>↔</span><span>${n[5]}</span></div><p class="det">${n[6]}</p><p class="where"><b>Где звучит громко:</b> ${n[7]}</p></article>`).join('');
+
+/* ---------- переводчик ---------- */
+const TR = [
+['Дёшево','Разные отступы и радиусы на одном экране; тени серые и резкие; иконки из разных наборов; много акцентов; градиенты «по умолчанию».','Посчитай радиусы и цвета. Сравни отступы между одинаковыми карточками.'],
+['Дорого','Много воздуха, мало цветов, точная типографика с сильным контрастом размеров, ровный ритм, сдержанное движение и одна неожиданная деталь.','Убери деталь-сюрприз мысленно: стало просто аккуратно? Значит, «дорого» делала она.'],
+['Резко','Чёрный на чистом белом без полутонов, острые углы, насыщенный акцент, жирный шрифт везде, быстрая линейная анимация.','Контраст и вес шрифта. Есть ли полутона (серый текст для второстепенного)?'],
+['Приторно','Пастель + градиенты + капсулы + блики + пружины на всём сразу. Каждая нота «милая», вместе слишком.','Найди три сладкие ноты и мысленно оставь одну.'],
+['Пресно, скучно','Нет иерархии (всё одного размера), нет акцента, только стандартные компоненты без единой своей детали.','Прищурься: есть ли главное пятно? Есть ли хоть одна деталь, которую запомнишь?'],
+['Душно, тесно','Высокая плотность без группировки, мелкие отступы, длинные строки, мало пустого места по краям.','Поля по краям экрана меньше 16? Нет пустых промежутков между группами?'],
+['Холодно, стерильно','Чистый белый, холодный серый, только тонкие линии, ни фактуры, ни иллюстраций, ни живых текстов.','Температура нейтралей: серый с синевой или с теплом? Есть ли что-то «рукотворное»?'],
+['Уютно','Тёплые нейтрали (крем, бежевый), мягкие радиусы, антиква или округлый шрифт, бумажная фактура, живой голос.','Какая из этих нот главная? Часто хватает тёплого фона и мягких радиусов.'],
+['По-детски','Крупный округлый жирный шрифт, толстые обводки, много ярких цветов, персонажи, пружинистые кнопки.','Это может быть плюсом для 11–12 лет. Вопрос в дозировке: сколько из этих нот сразу.'],
+['Как у ИИ','Фиолетово-синие градиенты, свечение, стекло на всём, одинаковые карточки «иконка + заголовок + две строки», эмодзи вместо иконок.','Есть ли одна смелая идея? Или всё «среднее по интернету»?'],
+['Старомодно','Скевоморфные текстуры без меры (кожа, дерево), обводки и тени на тексте, глянцевые градиенты на кнопках, мелкий плотный текст.','Это эпоха 2010–2012. Отличие от «железа»: там свет и материал точные и сдержанные.'],
+['Шумно','Двигается всё сразу, много бейджей и красных точек, несколько акцентов, узоры под текстом.','Сколько вещей одновременно просит внимания? В хорошем экране одна.'],
+['Пластмассово, игрушечно','Клеймофизм, глянцевые блики, огромные радиусы на всём, насыщенные 3D-иконки без меры.','Есть ли у материала правдоподобный свет? Или объём нарисован «для объёма»?']
+];
+$('#tr').insertAdjacentHTML('beforeend', TR.map(r=>`<div class="r"><b>${r[0]}</b><span>${r[1]}</span><span class="muted">${r[2]}</span></div>`).join(''));
+
+/* ---------- почерки ---------- */
+const HOUSES = [
+['Платформа','Apple, iOS','https://developer.apple.com/design/human-interface-guidelines/','Правила Apple (HIG)',['системный шрифт SF','большой заголовок','стекло','пружины','таб-бар'],'Узнаёшь по большому жирному заголовку «Сегодня» слева вверху, системному шрифту и стеклянным панелям. С iOS 26 (2025) интерфейс стал «жидким стеклом»: кнопки и таб-бар преломляют контент под собой.','Пружинистый отклик и «один герой» на экране. Стекло только как акцент, не основа.','apple'],
+['Платформа','Google, Material 3','https://m3.material.io/','Сайт Material Design',['тональный цвет','капсулы','крупные радиусы','динамический цвет'],'Узнаёшь по цветным подложкам вместо теней, кнопкам-капсулам и плавающей кнопке действия (FAB) в углу. Версия Expressive (2025) добавила смелые формы, которые меняются при нажатии.','Идея цветовых ролей: каждый цвет выполняет одну работу. Полезно для тонов пиньиня.','material'],
+['Студия и продукт','Linear','https://linear.app/','linear.app',['тёмный','плотно','тонкие линии','клавиатура','скорость'],'Рабочий инструмент для разработчиков. Узнаёшь по тёмному фону, плотным спискам без карточек, тонким линиям и мягкому свечению в маркетинге. Почерк скопировали сотни стартапов.','Для кабинета учителя: плотность и скорость. Для учеников слишком строго.','linear'],
+['Студия и продукт','Things (Cultured Code)','https://culturedcode.com/things/','culturedcode.com',['воздух','монохром','лёгкие тени','деталь-сюрприз'],'Список дел, который много лет получает награды за дизайн. Узнаёшь по воздуху, почти полному отсутствию цвета и анимациям, которые хочется повторять.','Тишина и аккуратность для домашек: ученик видит только своё задание.','things'],
+['Студия и продукт','Duolingo','https://www.duolingo.com/','duolingo.com',['округлый жирный шрифт','кнопки со ступенькой','персонажи','стрики','звук'],'Главный учебный почерк мира. Узнаёшь по толстым обводкам, кнопкам, которые проваливаются при нажатии, яркой палитре и сове. Очень сильная база: успех и ошибка в уроке продуманы до звука.','Тактильные кнопки и мгновенная реакция на ответ. Не брать: давление стриками и мультяшность для взрослых.','duo'],
+['Студия и продукт','Nothing и Teenage Engineering','https://teenage.engineering/','teenage.engineering',['моно капсом','точечный шрифт','монохром','одна лампочка','прибор'],'Почерк «прибора». Nothing (телефоны) говорит точечным шрифтом и красной точкой, Teenage Engineering (синтезаторы) мелким гротеском, оранжевым и серым. Обе компании делают экран продолжением железа.','Самое близкое к «Фарфоровому инструменту»: подписи как гравировка, клавиши с ходом, одна лампочка-акцент.','hw'],
+['Студия и продукт','Airbnb','https://www.airbnb.com/','airbnb.com',['фото первым','мягкие тени','свой шрифт','объёмные иконки'],'Узнаёшь по крупным фото, мягким карточкам и своему шрифту. В 2025 году вернули объёмные, почти игрушечные иконки: признак того, что мода на абсолютно плоское прошла.','Объёмные иконки как доказательство: «железо» и 3D сейчас уместны, если свет честный.',null],
+['Студия и продукт','The Browser Company (Arc, Dia)','https://arc.net/','arc.net',['характер','цветные градиенты','игривые анимации','свои слова'],'Браузер с ярким характером: цветные темы, неожиданные анимации, живой голос в текстах. Пример, как рабочий инструмент может быть с улыбкой.','Голос и детали-сюрпризы, но аккуратно: это быстро приедается.',null],
+['Студия и продукт','Headspace','https://www.headspace.com/','headspace.com',['мягкие формы','иллюстрации','тёплые цвета','спокойный ритм'],'Медитации. Узнаёшь по мягким округлым иллюстрациям и тёплой палитре. Пример «уютно» без приторности.','Как мягко подавать паузы и отдых между заданиями.',null],
+['Русские примеры','Т-Банк и Яндекс','https://www.tbank.ru/','tbank.ru',['истории','бенто','свой шрифт','плотно, но ясно'],'Сильные русские почерки. Т-Банк: свой шрифт, истории сверху, плотные, но читаемые экраны. Яндекс Go и Плюс: бенто-плитки, крупные кнопки, много состояний. Полезно смотреть, потому что ученики к ним привыкли.','Бенто для кабинета ученика и привычные паттерны, которые не надо объяснять.',null]
+];
+$('#houses').innerHTML = HOUSES.map(h=>`<article class="house"><span class="t">${h[0]}</span><h4>${h[1]}</h4><div class="sig">${h[4].map(x=>`<span>${x}</span>`).join('')}</div><p>${h[5]}</p><p class="take">${h[6]}</p><div class="acts"><a href="${h[2]}" target="_blank" rel="noopener">${h[3]} ↗</a>${h[7]?`<button data-to="${h[7]}">В орган</button>`:''}</div></article>`).join('');
+$('#houses').addEventListener('click',e=>{ const b=e.target.closest('[data-to]'); if(b) toOrgan(b.dataset.to); });
+
+/* ---------- навигация ---------- */
+const bar = (css)=>`<i style="${css}"></i>`;
+const NAVS = [
+['Таб-бар','tab bar','4–5 главных разделов внизу, всегда на виду. Самый частый паттерн iOS. Больше пяти вкладок уже плохо.', bar('left:0;right:0;bottom:0;height:18px;background:#2a2925')+bar('left:8px;right:8px;top:10px;height:8px;background:#ddd;border-radius:3px')],
+['Стек (вглубь и назад)','navigation stack, push','Нажала на строку, новый экран выехал справа, «назад» возвращает. Как стопка листов.', bar('left:0;right:0;top:0;height:16px;background:#ddd')+bar('left:22px;right:-6px;top:22px;bottom:6px;background:#ccd2f4;border-radius:6px 0 0 6px;box-shadow:-4px 0 8px rgba(0,0,0,.15)')],
+['Нижний лист','sheet, bottom sheet','Панель выезжает снизу поверх экрана, его край виден сверху. Для коротких дел: выбрать, подтвердить, посмотреть детали.', bar('left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.18)')+bar('left:0;right:0;bottom:0;height:70px;background:#fff;border-radius:12px 12px 0 0')+bar('left:28px;width:16px;bottom:62px;height:3px;background:#bbb;border-radius:2px')],
+['Модальное окно','modal','Окно поверх всего, которое надо закрыть, чтобы продолжить. Прерывает, поэтому только для важного.', bar('left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.3)')+bar('left:10px;right:10px;top:42px;height:56px;background:#fff;border-radius:8px')],
+['Боковое меню','drawer, burger','Разделы спрятаны за кнопкой с тремя полосками. Экономит место, но то, что спрятано, люди находят реже.', bar('left:0;width:46px;top:0;bottom:0;background:#2a2925')+bar('left:8px;width:24px;top:14px;height:3px;background:#888')+bar('left:8px;width:20px;top:22px;height:3px;background:#888')],
+['Плавающая кнопка','FAB, floating action button','Круглая кнопка в углу для главного действия: «новое письмо», «добавить». Знак Material и Android.', bar('left:8px;right:8px;top:10px;height:8px;background:#ddd;border-radius:3px')+bar('left:8px;right:8px;top:24px;height:8px;background:#ddd;border-radius:3px')+bar('right:8px;bottom:10px;width:22px;height:22px;background:#6750a4;border-radius:7px')],
+['Сегменты','segmented control','2–4 взаимоисключающих варианта в одной плашке: «День / Неделя / Месяц». Переключают вид, а не раздел.', bar('left:8px;right:8px;top:14px;height:14px;background:#e6e6ea;border-radius:5px')+bar('left:10px;width:18px;top:16px;height:10px;background:#fff;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.2)')],
+['Жесты','gestures','Свайп назад от края, свайп по строке для действий, потянуть вниз для обновления. Невидимы, поэтому должны дублироваться кнопками.', bar('left:4px;top:50px;width:30px;height:3px;background:#3f4bb8;border-radius:2px')+bar('left:30px;top:45px;width:0;height:0;border-left:8px solid #3f4bb8;border-top:6px solid transparent;border-bottom:6px solid transparent')]
+];
+$('#navs').innerHTML = NAVS.map(n=>`<div class="nv"><div class="sch">${n[3]}</div><div><h4>${n[0]}</h4><span class="en">${n[1]}</span><p>${n[2]}</p></div></div>`).join('');
+
+/* ---------- состояния ---------- */
+const STATES = [
+['Первый раз','onboarding','Ученик открыл впервые. Что он видит? Хорошо: одно действие и понятный первый шаг, а не пять слайдов про возможности.','<span style="font:600 15px var(--serif);color:#1c1b19">Привет!</span><span style="background:#3f4bb8;color:#fff;border-radius:5px;padding:2px 8px">Начать</span>'],
+['Пусто','empty state','Заданий пока нет. Плохо: пустой белый экран. Хорошо: объяснение и действие, иногда маленькая иллюстрация.','<span>Пока нет заданий</span><span style="border:1px solid #bbb;border-radius:5px;padding:1px 8px">Повторить слова</span>'],
+['Загрузка','loading, skeleton','Данные в пути. Скелетон (серые заготовки на местах текста) спокойнее, чем крутящийся кружок.','<i style="display:block;width:70%;height:8px;border-radius:4px;background:#e2dfd6"></i><i style="display:block;width:50%;height:8px;border-radius:4px;background:#e2dfd6"></i>'],
+['Ошибка','error','Что-то сломалось. Хорошо: по-человечески, без вины ученика, с кнопкой «Попробовать ещё раз».','<span style="color:#9b2c2c">Не получилось загрузить</span><span style="border:1px solid #bbb;border-radius:5px;padding:1px 8px">Ещё раз</span>'],
+['Неверный ответ','validation','Для учебных экранов главное состояние. Хорошо: сразу, мягко, с подсказкой, что не так. Плохо: красный крест и всё.','<span style="background:#f6e3e3;color:#9b2c2c;border-radius:5px;padding:2px 8px">Почти! Тон второй ↗</span>'],
+['Успех','success','Ответ верный, урок пройден. Здесь уместны движение, звук и награда. Это шлейф, который ученик запомнит.','<span style="background:#e4f1ea;color:#2f7a55;border-radius:5px;padding:2px 10px;font-weight:600">Верно! 对!</span>'],
+['Нажато и выключено','pressed, disabled','Каждая кнопка должна отвечать на касание. Выключенная кнопка должна быть явно неактивной и объяснять, почему.','<span style="background:#3f4bb8;color:#fff;border-radius:5px;padding:2px 8px;transform:scale(.94)">Нажато</span><span style="background:#ccc;color:#fff;border-radius:5px;padding:2px 8px">Выключено</span>'],
+['Офлайн','offline','Нет интернета. Хорошо: показать сохранённое и сказать, что синхронизируется позже. Плохо: вечная загрузка.','<span>Нет сети · покажем сохранённое</span>']
+];
+$('#states').innerHTML = STATES.map(s=>`<div class="sti"><div class="mock">${s[3]}</div><b>${s[0]}</b><span class="muted small">${s[1]}</span><br>${s[2]}</div>`).join('');
+
+/* ---------- карточка разбора ---------- */
+const rform = $('#rform'); let verdict = '';
+$('#verd').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; verdict = verdict===b.dataset.v?'':b.dataset.v; $('#verd').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===verdict)); });
+const VL = {yes:['Нравится','#e4f1ea','#2f7a55'],mid:['Частично','#f6ecdc','#9a5b16'],no:['Не нравится','#f6e3e3','#9b2c2c']};
+const FL = {feel:'Ощущение',top:'Верх',heart:'Сердце',base:'База',hand:'Почерк',why:'Причина',take:'Взять',skip:'Не брать'};
+function rText(r){ return `${r.app||'Без названия'}${r.screen?' · '+r.screen:''}${r.v?' · '+VL[r.v][0]:''}\n` + Object.keys(FL).filter(k=>r[k]).map(k=>`${FL[k]}: ${r[k]}`).join('\n'); }
+function renderSaved(){
+  $('#saved').innerHTML = st.saved.length? st.saved.slice().reverse().map(r=>`<div class="sv"><h5>${esc(r.app||'Без названия')}${r.screen?' · '+esc(r.screen):''}${r.v?`<em style="background:${VL[r.v][1]};color:${VL[r.v][2]}">${VL[r.v][0]}</em>`:''}</h5><span style="display:flex;gap:6px"><button data-cp="${r.id}">Копировать</button><button data-del="${r.id}">Удалить</button></span><pre>${esc(Object.keys(FL).filter(k=>r[k]).map(k=>`${FL[k]}: ${r[k]}`).join('\n'))}</pre></div>`).join('') : '<p class="muted small">Пока нет сохранённых разборов.</p>';
+}
+$('#rsave').addEventListener('click',()=>{
+  const r = {id:Date.now().toString(36), v:verdict}; rform.querySelectorAll('[data-k]').forEach(el=>r[el.dataset.k]=el.value.trim());
+  if(!Object.keys(FL).some(k=>r[k]) && !r.app){ $('#rmsg').textContent='Заполни хотя бы пару полей'; setTimeout(()=>$('#rmsg').textContent='',2000); return; }
+  st.saved.push(r); save(); renderSaved(); $('#rmsg').textContent='Сохранено'; setTimeout(()=>$('#rmsg').textContent='',2000);
+});
+$('#rclear').addEventListener('click',()=>{ rform.querySelectorAll('[data-k]').forEach(el=>el.value=''); verdict=''; $('#verd').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false')); });
+$('#rall').addEventListener('click',()=>copyText(st.saved.map(rText).join('\n\n')||'Пока пусто',$('#rmsg')));
+$('#saved').addEventListener('click',e=>{
+  const c=e.target.closest('[data-cp]'), d=e.target.closest('[data-del]');
+  if(c){ const r=st.saved.find(x=>x.id===c.dataset.cp); copyText(rText(r),$('#rmsg')); }
+  if(d){ st.saved = st.saved.filter(x=>x.id!==d.dataset.del); save(); renderSaved(); }
+});
+renderSaved();
+
+/* ---------- тренажёр ---------- */
+let qmode='diff', qans=null, qdone=false;
+const rnd = a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function newQ(){
+  qdone=false; $('#qres').textContent=''; const stg=$('#qstage');
+  if(qmode==='diff'){
+    const VIS = AX.filter(a=>a.k!=='motion'); const base = Object.assign({},rnd(HANDS).s); const ax = rnd(VIS); const other = rnd(ax.v.filter(v=>v[0]!==base[ax.k]))[0];
+    const b2 = Object.assign({},base,{[ax.k]:other});
+    stg.innerHTML = `<figure><div class="phone mini" id="qa"></div>А</figure><figure><div class="phone mini" id="qb"></div>Б</figure>`;
+    initPhone($('#qa'),base); initPhone($('#qb'),b2);
+    qans = ax.k; $('#qq').textContent = 'Какая нота отличается?';
+    $('#qopts').innerHTML = VIS.map(a=>`<button data-a="${a.k}">${a.n}</button>`).join('');
+    $('#qres').dataset.exp = `${ax.n}: на А «${vName(ax.k,base[ax.k]).toLowerCase()}», на Б «${vName(ax.k,other).toLowerCase()}».`;
+  } else {
+    const h = rnd(HANDS);
+    stg.innerHTML = `<figure><div class="phone mini" id="qa"></div></figure>`; initPhone($('#qa'),h.s);
+    qans = h.id; $('#qq').textContent = 'Чей это почерк?';
+    const opts = shuffle([h, ...shuffle(HANDS.filter(x=>x.id!==h.id)).slice(0,3)]);
+    $('#qopts').innerHTML = opts.map(o=>`<button data-a="${o.id}">${o.n}</button>`).join('');
+    $('#qres').dataset.exp = `${h.n}. Формула: ${AX.map(a=>vName(a.k,h.s[a.k]).toLowerCase()).join(' · ')}.`;
+  }
+}
+$('#qopts').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b||qdone) return; qdone=true;
+  const ok = b.dataset.a===qans; st.score.all++; if(ok) st.score.ok++; save();
+  b.classList.add(ok?'right':'wrong');
+  if(!ok) $('#qopts').querySelector(`[data-a="${qans}"]`).classList.add('right');
+  $('#qres').textContent = (ok?'Верно. ':'Не совсем. ') + $('#qres').dataset.exp;
+  $('#qscore').textContent = `Всего верно: ${st.score.ok} из ${st.score.all}`;
+});
+$('#qnext').addEventListener('click',newQ);
+$('#qmode').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; qmode=b.dataset.m; $('#qmode').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b)); newQ(); });
+$('#qscore').textContent = st.score.all? `Всего верно: ${st.score.ok} из ${st.score.all}` : '';
+newQ();
+
+/* ---------- словарь приложений ---------- */
+const GL = [
+['Таб-бар','tab bar','Панель вкладок внизу экрана с главными разделами.','Как закладки в учебнике: всегда видно, куда можно перейти.'],
+['Навбар','navigation bar','Полоса сверху с заголовком экрана и кнопкой «назад».',''],
+['Большой заголовок','large title','Крупный жирный заголовок слева вверху, который при прокрутке сжимается в маленький. Знак iOS.',''],
+['Нижний лист, шит','sheet, bottom sheet','Панель, выезжающая снизу поверх экрана. Можно потянуть вверх или смахнуть вниз.','Записка, которую кладут поверх тетради.'],
+['Модальное окно','modal','Окно поверх всего, которое нужно закрыть, чтобы продолжить.',''],
+['Стек навигации','navigation stack, push','Экраны ложатся друг на друга: открыла глубже, «назад» снимает верхний.',''],
+['FAB','floating action button','Плавающая круглая кнопка главного действия в углу экрана. Знак Material.',''],
+['Сегментированный переключатель','segmented control','Плашка из 2–4 вариантов, из которых выбран один.',''],
+['Чипы','chips','Маленькие капсулы-фильтры или метки: «HSK 1», «Тоны», «Повторить».',''],
+['Ячейка','cell, list row','Одна строка списка: иконка, текст, подпись, стрелка или переключатель.',''],
+['Бенто','bento grid','Экран из плиток разного размера, как японская коробочка с едой. Хорошо для кабинетов и сводок.','Расписание, где у главного урока клетка больше.'],
+['Онбординг','onboarding','Первые экраны для нового пользователя: знакомство, настройка, первый шаг.',''],
+['Пейволл','paywall','Экран, где просят оплатить доступ.',''],
+['Пустое состояние','empty state','Что показывает экран, когда данных ещё нет.',''],
+['Скелетон','skeleton','Серые заготовки на местах текста, пока он грузится.',''],
+['Тост, снэкбар','toast, snackbar','Короткое сообщение внизу, исчезает само: «Сохранено».',''],
+['Пуш-уведомление','push notification','Сообщение от приложения на заблокированном экране.','Напоминание о домашке.'],
+['Свайп-действия','swipe actions','Сдвинула строку пальцем, под ней появились кнопки: удалить, отметить.',''],
+['Потянуть, чтобы обновить','pull to refresh','Тянешь список вниз, и он перезагружается.',''],
+['Хаптика','haptics','Тактильный отклик: телефон чуть вибрирует при нажатии или успехе. Часть «базы», на скриншоте не видна.','Щелчок хорошей ручки.'],
+['Пружинная анимация','spring animation','Движение с лёгким перелётом и возвратом, как у настоящего предмета на пружине.',''],
+['Общий элемент','shared element transition','Анимация, где карточка «перетекает» в открытый экран, и видно, откуда он взялся.',''],
+['Безопасная зона','safe area','Часть экрана, свободная от выреза камеры, скруглённых углов и полоски «домой». Важное кладут только туда.',''],
+['Зона большого пальца','thumb zone','Нижняя половина экрана, куда легко дотянуться одной рукой. Главные кнопки ставят туда.',''],
+['Область касания','touch target','Размер места, куда можно попасть пальцем. Минимум 44 точки на iOS и 48 на Android.',''],
+['Точки, pt и dp','points, density-independent pixels','Единицы для телефонов: не пиксели экрана, а «логические» точки, одинаковые на любом телефоне.',''],
+['Динамический шрифт','Dynamic Type','Настройка размера текста в телефоне. Хорошее приложение растёт вместе с ней и не ломается.',''],
+['HIG','Human Interface Guidelines','Официальные правила дизайна от Apple для iPhone, iPad, Mac.',''],
+['Material Design','Material 3','Система дизайна Google для Android и веба. Версия Expressive вышла в 2025.',''],
+['Динамический цвет','dynamic color, Material You','Палитра приложения подстраивается под обои телефона. Есть на Android.',''],
+['Liquid Glass','Liquid Glass','Новый материал Apple с iOS 26: полупрозрачные элементы, которые преломляют и отражают контент под собой.',''],
+['Возвышение','elevation','Насколько слой «поднят» над фоном. Выражается тенью или более светлым цветом поверхности.',''],
+['Скевоморфизм','skeuomorphism','Интерфейс, похожий на реальные предметы: кожа, металл, кнопки с объёмом. Твоё «железо» его современный, сдержанный родственник.',''],
+['Флоу','flow','Цепочка экранов для одного дела: «пройти урок», «оплатить». Смотреть флоу важнее, чем отдельные экраны.',''],
+['Счастливый путь','happy path','Сценарий, где всё идёт гладко. Его рисуют все, остальные состояния только профессионалы.',''],
+['Пограничный случай','edge case','Редкая ситуация: очень длинное имя, 0 заданий, 999 слов. Хорошее приложение не ломается и в ней.',''],
+['Стрик','streak','Серия дней подряд. Сильная мотивация, но давит, если сорвался.',''],
+['Микрокопирайтинг','UX writing, microcopy','Короткие тексты интерфейса: кнопки, подсказки, ошибки.',''],
+['Виджет','home screen widget','Мини-окно приложения на главном экране телефона: «сегодня 3 задания».',''],
+['Нативное приложение','native app','Приложение, сделанное отдельно под iOS или Android, в отличие от веб-приложения в браузере.',''],
+['Веб-приложение, PWA','progressive web app','Сайт, который работает как приложение: иконка на экране, работает без сети. Путь для школы без App Store.','']
+];
+function renderGl(){
+  const q = $('#gq').value.trim().toLowerCase(), onlyNew = $('#gnew').checked;
+  const items = GL.filter(g=>!(onlyNew && st.known[g[0]]) && (!q || (g[0]+' '+g[1]+' '+g[2]).toLowerCase().includes(q)));
+  $('#gl').innerHTML = items.map(g=>{ const k=st.known[g[0]]; return `<article class="g${k?' known':''}" data-id="${esc(g[0])}"><div class="h"><div><h4>${g[0]}</h4><div class="en">${g[1]}</div></div><button class="know">${k?'Знаю ✓':'Знаю'}</button></div><p>${g[2]}</p>${g[3]?`<p class="ex">${g[3]}</p>`:''}</article>`; }).join('') || '<p class="muted">Ничего не нашлось.</p>';
+  const n = GL.filter(g=>st.known[g[0]]).length; $('#gprog').textContent = `Знаю ${n} из ${GL.length}`;
+}
+$('#gq').addEventListener('input',renderGl); $('#gnew').addEventListener('change',renderGl);
+$('#gl').addEventListener('click',e=>{ const b=e.target.closest('.know'); if(!b) return; const id=b.closest('.g').dataset.id; if(st.known[id]) delete st.known[id]; else st.known[id]=1; save(); renderGl(); });
+renderGl();
+
+/* ---------- чек-лист ---------- */
+const CHECKS = [
+['Иерархия и ритм',[['Сразу понятно, что главное на экране','Прищур-тест: одно первое пятно.'],['Не больше 3–4 размеров шрифта',''],['Отступы из одной шкалы (4/8)','Одинаковые вещи с одинаковыми промежутками.'],['Поля по краям экрана 16–20 точек','']]],
+['Пальцы',[['Кнопки и строки не меньше 44 точек',''],['Главное действие в нижней половине','Зона большого пальца.'],['Ничего важного под вырезом камеры и полоской «домой»','Безопасная зона.'],['Жесты продублированы кнопками','']]],
+['Навигация',[['Всегда понятно, где я',''],['Всегда понятно, как вернуться',''],['Не больше 5 вкладок',''],['Модальные окна только для важного','']]],
+['Состояния',[['Есть пустое состояние с действием',''],['Есть загрузка (лучше скелетон)',''],['Ошибки по-человечески и с выходом',''],['Кнопки отвечают на нажатие',''],['Выключенное явно выключено','']]],
+['Материал, цвет, движение',[['Свет падает с одной стороны','Тени и блики согласованы на всех элементах.'],['Радиусы концентричные и одинаковые по роли',''],['Акцент всегда означает одно действие',''],['Анимации 150–350 мс и со смыслом',''],['Тёмная тема не просто инверсия','']]],
+['Учебные экраны',[['Иероглиф, пиньинь и перевод читаются мгновенно','Смысл важнее эффекта.'],['Тоны пиньиня различимы не только цветом','Знак тона, а не только окраска.'],['Реакция на ответ сразу, без лишнего нажатия',''],['Ошибка мягкая и учит: показывает, что не так',''],['Успех заметен и приятен, но короткий',''],['Ученик видит прогресс: сколько осталось','']]]
+];
+$('#checks').innerHTML = CHECKS.map((g,gi)=>`<div class="cgroup${g[0]==='Учебные экраны'?' edu':''}"><h4>${g[0]}</h4>${g[1].map((c,ci)=>{const id=gi+'-'+ci;return `<label><input type="checkbox" data-c="${id}"${st.checks[id]?' checked':''}><span>${c[0]}${c[1]?`<small>${c[1]}</small>`:''}</span></label>`}).join('')}</div>`).join('');
+$('#checks').addEventListener('change',e=>{ const id=e.target.dataset.c; if(!id) return; if(e.target.checked) st.checks[id]=1; else delete st.checks[id]; save(); });
+</script>
+</body>
+</html>

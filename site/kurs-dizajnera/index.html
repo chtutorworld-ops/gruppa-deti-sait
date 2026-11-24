@@ -251,30 +251,8 @@ h3.sub{font-size:24px;margin:44px 0 14px}
 .qpage i{display:block;height:26px;border-radius:4px}
 .promptbox{background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre-wrap;margin:0}
 
-/* ИИ */
-.formula{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;counter-reset:f}
-.formula div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14px}
-.formula div::before{counter-increment:f;content:counter(f);font:500 20px/1 var(--serif);color:var(--accent);display:block;margin-bottom:4px}
-.formula b{display:block}
-.pairs{display:flex;flex-direction:column;gap:10px}
-.pair{display:grid;grid-template-columns:minmax(150px,.55fr) 1.6fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
-.pair .was{padding:14px 16px;background:#f1eee6;color:var(--ink2);font-size:15px;font-style:italic;position:relative}
-.pair .was::before,.pair .now::before{display:block;font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.pair .was::before{content:"Было";color:var(--muted)}
-.pair .now{padding:14px 16px;font-size:14.5px}
-.pair .now::before{content:"Стало";color:var(--accent)}
-.pair .why{display:block;font-size:13px;color:var(--muted);margin-top:6px}
-.builder{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.builder label{display:block;font-size:13px;color:var(--ink2);margin-bottom:10px}
-.builder input,.builder select,.builder textarea{width:100%;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:#fff;color:var(--ink);margin-top:3px}
-.builder textarea#out{height:100%;min-height:420px;font-family:var(--mono);font-size:12.5px;line-height:1.55;background:#fbfaf7;resize:vertical}
-.builder .acts{display:flex;gap:8px;margin-top:8px;align-items:center}
-.btn{font:inherit;font-size:14px;border:0;background:var(--ink);color:#fff;border-radius:9px;padding:9px 16px;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
-.fb{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
-.fb div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:14.5px}
-.fb b{display:block;font:500 17px var(--serif);margin-bottom:3px}
-
+.btn{font:inherit;font-size:15px;border:0;background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;cursor:pointer}
+.btn:hover{opacity:.9}
 /* чек-лист */
 .checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
 .cgroup{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
@@ -314,19 +292,19 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
 <header class="top wrap">
   <p class="kicker">Учебная страница · для себя</p>
   <h1>Курс молодого веб-дизайнера</h1>
-  <p class="lead">Короткий курс для человека, который не собирается работать дизайнером, но хочет понимать, о чём говорят в рилсах и в мастерской, видеть косяки и ставить задачу ИИ точными словами. Термины объяснены через школу и тетрадь, многие можно потрогать прямо здесь: двигай ползунки и нажимай кнопки.</p>
+  <p class="lead">Короткий курс для человека, который не собирается работать дизайнером, но хочет понимать, о чём говорят в рилсах и в мастерской, видеть косяки и разбирать сайты и приложения точными словами. Термины объяснены через школу и тетрадь, многие можно потрогать прямо здесь: двигай ползунки и нажимай кнопки.</p>
   <div class="toc">
     <a href="#slovar"><b>1</b><span>Словарь: 153 термина с живыми примерами</span></a>
     <a href="#etapy"><b>2</b><span>Как делают сайт: от задачи до запуска</span></a>
     <a href="#vzglyad"><b>3</b><span>Насмотренность: где смотреть и как разбирать</span></a>
     <a href="#bloki"><b>4</b><span>Собрать лендинг из блоков: где брать каждый</span></a>
-    <a href="#ii"><b>5</b><span>Как ставить задачу ИИ профессиональными словами</span></a>
+    <a href="prilozheniya/"><b>5</b><span>Как читать приложения: ноты, почерки, разбор экрана</span></a>
     <a href="#kosyaki"><b>6</b><span>Чек-лист косяков, которые стоит замечать</span></a>
   </div>
 </header>
 
 <nav class="bar"><div class="wrap">
-  <a href="#slovar">Словарь</a><a href="#etapy">Этапы</a><a href="#vzglyad">Насмотренность</a><a href="#bloki">Лендинг из блоков</a><a href="#ii">Задача для ИИ</a><a href="#kosyaki">Косяки</a>
+  <a href="#slovar">Словарь</a><a href="#etapy">Этапы</a><a href="#vzglyad">Насмотренность</a><a href="#bloki">Лендинг из блоков</a><a href="prilozheniya/">Приложения</a><a href="#kosyaki">Косяки</a>
   <span class="prog"><span id="progtxt">Знаю 0</span><span class="meter"><i id="progbar"></i></span></span>
 </div></nav>
 
@@ -508,80 +486,13 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
   <div class="acts" style="margin-top:8px"><button class="btn" id="lbCopy">Скопировать запрос</button> <span id="lbCopied" style="font-size:13px;color:var(--ok)"></span></div>
 </section>
 
-<!-- ============ 4. ИИ ============ -->
-<section class="part" id="ii">
+<!-- ============ 5. ПРИЛОЖЕНИЯ ============ -->
+<section class="part" id="prilozheniya">
   <div class="ph"><div class="num">5</div><div>
-    <h2>Как ставить задачу ИИ</h2>
-    <p>Claude не видит, что у тебя в голове. На «сделай красивенько» он выдаст среднее по интернету, то есть тот самый ИИ-штамп. Чем точнее слова, тем меньше он угадывает. Точные слова это не жаргон, а числа, названия и примеры.</p>
+    <h2>Как читать приложения</h2>
+    <p>Отдельная страница о том, как разбирать дизайн приложений профессионально, а не по принципу «красиво / что-то не то». Как парфюмер различает ноты, сочетания и почерк мастера, так и здесь: пирамида нот интерфейса, конструктор экрана, переводчик ощущений в причины, почерки Apple, Google, Linear, Duolingo и других, карточка разбора и тренажёр.</p>
   </div></div>
-
-  <h3 class="sub" style="margin-top:0">Формула хорошей задачи</h3>
-  <div class="formula">
-    <div><b>Что и для кого</b>Лендинг пробного урока, для родителей детей 8–12 лет.</div>
-    <div><b>Одна цель</b>Что человек должен сделать: оставить заявку.</div>
-    <div><b>Настроение тремя словами</b>Спокойно, дорого, по-взрослому.</div>
-    <div><b>Референс и что из него взять</b>Ссылка плюс: «бери раскладку, не бери цвета».</div>
-    <div><b>Раскладка</b>Сетка, колонки, первый экран, порядок блоков.</div>
-    <div><b>Типографика</b>Гарнитуры, кегли, интерлиньяж.</div>
-    <div><b>Цвет</b>Фон, текст, один акцент кодом HEX, контраст.</div>
-    <div><b>Движение</b>Что двигается, сколько мс, какой изинг.</div>
-    <div><b>Адаптив</b>На каких ширинах проверить, что меняется.</div>
-    <div><b>Чего не делать</b>Список запретов и штампов.</div>
-  </div>
-
-  <h3 class="sub">Было → стало</h3>
-  <div class="pairs" id="pairs"></div>
-
-  <h3 class="sub">Конструктор задачи</h3>
-  <p style="margin:0 0 12px;color:var(--ink2)">Заполни поля, и справа соберётся промт целиком. Пустые поля просто пропускаются. Скопируй и отправь Claude.</p>
-  <div class="builder">
-    <div id="bform">
-      <label>Что делаем<input data-k="what" value="Лендинг для записи на пробный урок китайского"></label>
-      <label>Для кого<input data-k="who" value="Родители детей 8–12 лет и взрослые новички"></label>
-      <label>Одна цель страницы<input data-k="goal" value="Оставить заявку на пробный урок"></label>
-      <label>Настроение тремя словами<input data-k="mood" value="Спокойно, премиально, тепло"></label>
-      <label>Референс и что из него взять<input data-k="ref" placeholder="Ссылка: бери раскладку первого экрана, не бери цвета"></label>
-      <label>Раскладка<select data-k="layout">
-        <option value="">не указывать</option>
-        <option selected>Контейнер 1200 px, 12-колоночная сетка, gap 24 px. Первый экран: слева заголовок, подзаголовок и одна CTA, справа изображение.</option>
-        <option>Одна узкая колонка текста до 680 px по центру, много воздуха, секции через 120 px.</option>
-        <option>Асимметричная раскладка: крупный заголовок на 8 колонок, мелкий текст на 4 колонки справа.</option>
-      </select></label>
-      <label>Типографика<select data-k="type">
-        <option value="">не указывать</option>
-        <option selected>Заголовки: антиква с контрастом, текст: нейтральный гротеск. Не больше двух гарнитур. Шкала кеглей 14/16/20/28/44 px, текст 17 px, интерлиньяж 1.55, длина строки до 70 знаков.</option>
-        <option>Всё одним гротеском, иерархия только размером и жирностью. Заголовок 56 px, трекинг −2%.</option>
-      </select></label>
-      <label>Цвет<input data-k="color" value="Фон тёплый светлый #f6f4ef, текст #1c1b19, один акцент #3f4bb8 только на CTA и активных состояниях. Контраст текста не ниже 4.5:1."></label>
-      <label>Движение<select data-k="motion">
-        <option value="">не указывать</option>
-        <option selected>Только мягкое появление блоков при прокрутке: сдвиг 12 px, 300 мс, ease-out. Ховеры 150 мс. Уважать prefers-reduced-motion.</option>
-        <option>Без анимаций, кроме ховеров 150 мс.</option>
-        <option>Один выразительный момент на первом экране, остальное спокойно.</option>
-      </select></label>
-      <label>Адаптив<input data-k="resp" value="Проверить на 375, 768 и 1440 px. На телефоне одна колонка, поля 16 px, кнопки на всю ширину и не ниже 44 px."></label>
-      <label>Чего не делать<input data-k="no" value="Без фиолетово-синих градиентов, свечения, эмодзи вместо иконок, всего по центру и шаблонных фраз."></label>
-      <label>Как показать результат<select data-k="flow">
-        <option>Сначала вайрфрейм без стиля, после моего «ок» стиль.</option>
-        <option>Сразу три разных направления на первом экране, чтобы я выбрала.</option>
-        <option>Сразу готовую страницу.</option>
-      </select></label>
-    </div>
-    <div>
-      <textarea id="out" readonly aria-label="Готовый промт"></textarea>
-      <div class="acts"><button class="btn" id="copy">Скопировать промт</button><span id="copied" style="font-size:13px;color:var(--ok)"></span></div>
-    </div>
-  </div>
-
-  <h3 class="sub">Как давать обратную связь на результат</h3>
-  <div class="fb">
-    <div><b>Место + проблема + как надо</b>Не «не нравится шапка», а «в шапке меню слиплось: увеличь gap между пунктами до 28 px».</div>
-    <div><b>Скриншот с пометкой</b>Обведи место на скриншоте и пришли. Картинка с кружком понятнее абзаца.</div>
-    <div><b>Проси варианты</b>«Дай 3 варианта первого экрана: строгий, тёплый, смелый». Выбирать проще, чем описывать.</div>
-    <div><b>Проси объяснить решения</b>«Почему такой кегль и такой отступ?» Так ты учишься, а Claude не ставит случайные числа.</div>
-    <div><b>Говори, что оставить</b>«Сетку и шрифты оставь, меняем только цвет». Иначе при правке может поменяться всё.</div>
-    <div><b>Называй ощущение и причину</b>«Выглядит дёшево: наверное, тени слишком тёмные и скругления разные». Даже неверная догадка помогает.</div>
-  </div>
+  <p><a class="btn" style="display:inline-block;text-decoration:none;color:#fff" href="prilozheniya/">Открыть «Как читать приложения» →</a></p>
 </section>
 
 <!-- ============ 5. КОСЯКИ ============ -->
@@ -596,7 +507,7 @@ footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px so
 </main>
 
 <footer class="wrap">
-  Учебная страница для себя, без сбора данных: отметки «знаю» и галочки хранятся только в этом браузере. Ссылки на галереи проверены поиском 16 ноября 2026; содержимое галерей меняется каждый день. Соседние страницы: <a href="../masterskaya/">Мастерская визуала</a> · <a href="../katalog-stiley/">Каталог стилей</a>.
+  Учебная страница для себя, без сбора данных: отметки «знаю» и галочки хранятся только в этом браузере. Ссылки на галереи проверены поиском 16 ноября 2026; содержимое галерей меняется каждый день. Соседние страницы: <a href="prilozheniya/">Как читать приложения</a> · <a href="../masterskaya/">Мастерская визуала</a> · <a href="../katalog-stiley/">Каталог стилей</a>.
 </footer>
 
 <script>
@@ -1081,40 +992,6 @@ document.getElementById('blocks').innerHTML = BLOCKS.map((b,i)=>`<div class="blk
 document.getElementById('lbCopy').addEventListener('click',async()=>{
   const m=document.getElementById('lbCopied'), t=document.getElementById('lbPrompt').textContent;
   try{ await navigator.clipboard.writeText(t); m.textContent='Скопировано'; }catch(e){ m.textContent='Выдели текст и скопируй вручную'; }
-  setTimeout(()=>m.textContent='',2000);
-});
-
-/* ---------- было → стало ---------- */
-const PAIRS = [
-['Сделай красивенько','Лендинг пробного урока для родителей. Настроение: спокойно, дорого, тепло. Тёплый светлый фон #f6f4ef, один акцент #3f4bb8 только на кнопке. Заголовки антиквой, текст гротеском 17 px. Много воздуха: между секциями 120 px.','«Красиво» у всех разное. Настроение, цвета кодом и шрифты превращают вкус в инструкцию.'],
-['Тут всё слиплось','В карточках увеличь padding до 24 px, gap между карточками до 16 px, отступ заголовка от текста до 12 px.','Слиплось = не хватает отступов. Называй, каких и насколько.'],
-['Текст плохо читается','Серый #8a8a8a замени на #45454a, контраст не ниже 4.5:1. Кегль 17 px, интерлиньяж 1.55, ширина текста до 680 px.','Читаемость складывается из контраста, кегля, интерлиньяжа и длины строки.'],
-['Сделай шрифт покрасивее','Заголовки: антиква с высоким контрастом штрихов, вес 500, трекинг −1%. Текст: нейтральный гротеск 400. Не больше двух гарнитур, шкала 14/16/20/28/44.','Вместо «покрасивее» назови роль каждого шрифта и правила.'],
-['Слишком пёстро','Оставь три нейтральных цвета и один акцент. Акцент только на главной кнопке и активных пунктах меню, всё остальное в нейтральных.','Пестрота почти всегда от лишних акцентов.'],
-['Анимацию поживее','Карточки появляются при прокрутке: сдвиг снизу на 12 px и проявление, 300 мс, ease-out, задержка 60 мс между карточками. Уважай prefers-reduced-motion.','Движение описывается тремя словами: что, сколько, какой изинг.'],
-['Кнопку заметнее','Главная CTA: залитая акцентом, высота 48 px, padding 0 24px, одна на экран. Вторичная: контурная. Текст глаголом: «Записаться на урок».','Заметность создают иерархия и одиночество, а не размер и мигание.'],
-['На телефоне всё поехало','До 600 px: одна колонка, поля 16 px, заголовок 32 px, кнопки на всю ширину не ниже 44 px. Проверь на 375 px, без горизонтальной прокрутки.','Назови ширину, на которой ломается, и правило для неё.'],
-['Как у Apple','Референс apple.com/airpods. Возьми: крупный гротеск, много воздуха, одно изображение на экран, нейтральный фон. Не бери: тёмные секции и видео.','Референс без «взять / не брать» ИИ скопирует целиком или не поймёт.'],
-['Добавь 3D','Один 3D-объект на первом экране справа: статичный рендер в WebP, мягкий свет сверху слева, тень на подложке, без вращения. Остальной сайт плоский.','3D это приём, его дозируют: где, один или много, двигается ли.'],
-['Чтобы не было как у ИИ','Без фиолетово-синих градиентов, свечения, стекла везде, эмодзи вместо иконок и одинаковых карточек «иконка + заголовок + текст». Асимметричная раскладка, реальные тексты, одна сильная идея.','Штампы надо перечислить, иначе они появятся по умолчанию.'],
-['Не нравится, переделай','Сетку и шрифты оставь. Меняем первый экран: заголовок короче и крупнее, картинку уменьши в 2 раза, кнопку подними выше сгиба.','Скажи, что оставить, иначе переделается всё, включая удачное.']
-];
-document.getElementById('pairs').innerHTML = PAIRS.map(p=>`<div class="pair"><div class="was">${p[0]}</div><div class="now">${p[1]}<span class="why">${p[2]}</span></div></div>`).join('');
-
-/* ---------- конструктор ---------- */
-const bform = document.getElementById('bform'), out = document.getElementById('out');
-const LBL = {what:'Задача',who:'Для кого',goal:'Цель страницы',mood:'Настроение',ref:'Референс',layout:'Раскладка',type:'Типографика',color:'Цвет',motion:'Движение',resp:'Адаптив',no:'Не делать',flow:'Как показать'};
-function build(){
-  const v = {}; bform.querySelectorAll('[data-k]').forEach(el=>v[el.dataset.k]=el.value.trim());
-  const lines = Object.keys(LBL).filter(k=>v[k]).map(k=>`${LBL[k]}: ${v[k].replace(/\.$/,'')}.`);
-  lines.push('В конце коротко перечисли, какие решения по дизайну ты принял и почему.');
-  out.value = lines.join('\n\n');
-}
-bform.addEventListener('input',build); bform.addEventListener('change',build); build();
-document.getElementById('copy').addEventListener('click',async()=>{
-  const m = document.getElementById('copied');
-  try{ await navigator.clipboard.writeText(out.value); m.textContent='Скопировано'; }
-  catch(e){ out.select(); try{ document.execCommand('copy'); m.textContent='Скопировано'; }catch(_){ m.textContent='Выдели текст и скопируй вручную'; } }
   setTimeout(()=>m.textContent='',2000);
 });
 
