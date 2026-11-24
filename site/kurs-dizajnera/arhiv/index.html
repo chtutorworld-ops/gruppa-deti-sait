@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Курс молодого веб-дизайнера</title>
+<style>
+:root{
+  --bg:#f6f4ef; --card:#fffdf9; --ink:#1c1b19; --ink2:#3b3a36; --muted:#6e6b64; --line:#e4e0d6; --line2:#d6d1c4;
+  --accent:#3f4bb8; --accent-soft:#e8eaf8; --accent-ink:#2c358c; --ok:#2f7a55; --ok-soft:#e4f1ea; --warn:#9a5b16; --warn-soft:#f6ecdc;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em}
+header.top{padding:56px 0 28px}
+.kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+h1{font-size:clamp(34px,5.4vw,58px);line-height:1.05;margin:0 0 18px;max-width:14ch}
+.lead{font-size:18px;color:var(--ink2);max-width:62ch;margin:0}
+.toc{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:34px}
+.toc a{background:var(--card);padding:16px 16px 18px;text-decoration:none;color:var(--ink);display:block}
+.toc a:hover{background:#fff}
+.toc b{display:block;font-family:var(--serif);font-weight:500;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px}
+.toc span{font-size:14px;line-height:1.35;display:block}
+nav.bar{position:sticky;top:0;z-index:20;background:rgba(246,244,239,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav.bar .wrap{display:flex;align-items:center;gap:6px;height:56px;overflow-x:auto;scrollbar-width:none}
+nav.bar .wrap::-webkit-scrollbar{display:none}
+nav.bar a{flex:none;font-size:14px;color:var(--ink2);text-decoration:none;padding:6px 11px;border-radius:8px}
+nav.bar a:hover{background:var(--card);color:var(--ink)}
+nav.bar .prog{margin-left:auto;flex:none;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;padding-left:12px}
+.meter{width:90px;height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .4s ease-out}
+section.part{padding:64px 0 24px;border-top:1px solid var(--line)}
+section.part:first-of-type{border-top:0}
+.ph{display:grid;grid-template-columns:80px 1fr;gap:8px 20px;margin-bottom:28px}
+.ph .num{font-family:var(--serif);font-size:56px;line-height:.9;color:var(--accent)}
+.ph h2{font-size:clamp(28px,3.6vw,40px);line-height:1.1;margin:0 0 10px}
+.ph p{margin:0;color:var(--ink2);max-width:66ch}
+h3.sub{font-size:24px;margin:44px 0 14px}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;margin:16px 0;color:var(--ink2);font-size:15px}
+
+/* путаницы */
+.mix{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:30px}
+.mix div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px;line-height:1.5}
+.mix b{display:block;font-family:var(--serif);font-weight:500;font-size:18px;margin-bottom:4px}
+
+/* фильтры словаря */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
+.chip{font:inherit;font-size:14px;border:1px solid var(--line2);background:var(--card);color:var(--ink2);padding:6px 12px;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:22px}
+.tools input[type=search]{flex:1 1 260px;max-width:420px;padding:10px 14px;border-radius:10px;border:1px solid var(--line2);font:inherit;background:var(--card);color:var(--ink)}
+.tools label{font-size:14px;color:var(--ink2);display:flex;gap:6px;align-items:center;cursor:pointer}
+.catname{font-family:var(--serif);font-size:22px;margin:30px 0 4px}
+.catdesc{color:var(--muted);font-size:15px;margin:0 0 14px}
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;align-items:start}
+.term{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:8px;transition:border-color .2s}
+.term.known{border-color:#bfdccb;background:#fbfdfb}
+.term .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.term h4{margin:0;font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.2}
+.term .en{font-size:12.5px;color:var(--muted);letter-spacing:.02em;margin-top:2px}
+.term p{margin:0;font-size:15px}
+.term .sch{font-size:14px;color:var(--ink2);padding-left:12px;border-left:2px solid var(--line2)}
+.term .ai{font-size:13.5px;background:var(--accent-soft);color:var(--accent-ink);border-radius:8px;padding:7px 10px}
+.term .ai::before{content:"Сказать Claude: ";font-weight:600}
+.know{flex:none;font:inherit;font-size:12.5px;border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:999px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.know:hover{border-color:var(--ok);color:var(--ok)}
+.term.known .know{background:var(--ok);border-color:var(--ok);color:#fff}
+.ex{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.ex span{margin-right:2px}
+.ex a{text-decoration:none;color:var(--accent-ink);border:1px solid #d3d7f2;background:#fafbff;border-radius:7px;padding:3px 9px}
+.ex a::after{content:" ↗";color:var(--muted)}
+.ex a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ex a:hover::after{color:#fff}
+.empty{color:var(--muted);padding:20px 0}
+.hidden{display:none!important}
+
+/* демо */
+.demo{border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px;margin-top:2px;font-size:14px}
+.demo .stage{min-height:60px;margin-bottom:10px;overflow:hidden;border-radius:6px}
+.ctl{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);margin-top:6px;flex-wrap:wrap}
+.ctl input[type=range]{flex:1 1 120px;accent-color:var(--accent)}
+.ctl output{min-width:58px;text-align:right;font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.ctl button,.dbtn{font:inherit;font-size:13px;border:1px solid var(--line2);background:var(--bg);border-radius:7px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+.ctl button:hover,.dbtn:hover{border-color:var(--accent)}
+.legend{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+.pad-outer{background:repeating-linear-gradient(45deg,#ece9f7 0 5px,#f8f7fc 5px 10px);border:1px dashed #b9b3dc;border-radius:6px}
+.pad-box{margin:var(--m,16px);padding:var(--p,16px);background:#ccd2f4;border-radius:8px}
+.pad-in{background:#fff;padding:6px 8px;border-radius:4px}
+.gap-row{display:flex;gap:var(--g,12px)} .gap-row i,.grid-d i{display:block;height:44px;background:#dfe2f6;border-radius:6px;flex:1}
+.grid-d{display:grid;grid-template-columns:repeat(var(--c,4),1fr);gap:6px} .grid-d i{height:26px}
+.air-card{padding:26px;background:var(--bg);border-radius:8px;transition:padding .3s}
+.air-card h5{font:500 20px/1.2 var(--serif);margin:0 0 10px} .air-card p{margin:0 0 16px;color:var(--ink2)}
+.air-card span{display:inline-block;background:var(--ink);color:#fff;padding:8px 14px;border-radius:7px;font-size:13px}
+.air-card.tight{padding:4px} .air-card.tight h5{margin:0} .air-card.tight p{margin:0}
+.hier .t1{font:500 24px/1.15 var(--serif);margin:0 0 4px} .hier .t2{color:var(--muted);font-size:13px;margin:0 0 8px} .hier .t3{margin:0}
+.hier.flat .t1,.hier.flat .t2,.hier.flat .t3{font:400 14px/1.5 var(--sans);color:var(--ink);margin:0}
+.al p{text-align:var(--ta,left);margin:0;font-size:14px}
+.fs-s{font-size:var(--fs,18px);line-height:1.15;margin:0}
+.lh-s{line-height:var(--lh,1.5);margin:0;font-size:14px}
+.ls-s{letter-spacing:var(--ls,0em);margin:0;font-size:22px;font-family:var(--serif)}
+.fw-s{font-weight:var(--fw,400);font-size:26px;margin:0}
+.ff-s{font-family:var(--ff,var(--serif));font-size:24px;margin:0;line-height:1.3}
+.ms-s{max-width:var(--ms,60ch);margin:0;font-size:14px;line-height:1.5;background:#faf8f3}
+.ct-s{padding:14px;background:#fff;color:hsl(240 5% var(--l,30%));font-size:15px}
+.ct-res{font-family:var(--mono);font-size:12.5px}
+.ct-res b{padding:1px 6px;border-radius:4px}
+.acc2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.acc2 > div{border:1px solid var(--line);border-radius:6px;padding:10px;font-size:12.5px}
+.acc2 .bt{display:inline-block;padding:5px 9px;border-radius:5px;color:#fff;margin:3px 3px 0 0;font-size:12px}
+.grads{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.grads div{height:64px;border-radius:6px;display:flex;align-items:flex-end;padding:5px;font-size:11.5px;color:#1c1b19}
+.sh-s{background:var(--bg);padding:26px;display:flex;justify-content:center}
+.sh-s div{background:#fff;width:150px;height:70px;border-radius:10px;box-shadow:0 calc(var(--sh,8) * .45px) calc(var(--sh,8) * 1.2px) rgba(30,28,50,calc(.06 + var(--sh,8) * .004))}
+.rd-s{display:flex;gap:10px;align-items:center;padding:10px;background:var(--bg)}
+.rd-s div{width:110px;height:64px;background:#ccd2f4;border-radius:var(--r,12px)}
+.rd-s span{background:var(--accent);color:#fff;padding:9px 16px;border-radius:var(--r,12px);font-size:13px}
+.bl-s{position:relative;height:120px;background:#f3efe6}
+.bl-s i{position:absolute;border-radius:50%}
+.bl-s .glass{position:absolute;inset:22px 30px;border-radius:12px;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7);backdrop-filter:blur(var(--b,10px));-webkit-backdrop-filter:blur(var(--b,10px));display:flex;align-items:center;justify-content:center;font-size:14px}
+.ns-s{height:90px;border-radius:8px;background:linear-gradient(135deg,#e6e3f3,#f4efe4);display:flex;align-items:center;justify-content:center;font:500 18px var(--serif);position:relative}
+.ns-s.grain::after{content:"";position:absolute;inset:0;border-radius:8px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");mix-blend-mode:multiply;opacity:.45}
+.dk-s{padding:16px;border-radius:8px;background:#fbfaf6;color:#1c1b19;transition:background .3s,color .3s}
+.dk-s p{margin:0 0 4px;font:500 18px var(--serif)} .dk-s small{color:#6e6b64}
+.dk-s.dk{background:#1d1c22;color:#ecebf2} .dk-s.dk small{color:#a3a1ad}
+.vec-s{display:flex;gap:16px;align-items:center;justify-content:center;padding:6px;min-height:150px}
+.vec-s figure{margin:0;text-align:center;font-size:12px;color:var(--muted)}
+.vec-s canvas,.vec-s svg{width:calc(var(--z,60) * 1px);height:calc(var(--z,60) * 1px);display:block;margin:0 auto 4px}
+.vec-s canvas{image-rendering:pixelated}
+.ic-s{display:flex;gap:18px;align-items:center}
+.ic-s figure{margin:0;text-align:center;font-size:12px;color:var(--muted)}
+.trk{position:relative;height:24px;margin:5px 0;background:var(--bg);border-radius:12px}
+.trk i{position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--accent);transition:left var(--d,1.1s) var(--e,ease)}
+.trk span{position:absolute;right:10px;top:2px;font-size:12px;color:var(--muted)}
+.go .trk i{left:calc(100% - 21px)}
+.st-s{display:flex;gap:10px;flex-wrap:wrap;padding:6px}
+.st-btn{font:inherit;font-size:14px;padding:10px 18px;border-radius:9px;border:0;background:var(--accent);color:#fff;cursor:pointer;transition:background .15s,transform .1s,box-shadow .15s}
+.st-btn:hover{background:#2f3a9e;box-shadow:0 6px 16px rgba(63,75,184,.25)}
+.st-btn:active{transform:scale(.96)}
+.st-btn:focus-visible{outline:3px solid #a9b0ec;outline-offset:2px}
+.st-btn:disabled{background:#c9c7c0;cursor:not-allowed;box-shadow:none;transform:none}
+.like{font:inherit;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.like svg{width:18px;height:18px;fill:none;stroke:#8a8780;stroke-width:2;transition:fill .2s,stroke .2s}
+.like.on svg{fill:#5b4fc4;stroke:#5b4fc4;animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.sk-s .ln{height:12px;border-radius:6px;margin:8px 0;background:linear-gradient(90deg,#ece9e1 25%,#f7f5f0 50%,#ece9e1 75%);background-size:300% 100%;animation:shim 1.4s linear infinite}
+.sk-s .ln.w1{width:60%;height:18px}.sk-s .ln.w2{width:90%}.sk-s .ln.w3{width:75%}
+.sk-s .real{display:none} .sk-s.loaded .ln{display:none} .sk-s.loaded .real{display:block}
+@keyframes shim{from{background-position:100% 0}to{background-position:0 0}}
+.px-box{height:170px;overflow-y:auto;border-radius:8px;position:relative;background:#eef0fa}
+.px-scene{position:sticky;top:0;height:170px;overflow:hidden}
+.px-scene svg{position:absolute;left:0;width:100%;will-change:transform}
+.px-spacer{height:520px;margin-top:-170px}
+.rs-out{width:calc(var(--rw,100) * 1%);container-type:inline-size;border:1px dashed var(--line2);border-radius:6px;padding:6px;transition:width .1s}
+.rs-g{display:grid;grid-template-columns:1fr;gap:6px}
+.rs-g i{display:block;height:34px;background:#dfe2f6;border-radius:5px}
+@container (min-width:300px){.rs-g{grid-template-columns:1fr 1fr}}
+@container (min-width:440px){.rs-g{grid-template-columns:1fr 1fr 1fr}}
+.wf-s .ui,.wf-s.wf .wfl{display:block} .wf-s .wfl,.wf-s.wf .ui{display:none}
+.wf-s .ui{background:linear-gradient(160deg,#eef0fb,#faf6ee);border-radius:8px;padding:14px}
+.wf-s .ui h5{font:500 19px var(--serif);margin:0 0 4px} .wf-s .ui p{margin:0 0 10px;font-size:13px;color:var(--ink2)}
+.wf-s .ui span{background:var(--accent);color:#fff;padding:6px 12px;border-radius:7px;font-size:12.5px}
+.wfl{border:1px solid #c9c6bd;border-radius:8px;padding:14px}
+.wfl b{display:block;background:#d5d2ca;height:14px;border-radius:2px;margin:6px 0}
+.wfl .x{height:46px;background:repeating-linear-gradient(45deg,#eae8e2 0 6px,#f6f5f1 6px 12px);border:1px solid #d5d2ca}
+.cta-s{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px}
+.cta-s .p{background:var(--accent);color:#fff;padding:11px 20px;border-radius:9px;font-size:14px}
+.cta-s .s{border:1px solid var(--ink);padding:10px 18px;border-radius:9px;font-size:14px}
+.cta-s .l{font-size:14px;color:var(--accent);text-decoration:underline}
+.anat{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.anat div{border-radius:5px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center}
+.anat .h{background:#e4e1d8} .anat .hero{background:#dfe2f6;height:74px;align-items:flex-start;flex-direction:column;justify-content:center;gap:4px}
+.anat .hero em{font:500 16px var(--serif);font-style:normal} .anat .hero u{text-decoration:none;background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px}
+.anat .sec{background:#f0eee8} .anat .f{background:#2a2925;color:#d8d5cc}
+.cube-s{height:150px;display:flex;align-items:center;justify-content:center;perspective:500px}
+.cube{width:70px;height:70px;position:relative;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(calc(var(--ry,30) * 1deg))}
+.cube b{position:absolute;inset:0;border:1px solid rgba(63,75,184,.5);background:rgba(204,210,244,.75)}
+.cube b:nth-child(1){transform:translateZ(35px)} .cube b:nth-child(2){transform:rotateY(180deg) translateZ(35px)}
+.cube b:nth-child(3){transform:rotateY(90deg) translateZ(35px);background:rgba(170,178,232,.85)} .cube b:nth-child(4){transform:rotateY(-90deg) translateZ(35px);background:rgba(170,178,232,.85)}
+.cube b:nth-child(5){transform:rotateX(90deg) translateZ(35px);background:rgba(232,235,250,.9)} .cube b:nth-child(6){transform:rotateX(-90deg) translateZ(35px)}
+
+/* этапы */
+.roles{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:26px;display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.roles h4{font:500 19px var(--serif);margin:0 0 8px}
+.roles ul{margin:0;padding-left:18px;font-size:14.5px}
+.roles li{margin:2px 0}
+.steps{counter-reset:s;display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--line)}
+.step .n{font:500 34px/1 var(--serif);color:var(--accent)}
+.step h4{font:500 22px/1.2 var(--serif);margin:2px 0 8px}
+.step .row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.step .row div{font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.step .row b{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.step .row .me{background:var(--accent-soft);border-color:#d3d7f2}
+.step .row .me b{color:var(--accent-ink)}
+.step p{margin:0;color:var(--ink2);max-width:72ch}
+
+/* насмотренность */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:end;margin:6px 0 10px}
+.ladder div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13.5px;line-height:1.4}
+.ladder div:nth-child(1){min-height:110px}.ladder div:nth-child(2){min-height:140px}.ladder div:nth-child(3){min-height:170px}.ladder div:nth-child(4){min-height:200px;border-color:var(--accent)}.ladder div:nth-child(5){min-height:230px}
+.ladder b{display:block;font:500 17px var(--serif);margin-bottom:4px}
+.ladder .you{display:inline-block;font-size:11px;background:var(--accent);color:#fff;border-radius:4px;padding:1px 6px;margin-bottom:6px}
+.layers{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.layers div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px}
+.layers b{font:500 18px var(--serif);display:block;margin-bottom:4px}
+.layers b em{font-style:normal;color:var(--accent);margin-right:6px}
+.sites{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.site{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:4px}
+.site a{font:500 18px var(--serif);text-decoration:none;color:var(--ink)}
+.site a:hover{color:var(--accent)}
+.site a::after{content:" ↗";font-size:13px;color:var(--muted)}
+.site p{margin:0;font-size:14px;color:var(--ink2)}
+.site .tag{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.week{counter-reset:d;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.week li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.week li::before{counter-increment:d;content:"День " counter(d);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+
+/* лендинг из блоков */
+.lb{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:start}
+.lb-map{position:sticky;top:76px;display:flex;flex-direction:column;gap:4px}
+.lb-map a{display:flex;justify-content:space-between;text-decoration:none;color:var(--ink);font-size:13px;border-radius:6px;padding:8px 10px;background:#ece9e1}
+.lb-map a:hover{outline:1.5px solid var(--accent)}
+.lb-map a.hero{background:#dfe2f6;padding:22px 10px}
+.lb-map a.foot{background:#2a2925;color:#d8d5cc}
+.lb-map a.cta{background:var(--accent);color:#fff}
+.lb-map span{color:inherit;opacity:.6}
+.blocks{display:flex;flex-direction:column;gap:10px}
+.blk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;scroll-margin-top:80px}
+.blk h4{grid-column:1/-1;margin:0 0 2px;font:500 21px var(--serif)}
+.blk h4 small{font:13px var(--sans);color:var(--muted);margin-left:8px}
+.blk p{margin:0;font-size:14.5px}
+.blk .oops{color:var(--warn);font-size:14px}
+.blk .where{font-size:14px}
+.blk .where b{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:3px}
+.blk .where a{margin-right:10px;white-space:nowrap}
+.howto{list-style:none;counter-reset:h;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.howto li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.howto li::before{counter-increment:h;content:"Шаг " counter(h);display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.quilt{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quilt > div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.quilt h4{margin:0 0 8px;font:500 18px var(--serif)}
+.qpage{display:flex;flex-direction:column;gap:4px}
+.qpage i{display:block;height:26px;border-radius:4px}
+.promptbox{background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;white-space:pre-wrap;margin:0}
+
+.btn{font:inherit;font-size:15px;border:0;background:var(--ink);color:#fff;border-radius:10px;padding:11px 18px;cursor:pointer}
+.btn:hover{opacity:.9}
+/* чек-лист */
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.cgroup{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.cgroup h4{font:500 20px var(--serif);margin:0 0 8px}
+.cgroup.ai{border-color:#d3d7f2;background:#fbfbff}
+.cgroup label{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;padding:5px 0;cursor:pointer;line-height:1.45}
+.cgroup input{margin-top:4px;accent-color:var(--ok);flex:none}
+.cgroup small{display:block;color:var(--muted);font-size:13px}
+.cgroup label:has(input:checked){color:var(--muted)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:40px}
+
+@media (max-width:820px){
+  .toc{grid-template-columns:1fr 1fr}
+  .roles,.builder,.lb,.blk,.quilt{grid-template-columns:1fr}
+  .lb-map{position:static}
+  .step .row{grid-template-columns:1fr}
+  .ladder{grid-template-columns:1fr}
+  .ladder div{min-height:0!important}
+  .pair{grid-template-columns:1fr}
+  .ph{grid-template-columns:1fr}
+  .ph .num{font-size:40px}
+  .terms,.checks,.sites{grid-template-columns:1fr}
+  .builder textarea#out{min-height:300px}
+}
+@media (max-width:480px){
+  .wrap{padding:0 16px}
+  .step{grid-template-columns:1fr;gap:4px}
+  nav.bar .prog .meter{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top wrap">
+  <p class="kicker">Учебная страница · для себя</p>
+  <h1>Курс молодого веб-дизайнера</h1>
+  <p class="lead">Короткий курс для человека, который не собирается работать дизайнером, но хочет понимать, о чём говорят в рилсах и в мастерской, видеть косяки и разбирать сайты и приложения точными словами. Термины объяснены через школу и тетрадь, многие можно потрогать прямо здесь: двигай ползунки и нажимай кнопки.</p>
+  <div class="toc">
+    <a href="#slovar"><b>1</b><span>Словарь: 153 термина с живыми примерами</span></a>
+    <a href="#etapy"><b>2</b><span>Как делают сайт: от задачи до запуска</span></a>
+    <a href="#vzglyad"><b>3</b><span>Насмотренность: где смотреть и как разбирать</span></a>
+    <a href="#bloki"><b>4</b><span>Собрать лендинг из блоков: где брать каждый</span></a>
+    <a href="../prilozheniya/"><b>5</b><span>Как читать приложения: ноты, почерки, разбор экрана</span></a>
+    <a href="#kosyaki"><b>6</b><span>Чек-лист косяков, которые стоит замечать</span></a>
+  </div>
+</header>
+
+<nav class="bar"><div class="wrap">
+  <a href="#slovar">Словарь</a><a href="#etapy">Этапы</a><a href="#vzglyad">Насмотренность</a><a href="#bloki">Лендинг из блоков</a><a href="../prilozheniya/">Приложения</a><a href="#kosyaki">Косяки</a>
+  <span class="prog"><span id="progtxt">Знаю 0</span><span class="meter"><i id="progbar"></i></span></span>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ============ 1. СЛОВАРЬ ============ -->
+<section class="part" id="slovar">
+  <div class="ph"><div class="num">1</div><div>
+    <h2>Словарь</h2>
+    <p>Термины разложены по темам. У каждого суть, сравнение «как в школе» и фраза, которой это можно сказать Claude. Нажимай «Знаю», когда слово стало своим: отметки сохранятся в этом браузере, а фильтр «Только незнакомые» оставит то, что ещё учить.</p>
+  </div></div>
+
+  <h3 class="sub" style="margin-top:0">Восемь частых путаниц</h3>
+  <div class="mix">
+    <div><b>Поля и отступы</b>Поле (margin) снаружи элемента, до соседей. Внутренний отступ (padding) внутри, от края до текста. Красная строка в вебе называется «отступ первой строки», и её почти не используют.</div>
+    <div><b>Гифка и иконка</b>Гифка это формат файла (как .doc). Иконка это роль картинки (маленький значок-подсказка). Иконка может быть гифкой, но обычно она SVG.</div>
+    <div><b>Макет, мокап, вайрфрейм</b>Вайрфрейм: черновик из серых блоков. Макет: готовый вид страницы. Мокап: макет, вставленный в фото ноутбука или телефона для красоты.</div>
+    <div><b>Шрифт и гарнитура</b>Гарнитура это семья (Times New Roman), шрифт или начертание это её член (Times New Roman Bold). В разговоре путают все, это нормально.</div>
+    <div><b>Домен и хостинг</b>Домен это адрес на вывеске, хостинг это здание, где лежат файлы. Покупаются отдельно и связываются между собой.</div>
+    <div><b>Рендеринг: два смысла</b>В 3D это «сфотографировать» сцену в готовую картинку. В браузере это отрисовка страницы из кода. Смотри по контексту.</div>
+    <div><b>UI и UX</b>UX: удобно ли и понятно ли (логика). UI: как выглядит (кнопки, цвета, шрифты). Красивый UI с плохим UX как нарядная тетрадь без полей и линеек.</div>
+    <div><b>Дизайн и вёрстка</b>Дизайн рисует, как должно быть. Вёрстка превращает рисунок в работающую страницу на HTML и CSS. Вайбкодинг с Claude это как раз вёрстка и разработка голосом.</div>
+  </div>
+
+  <div class="filters" id="cats"></div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Найти термин: кегль, лендинг, easing…" aria-label="Поиск по словарю">
+    <label><input type="checkbox" id="onlyNew"> Только незнакомые</label>
+    <label><input type="checkbox" id="onlyDemo"> Только с живым примером</label>
+    <label><input type="checkbox" id="onlyEx"> Только со ссылками на примеры</label>
+  </div>
+  <div id="dict"></div>
+</section>
+
+<!-- ============ 2. ЭТАПЫ ============ -->
+<section class="part" id="etapy">
+  <div class="ph"><div class="num">2</div><div>
+    <h2>Как делают сайт</h2>
+    <p>В студии над сайтом работают 5–15 человек, и каждый этап у них занимает дни или недели. У тебя команда из двух: ты и Claude. Ты в ней арт-директор, заказчик и главный эксперт по содержанию, а Claude отвечает за руки всех остальных. Поэтому важно знать, какие этапы бывают, и не перепрыгивать через ранние: чем раньше найдена ошибка, тем дешевле её исправить.</p>
+  </div></div>
+
+  <div class="roles">
+    <div>
+      <h4>Кто есть кто в студии</h4>
+      <ul>
+        <li><b>Менеджер проекта</b>: держит сроки и связь с заказчиком.</li>
+        <li><b>Арт-директор</b>: отвечает за общий вкус и стиль, принимает или бракует.</li>
+        <li><b>UX-дизайнер, исследователь</b>: логика, путь пользователя, структура.</li>
+        <li><b>UI-дизайнер</b>: рисует экраны, кнопки, шрифты, цвета.</li>
+        <li><b>Моушн-дизайнер, 3D-художник</b>: движение и объём.</li>
+        <li><b>Копирайтер</b>: тексты. <b>Фронтенд и бэкенд</b>: код. <b>Тестировщик (QA)</b>: ищет ошибки. <b>SEO-специалист</b>: чтобы находили в поиске.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Где здесь ты и Claude</h4>
+      <ul>
+        <li>Смысл, цель, тексты про школу и методику: только ты, никто не знает лучше.</li>
+        <li>Вкус и финальное «да / нет»: ты, на основе насмотренности.</li>
+        <li>Варианты, раскладки, код, проверка по правилам: Claude.</li>
+        <li>Проверка глазами на телефоне и на живых учениках: ты.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="steps" id="steps"></div>
+</section>
+
+<!-- ============ 3. НАСМОТРЕННОСТЬ ============ -->
+<section class="part" id="vzglyad">
+  <div class="ph"><div class="num">3</div><div>
+    <h2>Насмотренность</h2>
+    <p>Насмотренность это не «посмотреть много картинок», а умение назвать, почему одно работает, а другое нет. Растёт она от трёх вещей: смотреть хорошее, разбирать по слоям и записывать своими словами.</p>
+  </div></div>
+
+  <h3 class="sub" style="margin-top:0">Ступени вкуса</h3>
+  <p style="margin:0 0 12px;color:var(--ink2);max-width:70ch">Почти у всех путь одинаковый, и каждая ступень нужна. Ты уже прошла три и стоишь на четвёртой: эффекты перестали радовать сами по себе, и хочется понимать, как всё устроено.</p>
+  <div class="ladder">
+    <div><b>Вау, само сделалось</b>Радует сам факт: ИИ собрал презентацию по клику.</div>
+    <div><b>Эффекты</b>Клеймофизм, 2D-иконки, яркие персонажи. Хочется всего и сразу.</div>
+    <div><b>Блеск и объём</b>Перламутр, сияние, объёмные кнопки, переливы. Красиво, но всё кричит одновременно.</div>
+    <div><span class="you">ты здесь</span><b>Система</b>Интересны сетка, шрифт, отступы, иерархия. Начинаешь видеть, почему «дорого» выглядит дорого.</div>
+    <div><b>Сдержанность</b>Один сильный приём вместо десяти. Эффект только там, где он помогает смыслу.</div>
+  </div>
+
+  <h3 class="sub">Как разбирать чужой сайт: шесть слоёв</h3>
+  <div class="layers">
+    <div><b><em>1</em>Пять секунд</b>Открой и сразу закрой глаза. Что запомнилось? Понятно ли, что это и что тут делать? Это проверка первого экрана.</div>
+    <div><b><em>2</em>Прищурься</b>Сощурь глаза, чтобы текст расплылся. Видно пятна: где главное, где воздух, есть ли порядок. Так проверяют иерархию и сетку.</div>
+    <div><b><em>3</em>Шрифт</b>Сколько гарнитур? Есть ли засечки? Какой самый крупный и самый мелкий кегль? Насколько разные размеры заголовка и текста?</div>
+    <div><b><em>4</em>Цвет</b>Сколько всего цветов? Какой акцент и где он появляется? Фон чисто белый или тёплый, холодный?</div>
+    <div><b><em>5</em>Движение</b>Что двигается при прокрутке и наведении? Быстро или плавно? Помогает понять или просто красуется?</div>
+    <div><b><em>6</em>Мелочи</b>Ховеры, иконки, кавычки, подписи к фото, футер. Качество видно именно в мелочах, которые никто не заказывал.</div>
+  </div>
+  <div class="note">Главное правило: <b>один сайт за 15 минут лучше, чем сто за 15 минут.</b> Сохраняя пример, пиши одной строкой, что именно нравится: «огромный заголовок с засечками и мелкий текст рядом», а не «красиво». Через месяц эти строки и станут твоим языком для Claude.</div>
+  <div class="note">Как узнать шрифт и цвета на любом сайте: в Chrome правая кнопка по тексту → «Просмотреть код» → справа вкладка «Computed» (Вычисленные), там font-family, font-size, line-height, color. Это и есть те самые слова из словаря, только в коде.</div>
+
+  <h3 class="sub">Где смотреть: международные галереи</h3>
+  <div class="sites" id="sitesIntl"></div>
+  <h3 class="sub">Где смотреть: русские сайты</h3>
+  <div class="sites" id="sitesRu"></div>
+  <h3 class="sub">Про шрифты и детали</h3>
+  <div class="sites" id="sitesType"></div>
+  <div class="note">Осторожно с Dribbble и Behance: там много «концептов», нарисованных ради лайков, которые никогда не работали как настоящий сайт. Для насмотренности полезнее живые сайты (Siteinspire, Godly, Awwwards) и реальные продукты (Mobbin, Refero). Часть зарубежных сайтов из России может открываться медленно или только с VPN.</div>
+
+  <h3 class="sub">Неделя насмотренности: по 15 минут в день</h3>
+  <ol class="week">
+    <li>Открой Siteinspire, выбери 3 сайта, которые нравятся. Для каждого одна строка: что именно.</li>
+    <li>Только шрифты: на Fonts In Use найди 3 пары «заголовок + текст», которые нравятся. Есть ли среди них антиква?</li>
+    <li>Только первые экраны: 5 сайтов школ и курсов на Lapa Ninja (раздел Education). Что общего у тех, что понравились?</li>
+    <li>Прищур-тест на 3 сайтах. Нарисуй в тетради схему первого экрана серыми прямоугольниками: это твой первый вайрфрейм.</li>
+    <li>Движение: Godly, смотри видео-превью. Выпиши 2 анимации, которые помогают, и 1, которая мешает.</li>
+    <li>Реальный продукт: на Mobbin найди экраны входа и оплаты в 3 приложениях. Чем они похожи?</li>
+    <li>Собери свой мудборд из 8 лучших находок недели с подписями и отдай Claude: «вот мой вкус, опиши его словами из дизайна».</li>
+  </ol>
+</section>
+
+<!-- ============ 4. ЛЕНДИНГ ИЗ БЛОКОВ ============ -->
+<section class="part" id="bloki">
+  <div class="ph"><div class="num">4</div><div>
+    <h2>Собрать лендинг из блоков</h2>
+    <p>Популярный в рилсах приём: лендинг делят на стандартные блоки, для каждого блока ищут лучший пример на отдельной галерее (меню на одной, первый экран на другой, цены на третьей), а потом отдают все примеры Claude и просят собрать одну страницу. Приём рабочий, потому что у лендинга почти всегда одни и те же части, и для каждой есть специальные коллекции. Но есть ловушка, о ней ниже.</p>
+  </div></div>
+
+  <h3 class="sub" style="margin-top:0">Анатомия лендинга и где смотреть каждый блок</h3>
+  <div class="lb">
+    <nav class="lb-map" aria-label="Блоки лендинга">
+      <a href="#b-head">Хедер, меню <span>1</span></a>
+      <a href="#b-hero" class="hero">Hero, первый экран <span>2</span></a>
+      <a href="#b-feat">Преимущества, как проходит <span>3</span></a>
+      <a href="#b-proof">Отзывы и доверие <span>4</span></a>
+      <a href="#b-price">Цены <span>5</span></a>
+      <a href="#b-faq">Вопросы (FAQ) <span>6</span></a>
+      <a href="#b-cta" class="cta">Заявка, CTA <span>7</span></a>
+      <a href="#b-foot" class="foot">Футер <span>8</span></a>
+    </nav>
+    <div class="blocks" id="blocks"></div>
+  </div>
+  <div class="note">Целые страницы, чтобы увидеть, как блоки стыкуются между собой: <a href="https://land-book.com/" target="_blank" rel="noopener">Land-book</a>, <a href="https://www.lapa.ninja/" target="_blank" rel="noopener">Lapa Ninja</a>, <a href="https://saaslandingpage.com/" target="_blank" rel="noopener">SaaS Landing Page</a>, <a href="https://mobbin.com/" target="_blank" rel="noopener">Mobbin</a>. Галереи по отдельным блокам: <a href="https://www.unsection.com/" target="_blank" rel="noopener">Unsection</a> (любые секции) и <a href="https://godly.design/sections" target="_blank" rel="noopener">Godly: секции</a>.</div>
+
+  <h3 class="sub">Как делать по шагам</h3>
+  <ol class="howto">
+    <li><b>Сначала один главный референс стиля.</b> Целый сайт, который нравится по настроению: шрифты, цвета, воздух. Он задаёт характер всей страницы.</li>
+    <li><b>Список блоков под свою цель.</b> Для пробного урока: хедер, hero, как проходит урок, преподаватель, отзывы, цены, вопросы, заявка, футер. Лишние блоки не берём.</li>
+    <li><b>Для каждого блока 1–2 примера.</b> Смотри на галереях выше. Сохраняй скриншот и подпиши, что берёшь: «раскладку цен в три колонки», а не «вот это».</li>
+    <li><b>Отдай Claude всё вместе.</b> Главный референс стиля + скриншоты блоков + твои тексты. Тексты лучше свои, хотя бы черновые.</li>
+    <li><b>Попроси единую систему.</b> Из блоков брать только структуру, а шрифты, цвета, отступы, скругления и иконки свести к одному набору токенов.</li>
+    <li><b>Сначала вайрфрейм, потом стиль.</b> Проверь порядок и смысл блоков на серой схеме, и только потом крась.</li>
+    <li><b>Прищур-тест на лоскутность.</b> Прокрути готовую страницу, прищурившись. Если блоки выглядят как разные сайты, проси выровнять.</li>
+  </ol>
+
+  <h3 class="sub">Ловушка: лоскутное одеяло</h3>
+  <div class="quilt">
+    <div><h4>Восемь блоков с восьми сайтов</h4><div class="qpage"><i style="background:#2a2925"></i><i style="background:linear-gradient(90deg,#ff2fd0,#4a3bff);height:46px"></i><i style="background:#e9f6ee;border-radius:14px"></i><i style="background:#fff3c9;border-radius:0"></i><i style="background:#1d3b8a;border-radius:20px"></i><i style="background:#f6e3e3"></i><i style="background:#00c896;border-radius:0"></i><i style="background:#c9c7c0"></i></div><p style="font-size:14px;margin:10px 0 0">У каждого блока свои шрифты, цвета, скругления и отступы. По отдельности красиво, вместе как вещи из разных магазинов.</p></div>
+    <div><h4>Те же блоки в одной системе</h4><div class="qpage"><i style="background:#e4e1d8"></i><i style="background:#dfe2f6;height:46px"></i><i style="background:#f0eee8"></i><i style="background:#f0eee8"></i><i style="background:#e8eaf8"></i><i style="background:#f0eee8"></i><i style="background:#3f4bb8"></i><i style="background:#2a2925"></i></div><p style="font-size:14px;margin:10px 0 0">Раскладки взяты из разных мест, но цвет, шрифт, скругление и шаг отступов общие. Один акцент на заявке.</p></div>
+  </div>
+  <div class="note">Из чужих сайтов берём идеи раскладки и устройство блока. Тексты, фото, иллюстрации и логотипы не копируем: это чужая собственность, и для школы всё должно быть своим.</div>
+
+  <h3 class="sub">Пример запроса к Claude</h3>
+  <pre class="promptbox" id="lbPrompt">Собери лендинг пробного урока китайского для родителей детей 8–12 лет и взрослых новичков. Одна цель: оставить заявку.
+
+Главный референс стиля: [ссылка]. Из него взять настроение, шрифты, воздух и спокойную палитру. Не брать тёмные секции.
+
+Блоки по порядку и откуда брать структуру (только раскладку, не стиль):
+1. Хедер: [скриншот 1], логотип слева, 3 пункта меню, кнопка «Записаться» справа, липкий.
+2. Hero: [скриншот 2], слева заголовок и одна CTA, справа фото.
+3. Как проходит урок: [скриншот 3], 3 шага в ряд.
+4. Преподаватель: фото и короткий рассказ.
+5. Отзывы: [скриншот 4], 3 карточки с именем и фото.
+6. Цены: [скриншот 5], 3 тарифа, средний выделен.
+7. Вопросы: аккордеон из 6 пунктов.
+8. Заявка: [скриншот 6], форма из 3 полей.
+9. Футер: [скриншот 7], контакты, документы, соцсети.
+
+Тексты: [мои тексты ниже].
+
+Главное: всё в одной дизайн-системе. Шрифты, цвета, отступы, скругления и иконки вынеси в токены и используй только их. Блоки не должны выглядеть как разные сайты. Один акцентный цвет только на кнопках заявки.
+
+Сначала покажи вайрфрейм всей страницы, после моего «ок» стиль. В конце перечисли, что взял из каждого референса.</pre>
+  <div class="acts" style="margin-top:8px"><button class="btn" id="lbCopy">Скопировать запрос</button> <span id="lbCopied" style="font-size:13px;color:var(--ok)"></span></div>
+</section>
+
+<!-- ============ 5. ПРИЛОЖЕНИЯ ============ -->
+<section class="part" id="prilozheniya">
+  <div class="ph"><div class="num">5</div><div>
+    <h2>Как читать приложения</h2>
+    <p>Отдельная страница о том, как разбирать дизайн приложений профессионально, а не по принципу «красиво / что-то не то». Как парфюмер различает ноты, сочетания и почерк мастера, так и здесь: пирамида нот интерфейса, конструктор экрана, переводчик ощущений в причины, почерки Apple, Google, Linear, Duolingo и других, карточка разбора и тренажёр.</p>
+  </div></div>
+  <p><a class="btn" style="display:inline-block;text-decoration:none;color:#fff" href="../prilozheniya/">Открыть «Как читать приложения» →</a></p>
+</section>
+
+<!-- ============ 5. КОСЯКИ ============ -->
+<section class="part" id="kosyaki">
+  <div class="ph"><div class="num">6</div><div>
+    <h2>Чек-лист косяков</h2>
+    <p>Пройди по нему любой результат: свой, от Claude или чужой сайт. Отмечай то, что уже умеешь замечать сама. Галочки сохраняются.</p>
+  </div></div>
+  <div class="checks" id="checks"></div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  Учебная страница для себя, без сбора данных: отметки «знаю» и галочки хранятся только в этом браузере. Ссылки на галереи проверены поиском 16 ноября 2026; содержимое галерей меняется каждый день. Соседние страницы: <a href="../prilozheniya/">Как читать приложения</a> · <a href="../../masterskaya/">Мастерская визуала</a> · <a href="../../katalog-stiley/">Каталог стилей</a>.
+</footer>
+
+<script>
+/* ---------- живые демо ---------- */
+const DEMOS = {
+pad:`<div class="stage"><div class="pad-outer"><div class="pad-box"><div class="pad-in">Слово 你好</div></div></div></div>
+<div class="ctl">Поле (margin)<input type="range" min="0" max="40" value="16" data-v="--m" data-u="px"><output>16px</output></div>
+<div class="ctl">Внутренний отступ (padding)<input type="range" min="0" max="40" value="16" data-v="--p" data-u="px"><output>16px</output></div>
+<div class="legend">Штриховка: поле снаружи. Голубое: внутренний отступ. Белое: содержимое.</div>`,
+gap:`<div class="stage"><div class="gap-row"><i></i><i></i><i></i><i></i></div></div>
+<div class="ctl">gap<input type="range" min="0" max="40" value="12" data-v="--g" data-u="px"><output>12px</output></div>`,
+grid:`<div class="stage"><div class="grid-d">${'<i></i>'.repeat(12)}</div></div>
+<div class="ctl">Колонок<input type="range" min="1" max="6" value="4" data-v="--c" data-u=""><output>4</output></div>`,
+air:`<div class="stage"><div class="air-card"><h5>Пробный урок</h5><p>45 минут, онлайн, первые слова и тоны.</p><span>Записаться</span></div></div>
+<div class="ctl"><button data-tog="tight" data-in=".air-card">Тесно / с воздухом</button></div>`,
+hier:`<div class="stage"><div class="hier"><p class="t1">Урок 8. Семья</p><p class="t2">Группа «Дети» · 40 минут</p><p class="t3">Учим слова 爸爸, 妈妈 и говорим, кто есть в семье.</p></div></div>
+<div class="ctl"><button data-tog="flat" data-in=".hier">Убрать / вернуть иерархию</button></div>`,
+align:`<div class="stage al"><p>Выравнивание задаёт линию, по которой глаз начинает каждую строку. По левому краю читать легче всего.</p></div>
+<div class="ctl"><button data-set="--ta:left">Влево</button><button data-set="--ta:center">По центру</button><button data-set="--ta:right">Вправо</button><button data-set="--ta:justify">По ширине</button></div>`,
+size:`<div class="stage"><p class="fs-s">Учим китайский 你好</p></div>
+<div class="ctl">Кегль<input type="range" min="10" max="56" value="18" data-v="--fs" data-u="px"><output>18px</output></div>`,
+lh:`<div class="stage"><p class="lh-s">Интерлиньяж это воздух между строками. Если он слишком мал, строки слипаются и глаз перескакивает. Если велик, текст распадается на отдельные полоски.</p></div>
+<div class="ctl">line-height<input type="range" min="0.8" max="2.4" step="0.05" value="1.5" data-v="--lh" data-u=""><output>1.5</output></div>`,
+track:`<div class="stage"><p class="ls-s">ГРУППА ДЕТИ · Урок</p></div>
+<div class="ctl">letter-spacing<input type="range" min="-0.08" max="0.3" step="0.01" value="0" data-v="--ls" data-u="em"><output>0em</output></div>`,
+weight:`<div class="stage"><p class="fw-s">Начертание Аа</p></div>
+<div class="ctl">font-weight<input type="range" min="100" max="900" step="100" value="400" data-v="--fw" data-u=""><output>400</output></div>
+<div class="legend">Сколько ступеней видно, зависит от шрифта в твоей системе.</div>`,
+faces:`<div class="stage"><p class="ff-s">Аа Бб Ёё — Урок восьмой, 学习</p></div>
+<div class="ctl"><button data-set="--ff:Georgia,'Times New Roman',serif">С засечками</button><button data-set="--ff:-apple-system,'Segoe UI',Roboto,Arial,sans-serif">Гротеск</button><button data-set="--ff:ui-monospace,Menlo,Consolas,monospace">Моноширинный</button><button data-set="--ff:'Segoe Script','Brush Script MT','Snell Roundhand',cursive">Рукописный</button></div>`,
+measure:`<div class="stage"><p class="ms-s">Длина строки влияет на усталость. Когда строка очень длинная, глазу трудно найти начало следующей, и он теряется. Когда очень короткая, текст рвётся на обрывки.</p></div>
+<div class="ctl">Ширина<input type="range" min="18" max="110" value="60" data-v="--ms" data-u="ch"><output>60ch</output></div>`,
+contrast:`<div class="stage"><div class="ct-s">Серый текст на белом фоне</div></div>
+<div class="ctl">Яркость текста<input type="range" min="0" max="92" value="30" data-v="--l" data-u="%" data-contrast><output>30%</output></div>
+<div class="ctl ct-res">Контраст: <span class="ct-val">—</span></div>`,
+accent:`<div class="stage acc2"><div><b>Один акцент</b><br><span class="bt" style="background:#3f4bb8">Записаться</span><span class="bt" style="background:#fff;color:#1c1b19;border:1px solid #d6d1c4">Подробнее</span><br>Сразу ясно, куда нажать.</div><div><b>Пять акцентов</b><br><span class="bt" style="background:#d9465f">Записаться</span><span class="bt" style="background:#2ba36b">Цены</span><span class="bt" style="background:#e5a51c">Отзывы</span><span class="bt" style="background:#7b4fd6">Блог</span><br>Всё кричит, ничего не главное.</div></div>`,
+grad:`<div class="stage grads"><div style="background:linear-gradient(135deg,#f4f1ea,#e4e7f6)">тихий</div><div style="background:linear-gradient(135deg,#e9ddf4,#d7e3f7 60%,#f3e9da)">перламутр</div><div style="background:linear-gradient(135deg,#ff2fd0,#4a3bff 55%,#00f0c8);color:#fff">кислотный</div></div>`,
+shadow:`<div class="stage sh-s"><div></div></div>
+<div class="ctl">Тень<input type="range" min="0" max="50" value="8" data-v="--sh" data-u=""><output>8</output></div>`,
+radius:`<div class="stage rd-s"><div></div><span>Кнопка</span></div>
+<div class="ctl">border-radius<input type="range" min="0" max="36" value="12" data-v="--r" data-u="px"><output>12px</output></div>`,
+blur:`<div class="stage bl-s"><i style="width:80px;height:80px;left:20px;top:10px;background:#8f9be6"></i><i style="width:60px;height:60px;right:40px;top:40px;background:#e2b7d9"></i><i style="width:50px;height:50px;left:45%;top:60px;background:#9fd3c4"></i><div class="glass">Стеклянная панель</div></div>
+<div class="ctl">blur<input type="range" min="0" max="24" value="10" data-v="--b" data-u="px"><output>10px</output></div>`,
+noise:`<div class="stage"><div class="ns-s grain">Бумага, а не пластик</div></div>
+<div class="ctl"><button data-tog="grain" data-in=".ns-s">Зерно вкл / выкл</button></div>`,
+dark:`<div class="stage"><div class="dk-s"><p>Урок 8. Семья</p><small>Не инверсия, а отдельная палитра</small></div></div>
+<div class="ctl"><button data-tog="dk" data-in=".dk-s">Светлая / тёмная</button></div>`,
+vec:`<div class="stage vec-s"><figure><canvas width="12" height="12" class="rast"></canvas>растр</figure><figure><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#3f4bb8"/></svg>вектор</figure></div>
+<div class="ctl">Увеличение<input type="range" min="20" max="140" value="60" data-v="--z" data-u=""><output>60</output></div>`,
+icon:`<div class="stage ic-s"><figure><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1c1b19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg>иконка</figure>
+<figure><svg width="150" height="86" viewBox="0 0 150 86"><rect width="150" height="86" rx="8" fill="#f1eee6"/><circle cx="118" cy="22" r="11" fill="#e8d9b0"/><path d="M0 70 Q40 44 75 60 T150 52 V86 H0z" fill="#ccd2f4"/><rect x="34" y="40" width="40" height="26" rx="2" fill="#fff" stroke="#3f4bb8"/><path d="M54 40v26" stroke="#3f4bb8"/><text x="40" y="57" font-size="10" fill="#3f4bb8">学</text></svg>иллюстрация</figure></div>`,
+ease:`<div class="stage es"><div class="trk" style="--e:linear"><i></i><span>linear · робот</span></div><div class="trk" style="--e:ease-in"><i></i><span>ease-in · разгон</span></div><div class="trk" style="--e:ease-out"><i></i><span>ease-out · торможение</span></div><div class="trk" style="--e:cubic-bezier(.34,1.56,.64,1)"><i></i><span>пружинка</span></div></div>
+<div class="ctl"><button data-tog="go" data-in=".es">Запустить</button></div>
+<div class="legend">Для интерфейса чаще всего берут ease-out: движение быстро стартует и мягко останавливается.</div>`,
+dur:`<div class="stage ds"><div class="trk" style="--d:.1s;--e:ease-out"><i></i><span>100 мс</span></div><div class="trk" style="--d:.3s;--e:ease-out"><i></i><span>300 мс</span></div><div class="trk" style="--d:1s;--e:ease-out"><i></i><span>1000 мс</span></div></div>
+<div class="ctl"><button data-tog="go" data-in=".ds">Запустить</button></div>`,
+states:`<div class="stage st-s"><button class="st-btn">Наведи и нажми</button><button class="st-btn" disabled>Неактивная</button></div>
+<div class="legend">Наведи мышь (hover), нажми (active), нажми Tab на клавиатуре (focus). Вторая кнопка disabled.</div>`,
+micro:`<div class="stage" style="padding:8px"><button class="like" data-like><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>12</span></button></div>
+<div class="legend">Нажми: сердечко пружинит, число меняется. Это и есть микровзаимодействие.</div>`,
+skel:`<div class="stage sk-s"><div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="real"><b style="font-family:var(--serif);font-size:17px">Урок 8. Семья</b><br><span style="font-size:13px;color:var(--ink2)">Контент загрузился на место заготовок.</span></div></div>
+<div class="ctl"><button data-tog="loaded" data-in=".sk-s">Загрузить / сбросить</button></div>`,
+para:`<div class="stage px-box"><div class="px-scene">
+<svg data-sp="0.12" viewBox="0 0 300 170" preserveAspectRatio="none" style="top:0;height:170px"><circle cx="230" cy="40" r="18" fill="#e8d9b0"/><path d="M0 120 L60 70 L110 105 L170 55 L240 100 L300 75 V170 H0z" fill="#c9cff0"/></svg>
+<svg data-sp="0.4" viewBox="0 0 300 170" preserveAspectRatio="none" style="top:30px;height:170px"><path d="M0 130 Q75 95 150 125 T300 115 V170 H0z" fill="#9ea8e2"/></svg>
+<svg data-sp="0.9" viewBox="0 0 300 170" preserveAspectRatio="none" style="top:70px;height:170px"><path d="M0 140 Q90 118 170 138 T300 132 V170 H0z" fill="#3f4bb8"/><rect x="40" y="105" width="6" height="40" fill="#2c358c"/><circle cx="43" cy="100" r="14" fill="#2c358c"/></svg>
+</div><div class="px-spacer"></div></div>
+<div class="legend">Прокрути колёсиком или пальцем внутри рамки: ближние слои едут быстрее дальних.</div>`,
+resp:`<div class="stage"><div class="rs-out"><div class="rs-g"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+<div class="ctl">Ширина экрана<input type="range" min="35" max="100" value="100" data-v="--rw" data-u=""><output>100</output></div>
+<div class="ctl ct-res">Сейчас: <span class="rs-px">—</span> · брейкпоинты на 300 и 440 px</div>`,
+wire:`<div class="stage wf-s wf"><div class="wfl"><b style="width:55%;height:18px"></b><b style="width:85%"></b><div class="x"></div><b style="width:30%;height:22px"></b></div><div class="ui"><h5>Китайский с нуля</h5><p>Пробный урок 45 минут, онлайн.</p><span>Записаться</span></div></div>
+<div class="ctl"><button data-tog="wf" data-in=".wf-s">Вайрфрейм / макет</button></div>`,
+cta:`<div class="stage cta-s"><span class="p">Записаться на урок</span><span class="s">Посмотреть программу</span><span class="l">Цены</span></div>
+<div class="legend">Главная (залитая), вторичная (контурная), третичная (ссылка). Главная одна на экран.</div>`,
+anat:`<div class="stage anat"><div class="h"><span>Хедер</span><span>логотип · меню</span></div><div class="hero"><em>Hero: главный заголовок</em><u>CTA</u></div><div class="sec"><span>Секция: преимущества</span><span>карточки</span></div><div class="sec"><span>Секция: отзывы</span><span></span></div><div class="f"><span>Футер</span><span>контакты · документы</span></div></div>`,
+cube:`<div class="stage cube-s"><div class="cube"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
+<div class="ctl">Поворот<input type="range" min="0" max="360" value="30" data-v="--ry" data-u=""><output>30</output></div>
+<div class="legend">Это простой 3D на CSS. Настоящий 3D с материалами и светом делают на WebGL.</div>`
+};
+
+/* ---------- словарь ---------- */
+const CATS = [
+ ['page','Части сайта','Из чего складывается страница, как из этапов урока.'],
+ ['ui','Элементы интерфейса','Кнопки, переключатели, окна: детали, из которых собран любой сайт и приложение. У каждого есть ссылки на галереи с сотнями живых примеров.'],
+ ['layout','Раскладка и сетка','Где что лежит и сколько между ними места.'],
+ ['type','Шрифт и текст','Типографика: всё, что связано с буквами.'],
+ ['color','Цвет, свет, материал','Палитра, контраст, тени и фактуры.'],
+ ['media','Картинки и файлы','Форматы и виды изображений.'],
+ ['motion','Движение','Анимация, моушн и отклик на действия.'],
+ ['fx','3D и графика','Объём, рендеры и эффекты.'],
+ ['process','Процесс и роли','Как идёт работа над дизайном.'],
+ ['dev','Разработка','Код, хранение и выкладка сайта.'],
+ ['launch','Запуск и качество','Поиск, аналитика, доступность, закон.']
+];
+// [кат, термин, англ, суть, как в школе, сказать Claude, демо]
+const T = [
+['ui','Кнопка','button','Элемент, на который нажимают, чтобы что-то сделать. Бывает главная (залитая), вторичная (контурная) и текстовая.','Звонок на урок: нажал, и что-то произошло.','Кнопки трёх уровней: главная, вторичная, текстовая.',''],
+['ui','Чекбокс (флажок)','checkbox','Квадратик-галочка: можно выбрать несколько вариантов сразу.','Отметить в анкете все подходящие ответы.','',''],
+['ui','Радиокнопка','radio button','Кружок-переключатель: из группы можно выбрать только один вариант.','Тест с одним правильным ответом.','',''],
+['ui','Переключатель (тогл)','toggle switch','Выключатель «вкл / выкл», действует сразу, без кнопки «Сохранить».','Выключатель света в классе.','',''],
+['ui','Поле ввода','text input','Прямоугольник, куда печатают текст: имя, телефон, поиск. У хорошего поля подпись над ним и подсказка об ошибке под ним.','Строчка в анкете «Фамилия ______».','',''],
+['ui','Выпадающий список','select, dropdown','Свёрнутый список вариантов, раскрывается по клику.','Выбор класса из списка в журнале.','',''],
+['ui','Вкладки (табы)','tabs','Переключение между разделами внутри одного блока без перехода на другую страницу.','Разделители в папке с бумагами.','',''],
+['ui','Тултип (подсказка)','tooltip','Маленькая подсказка, которая появляется при наведении на элемент.','Сноска внизу страницы учебника.','',''],
+['ui','Аккордеон','accordion','Список заголовков, каждый раскрывается по клику. Обычно так делают блок вопросов и ответов.','Гармошка: развернул нужную складку.','Вопросы аккордеоном, открыт только один за раз.',''],
+['ui','Карусель, слайдер','carousel','Ряд карточек или картинок, которые листают вбок. Часто их почти никто не долистывает, так что важное туда не прячут.','Диафильм.','',''],
+['ui','Уведомление (тост)','toast','Короткое сообщение, которое всплывает в углу и само исчезает: «Сохранено», «Заявка отправлена».','Учитель на ходу говорит «молодец» и идёт дальше.','',''],
+['ui','Хлебные крошки','breadcrumbs','Строка «Главная → Курсы → Китайский для детей», которая показывает, где ты находишься.','Адрес на конверте: страна, город, улица.','',''],
+['ui','Пагинация','pagination','Номера страниц внизу длинного списка: 1, 2, 3, дальше.','Нумерация страниц в учебнике.','',''],
+['ui','Аватар','avatar','Маленькая круглая фотография или инициалы пользователя.','Фото на пропуске.','',''],
+['ui','Бейдж (метка)','badge','Маленькая плашка с меткой или числом: «Новое», «3».','Наклейка-звёздочка на тетради.','',''],
+['ui','Прогресс-бар','progress bar','Полоска, которая показывает, сколько пройдено: загрузка, курс, шаги анкеты.','Шкала «пройдено 5 уроков из 12».','',''],
+['ui','Выезжающая панель','drawer','Панель, которая выезжает сбоку поверх страницы: меню, фильтры, корзина.','Ящик стола: выдвинул, взял, задвинул.','',''],
+['ui','Пустое состояние','empty state','Что показываем, когда данных ещё нет: «Пока нет домашних заданий» с подсказкой, что делать.','Чистая страница тетради с подписью «Здесь будет первая работа».','Продумай пустые состояния кабинета ученика.',''],
+['ui','Степпер','stepper','Шаги процесса с номерами: 1 Данные, 2 Оплата, 3 Готово.','План урока на доске с отметкой, где мы сейчас.','',''],
+['page','Сайт и страница','website, web page','Сайт: набор страниц по одному адресу. Страница: один документ, который листают вниз.','Сайт как учебник, страница как одна глава.','',''],
+['page','Лендинг','landing page','Одностраничный сайт с одной целью: записаться, купить, оставить заявку. Всё на нём ведёт к одной кнопке.','Объявление о наборе в группу: один лист, одна мысль, внизу телефон.','Лендинг для записи на пробный урок, одна цель: заявка.',''],
+['page','Многостраничный сайт','multi-page website','Несколько разделов со своим меню: о школе, курсы, цены, блог, кабинет.','Школьный журнал с вкладками по предметам.','',''],
+['page','Хедер (шапка)','header','Полоса вверху страницы: логотип, меню, иногда кнопка. Часто «прилипает» при прокрутке.','Шапка в тетради: имя, класс, предмет.','Хедер 64 px, липкий, логотип слева, меню справа.','anat'],
+['page','Hero, первый экран','hero section, above the fold','Самый первый блок, видный без прокрутки: главный заголовок, подзаголовок, кнопка, изображение. За 5 секунд решает, останется ли человек.','Первая минута урока: зацепить и сказать, о чём сегодня.','На первом экране только заголовок, одна строка пояснения и одна CTA.','anat'],
+['page','Футер (подвал)','footer','Нижняя часть страницы: контакты, соцсети, реквизиты, ссылки на документы.','Подпись и печать в конце документа.','',''],
+['page','CTA, призыв к действию','call to action','Главная кнопка или ссылка, ради которой существует страница: «Записаться», «Купить».','«Сдаём тетради!»: одно ясное действие.','Одна главная CTA на экран, залитая акцентом, высота 48 px.','cta'],
+['page','Навигация, меню, бургер','navigation, burger menu','Ссылки, по которым ходят между разделами. Бургер: значок из трёх полосок, который прячет меню на телефоне.','Оглавление учебника.','',''],
+['page','Секция, блок','section','Горизонтальная «полоса» страницы со своим смыслом: преимущества, цены, отзывы. Страница собирается из секций, как из кирпичиков.','Этапы урока: разминка, новое, практика, домашка.','Порядок секций: hero, как проходит урок, преподаватель, цены, отзывы, вопросы, форма.',''],
+['page','Карточка','card','Прямоугольник, в котором собран один объект: курс, урок, отзыв. Обычно их несколько одинаковых в ряд.','Карточка со словом из набора для запоминания.','',''],
+['page','Модальное окно, поп-ап','modal, pop-up','Окно поверх страницы, которое затемняет остальное и ждёт ответа.','Учитель останавливает весь класс: «Внимание сюда».','',''],
+['page','Форма','form','Поля для ввода и кнопка отправки: имя, телефон, выбор курса.','Анкета на родительском собрании.','Форма из трёх полей, подписи над полями, ошибки показывать под полем.',''],
+['page','Скролл, прокрутка','scroll','Движение страницы вверх-вниз. «Сторителлинг на скролле»: история раскрывается по мере прокрутки.','Свиток, который разворачивают.','',''],
+['page','Якорная ссылка','anchor link','Ссылка, которая перематывает к нужному месту той же страницы.','Закладка в учебнике.','',''],
+['page','Фавикон','favicon','Крошечный значок сайта на вкладке браузера.','Значок на школьной форме.','',''],
+
+['layout','Вайрфрейм','wireframe','Черновая схема страницы из серых прямоугольников: где что лежит, без цвета и красоты. Самый дешёвый этап для споров.','План сочинения: пункты без текста.','Сначала вайрфрейм без стиля, только расположение блоков.','wire'],
+['layout','Макет','layout, design mockup','Нарисованный вид будущей страницы со всеми размерами и цветами. Ещё не работает, только картинка.','План урока, написанный до урока.','',''],
+['layout','Сетка','grid','Невидимые колонки, по которым выравнивают всё на странице. Обычно 12 колонок на компьютере и 4 на телефоне.','Клетка в тетради: по ней всё ровно.','12-колоночная сетка, контейнер 1200 px, gap 24 px.','grid'],
+['layout','Поле, внешний отступ','margin','Расстояние снаружи элемента, от него до соседей.','Поля в тетради: пустое место вокруг написанного.','Между секциями margin 120 px, на телефоне 64 px.','pad'],
+['layout','Внутренний отступ','padding','Расстояние внутри элемента, от его края до содержимого.','Расстояние от края карточки до написанного слова.','Padding карточек 24 px со всех сторон.','pad'],
+['layout','Промежуток (гэп)','gap','Одинаковое расстояние между элементами в ряду или сетке, задаётся сразу для всех.','Ровные проходы между партами.','Gap между карточками 16 px.','gap'],
+['layout','Белое пространство, воздух','whitespace','Пустое место на странице. Не пустота, а инструмент: даёт глазам отдохнуть и выделяет главное. Дорогие сайты почти всегда «воздушные».','Пауза в речи учителя перед важным.','Больше воздуха: увеличь отступы между блоками в полтора раза.','air'],
+['layout','Иерархия','visual hierarchy','Порядок важности: что глаз видит первым, вторым, третьим. Задаётся размером, жирностью, цветом и местом.','Заголовок, подзаголовок и текст параграфа в учебнике.','Усиль иерархию: заголовок в 2.5 раза крупнее текста, подписи серым 14 px.','hier'],
+['layout','Выравнивание','alignment','По какой линии стоят элементы: левый край, центр, правый. Левый край читается легче всего; центр хорош для коротких фраз.','Красная строка, только для всего блока.','Текст по левому краю, по центру только короткие заголовки.','align'],
+['layout','Ритм','vertical rhythm','Повторяющиеся одинаковые расстояния и размеры. Если отступы «пляшут», страница выглядит неряшливо.','Ровный почерк.','Все отступы кратны 8: 8, 16, 24, 32, 48, 64.',''],
+['layout','Контейнер','container','Невидимая рамка, ограничивающая ширину контента, чтобы строки не растягивались на весь широкий экран.','Лист внутри обложки.','',''],
+['layout','Адаптив','responsive design','Страница перестраивается под ширину экрана: телефон, планшет, компьютер.','Одно объяснение по-разному для первоклассника и для взрослого.','Проверь на 375, 768 и 1440 px.','resp'],
+['layout','Брейкпоинт','breakpoint','Ширина экрана, на которой раскладка меняется: например, с 768 px три колонки становятся одной.','Переход из начальной школы в среднюю: в этот момент меняются правила.','Брейкпоинты 600 и 1024 px.','resp'],
+['layout','Mobile first','mobile first','Подход: сначала делают версию для телефона, потом расширяют до компьютера. Большинство учеников открывают ссылки с телефона.','Сначала короткий ответ, потом развёрнутый.','Делай mobile first.',''],
+['layout','Вьюпорт','viewport','Видимая часть страницы в окне прямо сейчас. «100vh» в коде значит «высотой в весь экран».','То, что видно на доске без прокрутки.','',''],
+
+['type','Гарнитура и шрифт','typeface, font','Гарнитура: семья букв с общим рисунком (Times New Roman). Шрифт, строго говоря, одно её начертание. В жизни слова путают, и это нормально.','Гарнитура как фамилия, начертания как члены семьи.','Не больше двух гарнитур на сайт.',''],
+['type','Начертание, вес','weight, style','Вариант внутри гарнитуры: тонкий, обычный, полужирный, жирный, курсив. Вес обозначают числами 100–900.','Писать с нажимом или без.','Заголовки 500, текст 400, без жирного 700 в тексте.','weight'],
+['type','Кегль','font size','Размер шрифта. Текст обычно 16–18 px, заголовки 28–64 px.','«Пишите крупнее, с последней парты не видно».','Текст 17 px, заголовок первого экрана 56 px.','size'],
+['type','Интерлиньяж','line height','Расстояние между строками. Для текста хорошо 1.4–1.6 от кегля, для крупных заголовков 1.0–1.2.','«Пишем через строчку».','Интерлиньяж текста 1.55, заголовков 1.1.','lh'],
+['type','Трекинг, разрядка','letter spacing, tracking','Расстояние между всеми буквами сразу. Капс и мелкие подписи слегка разряжают, крупные заголовки чуть сжимают.','Писать вразрядку.','Подписи капсом 12 px с трекингом +8%.','track'],
+['type','Кернинг','kerning','Подгонка расстояния между конкретной парой букв (например, «АУ»), чтобы не было дыр. Обычно уже заложен в хорошем шрифте.','','',''],
+['type','Засечки, антиква','serif','Шрифты с маленькими «хвостиками» на концах букв: Times, Georgia. Ощущение: классика, книга, солидность.','Тот самый Times New Roman.','Заголовки антиквой с контрастом штрихов.','faces'],
+['type','Гротеск, без засечек','sans-serif','Шрифты без засечек: Helvetica, Inter, Manrope. Ощущение: современно, чисто, нейтрально.','Печатные буквы на табличке кабинета.','Основной текст нейтральным гротеском.','faces'],
+['type','Моноширинный','monospace','Все буквы одной ширины, как у печатной машинки. Для кода и «технического» настроения.','','',''],
+['type','Акцидентный, рукописный','display, script','Декоративные шрифты для крупных заголовков и логотипов. Для основного текста не годятся.','Красивая подпись на открытке, а не почерк в диктанте.','',''],
+['type','Длина строки','measure, line length','Сколько знаков помещается в строке. Удобно 45–75. Слишком длинные строки утомляют.','Колонка в учебнике, а не текст на весь разворот.','Ширина текстовых блоков до 680 px, около 70 знаков.','measure'],
+['type','Типографическая шкала','type scale','Заранее выбранный набор размеров (14, 16, 20, 28, 44), из которого берут все кегли. Порядок вместо случайных чисел.','Стандартные форматы тетрадей.','Используй шкалу кеглей 14/16/20/28/44, без промежуточных.',''],
+['type','Висячие предлоги','hanging prepositions','Короткое слово («в», «и», «на») в конце строки, оторванное от следующего. Лечится неразрывным пробелом.','','Привяжи короткие предлоги неразрывным пробелом.',''],
+['type','Кавычки и тире','quotes, dashes','В русском тексте «ёлочки», а не "лапки"; тире (—) длиннее дефиса (-). Мелочь, по которой видно качество.','','Русская типографика: «ёлочки», длинное тире, неразрывные пробелы.',''],
+['type','Веб-шрифт','web font','Файл шрифта, который сайт загружает сам, чтобы у всех было одинаково. Для школы в РФ хранится на своём сервере, а не подтягивается из Google Fonts.','','Шрифты подключи локально файлами woff2.',''],
+['type','Вариативный шрифт','variable font','Один файл, в котором вес и ширина меняются плавно, а не ступеньками. Легче и гибче.','','',''],
+
+['color','Палитра','palette','Набор цветов проекта: фон, текст, 2–3 нейтральных серых и 1–2 акцента.','Набор ручек: синяя, чёрная и одна красная для проверки.','Палитра: 3 нейтральных и 1 акцент, все цвета в токенах.',''],
+['color','Акцентный цвет','accent color','Цвет, которым отмечают главное: кнопки, активные элементы. Чем реже используется, тем сильнее работает.','Красная ручка учителя.','Акцент только на CTA и активных состояниях.','accent'],
+['color','Контраст','contrast','Насколько текст отличается от фона по яркости. Измеряется числом: обычному тексту нужно минимум 4.5:1, крупному 3:1.','Мел на чистой доске против мела на грязной.','Контраст текста не ниже 4.5:1 по WCAG.','contrast'],
+['color','HEX и RGB','color codes','Код цвета: #1c1b19 почти чёрный, #ffffff белый. С кодом ИИ понимает цвет точно, со словом «голубенький» нет.','Номер краски вместо «красивый голубой».','Акцент #3f4bb8, фон #f6f4ef.',''],
+['color','Градиент','gradient','Плавный переход цвета в цвет. Тонкий выглядит дорого, кислотный быстро становится штампом.','','Градиент едва заметный, разница оттенков не больше 10%.','grad'],
+['color','Тень','shadow','Создаёт ощущение, что элемент приподнят над фоном. Хорошая тень мягкая, широкая и почти незаметная.','','Мягкая тень: большое размытие, прозрачность 6–10%.','shadow'],
+['color','Скругление','border radius','Радиус углов. Острые углы строже, большие скругления мягче. Важно одно и то же скругление по всему сайту.','','Скругление карточек 16 px, кнопок 10 px, везде одинаково.','radius'],
+['color','Размытие','blur, backdrop blur','Размытие фона под полупрозрачной панелью. Основа «стеклянных» стилей.','Взгляд через матовое стекло двери.','','blur'],
+['color','Шум, зерно','noise, grain','Еле заметная зернистость поверх цвета. Убирает «пластиковость», даёт ощущение бумаги или плёнки.','Фактура хорошей бумаги.','Добавь лёгкое зерно 3–5% на фон.','noise'],
+['color','Тёмная тема','dark mode','Вариант сайта на тёмном фоне. Не простая инверсия: цвета, тени и контраст подбирают заново.','','','dark'],
+
+['media','Растр','raster','Картинка из точек-пикселей. При увеличении становится «лесенкой». Фото всегда растр.','Мозаика.','','vec'],
+['media','Вектор','vector','Картинка из математических линий и кривых. Увеличивай сколько угодно, остаётся чёткой. Логотипы, иконки, схемы.','Чертёж циркулем и линейкой.','Логотип и иконки только в векторе.','vec'],
+['media','SVG','svg','Формат векторных картинок для веба. Можно менять цвет и анимировать прямо кодом.','','Иконки встроенными SVG, цвет через currentColor.',''],
+['media','PNG','png','Растровый формат без потерь, умеет прозрачный фон. Для скриншотов и картинок с прозрачностью; тяжёлый.','','',''],
+['media','JPG','jpeg','Растровый формат для фото, сжимает с небольшими потерями. Прозрачности нет.','','',''],
+['media','WebP и AVIF','webp, avif','Современные форматы: то же качество, что у JPG и PNG, но в 2–3 раза легче. Для сайта по умолчанию.','','Картинки в WebP, каждая до 200 КБ.',''],
+['media','GIF, гифка','gif','Старый формат коротких зацикленных анимаций: всего 256 цветов и большой вес. На сайтах его заменяют видео или Lottie.','Мультик-флипбук на полях тетради.','Вместо GIF короткое видео mp4 без звука.',''],
+['media','Lottie','lottie','Векторная анимация в виде файла JSON. Лёгкая, чёткая на любом экране, ей можно управлять кодом.','','',''],
+['media','Видео-фон','background video','Короткое беззвучное видео на фоне блока. Эффектно, но тяжело: нужен статичный кадр-заглушка и отключение на слабых телефонах.','','',''],
+['media','Иконка','icon','Маленький простой значок-подсказка: стрелка, книга, звезда. Иконки одного сайта должны быть из одного набора и одной толщины линии.','Значки на дверях кабинетов.','Иконки одного набора, линейные, толщина 1.5 px.','icon'],
+['media','Иллюстрация','illustration','Рисунок, который рассказывает историю или создаёт настроение. Больше и сложнее иконки.','Картинка в учебнике к тексту.','','icon'],
+['media','Мокап','mockup','Показ дизайна «в жизни»: экран сайта вставлен в изображение ноутбука или телефона. Иногда так неточно называют макет.','','',''],
+['media','Ретина, @2x','retina, pixel density','На хороших экранах в одном «пикселе» 2–3 настоящих. Картинки готовят вдвое крупнее, чтобы не «мылились».','','Изображения в двойном размере для ретины.',''],
+
+['motion','Анимация','animation','Любое изменение во времени: появление, движение, смена цвета.','','',''],
+['motion','Моушн-дизайн','motion design','Дизайн движения: что двигается, как и зачем. Отдельная профессия на стыке анимации, видео и интерфейса.','Жесты учителя: подкрепляют смысл, а не отвлекают.','',''],
+['motion','Переход','transition','Плавная смена одного состояния другим, например цвета кнопки при наведении.','','Переходы ховеров 150 мс.',''],
+['motion','Изинг, кривая скорости','easing','Как скорость меняется во время движения: равномерно, с разгоном или с торможением. Именно изинг делает движение живым или механическим.','Мяч не летит с постоянной скоростью.','Появление ease-out 300 мс, исчезновение ease-in 200 мс.','ease'],
+['motion','Длительность','duration','Сколько длится движение. В интерфейсе обычно 150–400 мс; дольше уже кажется медленным.','','','dur'],
+['motion','Микровзаимодействие','microinteraction','Маленький отклик на действие: сердечко пружинит, галочка дорисовывается, кнопка чуть сжимается.','Кивок учителя: «вижу, принято».','При верном ответе галочка рисуется за 250 мс и карточка слегка пружинит.','micro'],
+['motion','Ховер','hover','Состояние при наведении мыши. На телефоне ховера нет, поэтому важное нельзя прятать только в ховер.','','',''],
+['motion','Состояния','states','Один элемент выглядит по-разному: обычный, наведение, нажатие, фокус (выбран с клавиатуры), неактивный. Хороший дизайн продумывает все.','','Продумай все состояния кнопок: hover, active, focus, disabled.','states'],
+['motion','Лоадер, скелетон','loader, skeleton','Что показываем, пока грузится. Скелетон: серые заготовки на месте будущего контента, это спокойнее крутилки.','','Пока данные грузятся, показывай скелетон.','skel'],
+['motion','Параллакс','parallax','Слои при прокрутке двигаются с разной скоростью, и появляется глубина. Легко переборщить и укачать.','Вид из окна поезда: близкие деревья мелькают, дальние горы плывут.','','para'],
+['motion','Скролл-анимация','scroll-driven animation','Анимация, привязанная к прокрутке: блоки проявляются, картинка поворачивается, пока листаешь.','','Блоки проявляются при прокрутке один раз, без повторов.',''],
+['motion','Уменьшение движения','prefers-reduced-motion','Настройка устройства «уменьшить движение». Хороший сайт её уважает и выключает лишние анимации.','','Уважай prefers-reduced-motion.',''],
+
+['fx','Рендеринг в 3D','rendering','Вычисление готовой картинки из 3D-сцены: модель, свет, материалы, камера. Рендер: полученная картинка.','Фото, снятое с макета из пластилина.','Статичный рендер объекта, мягкий свет сверху слева, WebP.',''],
+['fx','Рендеринг в браузере','rendering','Второе значение: браузер превращает код страницы в то, что ты видишь. «Долго рендерится» значит тормозит отрисовка.','','',''],
+['fx','3D-модель','3d model','Объёмный объект в программе (Blender, Spline). Из него делают рендеры или показывают на сайте живьём.','','','cube'],
+['fx','WebGL и Three.js','webgl, three.js','Технология, которая рисует настоящее 3D прямо в браузере. Three.js: самая популярная библиотека для этого.','','',''],
+['fx','Шейдер','shader','Маленькая программа для видеокарты, которая считает цвет каждого пикселя. Ими делают переливы, жидкости, искажения. Красиво, но тяжело для слабых устройств.','','',''],
+['fx','Spline','spline','Онлайн-редактор 3D для дизайнеров: собрал сцену и встроил на сайт.','','',''],
+['fx','Названия стилей','glassmorphism, claymorphism…','Глассморфизм, клеймофизм, брутализм и другие разобраны в соседнем Каталоге стилей.','','',''],
+
+['process','Бриф','brief','Задание на проект: цель, аудитория, что должно получиться, сроки, примеры, ограничения.','Задание к контрольной.','',''],
+['process','Референс','reference','Пример, на который опираются: «вот так хочу». Сильнее всего работает с пометкой, что именно в нём нравится.','','Референс: ссылка; взять раскладку, не брать цвета.',''],
+['process','Мудборд','moodboard','Доска из картинок, цветов и шрифтов, которая передаёт настроение будущего проекта.','Стенгазета-коллаж к теме.','',''],
+['process','UX','user experience','Опыт пользователя: удобно ли, понятно ли, легко ли дойти до цели. Про логику, а не про красоту.','Продуманность урока: понятно ли ученику, что делать.','',''],
+['process','UI','user interface','Интерфейс: то, что видно и нажимается. Кнопки, шрифты, цвета, отступы.','Оформление доски и раздаточных материалов.','',''],
+['process','Юзер-флоу','user flow','Путь человека по шагам: зашёл, выбрал курс, оставил заявку, получил письмо.','Маршрут ученика от звонка до домашки.','Опиши юзер-флоу записи на урок и найди лишние шаги.',''],
+['process','Прототип','prototype','Кликабельная модель: можно нажимать и переходить между экранами, но это ещё не настоящий сайт.','Репетиция урока.','',''],
+['process','Figma','figma','Главная программа, где рисуют макеты и прототипы. Работает в браузере.','','',''],
+['process','Компонент','component','Повторяющийся элемент, сделанный один раз: кнопка, карточка, меню. Поменял в одном месте, поменялось везде.','Штамп «Проверено».','Сделай кнопку и карточку компонентами.',''],
+['process','Дизайн-система','design system','Свод правил и компонентов проекта: цвета, шрифты, отступы, кнопки, тон текстов. Чтобы всё выглядело одной семьёй.','Единые требования к оформлению тетрадей в школе.','',''],
+['process','Токены','design tokens','Названные значения из дизайн-системы: --accent: #3f4bb8, --radius: 12px. Код и дизайн говорят одними словами.','Условные обозначения на карте.','Вынеси цвета, отступы и скругления в CSS-переменные (токены).',''],
+['process','UI-кит','ui kit','Набор готовых элементов интерфейса в одном файле. Часть дизайн-системы.','','',''],
+['process','Итерация','iteration','Один круг «сделал, посмотрел, поправил». Хороший дизайн получается за много итераций, не с первого раза.','Черновик и чистовик.','',''],
+['process','Юзабилити-тест','usability testing','Даёшь живому человеку задачу и молча смотришь, где он путается.','Пробный урок.','',''],
+['process','A/B-тест','a/b test','Половине посетителей показывают вариант А, половине Б, и считают, какой лучше работает.','','',''],
+
+['dev','Фронтенд','frontend','Всё, что работает у человека в браузере: вид страницы, кнопки, анимации.','Всё, что видит ученик на уроке.','',''],
+['dev','Бэкенд','backend','Всё, что работает на сервере: хранит данные, проверяет пароль, отправляет письма.','Учительская и журнал: ученик не видит, но всё держится там.','',''],
+['dev','HTML','html','Язык структуры: что на странице есть. Заголовок, абзац, картинка, кнопка.','Скелет.','',''],
+['dev','CSS','css','Язык оформления: цвета, шрифты, отступы, анимации. Все демо на этой странице сделаны на CSS.','Одежда.','',''],
+['dev','JavaScript','javascript','Язык поведения: что происходит при нажатии, подсчёты, игры.','Мышцы.','',''],
+['dev','Вёрстка','markup, layout coding','Превращение макета-картинки в работающую страницу на HTML и CSS.','Переписать черновик набело.','',''],
+['dev','Фреймворк','framework','Готовый каркас с правилами, на котором строят сайт быстрее: React, Vue, Next.js, Astro.','Готовая методика с планами уроков.','',''],
+['dev','Библиотека','library','Набор готовых функций, который подключают для конкретной задачи: анимации, графики, 3D.','Сборник упражнений.','',''],
+['dev','Репозиторий, GitHub','repository','Папка проекта с историей всех изменений. GitHub: сайт, где такие папки хранятся. Там лежат и твои учебные страницы.','Портфолио с датой каждой работы.','',''],
+['dev','Коммит','commit','Одно сохранённое изменение в истории репозитория с подписью «что сделано».','Запись в журнале.','',''],
+['dev','Деплой','deploy','Выкладка новой версии сайта в интернет.','','',''],
+['dev','Хостинг','hosting','Сервер, где лежат файлы сайта и откуда их раздают. Сайт школы с данными учеников: только российский хостинг (Selectel, Yandex Cloud).','Здание, где идут уроки.','',''],
+['dev','Домен','domain','Адрес сайта, например school.ru. Покупается отдельно и привязывается к хостингу.','Адрес школы на вывеске.','',''],
+['dev','DNS','dns','«Телефонная книга» интернета: связывает домен с адресом сервера.','','',''],
+['dev','HTTPS, SSL','https','Защищённое соединение, замочек в адресной строке. Сейчас обязательно.','','',''],
+['dev','CDN','content delivery network','Сеть серверов в разных городах, которая раздаёт копии файлов с ближайшего к человеку. Сайт грузится быстрее.','Филиалы библиотеки в каждом районе.','',''],
+['dev','API','api','Договорённость, как одна программа просит данные у другой. Например, сайт спрашивает расписание у сервиса.','Бланк заявки в учебную часть.','',''],
+['dev','База данных','database','Упорядоченное хранилище: ученики, оплаты, домашки.','Классный журнал.','',''],
+['dev','Кэш','cache','Сохранённая копия, чтобы не загружать заново. Из-за кэша иногда видишь старую версию сайта: помогает обновить страницу с Ctrl+Shift+R.','Ответ, который помнишь наизусть.','',''],
+['dev','Баг','bug','Ошибка в работе. «Пофиксить» значит исправить.','','',''],
+['dev','DevTools, консоль','developer tools','Инструменты разработчика в браузере (F12): видно код, шрифты, размеры и ошибки. Отличный тренажёр насмотренности.','','',''],
+['dev','Статический сайт','static site','Сайт из готовых файлов, без сервера с логикой. Быстрый и дешёвый. Твои учебные страницы такие.','','',''],
+
+['launch','SEO','search engine optimization','Настройка сайта, чтобы его находили в Яндексе и Google: заголовки, описания, скорость, полезные тексты.','','',''],
+['launch','Метатеги','meta tags','Служебные строки в коде: название во вкладке, описание для поисковика.','Подпись на обложке тетради.','',''],
+['launch','Превью ссылки, OG-картинка','open graph','Картинка и подпись, которые появляются, когда ссылкой делятся в мессенджере.','','Сделай OG-картинку 1200×630 и описание для превью.',''],
+['launch','Аналитика','analytics','Подсчёт посетителей и их действий. В РФ для школы: Яндекс Метрика.','','',''],
+['launch','Конверсия','conversion','Доля посетителей, сделавших целевое действие. Зашли 100, записались 3: конверсия 3%.','','',''],
+['launch','Доступность','accessibility, a11y','Удобство для всех, включая людей со слабым зрением и тех, кто управляет клавиатурой: контраст, подписи, крупные кнопки.','Крупный шрифт на карточках для тех, кто сидит далеко.','Проверь доступность: контраст, фокус с клавиатуры, alt у картинок.',''],
+['launch','Скорость загрузки','performance','Как быстро сайт открывается. Проверяют в PageSpeed Insights или Lighthouse (встроен в Chrome).','','',''],
+['launch','Кроссбраузерность','cross-browser','Сайт одинаково работает в Chrome, Safari, Яндекс Браузере, на iPhone и Android.','','Проверь в Safari на iPhone.',''],
+['launch','Персональные данные','personal data, 152-ФЗ','Имя, телефон, почта из форм. В РФ хранятся на российских серверах, на сайте нужна политика обработки и согласие.','','Формы сохраняют данные только на российском сервере.','']
+];
+
+/* ---------- ссылки на живые примеры ---------- */
+const UV = q=>['Uiverse','https://uiverse.io/elements?search='+encodeURIComponent(q)];
+const UVc = c=>['Uiverse','https://uiverse.io/'+c];
+const CG = c=>['Component Gallery','https://component.gallery/components/'+c];
+const DR = q=>['Dribbble','https://dribbble.com/search/'+encodeURIComponent(q)];
+const CP = q=>['CodePen','https://codepen.io/search/pens?q='+encodeURIComponent(q)];
+const LINKS = {
+'Кнопка':[UVc('buttons'),CG('button'),DR('button'),CP('button')],
+'Чекбокс (флажок)':[UVc('checkboxes'),CG('checkbox'),DR('checkbox')],
+'Радиокнопка':[UVc('radio-buttons'),CG('radio-button'),DR('radio button')],
+'Переключатель (тогл)':[UVc('switches'),CG('toggle'),DR('toggle switch')],
+'Поле ввода':[UV('input'),CG('text-input'),DR('input field')],
+'Выпадающий список':[UV('dropdown'),CG('select'),['Component Gallery: меню','https://component.gallery/components/dropdown-menu'],DR('dropdown')],
+'Вкладки (табы)':[UV('tabs'),CG('tabs'),DR('tabs')],
+'Тултип (подсказка)':[UVc('tooltips'),CG('tooltip'),DR('tooltip')],
+'Аккордеон':[UV('accordion'),CG('accordion'),DR('accordion faq')],
+'Карусель, слайдер':[UV('carousel'),CG('carousel'),DR('carousel')],
+'Уведомление (тост)':[UV('notification'),CG('toast'),DR('toast notification')],
+'Хлебные крошки':[CG('breadcrumbs'),DR('breadcrumbs')],
+'Пагинация':[UV('pagination'),CG('pagination'),DR('pagination')],
+'Аватар':[UV('avatar'),CG('avatar'),DR('avatar')],
+'Бейдж (метка)':[UV('badge'),CG('badge'),DR('badge ui')],
+'Прогресс-бар':[UV('progress'),CG('progress-bar'),DR('progress bar')],
+'Выезжающая панель':[CG('drawer'),DR('drawer menu')],
+'Пустое состояние':[CG('empty-state'),DR('empty state')],
+'Степпер':[CG('stepper'),DR('stepper')],
+'Хедер (шапка)':[['Navbar Gallery','https://www.navbar.gallery/'],CG('header'),DR('header')],
+'Hero, первый экран':[CG('hero'),['Godly: секции','https://godly.design/sections'],DR('hero section')],
+'Футер (подвал)':[['Footer Gallery','https://www.footer.design/'],CG('footer'),DR('footer')],
+'CTA, призыв к действию':[['CTA Gallery','https://www.cta.gallery/'],DR('call to action')],
+'Навигация, меню, бургер':[['Navbar Gallery','https://www.navbar.gallery/'],CG('navigation'),UV('menu'),DR('burger menu')],
+'Карточка':[UVc('cards'),CG('card'),DR('card ui'),CP('card')],
+'Модальное окно, поп-ап':[UV('modal'),CG('modal'),DR('modal'),CP('modal')],
+'Форма':[UV('form'),CG('form'),DR('form'),CP('form')],
+'Лоадер, скелетон':[UVc('loaders'),CG('skeleton'),CG('spinner'),CP('loader')],
+'Иконка':[CG('icon'),DR('icon set')],
+'Микровзаимодействие':[UV('like'),DR('microinteraction'),CP('microinteraction')],
+'Ховер':[UVc('buttons'),CP('hover effect')],
+'Состояния':[CG('button'),DR('button states')],
+'Параллакс':[CP('parallax'),DR('parallax')],
+'Скролл-анимация':[CP('scroll animation')],
+'Изинг, кривая скорости':[['easings.net','https://easings.net/'],CP('easing')],
+'Размытие':[UV('glass'),DR('glassmorphism')],
+'Тень':[UV('shadow'),DR('soft shadow')],
+'Градиент':[UV('gradient'),DR('gradient')],
+'Тёмная тема':[DR('dark mode'),UV('dark')],
+'3D-модель':[DR('3d web'),['Spline: сообщество','https://community.spline.design/']],
+'Шейдер':[CP('shader'),DR('shader')],
+'Выравнивание':[DR('typography layout')],
+'Иллюстрация':[DR('illustration'),['Behance','https://www.behance.net/search/projects/illustration']]
+};
+
+const LS = 'kurs-wd-v1';
+let st = {known:{},checks:{}};
+try{ const s = JSON.parse(localStorage.getItem(LS)||'null'); if(s) st = Object.assign(st,s); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem(LS, JSON.stringify(st)); }catch(e){} };
+const esc = s => s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let curCat = 'all';
+const catsEl = document.getElementById('cats');
+const chip = (id,name)=>`<button class="chip" data-cat="${id}" aria-pressed="${id===curCat}">${name}</button>`;
+catsEl.innerHTML = chip('all','Все темы') + CATS.map(c=>chip(c[0],c[1])).join('');
+
+function renderDict(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const onlyNew = document.getElementById('onlyNew').checked;
+  const onlyDemo = document.getElementById('onlyDemo').checked;
+  const onlyEx = document.getElementById('onlyEx').checked;
+  let html = '', total = 0;
+  for(const c of CATS){
+    if(curCat!=='all' && curCat!==c[0]) continue;
+    const items = T.filter(t=>t[0]===c[0]).filter(t=>{
+      if(onlyNew && st.known[t[1]]) return false;
+      if(onlyDemo && !t[6]) return false;
+      if(onlyEx && !LINKS[t[1]]) return false;
+      if(q && !(t[1]+' '+t[2]+' '+t[3]).toLowerCase().includes(q)) return false;
+      return true;
+    });
+    if(!items.length) continue;
+    total += items.length;
+    html += `<h3 class="catname">${c[1]}</h3><p class="catdesc">${c[2]}</p><div class="terms">` + items.map(t=>{
+      const k = st.known[t[1]];
+      return `<article class="term${k?' known':''}" data-id="${esc(t[1])}">
+        <div class="hd"><div><h4>${t[1]}</h4><div class="en">${t[2]}</div></div><button class="know" aria-pressed="${!!k}">${k?'Знаю ✓':'Знаю'}</button></div>
+        <p>${t[3]}</p>${t[4]?`<p class="sch">${t[4]}</p>`:''}${t[6]?`<div class="demo">${DEMOS[t[6]]}</div>`:''}${t[5]?`<p class="ai">${t[5]}</p>`:''}${LINKS[t[1]]?`<div class="ex"><span>Посмотреть примеры:</span>${LINKS[t[1]].map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>`:''}
+        ${t[1]==='Названия стилей'?'<p><a href="../../katalog-stiley/">Открыть каталог стилей →</a></p>':''}
+      </article>`;}).join('') + '</div>';
+  }
+  document.getElementById('dict').innerHTML = html || '<p class="empty">Ничего не нашлось. Попробуй другое слово или сними фильтры.</p>';
+  initDemos(document.getElementById('dict'));
+}
+function updProg(){
+  const n = T.filter(t=>st.known[t[1]]).length;
+  document.getElementById('progtxt').textContent = `Знаю ${n} из ${T.length}`;
+  document.getElementById('progbar').style.width = (n/T.length*100)+'%';
+}
+
+catsEl.addEventListener('click',e=>{
+  const b = e.target.closest('.chip'); if(!b) return;
+  curCat = b.dataset.cat;
+  catsEl.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  renderDict();
+});
+['q','onlyNew','onlyDemo','onlyEx'].forEach(id=>document.getElementById(id).addEventListener('input',renderDict));
+
+document.getElementById('dict').addEventListener('click',e=>{
+  const kb = e.target.closest('.know');
+  if(kb){
+    const art = kb.closest('.term'), id = art.dataset.id;
+    if(st.known[id]) delete st.known[id]; else st.known[id]=1;
+    save(); updProg();
+    const on = !!st.known[id];
+    art.classList.toggle('known',on); kb.textContent = on?'Знаю ✓':'Знаю'; kb.setAttribute('aria-pressed',on);
+    if(document.getElementById('onlyNew').checked && on) setTimeout(renderDict,350);
+  }
+});
+
+/* ---------- общая механика демо ---------- */
+function lum(l){ const v = l/100; const c = v<=0.03928? v/12.92 : Math.pow((v+0.055)/1.055,2.4); return c; }
+function initDemos(root){
+  root.querySelectorAll('.demo').forEach(d=>{
+    d.querySelectorAll('input[type=range]').forEach(inp=>{ apply(d,inp); });
+    const c = d.querySelector('canvas.rast');
+    if(c && !c.dataset.done){ const x=c.getContext('2d'); x.fillStyle='#3f4bb8'; x.beginPath(); x.arc(6,6,5,0,Math.PI*2); x.fill(); c.dataset.done=1; }
+    const pb = d.querySelector('.px-box');
+    if(pb){ const ls = pb.querySelectorAll('[data-sp]'); pb.addEventListener('scroll',()=>{ const y=pb.scrollTop; ls.forEach(l=>l.style.transform=`translateY(${-y*parseFloat(l.dataset.sp)}px)`); },{passive:true}); }
+    const ro = d.querySelector('.rs-out');
+    if(ro && 'ResizeObserver' in window){ const o=d.querySelector('.rs-px'); new ResizeObserver(en=>{ o.textContent=Math.round(en[0].contentRect.width)+' px'; }).observe(ro); }
+  });
+}
+function apply(d,inp){
+  const u = inp.dataset.u||'';
+  d.style.setProperty(inp.dataset.v, inp.value+u);
+  const o = inp.nextElementSibling; if(o && o.tagName==='OUTPUT') o.textContent = inp.value+u;
+  if(inp.hasAttribute('data-contrast')){
+    // текст hsl(240 5% L) приблизительно серый: считаем по яркости
+    const L = (0.2126+0.7152+0.0722)*lum(parseFloat(inp.value));
+    const r = (1+0.05)/(L+0.05);
+    const out = d.querySelector('.ct-val');
+    const ok = r>=7?['AAA, отлично','#e4f1ea','#2f7a55']: r>=4.5?['AA, нормально для текста','#e4f1ea','#2f7a55']: r>=3?['только для крупного текста','#f6ecdc','#9a5b16']:['не читается','#f6e3e3','#9b2c2c'];
+    out.innerHTML = `${r.toFixed(1)}:1 <b style="background:${ok[1]};color:${ok[2]}">${ok[0]}</b>`;
+  }
+}
+document.addEventListener('input',e=>{ const d=e.target.closest('.demo'); if(d && e.target.dataset.v) apply(d,e.target); });
+document.addEventListener('click',e=>{
+  const d = e.target.closest('.demo'); if(!d) return;
+  const b = e.target.closest('button');
+  if(!b) return;
+  if(b.dataset.set){ const i=b.dataset.set.indexOf(':'); d.style.setProperty(b.dataset.set.slice(0,i), b.dataset.set.slice(i+1)); }
+  if(b.dataset.tog){ const t = b.dataset.in? d.querySelector(b.dataset.in): d; t.classList.toggle(b.dataset.tog); }
+  if(b.hasAttribute('data-like')){ b.classList.toggle('on'); const s=b.querySelector('span'); s.textContent = +s.textContent + (b.classList.contains('on')?1:-1); }
+});
+
+/* ---------- этапы ---------- */
+const STEPS = [
+['Задача и бриф','Сформулировать, зачем сайт, для кого и что человек должен на нём сделать. Самый недооценённый этап: без него всё остальное делается вслепую.','Менеджер, арт-директор, заказчик','Бриф на 1–2 страницы','Ты заказчик. Напиши: для кого, одна главная цель, что точно нельзя. Попроси Claude задать тебе 10 вопросов по брифу.'],
+['Исследование и референсы','Посмотреть конкурентов и примеры, собрать мудборд, понять, что уже работает у других.','UX-исследователь, дизайнер','Мудборд, разбор 5–10 сайтов','Ты собираешь референсы с подписью «что именно нравится». Claude описывает их словами из дизайна и находит общее.'],
+['Структура и тексты','Решить, какие страницы и блоки нужны и в каком порядке. Написать черновые тексты: дизайн рисуют под реальные слова, а не под «рыбу».','UX-дизайнер, копирайтер','Карта сайта, список блоков с текстами','Смысл и тексты про школу пишешь ты. Claude предлагает порядок блоков и редактирует.'],
+['Вайрфрейм','Нарисовать серые схемы страниц: где заголовок, где кнопка, где картинка. Без цвета, чтобы спорить о смысле, а не о красоте.','UX-дизайнер','Схемы ключевых страниц','Проси «сначала вайрфрейм без стиля». Правь, пока не станет понятно с первого взгляда. Тут ошибки стоят дешевле всего.'],
+['Визуальная концепция','Найти стиль: 1–3 направления на одном-двух ключевых экранах. Шрифты, цвета, характер.','Арт-директор, UI-дизайнер','Стилевые пробы','Ровно то, что мы делаем с пробами стилей уроков. Ты выбираешь и комбинируешь, Claude делает варианты.'],
+['Дизайн всех экранов и дизайн-система','Отрисовать все страницы для телефона и компьютера, собрать компоненты и токены, продумать состояния.','UI-дизайнер','Макеты, UI-кит, токены','Проверяешь по чек-листу косяков. Просишь Claude вынести цвета и отступы в токены и держать одинаковые компоненты.'],
+['Моушн и прототип','Решить, что и как двигается. Собрать кликабельный прототип и проверить путь пользователя.','Моушн-дизайнер, 3D-художник','Описание анимаций, прототип','Описываешь движение параметрами: что, сколько мс, какой изинг. Смотришь, не мешает ли оно смыслу.'],
+['Разработка','Сверстать и запрограммировать: фронтенд, бэкенд, формы, кабинет, база данных.','Фронтенд и бэкенд-разработчики','Рабочий сайт на тестовом адресе','Код пишет Claude. Ты открываешь в браузере и на телефоне и сравниваешь с тем, что задумано.'],
+['Тестирование','Пройти все сценарии, найти ошибки, проверить на разных устройствах и браузерах.','Тестировщик (QA)','Список багов, исправления','Проходишь путь ученика сама и даёшь пройти кому-то другому. Описываешь баг: где, что сделала, что увидела, что ожидала.'],
+['Запуск','Подключить домен и HTTPS, настроить метатеги, превью ссылки, Яндекс Метрику, политику персональных данных.','Разработчик, SEO','Сайт на своём адресе','Для школы: только российский хостинг. Claude готовит настройки по списку, ты подтверждаешь.'],
+['Жизнь после запуска','Смотреть аналитику, собирать отзывы, править и улучшать. Сайт никогда не «готов навсегда».','Вся команда понемногу','Новые итерации','Раз в месяц смотришь Метрику и отзывы учеников, выбираешь одну вещь для улучшения.']
+];
+document.getElementById('steps').innerHTML = STEPS.map((s,i)=>`<div class="step"><div class="n">${String(i+1).padStart(2,'0')}</div><div><h4>${s[0]}</h4><p>${s[1]}</p><div class="row"><div><b>Кто в студии</b>${s[2]}</div><div><b>Результат</b>${s[3]}</div><div class="me"><b>Ты и Claude</b>${s[4]}</div></div></div></div>`).join('');
+
+/* ---------- сайты ---------- */
+const S_INTL = [
+['Awwwards','https://www.awwwards.com/','конкурс сайтов','«Сайт дня» и номинации. Смотри смелые идеи, движение, типографику. Много экспериментов, неудобных в обычной жизни.'],
+['Godly','https://godly.design/','отбор с видео','Свежие сайты с видео-превью: сразу видно анимации и прокрутку. Удобно для насмотренности по моушну.'],
+['Siteinspire','https://www.siteinspire.com/','спокойная классика','Хорошо сделанные сайты без лишнего шума, фильтры по стилю и типу. Лучший старт для первой недели.'],
+['Land-book','https://land-book.com/','лендинги','Галерея лендингов и сайтов продуктов, удобно сравнивать первые экраны.'],
+['Lapa Ninja','https://www.lapa.ninja/','лендинги по темам','Тысячи лендингов с категориями, есть образование. Ищи, как другие школы и курсы строят первый экран.'],
+['One Page Love','https://onepagelove.com/','одностраничники','Одностраничные сайты и шаблоны. Учит укладывать всё в одну страницу.'],
+['Minimal Gallery','https://minimal.gallery/','минимализм','Только сдержанные сайты. Хорошая прививка от «всего и сразу».'],
+['Mobbin','https://mobbin.com/','реальные приложения','Скриншоты экранов и целых сценариев реальных приложений: вход, оплата, профиль. Частично платный.'],
+['Refero','https://refero.design/','реальные интерфейсы','Поиск по элементам настоящих сайтов и приложений: «форма», «тарифы», «пустое состояние». Частично платный.'],
+['Cosmos','https://www.cosmos.so/','доски вдохновения','Спокойная замена Pinterest без рекламы, есть поиск по цвету. Удобно собирать свой мудборд.'],
+['Are.na','https://www.are.na/','доски-исследования','Коллекции, которые собирают дизайнеры и художники. Больше идей и контекста, меньше «красивых картинок».'],
+['Codrops','https://tympanus.net/codrops/','эффекты с кодом','Демо анимаций и эффектов с объяснением, как сделано. Можно показать Claude: «хочу как здесь».'],
+['Dribbble','https://dribbble.com/','витрина дизайнеров','Много красивых концептов. Смотри приёмы, но помни: часть никогда не работала как настоящий сайт.'],
+['Behance','https://www.behance.net/','кейсы студий','Большие кейсы с процессом: бриф, поиски, итог. Полезно видеть, как студия рассказывает о решении.']
+];
+const S_RU = [
+['Made on Tilda','https://tilda.cc/ru/madeontilda/','галерея Тильды','Лучшие сайты на Тильде, в том числе небольших школ и экспертов. Близко к твоему масштабу.'],
+['Галерея Школы Тильды','https://tilda.school/gallery','работы выпускников','Проекты студентов курсов веб-дизайна. Видно, что реально сделать одному человеку.'],
+['Workspace: кейсы по дизайну сайтов','https://workspace.ru/awards/casesall/design/web/','премия и кейсы','Номинанты премии Workspace Digital Awards с разбором задачи и решения от российских студий.'],
+['Тэглайн','https://tagline.ru/awards/winners/','премия Tagline Awards','Победители одного из главных конкурсов Рунета. Смотри номинации про сайты и дизайн.'],
+['Золотой сайт','https://goldensite.ru/','конкурс интернет-проектов','Старейший российский конкурс сайтов. Хорошо видно, как меняется вкус рынка по годам.'],
+['Рейтинг Рунета','https://ratingruneta.ru/web/','рейтинг студий','Список веб-студий. Не галерея, но отсюда удобно открывать портфолио сильных российских команд.'],
+['Дипрофайл','https://dprofile.ru/','портфолио дизайнеров','Русскоязычная площадка с работами дизайнеров, похожа на Behance.'],
+['Студия Артемия Лебедева','https://www.artlebedev.ru/','классика русского дизайна','Огромное портфолио за 30 лет и разборы работ. Хорошо для понимания айдентики и типографики.']
+];
+const S_TYPE = [
+['Fonts In Use','https://fontsinuse.com/','шрифты в жизни','Где и как использован каждый шрифт: сайты, книги, упаковка. Учит видеть шрифтовые пары.'],
+['Typewolf','https://www.typewolf.com/','шрифты на сайтах','Какие шрифты сейчас в моде на сайтах и с чем их сочетают.'],
+['Журнал «Шрифт»','https://typejournal.ru/','по-русски о шрифте','Статьи о типографике и кириллице простым языком.'],
+['Журнал type.today','https://type.today/ru/journal','кириллические шрифты','Студия кириллических шрифтов: статьи, разборы и примеры применения.']
+];
+const siteCard = s=>`<div class="site"><span class="tag">${s[2]}</span><a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a><p>${s[3]}</p></div>`;
+document.getElementById('sitesIntl').innerHTML = S_INTL.map(siteCard).join('');
+document.getElementById('sitesRu').innerHTML = S_RU.map(siteCard).join('');
+document.getElementById('sitesType').innerHTML = S_TYPE.map(siteCard).join('');
+
+/* ---------- блоки лендинга ---------- */
+const L = (n,u)=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`;
+const BLOCKS = [
+['b-head','Хедер, меню','header, navbar','Логотип, 3–5 пунктов меню, иногда кнопка заявки. Помогает не потеряться и всегда видеть главное действие.','Слишком много пунктов меню; меню, которое закрывает пол-экрана при прокрутке.',[['Navbar Gallery','https://www.navbar.gallery/']]],
+['b-hero','Hero, первый экран','hero section','Главный заголовок, одна строка пояснения, одна главная кнопка, изображение. За 5 секунд отвечает: что это, для кого и что делать.','Абстрактный заголовок вроде «Новый взгляд на обучение» и три кнопки сразу.',[['Godly: секции','https://godly.design/sections'],['Web Anatomy: hero','https://www.webanatomy.ai/best-landing-pages/sections/hero'],['Unsection','https://www.unsection.com/']]],
+['b-feat','Преимущества, как проходит','features, how it works','3–4 пункта о главном: почему у вас, как проходит урок, что человек получит. Часто шаги или карточки.','Шесть одинаковых карточек «иконка + заголовок + две строки»: главный ИИ-штамп.',[['Unsection','https://www.unsection.com/'],['Land-book','https://land-book.com/']]],
+['b-proof','Отзывы и доверие','testimonials, social proof','Отзывы с именами и фото, цифры (сколько учеников, лет опыта), дипломы. Отвечает на вопрос «а можно ли вам верить».','Отзывы без имён и лиц; бегущая лента, которую невозможно прочитать.',[['Unsection','https://www.unsection.com/'],['SaaS Landing Page','https://saaslandingpage.com/']]],
+['b-price','Цены','pricing','Обычно 2–3 тарифа в колонках, один выделен как рекомендуемый. Что входит, сколько стоит, кнопка.','Пять тарифов с таблицей из 30 строк; нет понятной разницы между вариантами.',[['Pricing Pages','https://pricingpages.design/'],['SaaS Landing Page: цены','https://saaslandingpage.com/pricing/']]],
+['b-faq','Вопросы (FAQ)','faq, accordion','Ответы на частые сомнения: возраст, формат, что если пропустил, как оплатить. Обычно аккордеон: вопрос раскрывается по клику.','Вопросы, которые никто не задаёт; ответы на полстраницы.',[['Unsection','https://www.unsection.com/'],['Lapa Ninja','https://www.lapa.ninja/']]],
+['b-cta','Заявка, CTA','call to action, form','Финальный призыв и форма: короткий заголовок, 2–3 поля, одна кнопка, рядом что будет дальше («перезвоним в течение дня»).','Форма из 8 полей; кнопка «Отправить» вместо «Записаться на урок».',[['CTA Gallery','https://www.cta.gallery/']]],
+['b-foot','Футер','footer','Контакты, соцсети, реквизиты ИП, ссылки на политику персональных данных и оферту.','Футер-свалка из 40 ссылок; нет документов, которые обязательны для школы.',[['Footer Gallery','https://www.footer.design/'],['Awwwards: футеры','https://www.awwwards.com/websites/footer-design/']]]
+];
+document.getElementById('blocks').innerHTML = BLOCKS.map((b,i)=>`<div class="blk" id="${b[0]}"><h4>${i+1}. ${b[1]}<small>${b[2]}</small></h4><p>${b[3]}</p><div class="where"><b>Где смотреть</b>${b[5].map(x=>L(x[0],x[1])).join('')}</div><p class="oops">Частая ошибка: ${b[4]}</p></div>`).join('');
+document.getElementById('lbCopy').addEventListener('click',async()=>{
+  const m=document.getElementById('lbCopied'), t=document.getElementById('lbPrompt').textContent;
+  try{ await navigator.clipboard.writeText(t); m.textContent='Скопировано'; }catch(e){ m.textContent='Выдели текст и скопируй вручную'; }
+  setTimeout(()=>m.textContent='',2000);
+});
+
+/* ---------- чек-лист ---------- */
+const CHECKS = [
+['Раскладка',[
+ ['Одинаковые вещи с разными отступами','Две карточки рядом, а поля внутри разные.'],
+ ['Элементы не стоят на одной линии','Левые края заголовка, текста и картинки «гуляют».'],
+ ['Нет воздуха','Блоки прилипли друг к другу и к краям экрана.'],
+ ['Всё по центру','Длинный текст по центру читать тяжело, страница теряет опору.'],
+ ['Непонятно, что главное','Прищурься: если выделяется всё сразу, иерархии нет.']]],
+['Шрифт',[
+ ['Больше двух-трёх гарнитур',''],
+ ['Слишком длинные строки','Больше 80 знаков в строке на компьютере.'],
+ ['Слишком мелко или серо','Текст меньше 15 px или бледный на светлом фоне.'],
+ ['Слипшиеся или разбежавшиеся строки','Интерлиньяж меньше 1.3 или больше 1.9 в тексте.'],
+ ['Висячие предлоги, "лапки", дефис вместо тире',''],
+ ['Длинный текст капсом','Капс годится для коротких подписей, не для абзацев.']]],
+['Цвет',[
+ ['Низкий контраст','Серое на сером, белое на светлом фото.'],
+ ['Много акцентов','Больше одного-двух ярких цветов, и всё спорит.'],
+ ['Разные оттенки «одного» цвета','Три немного разных синих на одной странице.'],
+ ['Грязные или слишком тёмные тени','Тень серо-чёрная и резкая вместо мягкой.']]],
+['Картинки',[
+ ['Растянутые или сплюснутые изображения',''],
+ ['Мыльные или пиксельные картинки','Особенно логотип: он должен быть вектором.'],
+ ['Иконки из разных наборов','Разная толщина линий, часть залитые, часть контурные.'],
+ ['Тяжёлые файлы','Фото по 3–5 МБ, из-за которых сайт долго грузится.']]],
+['Движение',[
+ ['Двигается всё сразу','Анимация на каждом элементе утомляет и отвлекает.'],
+ ['Слишком долго','Переходы дольше полсекунды кажутся медленными.'],
+ ['Страница прыгает при загрузке','Контент сдвигается, когда догружаются картинки или шрифты.'],
+ ['Нет отклика на нажатие','Кнопка никак не меняется при наведении или нажатии.']]],
+['Телефон',[
+ ['Горизонтальная прокрутка','Страница «ездит» вбок пальцем.'],
+ ['Мелкие кнопки','Меньше 44 px, промахиваешься пальцем.'],
+ ['Текст не влезает','Слова обрезаются или вылезают за край.'],
+ ['Важное спрятано в ховер','На телефоне навести мышь нельзя.']]],
+['Признаки ИИ-штампа',[
+ ['Фиолетово-синий градиент и свечение',''],
+ ['Эмодзи вместо иконок',''],
+ ['Ряды одинаковых карточек «иконка + заголовок + две строки»',''],
+ ['Шаблонные фразы','«Раскройте свой потенциал», «Добро пожаловать в мир…».'],
+ ['Стекло, блики и тени на всём подряд',''],
+ ['Всё симметрично и по центру, нет ни одной смелой идеи','']]]
+];
+document.getElementById('checks').innerHTML = CHECKS.map((g,gi)=>`<div class="cgroup${g[0].startsWith('Признаки')?' ai':''}"><h4>${g[0]}</h4>${g[1].map((c,ci)=>{const id=gi+'-'+ci;return `<label><input type="checkbox" data-c="${id}"${st.checks[id]?' checked':''}><span>${c[0]}${c[1]?`<small>${c[1]}</small>`:''}</span></label>`}).join('')}</div>`).join('');
+document.getElementById('checks').addEventListener('change',e=>{ const id=e.target.dataset.c; if(!id) return; if(e.target.checked) st.checks[id]=1; else delete st.checks[id]; save(); });
+
+renderDict(); updProg();
+</script>
+</body>
+</html>

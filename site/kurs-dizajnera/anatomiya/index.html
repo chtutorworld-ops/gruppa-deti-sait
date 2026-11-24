@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анатомия интерфейса · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:16px 0}
+.el{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.el .v{background:var(--card2);min-height:96px;display:flex;align-items:center;justify-content:center;padding:14px;gap:8px;flex-wrap:wrap}
+.el .d{padding:9px 12px 11px;font-size:13.5px;color:var(--ink2)}
+.el .d b{display:block;font:500 16px var(--serif);color:var(--ink)}
+.el .d i{font-style:normal;font-size:12px;color:var(--muted)}
+/* живые элементы */
+.b1,.b2,.b3{font:600 13px var(--sans);border-radius:10px;padding:9px 16px;border:0;cursor:pointer}
+.b1{background:#6b5f8a;color:#fff}.b1:hover{background:#5a4f78}.b1:active{transform:scale(.96)}
+.b2{background:#fff;color:#4a4068;box-shadow:inset 0 0 0 1px #bdb6cf}
+.b3{background:none;color:#6b5f8a;padding:9px 6px}
+.b1[disabled]{background:#cfcbd8;cursor:not-allowed}
+.ib{width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #d4d0de;display:grid;place-items:center;color:#4a4068}
+.fab{width:50px;height:50px;border-radius:16px;background:#6b5f8a;color:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 8px 16px -6px rgba(60,40,100,.5)}
+.inp{width:190px;text-align:left;font-size:12px}
+.inp label{display:block;color:#4a4658;margin-bottom:3px;font-weight:600}
+.inp .f{border:1px solid #cfcadb;border-radius:9px;background:#fff;padding:8px 10px;color:#9d98ab;font-size:13px}
+.inp .f.err{border-color:#c0453c;color:#1c1b22}
+.inp small{display:block;margin-top:3px;color:#77728a}
+.inp small.e{color:#c0453c}
+.sel .f::after{content:"▾";float:right;color:#4a4658}
+.srch .f::before{content:"⌕ ";color:#4a4658}
+.cb{display:flex;align-items:center;gap:7px;font-size:13px}
+.cb i{width:18px;height:18px;border-radius:5px;border:1.5px solid #8c86a0;display:grid;place-items:center;font-style:normal;font-size:12px;color:#fff}
+.cb i.on{background:#6b5f8a;border-color:#6b5f8a}
+.rd i{border-radius:50%}
+.rd i.on{background:#fff;box-shadow:inset 0 0 0 4px #6b5f8a;border-color:#6b5f8a}
+.tg{width:44px;height:26px;border-radius:13px;background:#6b5f8a;position:relative}
+.tg::after{content:"";position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.tg.off{background:#cfcbd8}.tg.off::after{right:auto;left:3px}
+.seg{display:flex;background:#ebe8f1;border-radius:9px;padding:3px;font-size:12px}
+.seg span{padding:5px 11px;border-radius:7px;color:#4a4658}
+.seg span.on{background:#fff;color:#1c1b22;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.chip{font-size:12px;border-radius:999px;padding:4px 11px;border:1px solid #cfcadb;background:#fff;color:#4a4658}
+.chip.on{background:#4a4068;color:#fff;border-color:#4a4068}
+.sld{width:170px;height:4px;border-radius:2px;background:linear-gradient(90deg,#6b5f8a 60%,#ddd8e8 60%);position:relative}
+.sld::after{content:"";position:absolute;left:60%;top:-8px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.card{width:180px;background:#fff;border-radius:12px;padding:12px;text-align:left;box-shadow:0 6px 14px -10px rgba(40,30,70,.5);font-size:12px}
+.card b{display:block;font-size:14px}
+.cell{width:200px;background:#fff;border-radius:10px;font-size:12.5px;text-align:left;overflow:hidden}
+.cell div{display:flex;align-items:center;gap:8px;padding:8px 10px;border-top:1px solid #eee}
+.cell div:first-child{border-top:0}
+.cell div::after{content:"›";margin-left:auto;color:#9d98ab}
+.cell i{width:20px;height:20px;border-radius:6px;background:#e8e4f3;flex:none}
+.bento{display:grid;grid-template-columns:repeat(3,36px);grid-template-rows:repeat(2,36px);gap:5px}
+.bento i{background:#fff;border-radius:7px;box-shadow:0 2px 6px -3px rgba(40,30,70,.4)}
+.bento i:first-child{grid-column:span 2;grid-row:span 2;background:#e8e4f3}
+.tabs{display:flex;gap:16px;font-size:12.5px;border-bottom:1px solid #ddd;width:200px}
+.tabs span{padding:6px 0;color:#77728a}.tabs span.on{color:#1c1b22;font-weight:600;box-shadow:inset 0 -2px 0 #6b5f8a}
+.acc{width:200px;background:#fff;border-radius:10px;font-size:12.5px;text-align:left}
+.acc div{padding:8px 10px;border-top:1px solid #eee;display:flex;justify-content:space-between}
+.acc div:first-child{border-top:0;font-weight:600}
+.acc p{margin:0;padding:0 10px 8px;color:#77728a;font-size:12px}
+.tbar{width:200px;display:flex;justify-content:space-around;background:#fff;border-radius:12px;padding:7px 4px;font-size:10px;color:#9d98ab}
+.tbar span{display:flex;flex-direction:column;align-items:center;gap:2px}.tbar span::before{content:"";width:16px;height:16px;border-radius:5px;background:#ddd8e8}
+.tbar span.on{color:#6b5f8a}.tbar span.on::before{background:#6b5f8a}
+.nbar{width:200px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;background:#fff;border-radius:10px;padding:8px 10px}
+.nbar b{font-size:13px}
+.crumbs{font-size:12px;color:#77728a}.crumbs b{color:#1c1b22;font-weight:600}
+.pag{display:flex;gap:4px;font-size:12px}.pag span{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#fff;border:1px solid #ddd}.pag span.on{background:#4a4068;color:#fff;border-color:#4a4068}
+.burger{width:34px;height:34px;border-radius:9px;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 9px}.burger i{height:2px;background:#4a4068;border-radius:1px}
+.toast{background:#2a2633;color:#fff;font-size:12.5px;border-radius:10px;padding:9px 14px;box-shadow:0 8px 16px -8px rgba(0,0,0,.5)}
+.modal{width:190px;background:#fff;border-radius:14px;padding:12px;font-size:12px;text-align:center;box-shadow:0 0 0 999px rgba(30,25,45,.25)}
+.modal b{display:block;font-size:13.5px;margin-bottom:4px}
+.badge{position:relative;width:30px;height:30px;border-radius:9px;background:#e8e4f3}
+.badge::after{content:"3";position:absolute;top:-6px;right:-7px;background:#c0453c;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 5px}
+.pbar{width:170px;height:8px;border-radius:4px;background:#e8e4f3;overflow:hidden}.pbar i{display:block;height:100%;width:65%;background:#6b5f8a}
+.skel{width:170px}.skel i{display:block;height:10px;border-radius:5px;background:#e8e4f3;margin:6px 0}
+.spin{width:28px;height:28px;border-radius:50%;border:3px solid #e8e4f3;border-top-color:#6b5f8a;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.tip{position:relative;background:#2a2633;color:#fff;font-size:11.5px;border-radius:7px;padding:5px 9px}.tip::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:#2a2633}
+.empty{font-size:12px;color:#77728a;text-align:center}.empty b{display:block;color:#1c1b22;font-size:13px}
+.ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c8bfe6,#f1c9d6);display:grid;place-items:center;font-weight:700;color:#4a4068;font-size:13px}
+.ico{display:flex;gap:10px;color:#4a4068}
+.illu{width:110px;height:70px;border-radius:10px;background:linear-gradient(180deg,#eeebf5,#f7f1ea);position:relative;overflow:hidden}
+.illu::before{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:#f0c88a;right:14px;top:10px}
+.illu::after{content:"";position:absolute;left:-10px;right:-10px;bottom:-24px;height:50px;border-radius:50%;background:#b9afd8}
+/* схема скелета */
+.skelapp{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.zone{border-radius:6px;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;color:#3d3456}
+/* макеты для поиска */
+.ap{width:260px;height:520px;border-radius:38px;background:#1d1c22;padding:8px;flex:none}
+.ap .s{width:100%;height:100%;border-radius:31px;background:#f6f5f8;overflow:hidden;display:flex;flex-direction:column;font-size:12px;line-height:1.35;color:#1c1b22;position:relative;text-align:left}
+.ap .sb{display:flex;justify-content:space-between;padding:10px 20px 4px;font-weight:600;font-size:11.5px}
+.ap .nv{display:flex;justify-content:space-between;align-items:center;padding:6px 14px 8px}
+.ap .nv b{font-size:22px;font-weight:700}
+.ap .bd{padding:0 14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow:hidden}
+.ap .tb{display:flex;justify-content:space-around;background:#fff;border-top:1px solid #e7e4ee;padding:7px 6px 18px;font-size:9.5px;color:#9d98ab}
+.ap .tb span{display:flex;flex-direction:column;align-items:center;gap:2px}.ap .tb span::before{content:"";width:18px;height:18px;border-radius:6px;background:#ddd8e8}
+.ap .tb span.on{color:#6b5f8a}.ap .tb span.on::before{background:#6b5f8a}
+.ap .hero{background:#fff;border-radius:14px;padding:12px;box-shadow:0 6px 14px -10px rgba(40,30,70,.5)}
+.ap .hero .hz{font:400 28px/1.1 "Kaiti SC","STKaiti","KaiTi","PingFang SC",serif}
+.ap .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.st{width:520px;max-width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(40,30,70,.35);border:1px solid var(--line);font-size:12px;color:#1c1b22;text-align:left}
+.st .hd{display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid #eee}
+.st .logo{font:700 15px var(--sans);letter-spacing:.06em}
+.st .menu{display:flex;gap:14px;color:#4a4658;margin-left:auto}
+.st .hero{padding:28px 18px;background:linear-gradient(135deg,#eeebf5,#f7f1ea)}
+.st .hero h5{font:700 24px/1.1 var(--sans);margin:0 0 6px}
+.st .hero p{margin:0 0 12px;color:#4a4658;max-width:34ch}
+.st .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 18px}
+.st .cards > div{background:#f6f5f8;border-radius:10px;padding:10px}
+.st .ft{background:#2a2633;color:#cfcadb;padding:12px 18px;display:flex;justify-content:space-between;font-size:11px}
+.fm{width:280px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 20px 40px -22px rgba(40,30,70,.35);display:flex;flex-direction:column;gap:12px;text-align:left;font-size:12.5px;position:relative}
+.fm h5{margin:0;font:700 16px var(--sans)}
+@media (max-width:560px){.st .cards{grid-template-columns:1fr 1fr}.st .menu{display:none}}
+</style>
+</head>
+<body data-mod="anatomiya">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз дизайнера</a><a href="../anatomiya/" class="on">Анатомия</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль А2 · Анатомия интерфейса</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок А · Модуль А2</p>
+  <h1>Анатомия интерфейса</h1>
+  <p>Как называется каждая деталь экрана. Это словарь, на котором разговаривают дизайнеры и разработчики. Когда знаешь названия, можно точно сказать, что понравилось в референсе: «таб-бар», «чипы», «нижний лист».</p>
+  <p class="meta">9 глав · в конце тренажёр «найди элемент» на трёх экранах</p>
+</div>
+
+<section class="ch" id="skelet" data-t="Скелет экрана">
+  <h2>Скелет экрана</h2>
+  <p>Почти любой экран приложения устроен одинаково: сверху <span class="term">статус-бар</span> (время, батарея, это не наше), под ним <span class="term">шапка</span> <span class="en">(navigation bar, header)</span> с заголовком, в середине <span class="term">контент</span>, внизу <span class="term">навигация</span>. У сайта то же самое, только навигация обычно в шапке, а внизу <span class="term">футер</span> (подвал).</p>
+  <div class="ex"><div class="stage"><div class="skelapp">
+    <div style="width:150px;height:290px;border-radius:24px;background:#1d1c22;padding:6px"><div style="height:100%;border-radius:19px;background:#f6f5f8;display:flex;flex-direction:column;gap:4px;padding:4px;overflow:hidden">
+      <div class="zone" style="height:16px;background:#e2dfe8">статус-бар</div><div class="zone" style="height:34px;background:#d9d3ea">шапка</div><div class="zone" style="flex:1;background:#ece9f3">контент</div><div class="zone" style="height:38px;background:#cbc3e0">таб-бар</div></div></div>
+    <div style="width:240px;border-radius:10px;overflow:hidden;border:1px solid #ddd;background:#fff;display:flex;flex-direction:column;gap:4px;padding:4px">
+      <div class="zone" style="height:24px;background:#d9d3ea">хедер: логотип, меню</div><div class="zone" style="height:80px;background:#cbc3e0">первый экран (hero)</div><div class="zone" style="height:44px;background:#ece9f3">секция</div><div class="zone" style="height:44px;background:#ece9f3">секция</div><div class="zone" style="height:26px;background:#2a2633;color:#cfcadb">футер</div></div>
+  </div></div><div class="cap">Слева приложение, справа сайт. Названия зон пригодятся, когда описываешь референс: «нравится шапка», «нравится первый экран».</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Как называется самый верхний большой блок сайта с главным заголовком и кнопкой?</p><div class="opts"><button>Футер</button><button>Первый экран, hero</button><button>Хлебные крошки</button></div><p class="why">Hero (от «герой») это первый экран: то, что человек видит, не прокручивая. На нём решается, останется ли он.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="knopki" data-t="Кнопки">
+  <h2>Кнопки</h2>
+  <p>Кнопка запускает действие. У кнопок есть <b>уровни важности</b>, и на хорошем экране они всегда видны:</p>
+  <div class="gal">
+    <div class="el"><div class="v"><button class="b1">Начать урок</button></div><div class="d"><b>Главная</b><i>primary button</i><br>Залитая акцентом. Одна на экран или на блок.</div></div>
+    <div class="el"><div class="v"><button class="b2">Расписание</button></div><div class="d"><b>Вторичная</b><i>secondary, outline</i><br>Контурная или светлая. Для второго по важности.</div></div>
+    <div class="el"><div class="v"><button class="b3">Пропустить</button></div><div class="d"><b>Текстовая</b><i>text button, ghost</i><br>Без рамки. Для «отмена», «позже», «подробнее».</div></div>
+    <div class="el"><div class="v"><span class="ib">♥</span><span class="ib">⋯</span></div><div class="d"><b>Кнопка-иконка</b><i>icon button</i><br>Только значок. Действие должно быть понятно без слов.</div></div>
+    <div class="el"><div class="v"><span class="fab">+</span></div><div class="d"><b>Плавающая кнопка</b><i>FAB</i><br>Висит в углу над контентом. Главное действие на Android.</div></div>
+    <div class="el"><div class="v"><button class="b1" disabled>Сдать</button></div><div class="d"><b>Неактивная</b><i>disabled</i><br>Нельзя нажать, пока не выполнено условие.</div></div>
+  </div>
+  <p>У каждой кнопки есть <span class="term">состояния</span> <span class="en">(states)</span>: обычное, наведение (hover), нажатие (pressed), фокус с клавиатуры (focus), неактивное (disabled), загрузка. Наведи и нажми на «Начать урок»: она темнеет и чуть сжимается. Кнопка без отклика ощущается сломанной.</p>
+  <div class="key">Текст кнопки это глагол, который говорит, что произойдёт: «Начать урок», «Сдать ДЗ». А не «ОК» или «Далее».</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>На экране результатов три действия: «Следующий урок», «Повторить», «На главную». Как распределить уровни?</p><div class="opts"><button>Все три главные</button><button>Все три текстовые</button><button>«Следующий урок» главная, «Повторить» вторичная, «На главную» текстовая</button></div><p class="why">Уровни показывают, чего мы ждём от ученика больше всего. Остальные действия доступны, но не спорят с главным.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="polya" data-t="Поля и формы">
+  <h2>Поля и формы</h2>
+  <p><span class="term">Форма</span> <span class="en">(form)</span> это набор полей, куда человек что-то вводит: имя, ответ, пароль. У поля есть части, и у каждой своё имя:</p>
+  <div class="gal">
+    <div class="el"><div class="v"><div class="inp"><label>Имя ученика</label><div class="f">Например, Маша</div><small>Как к тебе обращаться на уроке</small></div></div><div class="d"><b>Поле ввода</b><i>text field, input</i><br>Сверху <b>подпись</b> (label), внутри серая <b>подсказка-пример</b> (placeholder), снизу <b>пояснение</b> (helper text).</div></div>
+    <div class="el"><div class="v"><div class="inp"><label>Пиньинь</label><div class="f err">mama</div><small class="e">Добавь тоны: māma</small></div></div><div class="d"><b>Ошибка</b><i>error state</i><br>Красная рамка и текст: что не так и как исправить.</div></div>
+    <div class="el"><div class="v"><div class="inp sel"><label>Уровень</label><div class="f" style="color:#1c1b22">HSK 1</div></div></div><div class="d"><b>Выпадающий список</b><i>select, dropdown</i><br>Выбор из длинного списка вариантов.</div></div>
+    <div class="el"><div class="v"><div class="inp srch"><div class="f">Найти слово</div></div></div><div class="d"><b>Поиск</b><i>search field</i><br>Поле с лупой, часто в шапке.</div></div>
+  </div>
+  <div class="key">Подпись всегда над полем, а не только внутри него. Плейсхолдер исчезает, когда начинаешь печатать, и человек забывает, что вводил.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Серый текст «Например, Маша» внутри пустого поля называется…</p><div class="opts"><button>плейсхолдер</button><button>подпись</button><button>тултип</button></div><p class="why">Плейсхолдер (placeholder, «заполнитель») показывает пример и исчезает при вводе.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="vybor" data-t="Элементы выбора">
+  <h2>Элементы выбора</h2>
+  <p>Выбор можно сделать по-разному, и у каждого способа свой смысл. Путать их значит путать ученика.</p>
+  <div class="gal">
+    <div class="el"><div class="v"><span class="cb"><i class="on">✓</i>Слова</span><span class="cb"><i class="on">✓</i>Тоны</span><span class="cb"><i></i>Иероглифы</span></div><div class="d"><b>Чекбокс</b><i>checkbox</i><br>Можно выбрать <b>несколько</b>.</div></div>
+    <div class="el"><div class="v"><span class="cb rd"><i class="on"></i>mā</span><span class="cb rd"><i></i>má</span><span class="cb rd"><i></i>mǎ</span></div><div class="d"><b>Радиокнопка</b><i>radio button</i><br>Можно выбрать <b>только один</b>. Как тест с одним ответом.</div></div>
+    <div class="el"><div class="v"><span class="tg"></span><span class="tg off"></span></div><div class="d"><b>Переключатель</b><i>toggle, switch</i><br>Вкл / выкл, срабатывает <b>сразу</b>, без «Сохранить».</div></div>
+    <div class="el"><div class="v"><span class="seg"><span class="on">День</span><span>Неделя</span><span>Месяц</span></span></div><div class="d"><b>Сегменты</b><i>segmented control</i><br>2–4 варианта вида одного и того же.</div></div>
+    <div class="el"><div class="v"><span class="chip on">HSK 1</span><span class="chip">Тоны</span><span class="chip">Семья</span></div><div class="d"><b>Чипы</b><i>chips, tags</i><br>Маленькие капсулы-фильтры или метки.</div></div>
+    <div class="el"><div class="v"><span class="sld"></span></div><div class="d"><b>Слайдер</b><i>slider</i><br>Выбор значения на шкале: громкость, скорость.</div></div>
+  </div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Задание «выбери правильный тон слова mā». Что использовать?</p><div class="opts"><button>Чекбоксы</button><button>Радиокнопки или большие кнопки-варианты</button><button>Переключатель</button></div><p class="why">Ответ один, значит радиокнопки или их «большая» версия, карточки-варианты. Чекбоксы скажут ученику, что можно выбрать несколько.</p></div>
+    <div class="q" data-a="0"><p>«Звук в уроке: вкл / выкл», применяется сразу. Это…</p><div class="opts"><button>переключатель</button><button>радиокнопка</button><button>кнопка «Сохранить»</button></div><p class="why">Переключатель повторяет выключатель света: действует мгновенно.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="konteinery" data-t="Карточки, списки, бенто">
+  <h2>Карточки, списки и бенто</h2>
+  <p>Это способы сложить много однотипного на экран.</p>
+  <div class="gal">
+    <div class="el"><div class="v"><div class="card"><b>Урок 8</b>Семья · 40 мин</div></div><div class="d"><b>Карточка</b><i>card</i><br>Отдельный предмет с краями: картинка, заголовок, действие.</div></div>
+    <div class="el"><div class="v"><div class="cell"><div><i></i>Слова</div><div><i></i>Тоны</div><div><i></i>Иероглифы</div></div></div><div class="d"><b>Список и ячейка</b><i>list, cell</i><br>Строки одна под другой. Плотнее карточек.</div></div>
+    <div class="el"><div class="v"><div class="bento"><i></i><i></i><i></i><i></i><i></i></div></div><div class="d"><b>Бенто</b><i>bento grid</i><br>Плитки разного размера, как японская коробочка с едой. Для кабинетов и сводок.</div></div>
+    <div class="el"><div class="v"><div class="tabs"><span class="on">Слова</span><span>Грамматика</span><span>Тест</span></div></div><div class="d"><b>Вкладки</b><i>tabs</i><br>Переключают части одной страницы.</div></div>
+    <div class="el"><div class="v"><div class="acc"><div>Как сдать ДЗ? <span>−</span></div><p>Нажми «Сдать» в карточке задания.</p><div>Где оценки? <span>+</span></div></div></div><div class="d"><b>Аккордеон</b><i>accordion</i><br>Раскрывающиеся блоки. Для вопросов и ответов.</div></div>
+  </div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Кабинет, где сверху крупная плитка «Урок дня», рядом маленькие «Серия дней» и «Слова», ниже «Оценки». Как называется такая раскладка?</p><div class="opts"><button>Аккордеон</button><button>Список</button><button>Бенто</button></div><p class="why">Плитки разного размера в одной сетке это бенто. Главное в большой плитке, остальное в маленьких: иерархия через размер.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="navigaciya" data-t="Навигация">
+  <h2>Навигация</h2>
+  <p>Навигация отвечает на два вопроса в любой момент: «где я?» и «как вернуться?».</p>
+  <div class="gal">
+    <div class="el"><div class="v"><div class="tbar"><span class="on">Сегодня</span><span>Курс</span><span>Словарь</span><span>Я</span></div></div><div class="d"><b>Таб-бар</b><i>tab bar, bottom navigation</i><br>3–5 главных разделов внизу экрана телефона.</div></div>
+    <div class="el"><div class="v"><div class="nbar"><span style="color:#6b5f8a">‹ Курс</span><b>Урок 8</b><span>⋯</span></div></div><div class="d"><b>Шапка с «назад»</b><i>navigation bar</i><br>Заголовок экрана и путь назад.</div></div>
+    <div class="el"><div class="v"><div class="burger"><i></i><i></i><i></i></div></div><div class="d"><b>Бургер-меню</b><i>hamburger, drawer</i><br>Три полоски, за ними выезжающее меню. Экономит место, но прячет разделы.</div></div>
+    <div class="el"><div class="v"><span class="crumbs">Курсы › HSK 1 › <b>Урок 8</b></span></div><div class="d"><b>Хлебные крошки</b><i>breadcrumbs</i><br>Путь от главной до текущей страницы. На сайтах.</div></div>
+    <div class="el"><div class="v"><span class="pag"><span>‹</span><span>1</span><span class="on">2</span><span>3</span><span>›</span></span></div><div class="d"><b>Пагинация</b><i>pagination</i><br>Номера страниц длинного списка.</div></div>
+    <div class="el"><div class="v"><div style="width:180px;height:80px;border-radius:12px 12px 0 0;background:#fff;box-shadow:0 -6px 16px -8px rgba(0,0,0,.25);position:relative;align-self:flex-end"><i style="position:absolute;left:50%;top:6px;width:30px;height:4px;margin-left:-15px;border-radius:2px;background:#cfcadb"></i></div></div><div class="d"><b>Нижний лист</b><i>bottom sheet</i><br>Панель снизу поверх экрана для короткого дела.</div></div>
+  </div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Сколько разделов уместно в таб-баре?</p><div class="opts"><button>3–5</button><button>8–10</button><button>Один</button></div><p class="why">Больше пяти не помещаются по ширине пальца, и подписи становятся нечитаемыми. Остальное уходит во вкладку «Ещё» или в профиль.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="otklik" data-t="Обратная связь">
+  <h2>Обратная связь</h2>
+  <p>Интерфейс должен отвечать человеку: «я понял», «подожди», «готово», «ошибка». Для этого есть свои элементы.</p>
+  <div class="gal">
+    <div class="el"><div class="v"><span class="toast">ДЗ сдано ✓</span></div><div class="d"><b>Тост, снэкбар</b><i>toast, snackbar</i><br>Короткое сообщение, исчезает само.</div></div>
+    <div class="el"><div class="v" style="background:#ddd9e6"><div class="modal"><b>Выйти из урока?</b>Прогресс сохранится<br><br><button class="b1" style="padding:6px 12px">Выйти</button></div></div><div class="d"><b>Модальное окно</b><i>modal, dialog</i><br>Окно поверх всего, которое надо закрыть. Только для важного.</div></div>
+    <div class="el"><div class="v"><span class="badge"></span></div><div class="d"><b>Бейдж</b><i>badge</i><br>Кружок с числом: новые сообщения, задания.</div></div>
+    <div class="el"><div class="v"><span class="pbar"><i></i></span></div><div class="d"><b>Прогресс-бар</b><i>progress bar</i><br>Сколько пройдено и сколько осталось.</div></div>
+    <div class="el"><div class="v"><div class="skel"><i style="width:60%"></i><i></i><i style="width:80%"></i></div></div><div class="d"><b>Скелетон</b><i>skeleton</i><br>Серые заготовки, пока грузится. Спокойнее, чем крутилка.</div></div>
+    <div class="el"><div class="v"><span class="spin"></span></div><div class="d"><b>Спиннер</b><i>spinner, loader</i><br>Крутилка загрузки. Для коротких ожиданий.</div></div>
+    <div class="el"><div class="v"><span class="tip">Третий тон: вниз и вверх</span></div><div class="d"><b>Тултип</b><i>tooltip</i><br>Подсказка при наведении или долгом нажатии.</div></div>
+    <div class="el"><div class="v"><div class="empty"><b>Заданий нет</b>Можно повторить слова</div></div><div class="d"><b>Пустое состояние</b><i>empty state</i><br>Что видно, когда данных ещё нет.</div></div>
+  </div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Ученик сдал ДЗ. Как лучше сообщить об этом?</p><div class="opts"><button>Модальное окно «ОК», которое надо закрыть</button><button>Тост «ДЗ сдано» и отметка на карточке</button><button>Ничего не показывать</button></div><p class="why">Модальное окно прерывает и требует лишнего нажатия. Для подтверждения хватает тоста, а отметка на карточке остаётся как след.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="kartinki" data-t="Иконки и картинки">
+  <h2>Иконки и картинки</h2>
+  <div class="gal">
+    <div class="el"><div class="v"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span></div><div class="d"><b>Иконки</b><i>icons</i><br>Значки из одного набора: одна толщина линии, одни скругления. Контурные (outline) или залитые (filled).</div></div>
+    <div class="el"><div class="v"><span class="illu"></span></div><div class="d"><b>Иллюстрация</b><i>illustration</i><br>Рисунок для настроения: пустые состояния, онбординг.</div></div>
+    <div class="el"><div class="v"><span class="ava">Д</span><span class="ava" style="width:28px;height:28px;font-size:11px">М</span></div><div class="d"><b>Аватар</b><i>avatar</i><br>Фото или буква человека в кружке.</div></div>
+  </div>
+  <div class="key">Иконки из разных наборов на одном экране (где-то тонкие, где-то толстые, где-то залитые) это одна из самых заметных примет непрофессиональной работы.</div>
+</section>
+
+<section class="ch" id="trenazher" data-t="Тренажёр: найди элемент">
+  <h2>Тренажёр: найди элемент</h2>
+  <p>Три экрана. Тебя попросят нажать на элемент по названию. Если промахнёшься, подскажу, что ты нажала. Результат с первой попытки сохранится.</p>
+
+  <h3>Экран 1. Приложение</h3>
+  <div class="find" data-tasks='[["tabbar","таб-бар","Разделы приложения внизу экрана."],["navtitle","заголовок в шапке","Большой заголовок экрана, приём iOS."],["avatar","аватар","Кружок с буквой: вход в профиль."],["search","поле поиска",""],["seg","сегменты","Переключают вид одного и того же."],["card","карточку","Отдельный предмет с краями."],["progress","прогресс-бар",""],["primary","главную кнопку","Залитая акцентом, одна на блок."],["badge","бейдж","Число на значке: сколько нового."],["toggle","переключатель",""],["chips","чипы","Маленькие капсулы-метки."]]'>
+    <div class="fhead"><span class="ask"></span><span class="cnt"></span></div>
+    <div class="fstage"><div class="ap"><div class="s">
+      <div class="sb"><span>9:41</span><span>●●●</span></div>
+      <div class="nv"><b data-el="navtitle">Сегодня</b><span class="ava" data-el="avatar">Д</span></div>
+      <div class="bd">
+        <div class="inp srch" data-el="search" style="width:auto"><div class="f">Найти слово</div></div>
+        <div class="seg" data-el="seg" style="align-self:flex-start"><span class="on">Уроки</span><span>ДЗ</span><span>Слова</span></div>
+        <div class="hero" data-el="card"><div style="font-size:11px;color:#77728a;font-weight:600">Урок 8 · Семья</div><div class="hz">爸爸 妈妈</div><div class="pbar" data-el="progress" style="width:100%;margin-top:6px"><i></i></div><div class="row"><span style="color:#77728a;font-size:11px">6 из 10</span><button class="b1" data-el="primary" style="padding:7px 12px">Продолжить</button></div></div>
+        <div style="display:flex;gap:6px" data-el="chips"><span class="chip on">HSK 1</span><span class="chip">Тоны</span><span class="chip">Семья</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:12px;padding:9px 12px"><span>Напоминания</span><span class="tg" data-el="toggle"></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:12px;padding:9px 12px"><span>Сообщения учителя</span><span class="badge" data-el="badge" style="width:22px;height:22px"></span></div>
+      </div>
+      <div class="tb" data-el="tabbar"><span class="on">Сегодня</span><span>Курс</span><span>Словарь</span><span>Я</span></div>
+    </div></div></div>
+    <div class="fmsg"></div>
+  </div>
+
+  <h3>Экран 2. Сайт</h3>
+  <div class="find" data-tasks='[["logo","логотип",""],["menu","меню в хедере","Навигация сайта живёт в шапке."],["hero","первый экран (hero)","Главный заголовок и действие, видно без прокрутки."],["cta","главную кнопку (CTA)","CTA, call to action, призыв к действию."],["sec","вторичную кнопку",""],["cards","сетку карточек",""],["footer","футер","Подвал: контакты, документы."]]'>
+    <div class="fhead"><span class="ask"></span><span class="cnt"></span></div>
+    <div class="fstage"><div class="st">
+      <div class="hd"><span class="logo" data-el="logo">AIKITAY</span><span class="menu" data-el="menu"><span>Курсы</span><span>Учителя</span><span>Цены</span><span>Вход</span></span></div>
+      <div class="hero" data-el="hero"><h5>Китайский, который хочется учить</h5><p>Онлайн-уроки для подростков и взрослых: тоны, иероглифы и живая речь.</p><button class="b1" data-el="cta">Записаться на пробный</button> <button class="b3" data-el="sec" style="box-shadow:inset 0 0 0 1px #bdb6cf;border-radius:10px;padding:9px 14px;background:#fff">Программа</button></div>
+      <div class="cards" data-el="cards"><div><b>Тоны</b><br>за 2 недели</div><div><b>HSK 1</b><br>12 уроков</div><div><b>Кабинет</b><br>ДЗ и слова</div></div>
+      <div class="ft" data-el="footer"><span>© AIKITAY</span><span>Политика · Контакты</span></div>
+    </div></div>
+    <div class="fmsg"></div>
+  </div>
+
+  <h3>Экран 3. Форма в нижнем листе</h3>
+  <div class="find" data-tasks='[["label","подпись поля",""],["ph","плейсхолдер","Серый пример внутри поля."],["err","сообщение об ошибке",""],["radio","радиокнопки","Выбор одного варианта."],["check","чекбокс",""],["select","выпадающий список",""],["handle","ручку нижнего листа","Полоска, за которую лист тянут вниз."],["ghost","текстовую кнопку",""]]'>
+    <div class="fhead"><span class="ask"></span><span class="cnt"></span></div>
+    <div class="fstage"><div class="fm">
+      <i data-el="handle" style="display:block;width:36px;height:5px;border-radius:3px;background:#cfcadb;margin:-6px auto 0"></i>
+      <h5>Запись на пробный урок</h5>
+      <div class="inp" style="width:auto"><label data-el="label">Имя</label><div class="f" data-el="ph">Например, Маша</div></div>
+      <div class="inp" style="width:auto"><label>Телефон</label><div class="f err">+7 900</div><small class="e" data-el="err">Номер слишком короткий</small></div>
+      <div class="inp sel" style="width:auto" data-el="select"><label>Уровень</label><div class="f" style="color:#1c1b22">С нуля</div></div>
+      <div style="display:flex;gap:12px" data-el="radio"><span class="cb rd"><i class="on"></i>Утро</span><span class="cb rd"><i></i>Вечер</span></div>
+      <span class="cb" data-el="check"><i class="on">✓</i>Согласна на обработку данных</span>
+      <div style="display:flex;gap:8px;justify-content:flex-end"><button class="b3" data-el="ghost">Позже</button><button class="b1">Записаться</button></div>
+    </div></div>
+    <div class="fmsg"></div>
+  </div>
+  <div class="task look">Открой любое приложение на телефоне и назови вслух каждый элемент на главном экране. Что не смогла назвать, поищи в этом модуле.</div>
+  <div class="proj">Для кабинета ученика: на бумаге или в Figma перечисли, какие элементы понадобятся на главном экране (например, таб-бар, карточка урока дня, прогресс-бар, бейдж сообщений). Это будущий список компонентов.</div>
+</section>
+
+<nav class="next"><a href="../glaz/"><small>← Назад</small>А1. Глаз дизайнера</a><a href="../horosho-ploho/"><small>Дальше →</small>Г. Хорошо, плохо, ИИ-слоп</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль А2. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Хорошо и плохо · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.crit{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:16px 0}
+.crit div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px;color:var(--ink2)}
+.crit b{display:block;font:500 18px var(--serif);color:var(--ink);margin-bottom:2px}
+.crit b em{font-style:normal;color:var(--accent);margin-right:6px}
+.slop{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.sl{display:grid;grid-template-columns:150px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;align-items:center}
+.sl .v{height:92px;border-radius:9px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;font-size:12px}
+.sl h4{margin:0 0 3px;font-size:18px}
+.sl p{margin:0;font-size:14.5px;color:var(--ink2)}
+.sl p b{color:var(--accent-ink)}
+.era{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.er{display:grid;grid-template-columns:120px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.er .y{font:500 22px var(--serif);color:var(--accent)}
+.er h4{margin:0 0 3px;font-size:18px}
+.er p{margin:0;font-size:14.5px;color:var(--ink2)}
+.trend{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:16px 0}
+.tr{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:14.5px;color:var(--ink2);display:flex;flex-direction:column;gap:5px}
+.tr h4{margin:0;font-size:18px;color:var(--ink)}
+.tr .take{font-size:13.5px;border-left:2px solid var(--accent);padding-left:9px}
+.tr .take::before{content:"Брать: ";font-weight:700;color:var(--accent-ink)}
+.fb{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.fb div{border-radius:12px;padding:12px 14px;font-size:14.5px}
+.fb .no{background:var(--bad-soft);color:#6b2b2b}
+.fb .yes{background:var(--ok-soft);color:#1f5a3d}
+.fb b{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+/* мини-макеты пар */
+.kk{width:220px;border-radius:14px;padding:16px;text-align:left;font-family:var(--sans)}
+.kk h5{margin:0 0 4px;font-size:17px}.k p{margin:0 0 10px;font-size:12px}
+.kk .b{display:inline-block;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:600}
+@media (max-width:640px){.sl{grid-template-columns:1fr}.er{grid-template-columns:1fr}.fb{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="horosho-ploho">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз дизайнера</a><a href="../anatomiya/">Анатомия</a><a href="../horosho-ploho/" class="on">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль Г · Критика и тренды</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок Г</p>
+  <h1>Хорошо, плохо, ИИ-слоп и тренды</h1>
+  <p>Блогер в рилсе показывает: «это слоп, это немодно, а это круто», но не объясняет почему. Здесь каждое «плохо» разобрано до причины. Когда понимаешь причину, вкус перестаёт быть угадайкой.</p>
+  <p class="meta">7 глав · лучше проходить после модулей А1 и А2</p>
+</div>
+
+<section class="ch" id="kriterii" data-t="Почему «хорошо» объяснимо">
+  <h2>Почему «хорошо» можно объяснить</h2>
+  <p>Вкус кажется личным делом, но у профессионалов оценки совпадают удивительно часто. Причина в том, что они проверяют одни и те же вещи. Вот шесть вопросов, по которым можно разобрать любой экран, слайд или сайт.</p>
+  <div class="crit">
+    <div><b><em>1</em>Ясность</b>Понятно ли за 3 секунды, что это и что тут делать?</div>
+    <div><b><em>2</em>Иерархия</b>Есть ли одно главное и 2–3 уровня под ним?</div>
+    <div><b><em>3</em>Единообразие</b>Одинаковые вещи выглядят одинаково: отступы, радиусы, шрифты, иконки?</div>
+    <div><b><em>4</em>Читаемость</b>Хватает ли контраста, размера, воздуха?</div>
+    <div><b><em>5</em>Честность материала</b>Свет, тени и объём правдоподобны и согласованы?</div>
+    <div><b><em>6</em>Уместность</b>Подходит ли стиль задаче и людям? Игривое для детей, строгое для бухгалтерии.</div>
+  </div>
+  <div class="key">«Плохо» почти всегда означает, что нарушен один из этих шести пунктов. «Круто» обычно значит: все шесть в порядке плюс одна смелая идея.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Красивая страница с яркими 3D-иконками, но ученик не понял, где кнопка записи. Какой пункт нарушен первым?</p><div class="opts"><button>Честность материала</button><button>Единообразие</button><button>Ясность</button></div><p class="why">Красота не спасает, если непонятно, что делать. Ясность всегда проверяют первой.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="slop" data-t="Что такое ИИ-слоп">
+  <h2>Что такое ИИ-слоп и откуда он берётся</h2>
+  <p><span class="term">Слоп</span> <span class="en">(slop, «помои»)</span> это контент, который сделан по умолчанию и без решения: вроде бы аккуратно, но безлико и узнаваемо «машинно».</p>
+  <p>Почему так выходит. Генератор (и картинок, и кода, и меня в том числе) выдаёт самый вероятный ответ, то есть <b>среднее по интернету</b>. А в интернете больше всего шаблонов стартапов 2020–2024 годов. Поэтому без точного задания получается одно и то же «среднее»: фиолетовый градиент, свечение, карточки с эмодзи. Слоп это не «сделано ИИ», а «никто не принял решений».</p>
+  <h3>Десять примет и почему каждая плохая</h3>
+  <div class="slop">
+    <div class="sl"><div class="v" style="background:linear-gradient(135deg,#7b3cff,#3c6cff 55%,#00d4ff);color:#fff;box-shadow:inset 0 0 40px rgba(255,255,255,.3)">✦ AI-powered</div><div><h4>Фиолетово-синий градиент со свечением</h4><p>Самый частый фон в шаблонах. <b>Почему плохо:</b> он ничего не говорит о продукте и одинаков у тысяч сайтов, поэтому глаз считывает «шаблон» за долю секунды.</p></div></div>
+    <div class="sl"><div class="v" style="background:#f4f3f7;gap:5px;padding:6px;display:grid;grid-template-columns:1fr 1fr 1fr"><span style="background:#fff;border-radius:6px;padding:5px;font-size:9px">🚀<br><b>Быстро</b></span><span style="background:#fff;border-radius:6px;padding:5px;font-size:9px">⚡<br><b>Просто</b></span><span style="background:#fff;border-radius:6px;padding:5px;font-size:9px">🎯<br><b>Точно</b></span></div><div><h4>Три карточки «иконка + слово + две строки»</h4><p><b>Почему плохо:</b> форма не следует из содержания. Её ставят, потому что «так принято», а не потому что у продукта ровно три одинаково важных преимущества.</p></div></div>
+    <div class="sl"><div class="v" style="background:#fff;font-size:22px">🚀 ✨ 💡</div><div><h4>Эмодзи вместо иконок</h4><p><b>Почему плохо:</b> эмодзи рисуются по-разному на разных телефонах, у них свой цветной стиль, который спорит с интерфейсом. Это быстрый способ «украсить», а не решение.</p></div></div>
+    <div class="sl"><div class="v" style="background:linear-gradient(135deg,#c8bfe6,#f1c9d6)"><span style="background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7);backdrop-filter:blur(6px);border-radius:10px;padding:10px 14px">стекло на всём</span></div><div><h4>Стекло, блики и тени на каждом элементе</h4><p><b>Почему плохо:</b> эффект работает, когда он редкий. Если стеклянное всё, глазу не за что зацепиться, а текст на полупрозрачном фоне теряет контраст.</p></div></div>
+    <div class="sl"><div class="v" style="background:#fff;flex-direction:column;font-size:11px;color:#555;text-align:center;padding:8px"><b style="font-size:13px;color:#111">Раскройте свой потенциал</b>Добро пожаловать в мир возможностей</div><div><h4>Шаблонные фразы</h4><p>«Раскройте потенциал», «Добро пожаловать в мир…», «Инновационный подход». <b>Почему плохо:</b> они подходят к любому продукту, значит, ничего не говорят о твоём.</p></div></div>
+    <div class="sl"><div class="v" style="background:#fff;flex-direction:column;gap:4px"><i style="width:60%;height:8px;background:#ccc;border-radius:4px"></i><i style="width:70%;height:6px;background:#e3e3e3;border-radius:3px"></i><i style="width:40px;height:14px;background:#7b3cff;border-radius:7px"></i></div><div><h4>Всё по центру и симметрично</h4><p><b>Почему плохо:</b> центрирование это самый безопасный выбор, поэтому его делают по умолчанию. Страница теряет опорный край и характер, длинный текст по центру трудно читать.</p></div></div>
+    <div class="sl"><div class="v" style="background:radial-gradient(circle at 30% 40%,#ff8ad8 0,transparent 40%),radial-gradient(circle at 70% 60%,#7aa2ff 0,transparent 45%),#f6f2ff"></div><div><h4>Размытые цветные пятна на фоне</h4><p><b>Почему плохо:</b> «аура» ради атмосферы без смысла. Она не связана ни с брендом, ни с содержанием.</p></div></div>
+    <div class="sl"><div class="v" style="background:#eee;color:#888">одинаковые отступы? нет</div><div><h4>Разнобой в мелочах</h4><p>Радиусы 8, 12 и 20 на соседних карточках, отступы «на глаз», иконки из трёх наборов. <b>Почему плохо:</b> генератор собирает экран кусками, и куски не согласованы. Именно мелочи выдают отсутствие системы.</p></div></div>
+    <div class="sl"><div class="v" style="background:linear-gradient(#fdf3e7,#fde8f0);font-size:30px">🧑‍💻</div><div><h4>Безликие 3D-человечки и стоковые улыбки</h4><p><b>Почему плохо:</b> картинка никак не связана с людьми продукта. Настоящие фото учеников или свой персонаж сильнее любого стока.</p></div></div>
+    <div class="sl"><div class="v" style="background:#111;color:#7CFF6B;font-family:var(--mono)">&gt; Нео-неон_</div><div><h4>Тёмный фон и неон «для технологичности»</h4><p><b>Почему плохо:</b> выбор не из задачи, а из штампа «ИИ = космос и неон». Для игры может быть уместно, для учёбы и кабинета обычно нет.</p></div></div>
+  </div>
+  <div class="key">Одна примета ещё не делает слоп. Слоп это когда их три-четыре сразу, и за ними не видно ни одного решения, принятого именно для этого продукта.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Почему генераторы выдают похожие друг на друга дизайны?</p><div class="opts"><button>Их нарочно так настроили</button><button>Без точного задания они выдают самое частое, то есть среднее</button><button>Потому что так модно</button></div><p class="why">Модель продолжает самым вероятным вариантом. Точное задание с решениями (шрифт, сетка, роли цветов, референсы) вытаскивает её из среднего.</p></div>
+    <div class="q" data-a="0"><p>Как перестать получать слоп от Claude?</p><div class="opts"><button>Давать решения: роли цветов, шрифты, сетку, референсы и «чего не делать»</button><button>Просить «сделай красиво и современно»</button><button>Просить больше эффектов</button></div><p class="why">«Красиво и современно» возвращает среднее. Решения и запреты делают результат твоим.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="pary" data-t="Было и стало">
+  <h2>Было и стало: шесть разборов</h2>
+  <p>В каждой паре сначала посмотри и попробуй сама сказать, что не так. Потом читай объяснение.</p>
+
+  <h3>1. Карточка урока</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage"><div class="kk" style="background:linear-gradient(135deg,#7b3cff,#3c6cff);color:#fff;text-align:center;box-shadow:0 0 30px rgba(123,60,255,.6)"><h5>✨ Урок 8 ✨</h5><p>Семья. Учим слова папа и мама и рассказываем о семье</p><span class="b" style="background:#ff4fa3">НАЧАТЬ!!!</span></div></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage"><div class="kk" style="background:#fff;box-shadow:0 1px 2px rgba(50,30,90,.08),0 14px 30px -14px rgba(50,30,90,.3)"><span style="font-size:11px;color:#77728a;font-weight:600">Урок 8 · Семья</span><h5 style="font:400 30px/1.1 'Kaiti SC','STKaiti','KaiTi',serif;margin:4px 0">爸爸 妈妈</h5><p style="color:#4a4658">bàba · māma · папа, мама</p><span class="b" style="background:#6b5f8a;color:#fff">Начать урок</span></div></div></div></div>
+  <div class="because"><b>Почему.</b> Слева градиент и свечение спорят с содержанием, эмодзи и капс кричат, текст по центру, иероглифа нет вовсе. Справа главный герой это сам иероглиф (смысл урока), три уровня иерархии, нейтральный фон, один акцент на действии, кнопка говорит глаголом.</div>
+
+  <h3>2. Группа кнопок</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage"><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center"><span class="kk b" style="width:auto;padding:8px 12px;background:#2aa36b;color:#fff">Дальше</span><span class="kk b" style="width:auto;padding:8px 12px;background:#d6455f;color:#fff">Повторить</span><span class="kk b" style="width:auto;padding:8px 12px;background:#2f6fd0;color:#fff">Выйти</span></div></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage"><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center"><span class="kk b" style="width:auto;padding:8px 6px;color:#6b5f8a;background:none">Выйти</span><span class="kk b" style="width:auto;padding:8px 12px;box-shadow:inset 0 0 0 1px #bdb6cf;color:#4a4068;background:#fff">Повторить</span><span class="kk b" style="width:auto;padding:8px 14px;background:#6b5f8a;color:#fff">Дальше</span></div></div></div></div>
+  <div class="because"><b>Почему.</b> Три разных ярких цвета равны по силе, и красный «Повторить» читается как ошибка или опасность. Справа три уровня: главное действие залито, второе контурное, третье текстом. Цвет больше не придумывает смысл, которого нет.</div>
+
+  <h3>3. Абзац текста</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage"><p style="margin:0;font-size:12px;line-height:1.1;color:#aaa;text-align:justify;max-width:100%">В этом уроке мы научимся рассказывать о своей семье, узнаем, как называть родителей, братьев и сестёр, и потренируем тоны в новых словах вместе.</p></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage"><p style="margin:0;font-size:15px;line-height:1.55;color:#2a2733;max-width:32ch">В этом уроке научимся рассказывать о семье: как называть родителей, братьев и сестёр, и потренируем тоны в новых словах.</p></div></div></div>
+  <div class="because"><b>Почему.</b> Слева бледный серый (контраст ниже нормы), мелкий кегль, слипшиеся строки и выключка по ширине, из-за которой между словами появляются «реки». Справа контраст 13 : 1, кегль 15, интерлиньяж 1,55, строка около 45 знаков, выравнивание влево, и текст на треть короче.</div>
+
+  <h3>4. Тень и материал</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage" style="background:#f4f4f4"><div class="kk" style="background:#fff;box-shadow:0 0 14px rgba(0,0,0,.5);border:2px solid #ddd;border-radius:24px"><h5>Тоны</h5><p>3 упражнения</p></div></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage" style="background:#f5f4f7"><div class="kk" style="background:#fff;border-radius:16px;box-shadow:0 1px 2px rgba(50,30,90,.08),0 10px 24px -12px rgba(50,30,90,.3)"><h5>Тоны</h5><p style="color:#77728a">3 упражнения</p></div></div></div></div>
+  <div class="because"><b>Почему.</b> Слева тёмная тень со всех сторон одинаково (в жизни свет так не падает) плюс рамка: два способа отделить карточку одновременно. Справа один способ, мягкая двухслойная тень сверху вниз, оттенок фона вместо чёрного.</div>
+
+  <h3>5. Пустой экран</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage"><span style="color:#999;font-size:13px">Нет данных</span></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage"><div style="text-align:center;font-size:13px;color:#4a4658"><b style="display:block;font-size:15px;color:#1c1b22">Все задания сданы</b>Можно повторить слова урока 8<br><span class="kk b" style="width:auto;display:inline-block;margin-top:8px;padding:7px 12px;background:#6b5f8a;color:#fff">Повторить слова</span></div></div></div></div>
+  <div class="because"><b>Почему.</b> «Нет данных» это язык программиста и тупик. Хорошее пустое состояние объясняет, что произошло (и хвалит), и предлагает следующий шаг.</div>
+
+  <h3>6. Иконки</h3>
+  <div class="pair"><div class="bad"><span class="lab">Было</span><div class="stage" style="gap:14px;font-size:22px;color:#333"><span>🏠</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="#333"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="3"><path d="M12 3v18M3 12h18"/></svg></div></div>
+  <div class="good"><span class="lab">Стало</span><div class="stage" style="gap:14px;color:#4a4068"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div></div></div>
+  <div class="because"><b>Почему.</b> Слева эмодзи, тонкая линия, заливка и толстая линия: четыре разных набора. Справа один набор: одна толщина 1,8, одинаковые скруглённые концы, все контурные.</div>
+  <div class="task">Возьми любой свой старый слайд или виджет. Найди в нём хотя бы два пункта из этих шести разборов и переделай в Figma. Пришли «было / стало».</div>
+</section>
+
+<section class="ch" id="ustarelo" data-t="Что устарело и почему">
+  <h2>Что устарело и почему</h2>
+  <p>Мода в дизайне меняется по трём причинам: <b>глаз устаёт</b> от того, что видит везде; <b>меняются технологии</b> (экраны стали чётче, телефоны быстрее); <b>лидеры задают тон</b>, и все повторяют за Apple и Google. Немодное не обязательно плохое, но оно сразу датирует продукт, как одежда.</p>
+  <div class="era">
+    <div class="er"><span class="y">2008–2012</span><div><h4>Глянцевый скевоморфизм</h4><p>Кожа, дерево, стежки, глянцевые кнопки-леденцы. <b>Почему ушло:</b> экраны стали чёткими, текстуры начали выглядеть тяжело, а в 2013 году Apple резко перешла на плоский дизайн. Сегодня возвращается только честный, сдержанный объём.</p></div></div>
+    <div class="er"><span class="y">2013–2016</span><div><h4>Плоский дизайн с длинными тенями</h4><p>Яркие плоские иконки с диагональной тенью до края. <b>Почему ушло:</b> приём стал шаблоном за два года, а совсем плоские кнопки плохо отличались от текста, людям было непонятно, что нажимается.</p></div></div>
+    <div class="er"><span class="y">2017–2021</span><div><h4>Корпоративные человечки</h4><p>Фиолетовые люди с длинными руками и маленькими головами (стиль называют Corporate Memphis). <b>Почему ушло:</b> их рисовали все компании, и они стали символом безликого корпоративного стиля.</p></div></div>
+    <div class="er"><span class="y">2020–2021</span><div><h4>Неоморфизм везде</h4><p>Кнопки, выдавленные из фона светлой и тёмной тенью. <b>Почему ушло как основа:</b> очень низкий контраст, плохо видно, что нажато, а что нет. Как акцент для отдельных предметов (тумблер, клавиша) работает и сейчас.</p></div></div>
+    <div class="er"><span class="y">2021–2024</span><div><h4>Гласморфизм, градиентные пятна, 3D-эмодзи</h4><p>Матовое стекло на всём, цветные размытые пятна на фоне, объёмные эмодзи. <b>Почему устало:</b> это и есть основа сегодняшнего ИИ-слопа, потому что шаблонов с этим больше всего.</p></div></div>
+  </div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Почему неоморфизм не стал основой интерфейсов?</p><div class="opts"><button>Он слишком яркий</button><button>Низкий контраст: плохо видно кнопки и их состояния</button><button>Его запретил Apple</button></div><p class="why">Всё одного цвета с фоном, различие только в тенях. Для доступности и ясности это слишком слабо. Поэтому его берут точечно.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="trendy" data-t="Тренды 2025–2026">
+  <h2>Тренды 2025–2026</h2>
+  <p>Тренд не равно «хорошо». Профессионал берёт из тренда <b>принцип</b>, а не внешний вид. Ниже то, что заметно в больших продуктах, и что из этого полезно AIKITAY.</p>
+  <div class="trend">
+    <div class="tr"><h4>Жидкое стекло</h4>В 2025 году Apple представила материал Liquid Glass: прозрачные панели и кнопки, которые преломляют контент под собой.<span class="take">стекло как редкий акцент на панелях поверх контента, не на всём.</span></div>
+    <div class="tr"><h4>Выразительный Material</h4>Google обновил Material 3 версией Expressive: смелые формы, которые меняются при нажатии, крупные цветные блоки, пружинистое движение.<span class="take">форма и движение как часть характера, а не украшение.</span></div>
+    <div class="tr"><h4>Тактильность и объём</h4>После лет плоского вернулся мягкий объём: Airbnb в 2025 сделал иконки объёмными. Кнопки снова хочется нажать.<span class="take">твой «фарфоровый инструмент» как раз в этом течении. Главное условие: честный свет.</span></div>
+    <div class="tr"><h4>Бенто-сетки</h4>Плитки разного размера для сводок, кабинетов и презентаций продуктов.<span class="take">главная кабинета ученика: урок дня крупно, остальное плитками.</span></div>
+    <div class="tr"><h4>Крупная выразительная типографика</h4>Огромные заголовки, вариативные шрифты (у которых плавно меняется толщина), кинетический текст в движении.<span class="take">иероглиф как типографический герой экрана.</span></div>
+    <div class="tr"><h4>Зерно и фактура</h4>Лёгкий шум и бумажная фактура против «стерильной» гладкости ИИ-картинок.<span class="take">едва заметная фактура фарфора на фоне, не больше.</span></div>
+    <div class="tr"><h4>Пространственный и 3D-интерфейс</h4>Слои в глубине, интерактивные 3D-объекты, которые можно повернуть.<span class="take">куб с иероглифом, который можно покрутить, но с обычным плоским интерфейсом вокруг.</span></div>
+    <div class="tr"><h4>ИИ внутри интерфейса</h4>Чат и подсказки встроены прямо в продукт, а ответы приходят карточками.<span class="take">подсказчик в задании, который объясняет ошибку ученика.</span></div>
+  </div>
+  <div class="key">Если тренд нельзя объяснить словами «он помогает ученику понять или сделать…», значит, это просто мода.</div>
+</section>
+
+<section class="ch" id="kritika" data-t="Как критиковать">
+  <h2>Как критиковать (и себя тоже)</h2>
+  <p>Полезная критика устроена по формуле: <b>что вижу → почему это проблема → что сделать</b>. Так разговаривают на дизайн-ревью (обсуждении макета в команде), и так же я разбираю твои работы.</p>
+  <div class="fb"><div class="no"><b>Бесполезно</b>«Как-то дёшево выглядит».</div><div class="yes"><b>Полезно</b>«Радиусы у карточек 8, 12 и 20 (вижу) → из-за разнобоя экран выглядит собранным из кусков (почему) → давай все карточки 16, кнопки 12 (что сделать)».</div></div>
+  <div class="fb"><div class="no"><b>Бесполезно</b>«Не нравится цвет».</div><div class="yes"><b>Полезно</b>«Акцент фиолетовый и на кнопке, и на заголовках → непонятно, что нажимается → оставить акцент только на действиях».</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Какое замечание построено по формуле?</p><div class="opts"><button>«Переделай, не то»</button><button>«Сделай как у Apple»</button><button>«Подпись под фото далеко от фото → кажется, что она относится к следующему блоку → придвинуть на 8»</button></div><p class="why">В нём есть наблюдение, причина и конкретное действие. Его можно выполнить и проверить.</p></div>
+  </div>
+  <div class="task look">Возьми один референс, который тебе нравится, и один, который нет. Для каждого напиши два замечания по формуле «вижу → почему → что сделать».</div>
+</section>
+
+<section class="ch" id="ekzamen" data-t="Большой тест">
+  <h2>Большой тест: что лучше и почему</h2>
+  <p>Выбирай вариант, а потом обязательно читай объяснение, даже если угадала.</p>
+  <div class="quiz"><h4>Тест модуля</h4>
+    <div class="q" data-a="1"><p>1. Какая кнопка лучше?</p><div class="opts vis"><button><span class="v"><span class="kk b" style="width:auto;background:linear-gradient(90deg,#ff4fa3,#7b3cff);color:#fff;box-shadow:0 0 18px rgba(123,60,255,.7)">🚀 ПОЕХАЛИ</span></span><span class="l">А</span></button><button><span class="v"><span class="kk b" style="width:auto;background:#6b5f8a;color:#fff">Начать урок</span></span><span class="l">Б</span></button></div><p class="why">Б говорит, что произойдёт, и не кричит. А это свечение, градиент, эмодзи и капс: четыре приметы слопа сразу, а смысл действия неясен.</p></div>
+    <div class="q" data-a="0"><p>2. Где отступы сделаны правильно?</p><div class="opts vis"><button><span class="v"><span style="display:flex;flex-direction:column;gap:14px;text-align:left;font-size:12px"><span><b>Слова</b><br>12 карточек</span><span><b>Тоны</b><br>3 упражнения</span></span></span><span class="l">А</span></button><button><span class="v"><span style="display:flex;flex-direction:column;gap:3px;text-align:left;font-size:12px;line-height:2.2"><span><b>Слова</b><br>12 карточек</span><span><b>Тоны</b><br>3 упражнения</span></span></span><span class="l">Б</span></button></div><p class="why">В А внутри группы тесно, между группами просторно: видно две группы. В Б расстояние между строками больше, чем между группами, и всё слилось.</p></div>
+    <div class="q" data-a="1"><p>3. Слайд: заголовок по центру, под ним абзац из 6 строк тоже по центру. Что поправить?</p><div class="opts"><button>Сделать абзац жирным</button><button>Выровнять абзац по левому краю</button><button>Добавить градиент</button></div><p class="why">Короткий заголовок можно по центру, длинный текст нет: у каждой строки разное начало, и глаз устаёт.</p></div>
+    <div class="q" data-a="2"><p>4. Что из этого не признак слопа?</p><div class="opts"><button>Три карточки «эмодзи + слово»</button><button>«Раскройте свой потенциал»</button><button>Настоящее фото учителя на уроке</button></div><p class="why">Настоящее и конкретное противоположно слопу. Слоп всегда «вообще», хорошее всегда «про нас».</p></div>
+    <div class="q" data-a="0"><p>5. Ты видишь в рилсе «это немодно». Как проверить, плохо ли это на самом деле?</p><div class="opts"><button>Пройтись по шести вопросам: ясность, иерархия, единообразие, читаемость, материал, уместность</button><button>Спросить ещё одного блогера</button><button>Посмотреть, сколько лайков</button></div><p class="why">«Немодно» говорит о времени, а шесть вопросов о качестве. Старомодное, но ясное и аккуратное лучше модного и непонятного.</p></div>
+    <div class="q" data-a="1"><p>6. Стеклянная плашка с белым текстом лежит на яркой фотографии. Главный риск?</p><div class="opts"><button>Будет слишком дорого</button><button>Контраст текста меняется вместе с фото и может упасть ниже нормы</button><button>Стекло нельзя использовать вообще</button></div><p class="why">У стекла нет своего цвета, контраст зависит от того, что под ним. Поэтому под текст стеклу добавляют затемнение или делают его плотнее.</p></div>
+  </div>
+  <div class="proj">Пройдись по своей карточке «урок дня» из модуля А1 шестью вопросами этого модуля. Найди одну вещь, которую можно сделать лучше, и переделай.</div>
+</section>
+
+<nav class="next"><a href="../anatomiya/"><small>← Назад</small>А2. Анатомия интерфейса</a><a href="../"><small>Оглавление →</small>Все модули</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль Г. Названия компаний упомянуты как учебные примеры. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+</body>
+</html>

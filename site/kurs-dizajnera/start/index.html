@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Старт · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.mini-card{width:200px;background:#fff;border-radius:12px;padding:14px;text-align:left;box-shadow:0 6px 16px -10px rgba(40,30,70,.4)}
+.mini-card .a{font:700 18px var(--sans);margin:0 0 2px;color:#1c1b22}
+.mini-card .b{font-size:12px;color:#77728a;margin:0 0 8px}
+.mini-card .c{font-size:12.5px;margin:0;color:#3d3a48}
+.mini-card.flat .a,.mini-card.flat .b,.mini-card.flat .c{font:400 13px var(--sans);color:#1c1b22;margin:0}
+.btnrow{display:flex;gap:6px}
+.btnrow span{font-size:12px;padding:6px 10px;border-radius:7px}
+.figui{display:grid;grid-template-columns:110px 1fr 120px;grid-template-rows:28px 210px;gap:0;width:min(560px,100%);border:1px solid var(--line2);border-radius:10px;overflow:hidden;font-size:11.5px;background:#fff}
+.figui .tb{grid-column:1/-1;background:#2c2c2c;color:#ddd;display:flex;align-items:center;gap:12px;padding:0 10px}
+.figui .tb span{opacity:.85}
+.figui .ly{border-right:1px solid #e5e5e5;padding:8px;color:#444}
+.figui .ly div{padding:2px 4px;border-radius:3px}
+.figui .ly .sel{background:#e5ecff}
+.figui .cv{background:#e9e9e9;display:flex;align-items:center;justify-content:center;position:relative}
+.figui .fr{width:96px;height:170px;background:#fff;position:relative;box-shadow:0 0 0 1px #0d99ff}
+.figui .fr::before{content:"iPhone 16";position:absolute;top:-15px;left:0;font-size:10px;color:#0d99ff}
+.figui .fr i{position:absolute;left:10px;right:10px;border-radius:5px;background:#e8e4f3}
+.figui .pr{border-left:1px solid #e5e5e5;padding:8px;color:#444;display:flex;flex-direction:column;gap:6px}
+.figui .pr b{font-size:10.5px;color:#888;font-weight:600}
+.figui .lab{position:absolute;background:var(--accent-deep);color:#fff;font-size:11px;border-radius:5px;padding:2px 7px;white-space:nowrap}
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:14px 0}
+.keys div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px}
+.keys kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent-ink);border-radius:5px;padding:2px 7px;margin-right:6px}
+.books{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.books div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.books b{display:block;font:500 17px var(--serif)}
+</style>
+</head>
+<body data-mod="start">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/" class="on">Старт</a><a href="../glaz/">Глаз дизайнера</a><a href="../anatomiya/">Анатомия</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль 0 · Старт</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Модуль 0</p>
+  <h1>Старт</h1>
+  <p>Как учиться на этом курсе, где ты сейчас, первые шаги в Figma и с чего начинается проект «Кабинет ученика».</p>
+  <p class="meta">6 глав · около 50 минут</p>
+</div>
+
+<section class="ch" id="kak" data-t="Как устроен курс">
+  <h2>Как устроен курс</h2>
+  <p>Курс собран так, как устроены программы в онлайн-школах дизайна: короткая теория, сразу практика руками, потом разбор. Различие одно: вместо группы и наставника здесь ты и я, а вместо учебных кейсов настоящая школа AIKITAY.</p>
+  <h3>Одна глава это четыре шага</h3>
+  <ol>
+    <li><b>Прочитать</b> 3–5 абзацев. Новое слово выделено, рядом английское название в скобках: так его ищут в интернете и так его понимаю я.</li>
+    <li><b>Потрогать пример.</b> Двигай ползунки, нажимай кнопки. Глаз учится быстрее, чем голова.</li>
+    <li><b>Ответить на мини-тест.</b> После ответа появляется объяснение, почему так. Ошибаться можно и полезно.</li>
+    <li><b>Сделать практику</b> в Figma или «смотрим». Это занимает 10 минут, не больше.</li>
+  </ol>
+  <div class="key">Не нужно проходить всё подряд и быстро. Одна глава в день с практикой даёт больше, чем пять глав за вечер без неё.</div>
+  <h3>Пять блоков</h3>
+  <p><b>А.</b> Визуальная база: как глаз читает экран и как всё называется. <b>Б.</b> UX: задача ученика, путь по экранам, наброски, прототип. <b>В.</b> UI: дизайн-система, приложение, сайт, презентации и задания. <b>Г.</b> Критика и тренды. <b>Д.</b> Факультатив: как устроены анимации, код и генерация картинок.</p>
+  <p>Блоки А и Г готовы первыми, остальные будут добавляться по одному.</p>
+</section>
+
+<section class="ch" id="test" data-t="Входной тест">
+  <h2>Входной тест</h2>
+  <p>Десять вопросов, чтобы увидеть точку отсчёта. Это не экзамен: в конце курса пройдёшь такой же и сравнишь. Отвечай быстро, как чувствуешь.</p>
+  <div class="quiz"><h4>Входной тест</h4>
+    <div class="q" data-a="1"><p>1. Что сильнее всего делает интерфейс «дорогим»?</p><div class="opts"><button>Много эффектов: блики, тени, анимации</button><button>Ровные отступы, мало цветов, точный шрифт</button><button>Яркий градиент на фоне</button></div><p class="why">Дорогое впечатление создаёт порядок: одинаковые отступы, сдержанная палитра, продуманные размеры шрифта. Эффекты без порядка выглядят дёшево.</p></div>
+    <div class="q" data-a="0"><p>2. В какой карточке сразу понятно, что главное?</p><div class="opts vis"><button><span class="v"><span class="mini-card"><p class="a">Урок 8. Семья</p><p class="b">40 минут · группа «Дети»</p><p class="c">Учим 爸爸 и 妈妈</p></span></span><span class="l">А</span></button><button><span class="v"><span class="mini-card flat"><p class="a">Урок 8. Семья</p><p class="b">40 минут · группа «Дети»</p><p class="c">Учим 爸爸 и 妈妈</p></span></span><span class="l">Б</span></button></div><p class="why">В А есть иерархия: крупный жирный заголовок, мелкая серая подпись, обычный текст. В Б всё одного размера и цвета, глазу не за что зацепиться.</p></div>
+    <div class="q" data-a="1"><p>3. Расстояние от края кнопки до её текста называется…</p><div class="opts"><button>поле (margin)</button><button>внутренний отступ (padding)</button><button>интерлиньяж</button></div><p class="why">Padding внутри элемента, margin снаружи, до соседей. Интерлиньяж это расстояние между строками текста.</p></div>
+    <div class="q" data-a="0"><p>4. «Ученик не нашёл, где сдать домашку». Это проблема…</p><div class="opts"><button>UX (удобство и логика)</button><button>UI (внешний вид)</button></div><p class="why">UX отвечает за то, понятно ли и удобно ли. Кнопка может быть красивой (хороший UI), но спрятанной (плохой UX).</p></div>
+    <div class="q" data-a="1"><p>5. Минимальный удобный размер кнопки для пальца на телефоне:</p><div class="opts"><button>24 точки</button><button>44 точки</button><button>80 точек</button></div><p class="why">Около 44 точек (примерно 7–9 мм) по правилам Apple, 48 по правилам Google. Меньше уже промахиваешься пальцем.</p></div>
+    <div class="q" data-a="1"><p>6. Какой контраст текста к фону считается нормой для обычного текста?</p><div class="opts"><button>2 : 1</button><button>4,5 : 1</button><button>15 : 1, не меньше</button></div><p class="why">По международному стандарту доступности (WCAG) обычному тексту нужно не меньше 4,5 : 1, крупному 3 : 1.</p></div>
+    <div class="q" data-a="0"><p>7. Сколько разных шрифтов (гарнитур) обычно на одном экране?</p><div class="opts"><button>1–2</button><button>3–4</button><button>Сколько угодно, если красиво</button></div><p class="why">Одна гарнитура для всего или две: для заголовков и для текста. Больше создаёт пестроту.</p></div>
+    <div class="q" data-a="2"><p>8. Вайрфрейм это…</p><div class="opts"><button>готовый красивый макет</button><button>макет, вставленный в фото телефона</button><button>черновой набросок экрана из серых блоков</button></div><p class="why">Вайрфрейм (wireframe, «проволочный каркас») показывает, что где лежит, без цвета и украшений. Второй вариант это мокап.</p></div>
+    <div class="q" data-a="1"><p>9. Где сразу понятно, какое действие главное?</p><div class="opts vis"><button><span class="v"><span class="btnrow"><span style="background:#c0453c;color:#fff">Начать</span><span style="background:#2d8a5a;color:#fff">Позже</span><span style="background:#2f5fd0;color:#fff">Отмена</span></span></span><span class="l">А</span></button><button><span class="v"><span class="btnrow"><span style="background:#6b5f8a;color:#fff">Начать</span><span style="border:1px solid #bdb8c9">Позже</span><span style="color:#6b5f8a">Отмена</span></span></span><span class="l">Б</span></button></div><p class="why">В Б одна залитая кнопка, одна контурная и одна текстовая: три уровня важности. В А три ярких кнопки спорят, и неясно, куда жать.</p></div>
+    <div class="q" data-a="0"><p>10. Что из этого типичный признак ИИ-слопа?</p><div class="opts"><button>Фиолетово-синий градиент со свечением</button><button>Ровная сетка и одинаковые отступы</button><button>Настоящие фото учеников школы</button></div><p class="why">Генераторы по умолчанию тянутся к самому частому в интернете, а фиолетово-синие градиенты со свечением встречаются в шаблонах чаще всего. Подробно в модуле <a href="../horosho-ploho/">«Хорошо и плохо»</a>.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="figma" data-t="Figma: первые шаги">
+  <h2>Figma: первые шаги</h2>
+  <p><span class="term">Figma</span> это главная программа дизайнеров интерфейсов. В ней рисуют экраны, собирают компоненты (повторяющиеся детали) и делают кликабельные прототипы. Блогеры правы в главном: без своих рук в Figma трудно отличить хороший макет от среднего. Поэтому практика в курсе начинается сразу.</p>
+  <h3>Как начать</h3>
+  <ol>
+    <li>Зарегистрируйся на figma.com. Бесплатного плана (Starter) для учёбы хватает полностью. Если сайт не открывается, включи VPN.</li>
+    <li>Поставь приложение для компьютера: в нём работать удобнее, чем в браузере. На телефоне Figma годится только для просмотра.</li>
+    <li>Создай файл «Курс AIKITAY». В нём будут все практики, по странице на модуль.</li>
+  </ol>
+  <h3>Из чего состоит окно</h3>
+  <div class="ex"><div class="stage">
+    <div class="figui"><div class="tb"><span>▭ Фрейм</span><span>□ Фигура</span><span>T Текст</span><span>✎ Перо</span></div>
+      <div class="ly"><b style="font-size:10.5px;color:#888">Слои</b><div class="sel">▭ iPhone 16</div><div>&nbsp;&nbsp;▭ Карточка урока</div><div>&nbsp;&nbsp;&nbsp;&nbsp;T Заголовок</div><div>&nbsp;&nbsp;&nbsp;&nbsp;T Подпись</div><div>&nbsp;&nbsp;▭ Кнопка</div></div>
+      <div class="cv"><div class="fr"><i style="top:14px;height:38px"></i><i style="top:60px;height:14px;right:40px"></i><i style="bottom:14px;height:22px;background:#6b5f8a"></i></div></div>
+      <div class="pr"><b>Дизайн</b><span>W 393 · H 852</span><span>Заливка #FFFFFF</span><span>Скругление 0</span><b>Автолейаут</b><span>Отступ 16 · Промежуток 12</span></div></div>
+  </div><div class="cap">Слева <b>слои</b> (всё, что есть в макете, деревом), по центру <b>холст</b>, справа <b>свойства</b> выделенного: размеры, цвет, скругления, отступы.</div></div>
+  <h3>Пять слов, без которых нельзя</h3>
+  <ul>
+    <li><span class="term">Фрейм</span> <span class="en">(frame)</span>: «лист» или контейнер. Экран телефона это фрейм, карточка внутри него тоже фрейм.</li>
+    <li><span class="term">Слой</span> <span class="en">(layer)</span>: любой объект. Слои лежат друг на друге, как бумажки.</li>
+    <li><span class="term">Автолейаут</span> <span class="en">(auto layout)</span>: фрейм, который сам расставляет содержимое в столбик или в строку с заданными отступами. Это главный навык Figma, и он же учит думать отступами.</li>
+    <li><span class="term">Компонент</span> <span class="en">(component)</span>: деталь-образец. Меняешь образец, и меняются все копии.</li>
+    <li><span class="term">Стили и переменные</span> <span class="en">(styles, variables)</span>: сохранённые цвета, шрифты, отступы с именами. Из них потом собирается дизайн-система.</li>
+  </ul>
+  <h3>Горячие клавиши первого дня</h3>
+  <div class="keys">
+    <div><kbd>F</kbd>фрейм</div><div><kbd>R</kbd>прямоугольник</div><div><kbd>T</kbd>текст</div><div><kbd>Shift A</kbd>автолейаут</div><div><kbd>Ctrl/Cmd D</kbd>дублировать</div><div><kbd>Alt</kbd> + наведение: расстояния</div><div><kbd>Shift 1</kbd>показать всё</div><div><kbd>Ctrl/Cmd G</kbd>сгруппировать</div>
+  </div>
+  <div class="task">Создай фрейм iPhone 16 (393 × 852). Внутри нарисуй карточку урока: заголовок «Урок 8. Семья», подпись «40 минут», кнопку «Продолжить». Выдели всё внутри карточки и нажми Shift A. Поменяй отступ (padding) и промежуток (gap) справа и посмотри, как карточка перестраивается.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Что делает автолейаут?</p><div class="opts"><button>Красит слои в один цвет</button><button>Сохраняет файл автоматически</button><button>Сам расставляет содержимое с заданными отступами</button></div><p class="why">Автолейаут ведёт себя как настоящая вёрстка: добавила строку, и карточка сама выросла.</p></div>
+    <div class="q" data-a="0"><p>Ты поменяла цвет у кнопки-образца, и он поменялся на всех 20 экранах. Значит, кнопка была…</p><div class="opts"><button>компонентом</button><button>группой</button><button>картинкой</button></div><p class="why">Компонент это образец с копиями. Группа просто объединяет слои, связи между копиями у неё нет.</p></div>
+  </div>
+  <p class="src">Официальная справка и бесплатные уроки: <a href="https://help.figma.com/" target="_blank" rel="noopener">help.figma.com</a> (на английском).</p>
+</section>
+
+<section class="ch" id="razbor" data-t="Как присылать работы на разбор">
+  <h2>Как присылать работы на разбор</h2>
+  <p>В школах самое ценное это не лекции, а разбор работ наставником. Здесь наставник я. Чтобы разбор был полезным, нужно немного порядка.</p>
+  <ol>
+    <li>Пришли картинку (в Figma: выдели фрейм → справа внизу «Export» → PNG, 2x) или ссылку на файл с доступом «может смотреть».</li>
+    <li>Напиши номер главы и что хотела сделать: «Глава А1.4, отступы карточки, хотела, чтобы было воздушно».</li>
+    <li>Если сомневаешься в чём-то, скажи, в чём именно.</li>
+  </ol>
+  <p>Я отвечаю в одном формате: <b>что хорошо → что поправить и почему → одно задание на доработку</b>. Почему так: сильная сторона закрепляется, а одна правка за раз действительно делается, в отличие от списка из десяти.</p>
+  <div class="key">Разбор это не оценка «хорошо / плохо», а разговор о решениях. Любое решение в макете можно объяснить, и если объяснить нельзя, это место стоит пересмотреть.</div>
+</section>
+
+<section class="ch" id="dnevnik" data-t="Насмотренность каждый день">
+  <h2>Насмотренность каждый день</h2>
+  <p><span class="term">Насмотренность</span> это не «посмотреть много картинок», а умение назвать, что именно работает. Растёт она от ежедневной привычки, поэтому в школах её делают сквозной, а не отдельным уроком в конце.</p>
+  <h3>Правило 10 минут</h3>
+  <ol>
+    <li>Открой один источник: <a href="https://mobbin.com/" target="_blank" rel="noopener">Mobbin</a> (экраны приложений), <a href="https://www.siteinspire.com/" target="_blank" rel="noopener">Siteinspire</a> (сайты) или любой из <a href="../../referensy/">виджета референсов</a>.</li>
+    <li>Найди 1–3 экрана, которые цепляют, или, наоборот, раздражают.</li>
+    <li>Сохрани в референсы и отметь кнопками-метками, что именно: «Заголовок», «Сетка и отступы», «Кнопки». Метки названы так же, как главы курса.</li>
+    <li>Одной строкой напиши почему. Не «красиво», а «крупный заголовок и много воздуха вокруг».</li>
+  </ol>
+  <div class="task look">Сегодня: три экрана из любых приложений, которыми пользуешься сама. Для каждого одна строка: что первым бросается в глаза и почему.</div>
+</section>
+
+<section class="ch" id="proekt" data-t="Проект: Кабинет ученика">
+  <h2>Проект: Кабинет ученика AIKITAY</h2>
+  <p>Сквозной проект связывает весь курс. Каждый блок добавляет в него кусок, и к концу у тебя готов настоящий дизайн кабинета, который можно отдать в разработку.</p>
+  <ul>
+    <li><b>Старт:</b> короткий бриф.</li>
+    <li><b>Блок Б:</b> интервью с учениками, путь ученика, наброски, прототип и проверка.</li>
+    <li><b>Блок В:</b> набор компонентов и пять экранов: главная, урок дня, задание, результат, профиль.</li>
+    <li><b>Блок Г:</b> самокритика по чек-листу и доработка.</li>
+  </ul>
+  <h3>Что такое бриф</h3>
+  <p><span class="term">Бриф</span> <span class="en">(brief)</span> это 5–10 строк о задаче, с которых начинается любая работа в студии. Он спасает от главной ошибки новичка: рисовать красиво, не зная зачем.</p>
+  <div class="proj">Напиши бриф кабинета в пяти строках. 1) Кто ученик (возраст, уровень, с какого устройства заходит). 2) Зачем он открывает кабинет (одна главная задача). 3) Что ещё он там делает. 4) Что для школы важно (например, чтобы ДЗ сдавали вовремя). 5) Чего точно не должно быть. Пришли мне, разберём.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>С чего начинается работа над кабинетом?</p><div class="opts"><button>С выбора красивого стиля</button><button>С брифа: кто ученик и зачем он приходит</button><button>С логотипа</button></div><p class="why">Стиль выбирают под задачу. Без брифа красота получается «вообще», а не для ученика.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="istochniki" data-t="Книги и источники">
+  <h2>Книги и источники</h2>
+  <p>Курс опирается на классику, которую читают во всех школах. Читать всё не обязательно, но к главам будут ссылки на нужные места.</p>
+  <div class="books">
+    <div><b>«Не заставляйте меня думать»</b>Стив Круг. Самая простая книга про удобство сайтов и приложений. Есть на русском.</div>
+    <div><b>«Дизайн привычных вещей»</b>Дон Норман. Почему одни вещи понятны без инструкции, а другие нет. Есть на русском.</div>
+    <div><b>Refactoring UI</b>Адам Уотан и Стив Шогер. Практичные приёмы «как сделать лучше» с картинками до и после. На английском.</div>
+    <div><b>Laws of UX</b>Сайт <a href="https://lawsofux.com/" target="_blank" rel="noopener">lawsofux.com</a>: законы восприятия с короткими объяснениями.</div>
+    <div><b>Правила Apple</b><a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener">Human Interface Guidelines</a>: как делать приложения для iPhone.</div>
+    <div><b>Правила Google</b><a href="https://m3.material.io/" target="_blank" rel="noopener">Material Design 3</a>: система дизайна Android.</div>
+  </div>
+</section>
+
+<nav class="next"><a href="../"><small>← Оглавление</small>Все модули</a><a href="../glaz/"><small>Дальше →</small>А1. Глаз дизайнера</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль 0. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+</body>
+</html>
