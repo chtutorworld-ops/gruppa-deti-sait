@@ -373,7 +373,28 @@ function fromUrl(url){
   }
   return null;
 }
+// Код, скопированный кнопкой «для ИИ» (uiverse и др.): текст-просьба + блоки ```html / ```css / ```js.
+// Достаём из него только сами блоки кода и раскладываем по полям.
+function unfence(it){
+  const src=it.code||"";
+  if(!src.includes("```"))return it;
+  const re=/```([\w+-]*)[^\n]*\n([\s\S]*?)```/g;let m,h=[],c=[],j=[],r=[];
+  while((m=re.exec(src))){
+    const lang=m[1].toLowerCase(),body=m[2].trim();if(!body)continue;
+    if(/^(html|xml|svg|vue|svelte)$/.test(lang))h.push(body);
+    else if(/^(css|scss|less)$/.test(lang))c.push(body);
+    else if(/^(js|javascript|mjs)$/.test(lang))j.push(body);
+    else if(/^(jsx|tsx|react|ts|typescript)$/.test(lang))r.push(body);
+    else if(/^\s*</.test(body))h.push(body);
+    else if(/import\s|export\s|=>/.test(body))r.push(body);
+    else if(/[.#a-z][^{]*\{[^}]*:[^}]*\}/i.test(body))c.push(body);
+    else j.push(body);
+  }
+  if(!h.length&&!c.length&&!j.length&&!r.length)return it;
+  return {...it,code:(r.length?r:h).join("\n\n"),css:[it.css||"",...c].filter(Boolean).join("\n\n"),js:[it.js||"",...j].filter(Boolean).join("\n\n")};
+}
 function tidy(it){
+  it=unfence(it);
   if(!(it.code||"").trim()&&!(it.css||"").trim()&&it.url){const f=fromUrl(it.url);if(f)return {...it,...f,fromUrl:1}}
   let code=(it.code||"").split("\n").filter(l=>!/^\s*(npm|pnpm|yarn|npx|bun)\s+(i|install|add)\b/.test(l)&&!/^\s*https?:\/\/\S+\s*$/.test(l)).join("\n");
   let demo=(it.demo||"").trim();
