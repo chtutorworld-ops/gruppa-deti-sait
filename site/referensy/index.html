@@ -164,7 +164,7 @@ const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch{return 
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const kindName=k=>(KINDS.find(x=>x[0]===k)||[,"Другое"])[1];
 /* Метки = термины курса «Курс молодого дизайнера» (kurs-dizajnera). Храним само название метки. */
-const COURSE="../kurs-dizajnera/";
+const COURSE="https://chtutorworld-ops.github.io/gruppa-deti-sait/kurs-dizajnera/";
 const GROUPS=[
  ["Основы","glaz",["Иерархия","Сетка и отступы","Плотность","Выравнивание","Контраст"]],
  ["Типографика","glaz",["Заголовок","Основной текст","Сочетание шрифтов","Цифры и подписи"]],
