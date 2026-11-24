@@ -395,7 +395,9 @@ function unfence(it){
 }
 function tidy(it){
   it=unfence(it);
-  if(!(it.code||"").trim()&&!(it.css||"").trim()&&it.url){const f=fromUrl(it.url);if(f)return {...it,...f,fromUrl:1}}
+  const bare=(it.code||"").trim();
+  if(/^https?:\/\/\S+$/.test(bare)&&!it.url)it={...it,url:bare};
+  if((!bare||/^https?:\/\/\S+$/.test(bare))&&!(it.css||"").trim()&&it.url){const f=fromUrl(it.url);if(f)return {...it,...f,fromUrl:1}}
   let code=(it.code||"").split("\n").filter(l=>!/^\s*(npm|pnpm|yarn|npx|bun)\s+(i|install|add)\b/.test(l)&&!/^\s*https?:\/\/\S+\s*$/.test(l)).join("\n");
   let demo=(it.demo||"").trim();
   if(isReact(code)&&!demo&&!/export\s|function\s|=>|class\s/.test(code.replace(/^\s*import[^\n]*$/gm,""))){
