@@ -112,8 +112,6 @@ details.paste textarea{width:100%;min-height:70px;margin-top:8px;border:1px soli
 .lt-lab{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--ink2);margin-top:12px}
 .lt{position:relative;height:18px;border-radius:9px;margin-top:4px;touch-action:none;cursor:pointer;border:1px solid var(--line)}
 .lt .knob{top:9px}
-.ux-pent button{border:0;padding:0;cursor:pointer}
-#pentbox{background:var(--bg)}
 [hidden]{display:none!important}
 .nums{display:grid;grid-template-columns:repeat(3,1fr) 1.4fr;gap:8px;margin-top:12px}
 .nums label{font-size:11px;color:var(--ink2);font-weight:600;display:block}
@@ -156,23 +154,7 @@ textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radi
 .ux-pal-stats{height:14%;width:100%;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 1.5em;box-sizing:border-box;color:#bebebe;font-size:13px}
 .ux-pal-stats svg{fill:#bebebe;transform:scale(1.2)}
 
-/* From Uiverse.io by Javierrocadev - https://uiverse.io/Javierrocadev/dull-baboon-68
-   MIT License, Copyright (c) Javierrocadev (Javier Roca), Javierrocadev (Javier Roca)
-   Классы переименованы (ux-pent-…), пять слоёв окрашены цветами дизайна. */
-.ux-pent-box{position:relative;height:330px;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--page)}
-.ux-pent{display:flex;align-items:center;justify-content:center;width:260px;height:260px}
-.ux-pent *{position:absolute}
-.ux-pent-1,.ux-pent-2,.ux-pent-3,.ux-pent-4,.ux-pent-5{clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%)}
-.ux-pent-1{width:250px;height:250px;background:var(--main2);transition:all .3s ease-in-out}
-.ux-pent-2{width:220px;height:220px;background:var(--main);transition:all .4s ease-in-out}
-.ux-pent-3{width:190px;height:190px;background:var(--blue);transition:all .5s ease-in-out}
-.ux-pent-4{width:160px;height:160px;background:var(--fin);transition:all .6s ease-in-out}
-.ux-pent-5{width:130px;height:130px;background:var(--soft);transition:all .7s ease-in-out}
-.ux-pent:hover .ux-pent-1{transform:scale(1.3) rotate(45deg)}
-.ux-pent:hover .ux-pent-2{transform:scale(1.3) rotate(90deg) translate(-20px,20px)}
-.ux-pent:hover .ux-pent-3{transform:scale(1.3) rotate(135deg) translate(-40px,40px)}
-.ux-pent:hover .ux-pent-4{transform:scale(1.3) rotate(190deg) translate(-60px,60px)}
-.ux-pent:hover .ux-pent-5{transform:scale(1.3) rotate(235deg) translate(-80px,80px)}
+
 
 /* сравнение */
 .ov{position:fixed;inset:0;background:#F4F2F9;z-index:50;display:none;flex-direction:column}
@@ -479,6 +461,13 @@ textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radi
 
   <div class="side">
     <div class="panel">
+      <h2>Как сочетаются выбранные цвета</h2>
+      <p class="note" style="margin:0 0 8px">Здесь видно цвета, которые ты выбрала, ещё до «Применить». Нажми на цвет, чтобы его поменять.</p>
+      <div class="ux-pal" id="vstrip"><div class="ux-pal-colors" id="swatches"></div>
+        <div class="ux-pal-stats"><span id="palcount"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4 7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S5.5 9.83 5.5 9 4.83 7.5 4 7.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S9.83 7.5 9 7.5z"></path></svg></div></div>
+    </div>
+
+    <div class="panel">
       <h2>Цвета дизайна <span class="pending" id="pend"></span></h2>
       <div class="roles" id="roles"></div>
       <div class="pick">
@@ -505,15 +494,6 @@ textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radi
         <textarea id="pastebox" placeholder="#6B4FD8, #3E2A8C, #EEE9FA …"></textarea>
         <div class="row"><button class="btn" id="pasteok">Разложить эти коды по цветам дизайна</button><span class="note" id="pastemsg"></span></div>
       </details>
-    </div>
-
-    <div class="panel">
-      <h2>Как сочетаются выбранные цвета</h2>
-      <div class="seg" id="vtabs"><button data-v="strip">Полоски</button><button data-v="pent">Пятигранник</button></div>
-      <p class="note" style="margin:10px 0 8px">Здесь видно цвета, которые ты выбрала, ещё до «Применить». Нажми на цвет, чтобы его поменять.</p>
-      <div class="ux-pal" id="vstrip"><div class="ux-pal-colors" id="swatches"></div>
-        <div class="ux-pal-stats"><span id="palcount"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4 7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S5.5 9.83 5.5 9 4.83 7.5 4 7.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S9.83 7.5 9 7.5z"></path></svg></div></div>
-      <div class="ux-pent-box" id="pentbox"><div class="ux-pent"><button class="ux-pent-1" data-r="main2"></button><button class="ux-pent-2" data-r="main"></button><button class="ux-pent-3" data-r="blue"></button><button class="ux-pent-4" data-r="fin"></button><button class="ux-pent-5" data-r="soft"></button></div></div>
     </div>
 
     <div class="panel">
@@ -911,11 +891,6 @@ let rT;addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>{render
 // ================= палитры =================
 function renderPals(){renderView();}
 function renderView(){
-  const v=st.view==='pent'?'pent':'strip';
-  [...$('vtabs').children].forEach(b=>{b.classList.toggle('on',b.dataset.v===v);b.onclick=()=>{st.view=b.dataset.v;store();renderView();};});
-  $('vstrip').hidden=v!=='strip';$('pentbox').hidden=v!=='pent';
-  setVars($('pentbox'),st.draft);
-  $('pentbox').querySelectorAll('button').forEach(b=>{const r=b.dataset.r;b.title=ROLES.find(x=>x[0]===r)[1]+' '+st.draft[r];b.onclick=()=>selRole(r);});
   $('swatches').innerHTML='';$('palcount').textContent=ROLES.length+' цветов';
   ROLES.forEach(([k,n])=>{const c=st.draft[k];const b=document.createElement('button');b.className='ux-pal-color'+(lum(c)>.45?' dark':'');b.style.background=c;b.title=n+' '+c;b.innerHTML=`<span>${c.slice(1)}</span>`;
     b.onclick=()=>selRole(k);$('swatches').appendChild(b);});}
