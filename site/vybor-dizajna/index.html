@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Выбор дизайна</title>
+<style>
+/* ---------- шрифты (вшиты, без внешних ссылок) ---------- */
+@font-face{font-family:UI;src:url(fonts/manrope-latin-400-normal.woff2) format('woff2');font-weight:400;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2600-27BF}
+@font-face{font-family:UI;src:url(fonts/manrope-cyrillic-400-normal.woff2) format('woff2');font-weight:400;unicode-range:U+0400-04FF}
+@font-face{font-family:UI;src:url(fonts/manrope-latin-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2600-27BF}
+@font-face{font-family:UI;src:url(fonts/manrope-cyrillic-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0400-04FF}
+@font-face{font-family:UI;src:url(fonts/manrope-latin-600-normal.woff2) format('woff2');font-weight:600;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2600-27BF}
+@font-face{font-family:UI;src:url(fonts/manrope-cyrillic-600-normal.woff2) format('woff2');font-weight:600;unicode-range:U+0400-04FF}
+@font-face{font-family:UI;src:url(fonts/manrope-latin-700-normal.woff2) format('woff2');font-weight:700;unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+2600-27BF}
+@font-face{font-family:UI;src:url(fonts/manrope-cyrillic-700-normal.woff2) format('woff2');font-weight:700;unicode-range:U+0400-04FF}
+/* концепция 1: Sora (латиница) + Manrope (кириллица, у Sora её нет) */
+@font-face{font-family:K1;src:url(fonts/sora-latin-300-normal.woff2) format('woff2');font-weight:300;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K1;src:url(fonts/sora-latin-400-normal.woff2) format('woff2');font-weight:400;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K1;src:url(fonts/sora-latin-600-normal.woff2) format('woff2');font-weight:600;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K1;src:url(fonts/sora-latin-700-normal.woff2) format('woff2');font-weight:700;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K1;src:url(fonts/manrope-cyrillic-400-normal.woff2) format('woff2');font-weight:300 400;unicode-range:U+0400-04FF}
+@font-face{font-family:K1;src:url(fonts/manrope-cyrillic-600-normal.woff2) format('woff2');font-weight:500 600;unicode-range:U+0400-04FF}
+@font-face{font-family:K1;src:url(fonts/manrope-cyrillic-700-normal.woff2) format('woff2');font-weight:700;unicode-range:U+0400-04FF}
+@font-face{font-family:KM;src:url(fonts/martian-mono-latin-400-normal.woff2) format('woff2');font-weight:400;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:KM;src:url(fonts/martian-mono-cyrillic-400-normal.woff2) format('woff2');font-weight:400;unicode-range:U+0400-04FF}
+@font-face{font-family:KM;src:url(fonts/martian-mono-latin-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:KM;src:url(fonts/martian-mono-cyrillic-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0400-04FF}
+/* концепция 2: Hanken Grotesk (латиница) + Commissioner (кириллица) */
+@font-face{font-family:K2;src:url(fonts/hanken-grotesk-latin-200-normal.woff2) format('woff2');font-weight:200;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K2;src:url(fonts/hanken-grotesk-latin-300-normal.woff2) format('woff2');font-weight:300;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K2;src:url(fonts/hanken-grotesk-latin-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K2;src:url(fonts/commissioner-cyrillic-300-normal.woff2) format('woff2');font-weight:200 300;unicode-range:U+0400-04FF}
+@font-face{font-family:K2;src:url(fonts/commissioner-cyrillic-500-normal.woff2) format('woff2');font-weight:500;unicode-range:U+0400-04FF}
+@font-face{font-family:HZ;src:url(fonts/hz.woff2) format('woff2')}
+
+/* ---------- сам инструмент ---------- */
+:root{--ink:#221B33;--ink2:#5D5675;--line:#E4DFF0;--paper:#FFFFFF;--page:#F4F2F9;--acc:#5B3FC4;--acc-l:#EEE9FB}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:UI,HZ,system-ui,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.top{display:flex;align-items:center;gap:16px;padding:18px 28px;border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:20}
+.top h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.top .cloud{margin-left:auto;font-size:13px;color:var(--ink2)}
+.top .cloud.bad{color:#A3214F}
+.wrap{max-width:1320px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:28px;align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px}
+.panel+.panel{margin-top:16px}
+.panel h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:var(--paper);padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px}
+.seg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg button:disabled{opacity:.45;cursor:default}
+.stagecol{align-self:stretch}
+.stage{position:sticky;top:84px}
+.stagebar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;margin-bottom:14px}
+.viewer{display:flex;justify-content:center;align-items:flex-start;background:linear-gradient(180deg,#ECE8F5,#E4DFEF);border-radius:18px;padding:22px 14px;overflow:hidden;min-height:200px}
+.devhost{position:relative}
+.stagecol,.side,.saved{min-width:0}
+.dev{width:375px;height:780px;border-radius:44px;overflow:hidden;position:absolute;left:0;top:0;transform-origin:0 0;box-shadow:0 0 0 10px #17131F,0 0 0 11px #3A3348,0 40px 80px -20px rgba(23,19,31,.45)}
+.note{font-size:13px;color:var(--ink2);margin:8px 0 0}
+.pending{font-size:12px;color:#A3214F;margin-left:6px;font-weight:600}
+
+/* палитры */
+details.paste{margin-top:10px;font-size:14px}
+details.paste summary{cursor:pointer;color:var(--acc);font-weight:600}
+details.paste textarea{width:100%;min-height:70px;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:8px;font-family:KM,monospace;font-size:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 14px;font-weight:600;font-size:14px}
+.btn.main{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.big{padding:13px 18px;font-size:15px}
+.btn:disabled{opacity:.4;cursor:default}
+
+/* роли */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.role{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:6px 8px;text-align:left;font-size:13px;line-height:1.2;position:relative}
+.role i{flex:none;width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,0,0,.1)}
+.role b{display:block;font-weight:600}
+.role small{font-family:KM,monospace;font-size:10px;color:var(--ink2)}
+.role.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}
+.role.ch::after{content:'';position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#A3214F}
+
+/* пикер HSB */
+.pick{margin-top:14px}
+.sv{position:relative;height:170px;border-radius:10px;touch-action:none;cursor:crosshair}
+.sv::before,.sv::after{content:'';position:absolute;inset:0;border-radius:10px}
+.sv::before{background:linear-gradient(90deg,#fff,rgba(255,255,255,0))}
+.sv::after{background:linear-gradient(0deg,#000,rgba(0,0,0,0))}
+.knob{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.3);z-index:2;pointer-events:none}
+.hue{position:relative;height:18px;border-radius:9px;margin-top:12px;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);touch-action:none;cursor:pointer}
+.hue .knob{top:9px}
+.nums{display:grid;grid-template-columns:repeat(3,1fr) 1.4fr;gap:8px;margin-top:12px}
+.nums label{font-size:11px;color:var(--ink2);font-weight:600;display:block}
+.nums input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-family:KM,monospace;font-size:13px}
+.cmp{display:flex;height:30px;border-radius:8px;overflow:hidden;margin-top:12px;border:1px solid var(--line);font-size:11px;font-weight:600}
+.cmp div{flex:1;display:flex;align-items:center;justify-content:center}
+.live{font-size:13px;color:var(--ink2);display:flex;gap:6px;align-items:center;margin-top:10px}
+
+/* сохранённые */
+.saved{grid-column:1/-1}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.vc{border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:10px;position:relative}
+.vc.cur{box-shadow:0 0 0 2px var(--acc)}
+.vc .mini{height:300px;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:#ddd}
+.vc .mini .dev{box-shadow:none;border-radius:0;pointer-events:none}
+.vc .strip{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:8px 0 6px}
+.vc .strip i{flex:1}
+.vc .nm{font-weight:700;font-size:14px;border:0;width:100%;padding:2px 0;background:transparent}
+.vc .ds{font-size:12px;color:var(--ink2)}
+.vc .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.vc .acts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:5px 8px;font-size:12px;font-weight:600}
+.vc .acts label{margin-left:auto;font-size:12px;display:flex;gap:4px;align-items:center;color:var(--ink2)}
+.vc .star{position:absolute;top:16px;right:16px;z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.9);font-size:17px;color:#B9B0CF;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.vc .star.on{color:#5B3FC4}
+.empty{color:var(--ink2);font-size:14px}
+.cmpbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12px;margin-top:10px;display:none}
+
+
+/* From Uiverse.io by arshshaikh06 - https://uiverse.io/arshshaikh06/hard-cobra-69
+   MIT License, Copyright (c) https://codepen.io/arsh-shaikh/pen/ZELZwWq?editors=1100, arshshaikh06 (Arsh Shaikh)
+   Классы переименованы (ux-pal-…), цвета берутся из палитры, клик ставит цвет в выбранную роль. */
+.ux-pal{height:200px;width:100%;border-radius:1em;overflow:hidden;box-shadow:0 10px 20px #dbdbdb;font-family:UI,HZ,sans-serif}
+.ux-pal-colors{display:flex;height:86%;width:100%}
+.ux-pal-color{height:100%;flex:1;display:flex;align-items:center;justify-content:center;color:white;font-weight:600;letter-spacing:1px;transition:flex .1s linear;border:0;padding:0;font-size:11px;min-width:0}
+.ux-pal-color span{opacity:0;transition:opacity .1s linear}
+.ux-pal-color.dark{color:#221B33}
+.ux-pal-color:hover,.ux-pal-color:focus-visible{flex:2;box-shadow:rgba(100,100,111,.2) 0 7px 29px 0}
+.ux-pal-color:hover span,.ux-pal-color:focus-visible span{opacity:1}
+.ux-pal-stats{height:14%;width:100%;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 1.5em;box-sizing:border-box;color:#bebebe;font-size:13px}
+.ux-pal-stats svg{fill:#bebebe;transform:scale(1.2)}
+
+/* From Uiverse.io by Javierrocadev - https://uiverse.io/Javierrocadev/dull-baboon-68
+   MIT License, Copyright (c) Javierrocadev (Javier Roca), Javierrocadev (Javier Roca)
+   Классы переименованы (ux-pent-…), пять слоёв окрашены цветами дизайна. */
+.ux-pent-box{position:relative;height:330px;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--page)}
+.ux-pent{display:flex;align-items:center;justify-content:center;width:260px;height:260px}
+.ux-pent *{position:absolute}
+.ux-pent-1,.ux-pent-2,.ux-pent-3,.ux-pent-4,.ux-pent-5{clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%)}
+.ux-pent-1{width:250px;height:250px;background:var(--main2);transition:all .3s ease-in-out}
+.ux-pent-2{width:220px;height:220px;background:var(--main);transition:all .4s ease-in-out}
+.ux-pent-3{width:190px;height:190px;background:var(--blue);transition:all .5s ease-in-out}
+.ux-pent-4{width:160px;height:160px;background:var(--fin);transition:all .6s ease-in-out}
+.ux-pent-5{width:130px;height:130px;background:var(--soft);transition:all .7s ease-in-out}
+.ux-pent:hover .ux-pent-1{transform:scale(1.3) rotate(45deg)}
+.ux-pent:hover .ux-pent-2{transform:scale(1.3) rotate(90deg) translate(-20px,20px)}
+.ux-pent:hover .ux-pent-3{transform:scale(1.3) rotate(135deg) translate(-40px,40px)}
+.ux-pent:hover .ux-pent-4{transform:scale(1.3) rotate(190deg) translate(-60px,60px)}
+.ux-pent:hover .ux-pent-5{transform:scale(1.3) rotate(235deg) translate(-80px,80px)}
+
+/* сравнение */
+.ov{position:fixed;inset:0;background:#F4F2F9;z-index:50;display:none;flex-direction:column}
+.ov.on{display:flex}
+.ovtop{display:flex;gap:12px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--paper);flex-wrap:wrap}
+.ovtop h3{margin:0;font-size:17px}
+.ovtop .x{margin-left:auto}
+.ovbody{flex:1;overflow:auto;display:flex;gap:34px;padding:22px;justify-content:center;align-items:flex-start}
+.ovcol{flex:0 0 auto;text-align:center}
+.ovcol .devhost{margin:0 auto}
+.ovcol h4{margin:0 0 4px;font-size:15px}
+.ovcol p{margin:0 0 10px;font-size:12px;color:var(--ink2)}
+.ovcol .strip{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:12px auto 8px;max-width:220px}
+.ovcol .strip i{flex:1}
+
+@media (max-width:1000px){
+  .wrap{grid-template-columns:1fr;padding:14px 12px 60px;gap:16px}
+  .stage{position:static}
+  .top{padding:12px 14px;flex-wrap:wrap;gap:4px;position:static}
+  .top h1{font-size:17px}
+  .top .cloud{margin-left:0;width:100%;font-size:12px}
+  .viewer{padding:16px 8px}
+  .ovbody{justify-content:flex-start}
+}
+
+/* =========================================================
+   ДИЗАЙН 1 · «МЯГКИЙ КОРПУС»  (неоморфизм + тактильный предмет)
+   ========================================================= */
+.d1{position:absolute;inset:0;background:var(--bg);color:var(--text);font-family:K1,HZ,sans-serif;display:flex;flex-direction:column;align-items:center;padding:58px 26px 34px;user-select:none;-webkit-user-select:none}
+.d1 .mono{font-family:KM,monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.d1 .bar{width:100%;display:flex;justify-content:space-between;align-items:center}
+.d1 .back{font-family:KM,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--text);padding:9px 13px;border-radius:12px;background:var(--bg);box-shadow:-4px -4px 9px var(--hi),4px 4px 9px var(--lo)}
+.d1 .prog{width:100%;height:10px;border-radius:6px;margin:16px 0 0;box-shadow:inset 2px 2px 4px var(--lo),inset -2px -2px 4px var(--hi);position:relative;overflow:hidden}
+.d1 .prog i{position:absolute;left:3px;top:3px;bottom:3px;border-radius:3px;background:var(--main);box-shadow:0 0 10px color-mix(in srgb,var(--main) 60%,transparent)}
+.d1 h2{font-weight:300;font-size:34px;line-height:1.05;letter-spacing:-.02em;margin:22px 0 0;align-self:flex-start}
+.d1 h2 b{font-weight:600}
+/* главная: диск */
+.d1 .dial{width:286px;height:286px;border-radius:50%;margin-top:30px;position:relative;background:var(--bg);box-shadow:-14px -14px 30px var(--hi),14px 14px 30px var(--lo);touch-action:none;cursor:grab}
+.d1 .ticks{position:absolute;inset:0;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.d1 .tick{position:absolute;left:50%;top:50%;width:14px;height:30px;margin:-15px 0 0 -7px;border-radius:7px;background:var(--bg);box-shadow:-3px -3px 6px var(--hi),3px 3px 6px var(--lo)}
+.d1 .tick.done{box-shadow:inset 2px 2px 4px var(--lo),inset -2px -2px 4px var(--hi)}
+.d1 .tick.done::after{content:'';position:absolute;left:5px;right:5px;top:11px;height:4px;border-radius:2px;background:var(--ok);opacity:.85}
+.d1 .tick.cur{background:var(--main);box-shadow:0 0 16px 2px color-mix(in srgb,var(--main) 70%,transparent),-3px -3px 6px var(--hi)}
+.d1 .face{position:absolute;inset:58px;border-radius:50%;box-shadow:inset 8px 8px 16px var(--lo),inset -8px -8px 16px var(--hi);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.d1 .face .n{font-weight:600;font-size:56px;line-height:1;letter-spacing:-.04em;color:var(--main2)}
+.d1 .face .t{font-size:15px;font-weight:600;margin-top:6px;max-width:130px;line-height:1.2}
+.d1 .mark{position:absolute;left:50%;top:-14px;width:0;height:0;margin-left:-7px;border:7px solid transparent;border-top:9px solid var(--main)}
+.d1 .go{margin-top:34px;width:78px;height:78px;border-radius:50%;border:0;background:var(--bg);box-shadow:-8px -8px 16px var(--hi),8px 8px 16px var(--lo);display:flex;align-items:center;justify-content:center}
+.d1 .go:active{box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi)}
+.d1 .go svg{width:26px;height:26px;fill:var(--main);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--main) 60%,transparent))}
+.d1 .hint{margin-top:auto}
+/* все звуки: окошко + кодовый замок */
+.d1 .win{width:100%;margin-top:18px;border-radius:22px;padding:10px;background:var(--bg);box-shadow:-8px -8px 18px var(--hi),8px 8px 18px var(--lo)}
+.d1 .win>div{border-radius:15px;box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi);display:flex;align-items:center;gap:16px;padding:12px 18px}
+.d1 .win .L{font-weight:600;font-size:52px;line-height:1;letter-spacing:-.03em;min-width:78px;text-align:center}
+.d1 .win .R{font-size:26px;font-weight:400}
+.d1 .win .g{margin-left:auto;text-align:right}
+.d1 .lock{width:318px;height:318px;border-radius:50%;margin-top:22px;position:relative;background:var(--bg);box-shadow:-12px -12px 26px var(--hi),12px 12px 26px var(--lo)}
+.d1 .ring{position:absolute;border-radius:50%;box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi)}
+.d1 .ring .rot{position:absolute;inset:0;transition:transform .5s cubic-bezier(.3,1.25,.5,1)}
+.d1 .ring button{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;background:none;font-family:K1,HZ,sans-serif;font-weight:600;font-size:16px;color:var(--gc);padding:0;transition:transform .5s cubic-bezier(.3,1.25,.5,1)}
+.d1 .ring button.heard{text-shadow:0 0 8px color-mix(in srgb,var(--gc) 55%,transparent)}
+.d1 .ring button.heard::after{content:'';position:absolute;left:50%;bottom:1px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--gc)}
+.d1 .ring button.top{font-size:19px}
+.d1 .notch{position:absolute;left:50%;top:8px;width:44px;height:124px;margin-left:-22px;border-radius:22px;border:2px solid color-mix(in srgb,var(--main) 55%,transparent);pointer-events:none;box-shadow:0 0 14px color-mix(in srgb,var(--main) 25%,transparent)}
+.d1 .hub{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:var(--bg);box-shadow:-5px -5px 10px var(--hi),5px 5px 10px var(--lo);display:flex;align-items:center;justify-content:center}
+.d1 .hub i{width:12px;height:12px;border-radius:50%;background:var(--main);box-shadow:0 0 10px var(--main)}
+.d1 .plate{width:100%;margin-top:24px;border-radius:16px;padding:12px 16px;box-shadow:inset 3px 3px 7px var(--lo),inset -3px -3px 7px var(--hi);font-size:14px;line-height:1.35}
+.d1 .plate b{font-weight:600;color:var(--main2)}
+/* узнай иероглиф: гравировка + дуга */
+.d1 .q{margin-top:22px;font-size:17px;font-weight:600;align-self:flex-start}
+.d1 .eng{width:230px;height:230px;border-radius:50%;margin-top:18px;box-shadow:inset 12px 12px 24px var(--lo),inset -12px -12px 24px var(--hi);display:flex;align-items:center;justify-content:center;transition:background .4s}
+.d1 .eng span{font-family:HZ,serif;font-size:138px;line-height:1;color:var(--bg);text-shadow:-2px -2px 2px var(--lo),2px 2px 2px var(--hi);transition:color .4s,text-shadow .4s}
+.d1 .eng.ok span{color:var(--ok);text-shadow:0 0 18px color-mix(in srgb,var(--ok) 50%,transparent)}
+.d1 .eng.bad span{color:var(--err);text-shadow:none}
+.d1 .arc{width:322px;height:176px;margin-top:20px;position:relative;touch-action:none}
+.d1 .arc svg{position:absolute;inset:0;overflow:visible}
+.d1 .arc .lbl{position:absolute;transform:translate(-50%,-50%);font-weight:600;font-size:17px;border:0;background:none;padding:8px;color:var(--text)}
+.d1 .arc .lbl.bad{color:var(--err)}
+.d1 .arc .lbl.ok{color:var(--ok)}
+.d1 .puck{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--main);box-shadow:0 0 18px 3px color-mix(in srgb,var(--main) 55%,transparent),-3px -3px 6px var(--hi),4px 4px 8px var(--lo);cursor:grab}
+.d1 .puck.anim{transition:left .45s cubic-bezier(.3,1.4,.5,1),top .45s cubic-bezier(.3,1.4,.5,1)}
+.d1 .puck.ok{background:var(--ok);box-shadow:0 0 18px 3px color-mix(in srgb,var(--ok) 55%,transparent)}
+.d1 .res{min-height:22px;margin-top:4px;font-size:14px;font-weight:600}
+
+/* =========================================================
+   ДИЗАЙН 2 · «СТЕКЛЯННЫЙ ИЕРОГЛИФ»  (3D, стекло, глубина)
+   ========================================================= */
+.d2{position:absolute;inset:0;color:var(--text);font-family:K2,HZ,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;
+  background:linear-gradient(180deg,var(--soft) 0%,color-mix(in srgb,var(--bg) 70%,var(--main) 30%) 100%)}
+.d2::before{content:'';position:absolute;left:-30%;right:-30%;bottom:-18%;height:46%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--main2) 22%,transparent),transparent);pointer-events:none}
+.d2 .hd{position:absolute;left:28px;right:28px;top:58px;display:flex;justify-content:space-between;align-items:baseline;z-index:5}
+.d2 .hd b{font-weight:300;font-size:15px;letter-spacing:.02em}
+.d2 .hd span{font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.d2 .back{font-weight:500;font-size:13px;color:var(--text);border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:8px 14px;border-radius:20px}
+.d2 .big{position:absolute;left:28px;top:96px;font-weight:200;font-size:46px;line-height:1;letter-spacing:-.03em;z-index:5}
+.d2 .glass{background:linear-gradient(140deg,rgba(255,255,255,.62),rgba(255,255,255,.14));border:1px solid rgba(255,255,255,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 30px 50px -22px color-mix(in srgb,var(--main2) 50%,transparent),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -12px 24px -14px color-mix(in srgb,var(--main) 30%,transparent)}
+.d2 .iri{background:linear-gradient(115deg,var(--main2) 0%,var(--main) 30%,var(--blue) 52%,var(--fin) 74%,var(--main) 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:iri 7s ease-in-out infinite alternate}
+@keyframes iri{to{background-position:100% 0}}
+/* главная: полка в глубину */
+.d2 .shelf{position:absolute;left:0;right:0;top:190px;height:420px;perspective:900px;perspective-origin:40% 40%}
+.d2 .sh{position:absolute;left:50%;top:40px;width:196px;height:264px;margin-left:-150px;border-radius:26px;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s,filter .5s;cursor:pointer;padding:22px;display:flex;flex-direction:column}
+.d2 .sh .n{font-weight:200;font-size:64px;line-height:1;letter-spacing:-.04em}
+.d2 .sh .t{font-weight:500;font-size:16px;margin-top:auto;line-height:1.2}
+.d2 .sh .s{font-size:12px;color:var(--muted);margin-top:4px}
+.d2 .sh .dot{position:absolute;top:22px;right:22px;width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.d2 .sh.cur{animation:float 5s ease-in-out infinite}
+@keyframes float{50%{translate:0 -8px}}
+.d2 .go{position:absolute;left:50%;bottom:52px;margin-left:-36px;width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:6;padding:0}
+.d2 .go svg{width:24px;height:24px;fill:var(--main2)}
+.d2 .cap{position:absolute;left:0;right:0;bottom:138px;text-align:center;font-weight:300;font-size:14px;color:var(--muted);z-index:6}
+/* все звуки: карусель */
+.d2 .tabs{position:absolute;left:28px;right:28px;top:162px;display:flex;gap:18px;z-index:6}
+.d2 .tabs button{border:0;background:none;padding:4px 0;font-family:K2,HZ,sans-serif;font-weight:300;font-size:15px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.d2 .tabs button i{width:8px;height:8px;border-radius:50%;background:var(--gc)}
+.d2 .tabs button.on{color:var(--text);font-weight:500}
+.d2 .stagec{position:absolute;left:0;right:0;top:214px;height:330px;perspective:1000px;touch-action:none}
+.d2 .cyl{position:absolute;left:50%;top:70px;width:0;height:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .6s,filter .6s}
+.d2 .ct{position:absolute;width:76px;height:96px;margin:-48px 0 0 -38px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;cursor:pointer;
+  background:linear-gradient(150deg,rgba(255,255,255,.7),color-mix(in srgb,var(--gc) 16%,rgba(255,255,255,.2)));border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 30px -16px color-mix(in srgb,var(--gc) 60%,transparent),inset 0 1px 0 #fff}
+.d2 .ct b{font-weight:500;font-size:30px;line-height:1;color:var(--gc)}
+.d2 .ct small{font-size:13px;margin-top:6px;color:var(--text);font-weight:300}
+.d2 .ct.front{box-shadow:0 26px 40px -14px color-mix(in srgb,var(--gc) 75%,transparent),0 0 0 2px color-mix(in srgb,var(--gc) 45%,transparent),inset 0 1px 0 #fff}
+.d2 .ct.heard::after{content:'';position:absolute;top:9px;right:9px;width:6px;height:6px;border-radius:50%;background:var(--gc)}
+.d2 .now{position:absolute;left:0;right:0;top:470px;text-align:center;z-index:5}
+.d2 .now b{font-weight:200;font-size:64px;line-height:1;letter-spacing:-.03em}
+.d2 .now span{display:block;font-weight:300;font-size:16px;color:var(--muted);margin-top:6px}
+.d2 .rule{position:absolute;left:24px;right:24px;bottom:36px;border-radius:20px;padding:14px 18px;font-size:14px;line-height:1.35;font-weight:300;z-index:5}
+.d2 .rule b{font-weight:500;color:var(--main2)}
+.d2 .arrows{position:absolute;left:0;right:0;top:420px;display:flex;justify-content:space-between;padding:0 22px;z-index:6}
+.d2 .arrows button{width:42px;height:42px;border-radius:50%;font-size:18px;color:var(--main2);padding:0}
+/* узнай иероглиф: стеклянный 他 */
+.d2 .q{position:absolute;left:28px;top:160px;font-weight:300;font-size:18px;z-index:5}
+.d2 .obj{position:absolute;left:50%;top:230px;width:220px;height:240px;margin-left:-110px;perspective:800px;touch-action:none;cursor:grab;z-index:4}
+.d2 .obj .in{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.d2 .obj .hz{font-family:HZ,serif;font-size:190px;line-height:1;position:relative}
+.d2 .obj .hz.sh2{position:absolute;color:rgba(255,255,255,.55);transform:translateZ(-14px);filter:blur(1px)}
+.d2 .obj .hz.main{filter:drop-shadow(0 18px 24px color-mix(in srgb,var(--main2) 45%,transparent)) drop-shadow(0 1px 0 rgba(255,255,255,.9))}
+.d2 .obj.ok .hz.main{filter:drop-shadow(0 0 22px var(--ok)) drop-shadow(0 0 4px var(--ok))}
+.d2 .floor{position:absolute;left:50%;top:500px;width:200px;height:30px;margin-left:-100px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--main2) 40%,transparent),transparent);z-index:3}
+.d2 .ans{position:absolute;z-index:5;border-radius:22px;padding:12px 22px;font-family:K2,HZ,sans-serif;font-weight:300;font-size:22px;color:var(--text);transition:transform .4s,color .3s}
+.d2 .ans.bad{color:var(--err);border-color:color-mix(in srgb,var(--err) 50%,#fff)}
+.d2 .ans.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 50%,#fff);font-weight:500}
+.d2 .res{position:absolute;left:0;right:0;bottom:40px;text-align:center;font-weight:300;font-size:15px;z-index:5;min-height:20px}
+
+/* заглушка концепции 3 */
+.d3{position:absolute;inset:0;background:var(--soft);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;font-size:16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="top"><h1>Выбор дизайна</h1><span class="cloud" id="cloudst">Подключаюсь к облаку…</span></div>
+
+<div class="wrap">
+  <div class="stagecol"><div class="stage">
+    <div class="stagebar">
+      <div class="seg" id="designs"></div>
+      <div class="seg" id="screens"></div>
+    </div>
+    <div class="viewer" id="viewer"><div class="devhost" id="mainhost"></div></div>
+    <p class="note" id="dnote"></p>
+  </div></div>
+
+  <div class="side">
+    <div class="panel">
+      <h2>Палитры</h2>
+      <div class="seg" id="paltabs"></div>
+      <p class="note" style="margin:10px 0 8px">Нажми на цвет палитры, и он встанет в выбранную ниже роль.</p>
+      <div class="ux-pal"><div class="ux-pal-colors" id="swatches"></div>
+        <div class="ux-pal-stats"><span id="palcount"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4 7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S5.5 9.83 5.5 9 4.83 7.5 4 7.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S9.83 7.5 9 7.5z"></path></svg></div></div>
+      <div class="row"><button class="btn" id="automap">Разложить всю палитру по ролям</button></div>
+      <details class="paste"><summary>Вставить свои коды в эту палитру</summary>
+        <textarea id="pastebox" placeholder="#6B4FD8, #3E2A8C, #EEE9FA …"></textarea>
+        <div class="row"><button class="btn" id="pasteok">Заменить палитру этими кодами</button><span class="note" id="pastemsg"></span></div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <h2>Цвета дизайна <span class="pending" id="pend"></span></h2>
+      <div class="roles" id="roles"></div>
+      <div class="pick">
+        <div class="sv" id="sv"><div class="knob" id="svk"></div></div>
+        <div class="hue" id="hue"><div class="knob" id="huek"></div></div>
+        <div class="nums">
+          <div><label for="ih">Тон H</label><input id="ih" inputmode="numeric"></div>
+          <div><label for="is">Насыщ. S</label><input id="is" inputmode="numeric"></div>
+          <div><label for="ib">Яркость B</label><input id="ib" inputmode="numeric"></div>
+          <div><label for="ix">Код</label><input id="ix" maxlength="7"></div>
+        </div>
+        <div class="cmp"><div id="cmpold">сейчас в дизайне</div><div id="cmpnew">новый</div></div>
+      </div>
+      <label class="live"><input type="checkbox" id="live"> Показывать сразу, без «Применить»</label>
+      <div class="row">
+        <button class="btn main big" id="apply">Применить</button>
+        <button class="btn" id="reset">Вернуть как было</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Цвета варианта</h2>
+      <div class="ux-pent-box" id="pentbox"><div class="ux-pent"><div class="ux-pent-1"></div><div class="ux-pent-2"></div><div class="ux-pent-3"></div><div class="ux-pent-4"></div><div class="ux-pent-5"></div></div></div>
+      <p class="note">Наведи мышку (или нажми), чтобы увидеть, как оттенки сочетаются.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Сохранить вариант</h2>
+      <div class="row" style="margin-top:0">
+        <input id="vname" placeholder="Название, например «Сирень + сапфир»" style="flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px 12px">
+        <button class="btn main" id="save">Сохранить</button>
+      </div>
+      <p class="note" id="savemsg"></p>
+    </div>
+  </div>
+
+  <div class="panel saved">
+    <h2>Сохранённые варианты</h2>
+    <div class="cmpbar">
+      <button class="btn main" id="cmpbtn" disabled>Сравнить отмеченные</button>
+      <span class="note" id="cmphint" style="margin:0">Отметь 2–4 варианта галочкой «сравнить».</span>
+      <button class="btn" id="copy" style="margin-left:auto">Скопировать для Claude</button>
+    </div>
+    <div class="vgrid" id="vgrid"></div>
+    <textarea class="out" id="out" readonly></textarea>
+  </div>
+</div>
+
+<div class="ov" id="ov">
+  <div class="ovtop"><h3>Сравнение</h3><div class="seg" id="ovscreens"></div><button class="btn x" id="ovx">Закрыть</button></div>
+  <div class="ovbody" id="ovbody"></div>
+</div>
+
+<script>
+'use strict';
+// ================= цвета =================
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const hex2rgb=h=>{h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255];};
+const rgb2hex=([r,g,b])=>'#'+[r,g,b].map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0')).join('').toUpperCase();
+const rgb2hsv=([r,g,b])=>{r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;
+  if(d){if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;if(h<0)h+=360;}
+  return [h,mx?d/mx*100:0,mx*100];};
+const hsv2rgb=(h,s,v)=>{s/=100;v/=100;const c=v*s,x=c*(1-Math.abs((h/60)%2-1)),m=v-c;let r,g,b;
+  if(h<60)[r,g,b]=[c,x,0];else if(h<120)[r,g,b]=[x,c,0];else if(h<180)[r,g,b]=[0,c,x];else if(h<240)[r,g,b]=[0,x,c];else if(h<300)[r,g,b]=[x,0,c];else [r,g,b]=[c,0,x];
+  return [(r+m)*255,(g+m)*255,(b+m)*255];};
+const rgb2hsl=([r,g,b])=>{r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;
+  if(d){s=d/(1-Math.abs(2*l-1));if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;if(h<0)h+=360;}
+  return [h,s*100,l*100];};
+const hsl2rgb=(h,s,l)=>{s/=100;l/=100;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;let r,g,b;
+  h=((h%360)+360)%360;if(h<60)[r,g,b]=[c,x,0];else if(h<120)[r,g,b]=[x,c,0];else if(h<180)[r,g,b]=[0,c,x];else if(h<240)[r,g,b]=[0,x,c];else if(h<300)[r,g,b]=[x,0,c];else [r,g,b]=[c,0,x];
+  return [(r+m)*255,(g+m)*255,(b+m)*255];};
+const mix=(a,b,t)=>{const x=hex2rgb(a),y=hex2rgb(b);return rgb2hex(x.map((v,i)=>v+(y[i]-v)*t));};
+const isHex=s=>/^#?[0-9a-f]{6}$/i.test(s.trim())||/^#?[0-9a-f]{3}$/i.test(s.trim());
+const normHex=s=>{s=s.trim();if(s[0]!=='#')s='#'+s;return rgb2hex(hex2rgb(s));};
+const lum=h=>{const [r,g,b]=hex2rgb(h).map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);});return .2126*r+.7152*g+.0722*b;};
+
+// ================= роли и палитры =================
+const ROLES=[['bg','Фон'],['soft','Светлый оттенок'],['main','Главный фиолетовый'],['main2','Глубокий фиолетовый'],['blue','Синий (доп.)'],['fin','Третий цвет: финали'],['text','Текст'],['ok','Верно'],['err','Неверно']];
+const DEF={bg:'#D3CBE5',soft:'#EFEAFA',main:'#6A4BD6',main2:'#3B2785',blue:'#3D69D4',fin:'#8B4E9C',text:'#251C3B',ok:'#16767A',err:'#A3214F'};
+// временные палитры, пока Дарья не прислала свои коды
+const DEF_PALS=[
+  {name:'Палитра 1',tmp:1,colors:['#EFEAFA','#D3CBE5','#B9A8E8','#6A4BD6','#3B2785','#3D69D4','#8B4E9C','#251C3B','#16767A','#A3214F']},
+  {name:'Палитра 2',tmp:1,colors:['#F3F0F8','#DCD5EA','#9C8BD0','#5B45B0','#2E2266','#4C7BC9','#A2668F','#1F1A2E','#1C6E73','#9C2A4E']}];
+const derive=r=>{const [h,s,l]=rgb2hsl(hex2rgb(r.bg));
+  return Object.assign({},r,{
+    hi:rgb2hex(hsl2rgb(h,Math.max(0,s-6),Math.min(99,l+(100-l)*.62))),
+    lo:rgb2hex(hsl2rgb(h,Math.min(100,s+4),l*.76)),
+    muted:mix(r.text,r.bg,.42)});};
+const setVars=(el,r)=>{const d=derive(r);Object.entries(d).forEach(([k,v])=>el.style.setProperty('--'+k,v));};
+
+// ================= состояние =================
+const KEY='vybor-dizajna-v1';
+let st={pals:DEF_PALS,pm:0,pal:0,design:'d1',screen:'home',draft:{...DEF},applied:{...DEF},sel:'main',live:false,variants:[],del:[],synced:{},cur:null,cmp:[]};
+try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);st=Object.assign(st,o);}}catch(e){}
+['draft','applied'].forEach(k=>{st[k]=Object.assign({...DEF},st[k]);});
+const store=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+const save=()=>{store();if(window.cloudPush)window.cloudPush();};
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+// ================= дизайны =================
+const TASKS=['Повтор: местоимения','Все звуки','Слоги ai ei ao ou','Узнай иероглиф','Он или она','Прописи 们','Собери фразу','Слушай и выбери','Диалог','Итог'];
+const G1=[['b','б'],['p','пх'],['m','м'],['f','ф'],['d','д'],['t','тх'],['n','н'],['l','л'],['g','г'],['k','кх'],['h','х']];
+const G2=[['z','дз'],['c','цх'],['s','с'],['zh','дж'],['ch','чх'],['sh','ш']];
+const G3=[['a','а'],['o','о'],['u','у'],['i','и'],['e','э']];
+const GROUPS=[{name:'1 строка',c:'main',L:G1},{name:'2 строка',c:'blue',L:G2},{name:'Финали',c:'fin',L:G3}];
+const ANS=[['она',0],['он',1],['мы',0]];
+const PLAY='<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.2-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>';
+
+const DESIGNS={
+  d1:{name:'1 · Мягкий корпус',note:'Неоморфизм: всё выдавлено из одного матового материала. Диск крутится пальцем, кольца замка нажимаются, шайбу можно тянуть по дуге.'},
+  d2:{name:'2 · Стеклянный иероглиф',note:'3D и стекло: задания стоят на полке в глубину, звуки на карусели, 他 можно повертеть пальцем и отправить к ответу.'},
+  d3:{name:'3 · скоро',off:true,note:'Новая третья концепция появится здесь, когда будет готова.'}};
+const SCREENS=[['home','Главная'],['zvuki','Все звуки'],['ta','Узнай 他']];
+
+// --- дизайн 1 ---
+function d1(root,screen,interactive){
+  const el=document.createElement('div');el.className='d1';root.appendChild(el);
+  if(screen==='home'){
+    let cur=3,rot=-cur*36;
+    el.innerHTML=`<div class="bar"><span class="mono">Домашнее задание 9</span><span class="mono">30%</span></div>
+      <div class="prog"><i style="width:30%"></i></div>
+      <h2>Привет!<br><b>Задание 4 из 10</b></h2>
+      <div class="dial"><div class="mark"></div><div class="ticks"></div><div class="face"><div class="n"></div><div class="t"></div></div></div>
+      <button class="go" aria-label="Начать">${PLAY}</button>
+      <div class="mono hint">Поверни диск</div>`;
+    const ticks=el.querySelector('.ticks'),dial=el.querySelector('.dial');
+    TASKS.forEach((t,i)=>{const k=document.createElement('div');k.className='tick'+(i<3?' done':'');k.style.transform=`rotate(${i*36}deg) translateY(-118px)`;ticks.appendChild(k);});
+    const show=()=>{ticks.style.transform=`rotate(${rot}deg)`;const idx=((Math.round(-rot/36)%10)+10)%10;cur=idx;
+      [...ticks.children].forEach((k,i)=>k.classList.toggle('cur',i===idx));
+      el.querySelector('.n').textContent=String(idx+1).padStart(2,'0');el.querySelector('.t').textContent=TASKS[idx];};
+    show();
+    if(interactive){
+      let drag=null;const ang=e=>{const r=dial.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))*180/Math.PI;};
+      dial.addEventListener('pointerdown',e=>{drag={a:ang(e),r:rot};dial.setPointerCapture(e.pointerId);ticks.style.transition='none';});
+      dial.addEventListener('pointermove',e=>{if(!drag)return;let d=ang(e)-drag.a;if(d>180)d-=360;if(d<-180)d+=360;rot=drag.r+d;drag.a=ang(e);drag.r=rot;ticks.style.transform=`rotate(${rot}deg)`;});
+      const up=()=>{if(!drag)return;drag=null;ticks.style.transition='';rot=Math.round(rot/36)*36;show();};
+      dial.addEventListener('pointerup',up);dial.addEventListener('pointercancel',up);
+    }
+  }
+  if(screen==='zvuki'){
+    el.innerHTML=`<div class="bar"><span class="back">← Все задания</span><span class="mono">2 / 10</span></div>
+      <h2 style="font-size:28px;margin-top:18px">Все <b>звуки</b></h2>
+      <div class="win"><div><span class="L"></span><span class="R"></span><span class="g mono"></span></div></div>
+      <div class="lock"><div class="notch"></div><div class="hub"><i></i></div></div>
+      <div class="plate">После <b>z c s zh ch sh</b> буква <b>i</b> звучит как «ы»: <b>ci</b> — цы, <b>shi</b> — шы</div>`;
+    const lock=el.querySelector('.lock'),L=el.querySelector('.L'),R=el.querySelector('.R'),G=el.querySelector('.g');
+    const radii=[0,40,80];
+    GROUPS.forEach((g,gi)=>{
+      const inset=radii[gi];const ring=document.createElement('div');ring.className='ring';
+      ring.style.inset=(10+inset)+'px';ring.style.setProperty('--gc',`var(--${g.c})`);
+      const rotEl=document.createElement('div');rotEl.className='rot';ring.appendChild(rotEl);
+      const n=g.L.length,step=360/n;let rot=0;
+      const mid=(318-2*(10+inset))/2-19; // середина канавки
+      const btns=g.L.map(([lat,ru],j)=>{const b=document.createElement('button');b.textContent=lat;rotEl.appendChild(b);return b;});
+      const place=()=>{rotEl.style.transform=`rotate(${rot}deg)`;btns.forEach((b,j)=>{const a=j*step;b.style.transform=`rotate(${a}deg) translateY(${-mid}px) rotate(${-a-rot}deg)`;
+        b.classList.toggle('top',((Math.round((a+rot)/step)%n)+n)%n===0);});};
+      btns.forEach((b,j)=>b.addEventListener('click',()=>{if(!interactive)return;
+        let d=-j*step-rot;d=((d%360)+540)%360-180;rot+=d;place();b.classList.add('heard');
+        const [lat,ru]=g.L[j];L.textContent=lat;L.style.color=`var(--${g.c})`;R.textContent='«'+ru+'»';G.textContent=g.name;}));
+      lock.appendChild(ring);place();
+      if(gi===0)btns[0].classList.add('heard');
+    });
+    L.textContent='b';L.style.color='var(--main)';R.textContent='«б»';G.textContent='1 строка';
+  }
+  if(screen==='ta'){
+    el.innerHTML=`<div class="bar"><span class="back">← Все задания</span><span class="mono">4 / 10</span></div>
+      <div class="q">Кто это? Дотяни шайбу до ответа</div>
+      <div class="eng"><span>他</span></div>
+      <div class="arc"><svg viewBox="0 0 322 176"><path class="trk" d="M 25 166 A 136 136 0 0 1 297 166" fill="none" stroke="var(--lo)" stroke-width="20" stroke-linecap="round" opacity=".55"/></svg><div class="puck anim"></div></div>
+      <div class="res"></div><div class="mono hint">Тяни шайбу или нажми на слово</div>`;
+    const arc=el.querySelector('.arc'),puck=el.querySelector('.puck'),eng=el.querySelector('.eng'),res=el.querySelector('.res'),trk=el.querySelector('.trk');
+    const C=[161,166],R=136,STOPS=[210,270,330];
+    const pt=a=>[C[0]+R*Math.cos(a*Math.PI/180),C[1]+R*Math.sin(a*Math.PI/180)];
+    const lbls=ANS.map(([w,ok],i)=>{const b=document.createElement('button');b.className='lbl';b.textContent=w;const [x,y]=pt(STOPS[i]);
+      const [lx,ly]=[C[0]+(R-46)*Math.cos(STOPS[i]*Math.PI/180),C[1]+(R-46)*Math.sin(STOPS[i]*Math.PI/180)];b.style.left=lx+'px';b.style.top=ly+'px';arc.appendChild(b);return b;});
+    let a=180,done=false;
+    const put=()=>{const [x,y]=pt(a);puck.style.left=x+'px';puck.style.top=y+'px';};put();
+    const choose=i=>{if(done)return;a=STOPS[i];put();
+      if(ANS[i][1]){done=true;lbls[i].classList.add('ok');eng.classList.add('ok');puck.classList.add('ok');res.textContent='Верно: 他 — он';res.style.color='var(--ok)';}
+      else{lbls[i].classList.add('bad');eng.classList.add('bad');trk.setAttribute('stroke','var(--err)');res.textContent='Это не «'+ANS[i][0]+'». Попробуй ещё';res.style.color='var(--err)';
+        setTimeout(()=>{a=180;put();eng.classList.remove('bad');trk.setAttribute('stroke','var(--lo)');},700);}};
+    if(interactive){
+      lbls.forEach((b,i)=>b.addEventListener('click',()=>choose(i)));
+      let drag=false;
+      puck.addEventListener('pointerdown',e=>{if(done)return;drag=true;puck.classList.remove('anim');puck.setPointerCapture(e.pointerId);});
+      puck.addEventListener('pointermove',e=>{if(!drag)return;const r=arc.getBoundingClientRect(),sc=r.width/322;
+        let ang=Math.atan2((e.clientY-r.top)/sc-C[1],(e.clientX-r.left)/sc-C[0])*180/Math.PI;if(ang<0)ang+=360;if(ang<90)ang=360;a=clamp(ang,180,360);put();});
+      const up=()=>{if(!drag)return;drag=false;puck.classList.add('anim');let best=-1,bd=24;STOPS.forEach((s,i)=>{if(Math.abs(s-a)<bd){bd=Math.abs(s-a);best=i;}});
+        if(best>=0)choose(best);else{a=180;put();}};
+      puck.addEventListener('pointerup',up);puck.addEventListener('pointercancel',up);
+    }
+  }
+}
+
+// --- дизайн 2 ---
+function d2(root,screen,interactive){
+  const el=document.createElement('div');el.className='d2';root.appendChild(el);
+  if(screen==='home'){
+    el.innerHTML=`<div class="hd"><b>Домашнее задание 9</b><span>3 из 10</span></div>
+      <div class="big">Задание <span class="iri">4</span></div>
+      <div class="shelf"></div>
+      <div class="cap">Нажми на задание, чтобы выдвинуть его</div>
+      <button class="go glass" aria-label="Начать">${PLAY}</button>`;
+    const shelf=el.querySelector('.shelf');let cur=3;
+    const tiles=TASKS.map((t,i)=>{const s=document.createElement('div');s.className='sh glass';
+      s.innerHTML=`${i<3?'<i class="dot"></i>':''}<div class="n ${i===cur?'iri':''}">${String(i+1).padStart(2,'0')}</div><div class="t">${t}</div><div class="s">${i<3?'пройдено':'≈ 3 минуты'}</div>`;
+      shelf.appendChild(s);if(interactive)s.addEventListener('click',()=>{cur=i;lay();});return s;});
+    const lay=()=>{tiles.forEach((s,i)=>{const d=i-cur;
+      let tf,op=1,bl=0,z=20-Math.abs(d);
+      if(d===0)tf='translate3d(0,0,40px) rotateY(-8deg)';
+      else if(d>0)tf=`translate3d(${150+d*34}px,${-d*12}px,${-140-d*120}px) rotateY(-40deg)`;
+      else tf=`translate3d(${-190+d*30}px,${-d*-6}px,${d*120}px) rotateY(30deg)`;
+      if(Math.abs(d)>1){op=Math.max(0,1-(Math.abs(d)-1)*.22);bl=Math.min(6,(Math.abs(d)-1)*1.6);}
+      if(d<-2)op=0;
+      s.style.transform=tf;s.style.opacity=op;s.style.filter=bl?`blur(${bl}px)`:'';s.style.zIndex=z;s.classList.toggle('cur',d===0);
+      s.querySelector('.n').classList.toggle('iri',d===0);});
+      el.querySelector('.big .iri').textContent=cur+1;};
+    lay();
+  }
+  if(screen==='zvuki'){
+    el.innerHTML=`<div class="hd"><span class="back">← Все задания</span><span>2 из 10</span></div>
+      <div class="big">Все звуки</div>
+      <div class="tabs"></div><div class="stagec"></div>
+      <div class="now"><b></b><span></span></div>
+      <div class="rule glass">После <b>z c s zh ch sh</b> буква <b>i</b> звучит как «ы»: <b>ci</b> — цы, <b>shi</b> — шы</div>`;
+    const tabs=el.querySelector('.tabs'),stage=el.querySelector('.stagec'),now=el.querySelector('.now');
+    let gsel=0;const cyls=[];
+    GROUPS.forEach((g,gi)=>{
+      const b=document.createElement('button');b.innerHTML=`<i></i>${g.name}`;b.style.setProperty('--gc',`var(--${g.c})`);tabs.appendChild(b);
+      if(interactive)b.addEventListener('click',()=>{gsel=gi;lay();});
+      const cyl=document.createElement('div');cyl.className='cyl';cyl.style.setProperty('--gc',`var(--${g.c})`);stage.appendChild(cyl);
+      const n=g.L.length,step=360/Math.max(n,8),rad=Math.round(38/Math.tan(Math.PI/Math.max(n,8)))+26;let idx=0;
+      const tiles=g.L.map(([lat,ru],j)=>{const t=document.createElement('div');t.className='ct';t.innerHTML=`<b>${lat}</b><small>${ru}</small>`;
+        t.style.transform=`rotateY(${j*step}deg) translateZ(${rad}px)`;cyl.appendChild(t);
+        if(interactive)t.addEventListener('click',()=>{if(gi!==gsel){gsel=gi;}idx=j;spin();lay();});return t;});
+      let rot=0;
+      const spin=()=>{let target=-idx*step,d=target-rot;d=((d%360)+540)%360-180;rot+=d;
+        tiles.forEach((t,j)=>t.classList.toggle('front',j===idx));tiles[idx].classList.add('heard');};
+      cyls.push({cyl,g,get idx(){return idx},set idx(v){idx=(v+n)%n;spin();},get rot(){return rot},tiles,rad});
+      spin();
+    });
+    const lay=()=>{[...tabs.children].forEach((b,i)=>b.classList.toggle('on',i===gsel));
+      cyls.forEach((c,i)=>{const d=i-gsel;
+        c.cyl.style.transform=`translate3d(0,${d*-40}px,${-d*260-c.rad}px) rotateX(-8deg) rotateY(${c.rot}deg)`;
+        c.cyl.style.opacity=d<0?0:(d===0?1:.38/d);c.cyl.style.filter=d>0?`blur(${2+d*2}px)`:'';c.cyl.style.zIndex=10-d;c.cyl.style.pointerEvents=d===0?'auto':'none';});
+      const c=cyls[gsel],[lat,ru]=c.g.L[c.idx];now.querySelector('b').textContent=lat;now.querySelector('b').style.color=`var(--${c.g.c})`;now.querySelector('span').textContent='«'+ru+'» · '+c.g.name;};
+    lay();
+    if(interactive){
+      let sx=null;
+      stage.addEventListener('pointerdown',e=>{sx=e.clientX;});
+      stage.addEventListener('pointerup',e=>{if(sx===null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>24){cyls[gsel].idx=cyls[gsel].idx+(dx<0?1:-1);lay();}});
+    }
+  }
+  if(screen==='ta'){
+    el.innerHTML=`<div class="hd"><span class="back">← Все задания</span><span>4 из 10</span></div>
+      <div class="big">Узнай иероглиф</div>
+      <div class="q">Поверти 他 и отправь его к ответу</div>
+      <div class="obj"><div class="in"><span class="hz sh2">他</span><span class="hz main iri">他</span></div></div>
+      <div class="floor"></div><div class="res"></div>`;
+    const obj=el.querySelector('.obj'),inn=el.querySelector('.in'),res=el.querySelector('.res');
+    const POS=[[40,560,1],[220,600,.92],[150,660,.84]];
+    let done=false,ry=-18,rx=6;inn.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;
+    const btns=ANS.map(([w,ok],i)=>{const b=document.createElement('button');b.className='ans glass';b.textContent=w;
+      const [x,y,s]=POS[i];b.style.left=x+'px';b.style.top=y+'px';b.style.transform=`scale(${s})`;b.style.filter=s<.9?'blur(.4px)':'';el.appendChild(b);return b;});
+    const choose=i=>{if(done)return;const b=btns[i],r1=b.getBoundingClientRect(),r0=obj.getBoundingClientRect(),sc=r0.width/220||1;
+      const dx=(r1.left+r1.width/2-(r0.left+r0.width/2))/sc,dy=(r1.top-(r0.top+r0.height/2))/sc;
+      inn.style.transform=`translate3d(${dx*.6}px,${dy*.6}px,0) scale(.55) rotateY(0deg)`;
+      if(ANS[i][1]){done=true;b.classList.add('ok');setTimeout(()=>{obj.classList.add('ok');inn.style.transform='rotateY(0deg) scale(1)';},650);res.textContent='Верно: 他 — он';res.style.color='var(--ok)';}
+      else{b.classList.add('bad');res.textContent='Это не «'+ANS[i][0]+'». Попробуй ещё';res.style.color='var(--err)';
+        setTimeout(()=>{inn.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;},650);}};
+    if(interactive){
+      btns.forEach((b,i)=>b.addEventListener('click',()=>choose(i)));
+      let d=null;
+      obj.addEventListener('pointerdown',e=>{if(done)return;d={x:e.clientX,y:e.clientY,ry,rx};obj.setPointerCapture(e.pointerId);inn.style.transition='none';});
+      obj.addEventListener('pointermove',e=>{if(!d)return;ry=d.ry+(e.clientX-d.x)*.6;rx=clamp(d.rx-(e.clientY-d.y)*.4,-30,30);inn.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;});
+      const up=()=>{if(!d)return;d=null;inn.style.transition='';ry=clamp(ry,-40,40);rx=clamp(rx,-12,12);inn.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;};
+      obj.addEventListener('pointerup',up);obj.addEventListener('pointercancel',up);
+    }
+  }
+}
+function d3(root){const el=document.createElement('div');el.className='d3';el.textContent='Новая третья концепция появится здесь, когда будет готова.';root.appendChild(el);}
+const RENDER={d1,d2,d3};
+
+// рисует телефон с дизайном в host; fit = ширина/высота, в которые надо вписать
+function mount(host,design,screen,roles,interactive,fitW,fitH){
+  host.innerHTML='';const dev=document.createElement('div');dev.className='dev';host.appendChild(dev);
+  setVars(dev,roles);RENDER[design](dev,screen,interactive);
+  const s=Math.min(1,fitW/375,fitH?fitH/780:1);dev.style.transform=`scale(${s})`;host.style.width=375*s+'px';host.style.height=780*s+'px';
+  return dev;}
+
+// ================= главный просмотр =================
+const $=id=>document.getElementById(id);
+const shown=()=>st.live?st.draft:st.applied;
+const viewer=$('viewer');
+const fitMain=()=>{const w=viewer.clientWidth-24;const h=innerWidth>1000?innerHeight-200:1e9;return [w,Math.max(420,h)];};
+function renderMain(){setVars($('pentbox'),shown());const [w,h]=fitMain();mount($('mainhost'),st.design,st.screen,shown(),true,w,h);$('dnote').textContent=DESIGNS[st.design].note;}
+function renderTabs(){
+  $('designs').innerHTML='';Object.entries(DESIGNS).forEach(([k,d])=>{const b=document.createElement('button');b.textContent=d.name;b.disabled=!!d.off;b.classList.toggle('on',k===st.design);
+    b.onclick=()=>{st.design=k;store();renderTabs();renderMain();};$('designs').appendChild(b);});
+  $('screens').innerHTML='';SCREENS.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.classList.toggle('on',k===st.screen);
+    b.onclick=()=>{st.screen=k;store();renderTabs();renderMain();};$('screens').appendChild(b);});}
+let rT;addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>{renderMain();},150);});
+
+// ================= палитры =================
+function renderPals(){
+  $('paltabs').innerHTML='';st.pals.forEach((p,i)=>{const b=document.createElement('button');b.textContent=p.name+(p.tmp?' (временная)':'');b.classList.toggle('on',i===st.pal);
+    b.onclick=()=>{st.pal=i;store();renderPals();};$('paltabs').appendChild(b);});
+  const p=st.pals[st.pal]||st.pals[0];$('swatches').innerHTML='';
+  $('palcount').textContent=p.colors.length+' цветов';
+  p.colors.forEach(c=>{const b=document.createElement('button');b.className='ux-pal-color'+(lum(c)>.45?' dark':'');b.style.background=c;b.title=c;b.innerHTML=`<span>${c.slice(1)}</span>`;
+    b.onclick=()=>{setRole(st.sel,c);};$('swatches').appendChild(b);});}
+// раскладка палитры по ролям: по светлоте и тону
+function autoMap(colors){
+  const cs=[...new Set(colors.map(normHex))].map(h=>{const [H,S,L]=rgb2hsl(hex2rgb(h));return {h,H,S,L};});
+  const used=new Set(),out={};
+  const take=(role,list)=>{const c=list.find(x=>!used.has(x.h));if(c){used.add(c.h);out[role]=c.h;}};
+  const byL=[...cs].sort((a,b)=>a.L-b.L);
+  take('text',byL.filter(c=>c.L<25));
+  const isTeal=c=>c.H>=160&&c.H<200&&c.S>25,isRasp=c=>(c.H>=325||c.H<10)&&c.S>30&&c.L<55;
+  take('ok',cs.filter(isTeal));take('err',cs.filter(isRasp));
+  const light=[...cs].filter(c=>c.L>=78).sort((a,b)=>b.L-a.L);
+  // фон: средний светлый (для неоморфизма), светлый оттенок: самый светлый
+  if(light.length>=2){take('soft',[light[0]]);take('bg',light.slice(1));}else take('bg',light);
+  const purp=c=>c.H>=245&&c.H<300&&c.L<78;
+  take('main',cs.filter(c=>purp(c)&&c.L>=30&&c.L<62).sort((a,b)=>b.S-a.S));
+  take('main2',cs.filter(c=>purp(c)&&c.L<40).sort((a,b)=>a.L-b.L));
+  take('blue',cs.filter(c=>c.H>=200&&c.H<245&&c.L<75&&c.S>25).sort((a,b)=>b.S-a.S));
+  take('fin',cs.filter(c=>c.H>=280&&c.H<345&&c.L<75&&!isRasp(c)).sort((a,b)=>b.S-a.S));
+  ROLES.forEach(([k])=>{if(!out[k])take(k,cs.filter(c=>c.L>20&&c.L<80));});
+  return out;}
+$('automap').onclick=()=>{const p=st.pals[st.pal];const m=autoMap(p.colors);Object.assign(st.draft,m);store();renderRoles();loadPicker();if(st.live)renderMain();};
+$('pasteok').onclick=()=>{const t=$('pastebox').value;const hs=(t.match(/#?\b[0-9a-f]{6}\b/gi)||[]).map(normHex);
+  if(hs.length<2){$('pastemsg').textContent='Не вижу кодов цветов вида #6B4FD8';return;}
+  st.pals[st.pal]={name:st.pals[st.pal].name,colors:[...new Set(hs)]};st.pm=Date.now();save();renderPals();$('pastemsg').textContent='Готово: '+hs.length+' цветов';$('pastebox').value='';};
+
+// ================= роли и пикер =================
+function renderRoles(){
+  $('roles').innerHTML='';let ch=0;
+  ROLES.forEach(([k,n])=>{const b=document.createElement('button');b.className='role'+(k===st.sel?' on':'');const diff=st.draft[k]!==st.applied[k];if(diff)ch++;
+    b.classList.toggle('ch',diff);b.innerHTML=`<i style="background:${st.draft[k]}"></i><span><b>${n}</b><small>${st.draft[k]}</small></span>`;
+    b.onclick=()=>{st.sel=k;store();renderRoles();loadPicker();};$('roles').appendChild(b);});
+  $('pend').textContent=ch&&!st.live?'· не применено: '+ch:'';
+  $('apply').disabled=!ch;}
+let hsv=[0,0,0];
+function loadPicker(){hsv=rgb2hsv(hex2rgb(st.draft[st.sel]));drawPicker(true);}
+function drawPicker(inputs){
+  const [h,s,v]=hsv;$('sv').style.background=`hsl(${h},100%,50%)`;
+  $('svk').style.left=s+'%';$('svk').style.top=(100-v)+'%';$('svk').style.background=rgb2hex(hsv2rgb(h,s,v));
+  $('huek').style.left=(h/360*100)+'%';$('huek').style.background=`hsl(${h},100%,50%)`;
+  const hex=rgb2hex(hsv2rgb(h,s,v));
+  if(inputs!==false){$('ih').value=Math.round(h);$('is').value=Math.round(s);$('ib').value=Math.round(v);if(document.activeElement!==$('ix'))$('ix').value=hex;}
+  $('cmpold').style.background=st.applied[st.sel];$('cmpold').style.color=lum(st.applied[st.sel])>.35?'#000':'#fff';
+  $('cmpnew').style.background=hex;$('cmpnew').style.color=lum(hex)>.35?'#000':'#fff';}
+function pushHsv(){const hex=rgb2hex(hsv2rgb(...hsv));st.draft[st.sel]=hex;drawPicker();
+  const r=[...$('roles').children][ROLES.findIndex(x=>x[0]===st.sel)];if(r){r.querySelector('i').style.background=hex;r.querySelector('small').textContent=hex;}
+  schedRoles();}
+let srT;const schedRoles=()=>{clearTimeout(srT);srT=setTimeout(()=>{store();renderRoles();if(st.live)renderMain();},120);};
+function setRole(k,hex){st.draft[k]=normHex(hex);store();renderRoles();loadPicker();if(st.live)renderMain();}
+const drag=(el,fn)=>{const go=e=>{const r=el.getBoundingClientRect();fn(clamp((e.clientX-r.left)/r.width,0,1),clamp((e.clientY-r.top)/r.height,0,1));};
+  el.addEventListener('pointerdown',e=>{el.setPointerCapture(e.pointerId);go(e);el._d=1;});
+  el.addEventListener('pointermove',e=>{if(el._d)go(e);});
+  el.addEventListener('pointerup',()=>{el._d=0;});el.addEventListener('pointercancel',()=>{el._d=0;});};
+drag($('sv'),(x,y)=>{hsv[1]=x*100;hsv[2]=(1-y)*100;pushHsv();});
+drag($('hue'),x=>{hsv[0]=x*359.9;pushHsv();});
+[['ih',0,360],['is',1,100],['ib',2,100]].forEach(([id,i,mx])=>$(id).addEventListener('input',e=>{const v=parseFloat(e.target.value);if(isNaN(v))return;hsv[i]=clamp(v,0,i===0?359.9:mx);pushHsv();drawPicker(false);}));
+$('ix').addEventListener('input',e=>{if(isHex(e.target.value)&&e.target.value.replace('#','').length===6){hsv=rgb2hsv(hex2rgb(normHex(e.target.value)));pushHsv();drawPicker(false);}});
+$('ix').addEventListener('blur',()=>drawPicker());
+$('live').checked=!!st.live;
+$('live').onchange=e=>{st.live=e.target.checked;store();renderRoles();renderMain();};
+$('apply').onclick=()=>{st.applied={...st.draft};st.cur=null;store();renderRoles();drawPicker();renderMain();renderSaved();};
+$('reset').onclick=()=>{st.draft={...st.applied};store();renderRoles();loadPicker();renderMain();};
+
+// ================= сохранённые варианты =================
+const visV=()=>st.variants.filter(v=>!st.del.includes(v.id));
+$('save').onclick=()=>{
+  const roles={...shown()};const name=$('vname').value.trim()||('Вариант '+(visV().length+1));
+  const v={id:newId(),name,design:st.design,screen:st.screen,roles,star:false,d:new Date().toISOString(),m:Date.now()};
+  st.variants.push(v);st.cur=v.id;$('vname').value='';save();renderSaved();
+  $('savemsg').textContent='Сохранено: «'+name+'»';setTimeout(()=>$('savemsg').textContent='',2500);
+  if(st.draft[st.sel]&&!st.live&&JSON.stringify(st.draft)!==JSON.stringify(st.applied))$('savemsg').textContent='Сохранено то, что сейчас видно в дизайне (без неприменённых цветов)';};
+const strip=r=>['bg','soft','main','main2','blue','fin','text','ok','err'].map(k=>`<i style="background:${r[k]}"></i>`).join('');
+function renderSaved(){
+  const g=$('vgrid');g.innerHTML='';const vs=visV();
+  if(!vs.length){g.innerHTML='<p class="empty">Пока пусто. Подбери цвета, нажми «Применить», потом «Сохранить».</p>';}
+  st.cmp=st.cmp.filter(id=>vs.some(v=>v.id===id));
+  vs.forEach(v=>{const c=document.createElement('div');c.className='vc'+(v.id===st.cur?' cur':'');
+    c.innerHTML=`<button class="star${v.star?' on':''}" title="Мой выбор">★</button><div class="mini"></div><div class="strip">${strip(v.roles)}</div>
+      <input class="nm" value=""><div class="ds">${(DESIGNS[v.design]||{}).name||''}</div>
+      <div class="acts"><button class="ld">Открыть</button><button class="rm">Удалить</button><label><input type="checkbox" class="ck"${st.cmp.includes(v.id)?' checked':''}> сравнить</label></div>`;
+    c.querySelector('.nm').value=v.name;
+    const mini=c.querySelector('.mini');g.appendChild(c);
+    requestAnimationFrame(()=>{const w=mini.clientWidth||170;const s=Math.max(w/375,300/780);const host=document.createElement('div');host.className='devhost';mini.appendChild(host);
+      mount(host,v.design,v.screen||'home',v.roles,false,375*s,780*s);host.style.marginLeft=((w-375*s)/2)+'px';});
+    const open=()=>{st.design=v.design;st.screen=v.screen||'home';st.applied={...DEF,...v.roles};st.draft={...st.applied};st.cur=v.id;store();renderTabs();renderRoles();loadPicker();renderMain();renderSaved();scrollTo({top:0,behavior:'smooth'});};
+    mini.onclick=open;c.querySelector('.ld').onclick=open;
+    c.querySelector('.star').onclick=()=>{v.star=!v.star;v.m=Date.now();save();renderSaved();};
+    c.querySelector('.nm').onchange=e=>{v.name=e.target.value.trim()||v.name;v.m=Date.now();save();};
+    c.querySelector('.rm').onclick=()=>{if(!confirmDel(c))return;st.del.push(v.id);if(st.cur===v.id)st.cur=null;save();renderSaved();};
+    c.querySelector('.ck').onchange=e=>{if(e.target.checked){if(st.cmp.length>=4){e.target.checked=false;return;}st.cmp.push(v.id);}else st.cmp=st.cmp.filter(x=>x!==v.id);store();cmpState();};
+  });
+  cmpState();}
+// удаление в два нажатия, без всплывающих окон
+function confirmDel(card){const b=card.querySelector('.rm');if(b.dataset.sure)return true;b.dataset.sure=1;b.textContent='Точно удалить?';b.style.color='#A3214F';
+  setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent='Удалить';b.style.color='';}},3000);return false;}
+function cmpState(){$('cmpbtn').disabled=st.cmp.length<2;$('cmphint').textContent=st.cmp.length<2?'Отметь 2–4 варианта галочкой «сравнить».':'Отмечено: '+st.cmp.length;}
+let ovScreen='home';
+function renderCmp(){const body=$('ovbody');body.innerHTML='';const vs=st.cmp.map(id=>st.variants.find(v=>v.id===id)).filter(Boolean);
+  $('ovscreens').innerHTML='';SCREENS.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.classList.toggle('on',k===ovScreen);b.onclick=()=>{ovScreen=k;renderCmp();};$('ovscreens').appendChild(b);});
+  const W=innerWidth,H=innerHeight-170;const colW=W<700?Math.min(W-60,330):Math.min(375,(W-44-22*(vs.length-1))/vs.length-26);
+  vs.forEach(v=>{const col=document.createElement('div');col.className='ovcol';col.innerHTML=`<h4>${v.star?'★ ':''}${esc(v.name)}</h4><p>${(DESIGNS[v.design]||{}).name||''}</p>`;
+    const host=document.createElement('div');host.className='devhost';col.appendChild(host);body.appendChild(col);
+    mount(host,v.design,ovScreen,v.roles,true,colW,W<700?1e9:H-40);
+    const s=document.createElement('div');s.className='strip';s.innerHTML=strip(v.roles);col.appendChild(s);
+    const b=document.createElement('button');b.className='btn'+(v.star?' main':'');b.textContent=v.star?'★ Мой выбор':'☆ Сделать моим выбором';
+    b.onclick=()=>{v.star=!v.star;v.m=Date.now();save();renderCmp();renderSaved();};col.appendChild(b);});}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('cmpbtn').onclick=()=>{ovScreen=st.screen;$('ov').classList.add('on');document.body.style.overflow='hidden';renderCmp();};
+$('ovx').onclick=()=>{$('ov').classList.remove('on');document.body.style.overflow='';};
+addEventListener('resize',()=>{if($('ov').classList.contains('on'))renderCmp();});
+
+// текст для Claude
+const RN=Object.fromEntries(ROLES);
+$('copy').onclick=async()=>{const vs=visV();const L=['Выбор дизайна: мои варианты ('+new Date().toLocaleDateString('ru-RU')+')',''];
+  vs.sort((a,b)=>(b.star?1:0)-(a.star?1:0)).forEach(v=>{L.push((v.star?'★ МОЙ ВЫБОР — ':'• ')+v.name+' — '+((DESIGNS[v.design]||{}).name||v.design));
+    ROLES.forEach(([k,n])=>L.push('   '+n+': '+v.roles[k]));L.push('');});
+  if(!vs.length)L.push('(вариантов пока нет)');
+  const t=L.join('\n');const o=$('out');o.value=t;o.style.display='block';let ok=false;
+  try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}
+  if(!ok){try{o.focus();o.select();ok=document.execCommand('copy');}catch(e){}}
+  $('copy').textContent=ok?'Скопировано, вставь в чат':'Выдели текст ниже и скопируй';setTimeout(()=>$('copy').textContent='Скопировать для Claude',3000);};
+
+// ================= облако (как в каталоге стилей) =================
+const CLOUD=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
+const CHW='vybor-dizajna',CSID='daria';
+const setC=(t,bad)=>{$('cloudst').textContent=t;$('cloudst').className='cloud'+(bad?' bad':'');};
+if(!st.synced||typeof st.synced!=='object')st.synced={};
+const localParts=()=>{const o={};
+  st.variants.forEach(v=>{o['v-'+v.id]={d:v,m:v.m};});
+  st.del.forEach(id=>{o['v-'+id]={d:{id,del:1},m:'del'};});
+  if(st.pm)o.p={d:{pals:st.pals,pm:st.pm},m:st.pm};
+  return o;};
+const merge=parts=>{let ch=false;const del=new Set(st.del);
+  Object.entries(parts||{}).forEach(([n,d])=>{
+    if(n.startsWith('v-')&&d.id){
+      if(d.del){if(!del.has(d.id)){del.add(d.id);ch=true;}st.synced[n]='del';}
+      else{const i=st.variants.findIndex(x=>x.id===d.id);const {ts,...x}=d;
+        if(i<0){st.variants.push(x);ch=true;}else if((x.m||0)>(st.variants[i].m||0)){st.variants[i]=x;ch=true;}
+        st.synced[n]=x.m;}}
+    else if(n==='p'&&d.pals){if((d.pm||0)>(st.pm||0)){st.pals=d.pals;st.pm=d.pm;ch=true;}st.synced.p=d.pm;}});
+  st.del=[...del];st.variants.sort((a,b)=>(a.d||'').localeCompare(b.d||''));return ch;};
+let busy=false,retryT=null,pushT=null;
+const queue=()=>{const lp=localParts();return Object.keys(lp).filter(n=>st.synced[n]!==lp[n].m).map(n=>[n,lp[n]]);};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const flush=async()=>{if(busy)return;busy=true;clearTimeout(retryT);
+  try{let q=queue();
+    while(q.length){setC('Отправляю в облако… осталось '+q.length);const [n,{d,m}]=q[0];
+      const r=await fetch(CLOUD+'save',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({hw:CHW,sid:CSID,name:'Дарья',part:n,data:d})});
+      if(r.status===413){setC('Вариантов стало слишком много для облака, напиши Claude',true);busy=false;return;}
+      if(!r.ok)throw new Error('http '+r.status);st.synced[n]=m;store();q=queue();if(q.length)await sleep(1100);}
+    setC('✓ Всё в облаке, видно на всех устройствах');}
+  catch(e){setC('Нет связи с облаком: сохранено на этом устройстве, повторю через минуту',true);retryT=setTimeout(flush,60000);}
+  busy=false;};
+window.cloudPush=()=>{clearTimeout(pushT);setC('Есть изменения…');pushT=setTimeout(flush,1000);};
+const pull=async()=>{const r=await fetch(CLOUD+'list?hw='+CHW,{cache:'no-store'});if(!r.ok)throw new Error('http '+r.status);
+  const j=await r.json();const sub=(j.subs||[]).find(x=>x.sid===CSID);return (sub&&sub.parts)||{};};
+const sync=async()=>{try{const parts=await pull();if(merge(parts)){store();renderPals();renderSaved();}store();flush();}
+  catch(e){setC('Нет связи с облаком: сохранено на этом устройстве, повторю через минуту',true);clearTimeout(retryT);retryT=setTimeout(sync,60000);}};
+
+// ================= старт =================
+renderTabs();renderPals();renderRoles();loadPicker();renderMain();renderSaved();sync();
+addEventListener('pageshow',e=>{if(e.persisted)sync();});
+</script>
+</body>
+</html>
