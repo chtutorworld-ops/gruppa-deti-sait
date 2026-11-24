@@ -578,7 +578,7 @@ const setVars=(el,r)=>{const d=derive(r);Object.entries(d).forEach(([k,v])=>el.s
 
 // ================= состояние =================
 const KEY='vybor-dizajna-v1';
-let st={pals:DEF_PALS,pm:0,pal:0,design:'d1',screen:'home',draft:{...DEF},applied:{...DEF},sel:'main',live:false,variants:[],del:[],synced:{},cur:null,cmp:[]};
+let st={pals:DEF_PALS,pm:0,pal:0,design:'d4',screen:'home',draft:{...DEF},applied:{...DEF},sel:'main',live:false,variants:[],del:[],synced:{},cur:null,cmp:[]};
 try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);st=Object.assign(st,o);}}catch(e){}
 ['draft','applied'].forEach(k=>{st[k]=Object.assign({...DEF},st[k]);});
 const store=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
@@ -595,10 +595,10 @@ const ANS=[['она',0],['он',1],['мы',0]];
 const PLAY='<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.2-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>';
 
 const DESIGNS={
-  d1:{name:'1 · Мягкий корпус',note:'Неоморфизм: всё выдавлено из одного матового материала. Диск крутится пальцем, кольца замка нажимаются, шайбу можно тянуть по дуге.'},
-  d2:{name:'2 · Стеклянный иероглиф',note:'3D и стекло: задания стоят на полке в глубину, звуки на карусели, 他 можно повертеть пальцем и отправить к ответу.'},
-  d3:{name:'3 · Центр управления',note:'Светлый прибор: задания на радаре (нажми на миссию), звуки как каналы осциллографа (веди пальцем), ответ выбирается прицелом.'},
-  d4:{name:'4 · Как топовое приложение',note:'По образцу Brilliant: путь заданий из кубиков, клавиши звуков, три плитки ответа и панель «Верно!» снизу.'}};
+  d1:{hide:1,name:'1 · Мягкий корпус',note:'Неоморфизм: всё выдавлено из одного матового материала. Диск крутится пальцем, кольца замка нажимаются, шайбу можно тянуть по дуге.'},
+  d2:{hide:1,name:'2 · Стеклянный иероглиф',note:'3D и стекло: задания стоят на полке в глубину, звуки на карусели, 他 можно повертеть пальцем и отправить к ответу.'},
+  d3:{hide:1,name:'3 · Центр управления',note:'Светлый прибор: задания на радаре (нажми на миссию), звуки как каналы осциллографа (веди пальцем), ответ выбирается прицелом.'},
+  d4:{name:'Как топовое приложение',note:'По образцу Brilliant: путь заданий из кубиков, клавиши звуков, три плитки ответа и панель «Верно!» снизу.'}};
 const SCREENS=[['home','Главная'],['zvuki','Все звуки'],['ta','Узнай 他']];
 
 // --- дизайн 1 ---
@@ -897,7 +897,8 @@ const viewer=$('viewer');
 const fitMain=()=>{const w=viewer.clientWidth-24;const h=innerWidth>1000?innerHeight-200:1e9;return [w,Math.max(420,h)];};
 function renderMain(){setVars($('pentbox'),shown());const [w,h]=fitMain();mount($('mainhost'),st.design,st.screen,shown(),true,w,h);$('dnote').textContent=DESIGNS[st.design].note;}
 function renderTabs(){
-  $('designs').innerHTML='';Object.entries(DESIGNS).forEach(([k,d])=>{const b=document.createElement('button');b.textContent=d.name;b.disabled=!!d.off;b.classList.toggle('on',k===st.design);
+  if(DESIGNS[st.design].hide)st.design='d4';
+  $('designs').innerHTML='';Object.entries(DESIGNS).filter(([k,d])=>!d.hide).forEach(([k,d])=>{const b=document.createElement('button');b.textContent=d.name;b.disabled=!!d.off;b.classList.toggle('on',k===st.design);
     b.onclick=()=>{st.design=k;store();renderTabs();renderMain();};$('designs').appendChild(b);});
   $('screens').innerHTML='';SCREENS.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.classList.toggle('on',k===st.screen);
     b.onclick=()=>{st.screen=k;store();renderTabs();renderMain();};$('screens').appendChild(b);});}
