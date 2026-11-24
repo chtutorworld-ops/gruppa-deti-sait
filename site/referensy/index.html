@@ -70,6 +70,17 @@ textarea{min-height:76px;resize:vertical}
 .tag{font:11px/1 var(--f-mono);padding:4px 7px;border-radius:6px;background:var(--sunk);color:var(--muted);align-self:flex-start}
 .cl{font-size:13px;border-left:2px solid var(--accent);padding-left:9px}
 .cl small{display:block;color:var(--muted);font:11px var(--f-mono)}
+.verd{display:flex;gap:8px;grid-column:1/-1}
+.verd button{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 12px;cursor:pointer;font-weight:600;color:var(--muted);box-shadow:var(--press)}
+.verd button[aria-pressed="true"][data-v="like"]{background:var(--ok);color:#fff;border-color:transparent;box-shadow:var(--shadow)}
+.verd button[aria-pressed="true"][data-v="dislike"]{background:var(--love);color:#fff;border-color:transparent;box-shadow:var(--shadow)}
+.hint{font-size:12px;color:var(--muted)}
+.ref.no{border-color:color-mix(in srgb,var(--love) 45%,transparent)}
+.ref.no .shot img{filter:saturate(.55)}
+.mark{font:600 11px/1 var(--f-ui);padding:5px 8px;border-radius:6px;align-self:flex-start;color:#fff}
+.mark.like{background:var(--ok)}.mark.dislike{background:var(--love)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.row{display:flex;flex-wrap:wrap;gap:6px}
 .empty{border:1.5px dashed var(--line);border-radius:14px;padding:30px 16px;text-align:center;color:var(--muted)}
 /* источники */
 .src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
@@ -89,17 +100,20 @@ textarea{min-height:76px;resize:vertical}
   </header>
 
   <div>
-    <h1>Экраны приложений, которые нравятся</h1>
-    <p class="lead">Нашли красивый экран в приложении: вставьте ссылку, при желании скриншот (Ctrl+V) и пару слов. Видно с любого устройства, Claude читает всё отсюда.</p>
+    <h1>Экраны приложений: что нравится и что нет</h1>
+    <p class="lead">Нашли красивый экран в приложении: вставьте ссылку, при желании скриншот (Ctrl+V) и пару слов. Не понравился экран: тоже сохраняйте с пометкой «Не нравится», это так же важно. Видно с любого устройства, Claude читает всё отсюда.</p>
   </div>
 
   <section>
     <form class="form" id="form" autocomplete="off">
+      <div class="verd" id="f-verd" role="group" aria-label="Нравится или нет"><button type="button" data-v="like" aria-pressed="true">♥ Нравится</button><button type="button" data-v="dislike" aria-pressed="false">✕ Не нравится</button></div>
       <div class="field" style="grid-column:1/-1"><label for="f-url">Ссылка на экран или приложение</label><input type="url" id="f-url" placeholder="https://mobbin.com/screens/…" required></div>
       <div class="field">
         <span class="lbl">Какой экран</span><div class="seg" id="f-kind"></div>
-        <label for="f-note" style="margin-top:8px">Что нравится</label>
+        <span class="lbl" style="margin-top:8px">Что именно цепляет (можно несколько)</span><div class="seg" id="f-asp"></div>
+        <label for="f-note" id="f-note-l" style="margin-top:8px">Что нравится</label>
         <textarea id="f-note" placeholder="Например: шкала прогресса как прибор, крупная карточка задания"></textarea>
+        <span class="hint">Даже «не знаю почему, просто фу» полезно: сохраните, разберёмся вместе.</span>
       </div>
       <div class="field"><span class="lbl">Скриншот (необязательно)</span>
         <div class="drop" id="f-drop" tabindex="0">Нажмите, перетащите или вставьте Ctrl+V<div id="f-img"></div></div>
@@ -111,6 +125,7 @@ textarea{min-height:76px;resize:vertical}
 
   <section>
     <div class="bar"><h2>Мои референсы</h2><span class="count" id="count"></span><button class="btn small" id="reload" type="button">↻ Обновить</button></div>
+    <div class="bar" id="vfilters"></div>
     <div class="bar" id="filters"></div>
     <div class="status err" id="note" hidden></div>
     <div class="list" id="list"></div>
@@ -144,7 +159,10 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch{return u}};
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const kindName=k=>(KINDS.find(x=>x[0]===k)||[,"Другое"])[1];
-let items=[],filter="all",imgBlob=null;
+const ASPECTS=[["color","Цвет"],["type","Шрифт"],["layout","Сетка и отступы"],["shape","Форма кнопок и карточек"],["depth","Объём, тени, стекло"],["icons","Иконки и картинки"],["motion","Анимация"],["mood","Настроение в целом"]];
+const aspName=a=>(ASPECTS.find(x=>x[0]===a)||[,a])[1];
+const verdOf=it=>it.verdict==="dislike"?"dislike":"like";
+let items=[],filter="all",vfilter="all",imgBlob=null;
 
 /* источники */
 $("#sources").innerHTML=SOURCES.map(([n,u,w,q])=>`<div class="src"><a class="name" href="${esc(u)}" target="_blank" rel="noopener"><span>${esc(n)}</span><span aria-hidden="true">↗</span></a><p>${esc(w)}</p><div class="q">${q.map(x=>`<button type="button" data-q="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>`).join("");
@@ -152,6 +170,12 @@ $("#sources").onclick=async e=>{const b=e.target.closest("[data-q]");if(!b)retur
 
 /* форма */
 $("#f-kind").innerHTML=KINDS.map(([k,n],i)=>`<button type="button" class="chip" data-v="${k}" aria-pressed="${i===0}">${esc(n)}</button>`).join("");
+$("#f-asp").innerHTML=ASPECTS.map(([k,n])=>`<button type="button" class="chip" data-a="${k}" aria-pressed="false">${esc(n)}</button>`).join("");
+$("#f-asp").onclick=e=>{const b=e.target.closest("[data-a]");if(b)b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")};
+function setVerd(v){$("#f-verd").querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===v));
+  $("#f-note-l").textContent=v==="dislike"?"Что не нравится":"Что нравится";
+  $("#f-note").placeholder=v==="dislike"?"Например: слишком детские иконки, кислотные цвета, всё мелкое и тесно":"Например: шкала прогресса как прибор, крупная карточка задания"}
+$("#f-verd").onclick=e=>{const b=e.target.closest("[data-v]");if(b)setVerd(b.dataset.v)};
 $("#f-kind").onclick=e=>{const b=e.target.closest("[data-v]");if(!b)return;$("#f-kind").querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x===b))};
 function takeFile(f){if(!f||!f.type.startsWith("image/"))return;imgBlob=f;$("#f-img").innerHTML="";const i=new Image();i.src=URL.createObjectURL(f);$("#f-img").appendChild(i)}
 $("#f-drop").onclick=()=>$("#f-file").click();$("#f-drop").onkeydown=e=>{if(e.key==="Enter")$("#f-file").click()};
@@ -181,33 +205,45 @@ $("#form").onsubmit=async e=>{
   $("#f-save").disabled=true;st.className="status";st.textContent="Сохраняю…";
   try{
     const id="ref-"+newId();
-    const doc={id,kind:"ref",screen:$("#f-kind [aria-pressed=true]")?.dataset.v||"other",url,title:host(url),note:$("#f-note").value.trim(),createdAt:Date.now(),updatedAt:Date.now()};
+    const verdict=$("#f-verd [aria-pressed=true]")?.dataset.v||"like",aspects=[...$("#f-asp").querySelectorAll("[aria-pressed=true]")].map(b=>b.dataset.a);
+    const doc={id,kind:"ref",verdict,aspects,screen:$("#f-kind [aria-pressed=true]")?.dataset.v||"other",url,title:host(url),note:$("#f-note").value.trim(),createdAt:Date.now(),updatedAt:Date.now()};
     if(imgBlob){const v=newId();await sendChunks(id,v,await shrink(imgBlob),3000,"img",(a,b)=>st.textContent=`Сохраняю скриншот: ${a} из ${b}`);doc.imgV=v}
     await sendChunks(id,newId(),JSON.stringify(doc),1000,"item");
     items=[doc,...items];cacheSave();render();
-    $("#f-url").value="";$("#f-note").value="";imgBlob=null;$("#f-img").innerHTML="";
-    st.className="status ok";st.textContent="Сохранено";
+    $("#f-url").value="";$("#f-note").value="";$("#f-asp").querySelectorAll("[data-a]").forEach(b=>b.setAttribute("aria-pressed","false"));imgBlob=null;$("#f-img").innerHTML="";
+    st.className="status ok";st.textContent=verdict==="dislike"?"Сохранено в «Не нравится»":"Сохранено в «Нравится»";
   }catch(err){st.className="status err";st.textContent="Не сохранилось: "+(err.message||err)+". Проверьте интернет или VPN и нажмите ещё раз."}
   finally{$("#f-save").disabled=false}
 };
 
 /* список */
 function render(){
-  const counts={};items.forEach(i=>counts[i.screen]=(counts[i.screen]||0)+1);
+  const vc={like:0,dislike:0};items.forEach(i=>vc[verdOf(i)]++);
+  $("#vfilters").innerHTML=[["all","Все · "+items.length],["like","♥ Нравится · "+vc.like],["dislike","✕ Не нравится · "+vc.dislike]].map(([k,n])=>`<button class="chip" data-vf="${k}" aria-pressed="${vfilter===k}">${esc(n)}</button>`).join("");
+  const pool=items.filter(i=>vfilter==="all"||verdOf(i)===vfilter);
+  const counts={};pool.forEach(i=>counts[i.screen]=(counts[i.screen]||0)+1);
+  if(filter!=="all"&&!counts[filter])filter="all";
   $("#filters").innerHTML=[["all","Все"],...KINDS.filter(k=>counts[k[0]])].map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${esc(n)}${k!=="all"?" · "+counts[k]:""}</button>`).join("");
   $("#count").textContent=items.length+" шт.";
-  const list=items.filter(i=>filter==="all"||i.screen===filter);
+  const list=pool.filter(i=>filter==="all"||i.screen===filter);
   $("#empty").hidden=items.length>0;
-  $("#list").innerHTML=list.map(it=>`<article class="ref">
+  $("#list").innerHTML=list.map(it=>{const v=verdOf(it);return `<article class="ref${v==="dislike"?" no":""}">
     ${it.imgV?`<a class="shot" href="${esc(it.url)}" target="_blank" rel="noopener"><img loading="lazy" alt="" src="${API}/api/nh/img?id=${encodeURIComponent(it.id)}&v=${it.imgV}"></a>`:`<a class="shot none" href="${esc(it.url)}" target="_blank" rel="noopener">открыть ${esc(host(it.url))} ↗</a>`}
-    <div class="body"><span class="tag">${esc(kindName(it.screen))}</span>
+    <div class="body"><div class="row"><span class="mark ${v}">${v==="dislike"?"✕ Не нравится":"♥ Нравится"}</span><span class="tag">${esc(kindName(it.screen))}</span></div>
+      ${(it.aspects||[]).length?`<div class="tags">${it.aspects.map(a=>`<span class="tag">${esc(aspName(a))}</span>`).join("")}</div>`:""}
       <a class="dom" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(host(it.url))} ↗</a>
       ${it.note?`<div>${esc(it.note)}</div>`:""}
       ${it.claude?`<div class="cl"><small>CLAUDE</small>${esc(it.claude)}</div>`:""}
-      <div><button class="btn small danger" data-del="${esc(it.id)}">Удалить</button></div></div></article>`).join("");
+      <div class="row"><button class="btn small" data-flip="${esc(it.id)}">${v==="dislike"?"Перенести в «Нравится»":"Перенести в «Не нравится»"}</button><button class="btn small danger" data-del="${esc(it.id)}">Удалить</button></div></div></article>`}).join("");
 }
+$("#vfilters").onclick=e=>{const b=e.target.closest("[data-vf]");if(b){vfilter=b.dataset.vf;render()}};
 $("#filters").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filter=b.dataset.f;render()}};
 $("#list").onclick=async e=>{
+  const f=e.target.closest("[data-flip]");
+  if(f){const it=items.find(x=>x.id===f.dataset.flip);if(!it)return;f.disabled=true;f.textContent="Переношу…";
+    const upd={...it,verdict:verdOf(it)==="dislike"?"like":"dislike",updatedAt:Date.now()};
+    try{await sendChunks(it.id,newId(),JSON.stringify(upd),1000,"item");Object.assign(it,upd);cacheSave();render()}catch{f.disabled=false;f.textContent="Не перенеслось, ещё раз?"}
+    return}
   const b=e.target.closest("[data-del]");if(!b)return;
   if(!b.dataset.arm){b.dataset.arm="1";b.textContent="Точно удалить?";return}
   try{const r=await fetch(API+"/api/nh/del?id="+encodeURIComponent(b.dataset.del),{method:"POST"});if(!r.ok)throw 0;items=items.filter(x=>x.id!==b.dataset.del);cacheSave();render()}catch{b.textContent="Не удалилось, ещё раз?"}
