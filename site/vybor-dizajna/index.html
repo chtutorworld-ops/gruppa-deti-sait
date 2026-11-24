@@ -109,6 +109,12 @@ details.paste textarea{width:100%;min-height:70px;margin-top:8px;border:1px soli
 .knob{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.3);z-index:2;pointer-events:none}
 .hue{position:relative;height:18px;border-radius:9px;margin-top:12px;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);touch-action:none;cursor:pointer}
 .hue .knob{top:9px}
+.lt-lab{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--ink2);margin-top:12px}
+.lt{position:relative;height:18px;border-radius:9px;margin-top:4px;touch-action:none;cursor:pointer;border:1px solid var(--line)}
+.lt .knob{top:9px}
+.ux-pent button{border:0;padding:0;cursor:pointer}
+#pentbox{background:var(--bg)}
+[hidden]{display:none!important}
 .nums{display:grid;grid-template-columns:repeat(3,1fr) 1.4fr;gap:8px;margin-top:12px}
 .nums label{font-size:11px;color:var(--ink2);font-weight:600;display:block}
 .nums input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-family:KM,monospace;font-size:13px}
@@ -473,24 +479,13 @@ textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radi
 
   <div class="side">
     <div class="panel">
-      <h2>Палитры</h2>
-      <div class="seg" id="paltabs"></div>
-      <p class="note" style="margin:10px 0 8px">Нажми на цвет палитры, и он встанет в выбранную ниже роль.</p>
-      <div class="ux-pal"><div class="ux-pal-colors" id="swatches"></div>
-        <div class="ux-pal-stats"><span id="palcount"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4 7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S5.5 9.83 5.5 9 4.83 7.5 4 7.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S9.83 7.5 9 7.5z"></path></svg></div></div>
-      <div class="row"><button class="btn" id="automap">Разложить всю палитру по ролям</button></div>
-      <details class="paste"><summary>Вставить свои коды в эту палитру</summary>
-        <textarea id="pastebox" placeholder="#6B4FD8, #3E2A8C, #EEE9FA …"></textarea>
-        <div class="row"><button class="btn" id="pasteok">Заменить палитру этими кодами</button><span class="note" id="pastemsg"></span></div>
-      </details>
-    </div>
-
-    <div class="panel">
       <h2>Цвета дизайна <span class="pending" id="pend"></span></h2>
       <div class="roles" id="roles"></div>
       <div class="pick">
         <div class="sv" id="sv"><div class="knob" id="svk"></div></div>
         <div class="hue" id="hue"><div class="knob" id="huek"></div></div>
+        <div class="lt-lab"><span>светлее</span><span>темнее</span></div>
+        <div class="lt" id="lt"><div class="knob" id="ltk"></div></div>
         <div class="nums">
           <div><label for="ih">Тон H</label><input id="ih" inputmode="numeric"></div>
           <div><label for="is">Насыщ. S</label><input id="is" inputmode="numeric"></div>
@@ -502,14 +497,23 @@ textarea.out{width:100%;min-height:90px;border:1px solid var(--line);border-radi
       <label class="live"><input type="checkbox" id="live"> Показывать сразу, без «Применить»</label>
       <div class="row">
         <button class="btn main big" id="apply">Применить</button>
+        <button class="btn" id="undo">↶ Шаг назад</button>
         <button class="btn" id="reset">Вернуть как было</button>
       </div>
+      <p class="note" id="histmsg"></p>
+      <details class="paste"><summary>Вставить коды цветов</summary>
+        <textarea id="pastebox" placeholder="#6B4FD8, #3E2A8C, #EEE9FA …"></textarea>
+        <div class="row"><button class="btn" id="pasteok">Разложить эти коды по цветам дизайна</button><span class="note" id="pastemsg"></span></div>
+      </details>
     </div>
 
     <div class="panel">
-      <h2>Цвета варианта</h2>
-      <div class="ux-pent-box" id="pentbox"><div class="ux-pent"><div class="ux-pent-1"></div><div class="ux-pent-2"></div><div class="ux-pent-3"></div><div class="ux-pent-4"></div><div class="ux-pent-5"></div></div></div>
-      <p class="note">Наведи мышку (или нажми), чтобы увидеть, как оттенки сочетаются.</p>
+      <h2>Как сочетаются выбранные цвета</h2>
+      <div class="seg" id="vtabs"><button data-v="strip">Полоски</button><button data-v="pent">Пятигранник</button></div>
+      <p class="note" style="margin:10px 0 8px">Здесь видно цвета, которые ты выбрала, ещё до «Применить». Нажми на цвет, чтобы его поменять.</p>
+      <div class="ux-pal" id="vstrip"><div class="ux-pal-colors" id="swatches"></div>
+        <div class="ux-pal-stats"><span id="palcount"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4 7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S5.5 9.83 5.5 9 4.83 7.5 4 7.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S9.83 7.5 9 7.5z"></path></svg></div></div>
+      <div class="ux-pent-box" id="pentbox"><div class="ux-pent"><button class="ux-pent-1" data-r="main2"></button><button class="ux-pent-2" data-r="main"></button><button class="ux-pent-3" data-r="blue"></button><button class="ux-pent-4" data-r="fin"></button><button class="ux-pent-5" data-r="soft"></button></div></div>
     </div>
 
     <div class="panel">
@@ -895,7 +899,7 @@ const $=id=>document.getElementById(id);
 const shown=()=>st.live?st.draft:st.applied;
 const viewer=$('viewer');
 const fitMain=()=>{const w=viewer.clientWidth-24;const h=innerWidth>1000?innerHeight-200:1e9;return [w,Math.max(420,h)];};
-function renderMain(){setVars($('pentbox'),shown());const [w,h]=fitMain();mount($('mainhost'),st.design,st.screen,shown(),true,w,h);$('dnote').textContent=DESIGNS[st.design].note;}
+function renderMain(){const [w,h]=fitMain();mount($('mainhost'),st.design,st.screen,shown(),true,w,h);$('dnote').textContent=DESIGNS[st.design].note;}
 function renderTabs(){
   if(DESIGNS[st.design].hide)st.design='d4';
   $('designs').innerHTML='';Object.entries(DESIGNS).filter(([k,d])=>!d.hide).forEach(([k,d])=>{const b=document.createElement('button');b.textContent=d.name;b.disabled=!!d.off;b.classList.toggle('on',k===st.design);
@@ -905,13 +909,17 @@ function renderTabs(){
 let rT;addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>{renderMain();},150);});
 
 // ================= палитры =================
-function renderPals(){
-  $('paltabs').innerHTML='';st.pals.forEach((p,i)=>{const b=document.createElement('button');b.textContent=p.name+(p.tmp?' (временная)':'');b.classList.toggle('on',i===st.pal);
-    b.onclick=()=>{st.pal=i;store();renderPals();};$('paltabs').appendChild(b);});
-  const p=st.pals[st.pal]||st.pals[0];$('swatches').innerHTML='';
-  $('palcount').textContent=p.colors.length+' цветов';
-  p.colors.forEach(c=>{const b=document.createElement('button');b.className='ux-pal-color'+(lum(c)>.45?' dark':'');b.style.background=c;b.title=c;b.innerHTML=`<span>${c.slice(1)}</span>`;
-    b.onclick=()=>{setRole(st.sel,c);};$('swatches').appendChild(b);});}
+function renderPals(){renderView();}
+function renderView(){
+  const v=st.view==='pent'?'pent':'strip';
+  [...$('vtabs').children].forEach(b=>{b.classList.toggle('on',b.dataset.v===v);b.onclick=()=>{st.view=b.dataset.v;store();renderView();};});
+  $('vstrip').hidden=v!=='strip';$('pentbox').hidden=v!=='pent';
+  setVars($('pentbox'),st.draft);
+  $('pentbox').querySelectorAll('button').forEach(b=>{const r=b.dataset.r;b.title=ROLES.find(x=>x[0]===r)[1]+' '+st.draft[r];b.onclick=()=>selRole(r);});
+  $('swatches').innerHTML='';$('palcount').textContent=ROLES.length+' цветов';
+  ROLES.forEach(([k,n])=>{const c=st.draft[k];const b=document.createElement('button');b.className='ux-pal-color'+(lum(c)>.45?' dark':'');b.style.background=c;b.title=n+' '+c;b.innerHTML=`<span>${c.slice(1)}</span>`;
+    b.onclick=()=>selRole(k);$('swatches').appendChild(b);});}
+function selRole(k){st.sel=k;store();renderRoles();loadPicker();document.querySelector('.pick').scrollIntoView({behavior:'smooth',block:'nearest'});}
 // раскладка палитры по ролям: по светлоте и тону
 function autoMap(colors){
   const cs=[...new Set(colors.map(normHex))].map(h=>{const [H,S,L]=rgb2hsl(hex2rgb(h));return {h,H,S,L};});
@@ -931,10 +939,9 @@ function autoMap(colors){
   take('fin',cs.filter(c=>c.H>=280&&c.H<345&&c.L<75&&!isRasp(c)).sort((a,b)=>b.S-a.S));
   ROLES.forEach(([k])=>{if(!out[k])take(k,cs.filter(c=>c.L>20&&c.L<80));});
   return out;}
-$('automap').onclick=()=>{const p=st.pals[st.pal];const m=autoMap(p.colors);Object.assign(st.draft,m);store();renderRoles();loadPicker();if(st.live)renderMain();};
 $('pasteok').onclick=()=>{const t=$('pastebox').value;const hs=(t.match(/#?\b[0-9a-f]{6}\b/gi)||[]).map(normHex);
   if(hs.length<2){$('pastemsg').textContent='Не вижу кодов цветов вида #6B4FD8';return;}
-  st.pals[st.pal]={name:st.pals[st.pal].name,colors:[...new Set(hs)]};st.pm=Date.now();save();renderPals();$('pastemsg').textContent='Готово: '+hs.length+' цветов';$('pastebox').value='';};
+  snap();Object.assign(st.draft,autoMap([...new Set(hs)]));store();renderRoles();loadPicker();if(st.live)renderMain();$('pastemsg').textContent='Готово: '+hs.length+' цветов';$('pastebox').value='';};
 
 // ================= роли и пикер =================
 function renderRoles(){
@@ -943,13 +950,15 @@ function renderRoles(){
     b.classList.toggle('ch',diff);b.innerHTML=`<i style="background:${st.draft[k]}"></i><span><b>${n}</b><small>${st.draft[k]}</small></span>`;
     b.onclick=()=>{st.sel=k;store();renderRoles();loadPicker();};$('roles').appendChild(b);});
   $('pend').textContent=ch&&!st.live?'· не применено: '+ch:'';
-  $('apply').disabled=!ch;}
+  $('apply').disabled=!ch;renderView();updHist();}
 let hsv=[0,0,0];
 function loadPicker(){hsv=rgb2hsv(hex2rgb(st.draft[st.sel]));drawPicker(true);}
 function drawPicker(inputs){
   const [h,s,v]=hsv;$('sv').style.background=`hsl(${h},100%,50%)`;
   $('svk').style.left=s+'%';$('svk').style.top=(100-v)+'%';$('svk').style.background=rgb2hex(hsv2rgb(h,s,v));
   $('huek').style.left=(h/360*100)+'%';$('huek').style.background=`hsl(${h},100%,50%)`;
+  {const [H,S,L]=rgb2hsl(hsv2rgb(h,s,v));$('lt').style.background=`linear-gradient(90deg,hsl(${H},${S}%,97%),hsl(${H},${S}%,50%),hsl(${H},${S}%,5%))`;
+   $('ltk').style.left=(100-((L-5)/92*100)).toFixed(1)+'%';$('ltk').style.background=rgb2hex(hsv2rgb(h,s,v));}
   const hex=rgb2hex(hsv2rgb(h,s,v));
   if(inputs!==false){$('ih').value=Math.round(h);$('is').value=Math.round(s);$('ib').value=Math.round(v);if(document.activeElement!==$('ix'))$('ix').value=hex;}
   $('cmpold').style.background=st.applied[st.sel];$('cmpold').style.color=lum(st.applied[st.sel])>.35?'#000':'#fff';
@@ -958,20 +967,30 @@ function pushHsv(){const hex=rgb2hex(hsv2rgb(...hsv));st.draft[st.sel]=hex;drawP
   const r=[...$('roles').children][ROLES.findIndex(x=>x[0]===st.sel)];if(r){r.querySelector('i').style.background=hex;r.querySelector('small').textContent=hex;}
   schedRoles();}
 let srT;const schedRoles=()=>{clearTimeout(srT);srT=setTimeout(()=>{store();renderRoles();if(st.live)renderMain();},120);};
-function setRole(k,hex){st.draft[k]=normHex(hex);store();renderRoles();loadPicker();if(st.live)renderMain();}
+function setRole(k,hex){snap();st.draft[k]=normHex(hex);store();renderRoles();loadPicker();if(st.live)renderMain();}
 const drag=(el,fn)=>{const go=e=>{const r=el.getBoundingClientRect();fn(clamp((e.clientX-r.left)/r.width,0,1),clamp((e.clientY-r.top)/r.height,0,1));};
   el.addEventListener('pointerdown',e=>{el.setPointerCapture(e.pointerId);go(e);el._d=1;});
   el.addEventListener('pointermove',e=>{if(el._d)go(e);});
   el.addEventListener('pointerup',()=>{el._d=0;});el.addEventListener('pointercancel',()=>{el._d=0;});};
 drag($('sv'),(x,y)=>{hsv[1]=x*100;hsv[2]=(1-y)*100;pushHsv();});
 drag($('hue'),x=>{hsv[0]=x*359.9;pushHsv();});
+drag($('lt'),x=>{const [H,S]=rgb2hsl(hsv2rgb(...hsv));const L=97-x*92;hsv=rgb2hsv(hsl2rgb(H,S,L));if(hsv[1]<.5&&S>0)hsv[0]=H;pushHsv();});
+['sv','hue','lt'].forEach(id=>$(id).addEventListener('pointerdown',snap,true));
+['ih','is','ib','ix'].forEach(id=>$(id).addEventListener('focus',snap));
 [['ih',0,360],['is',1,100],['ib',2,100]].forEach(([id,i,mx])=>$(id).addEventListener('input',e=>{const v=parseFloat(e.target.value);if(isNaN(v))return;hsv[i]=clamp(v,0,i===0?359.9:mx);pushHsv();drawPicker(false);}));
 $('ix').addEventListener('input',e=>{if(isHex(e.target.value)&&e.target.value.replace('#','').length===6){hsv=rgb2hsv(hex2rgb(normHex(e.target.value)));pushHsv();drawPicker(false);}});
 $('ix').addEventListener('blur',()=>drawPicker());
 $('live').checked=!!st.live;
 $('live').onchange=e=>{st.live=e.target.checked;store();renderRoles();renderMain();};
-$('apply').onclick=()=>{st.applied={...st.draft};st.cur=null;store();renderRoles();drawPicker();renderMain();renderSaved();};
-$('reset').onclick=()=>{st.draft={...st.applied};store();renderRoles();loadPicker();renderMain();};
+// история для «Шаг назад»
+const hist=[];const cur=()=>JSON.stringify({d:st.draft,a:st.applied});
+function snap(){const c=cur();if(hist[hist.length-1]!==c){hist.push(c);if(hist.length>80)hist.shift();}updHist();}
+function updHist(){if($('undo'))$('undo').disabled=!hist.some(h=>h!==cur());}
+$('undo').onclick=()=>{let h;while(hist.length&&(h=hist.pop())===cur());if(!h||h===cur())return;const o=JSON.parse(h);st.draft=o.d;st.applied=o.a;store();renderRoles();loadPicker();renderMain();
+  $('histmsg').textContent='Вернула на шаг назад';setTimeout(()=>$('histmsg').textContent='',1800);};
+$('apply').onclick=()=>{snap();st.applied={...st.draft};st.cur=null;store();renderRoles();drawPicker();renderMain();renderSaved();};
+$('reset').onclick=()=>{snap();st.draft={...DEF};st.applied={...DEF};st.cur=null;store();renderRoles();loadPicker();renderMain();renderSaved();
+  $('histmsg').textContent='Вернула исходные цвета. Передумала — «Шаг назад».';setTimeout(()=>$('histmsg').textContent='',3000);};
 
 // ================= сохранённые варианты =================
 const visV=()=>st.variants.filter(v=>!st.del.includes(v.id));
@@ -994,7 +1013,7 @@ function renderSaved(){
     const mini=c.querySelector('.mini');g.appendChild(c);
     requestAnimationFrame(()=>{const w=mini.clientWidth||170;const s=Math.max(w/375,300/780);const host=document.createElement('div');host.className='devhost';mini.appendChild(host);
       mount(host,v.design,v.screen||'home',v.roles,false,375*s,780*s);host.style.marginLeft=((w-375*s)/2)+'px';});
-    const open=()=>{st.design=v.design;st.screen=v.screen||'home';st.applied={...DEF,...v.roles};st.draft={...st.applied};st.cur=v.id;store();renderTabs();renderRoles();loadPicker();renderMain();renderSaved();scrollTo({top:0,behavior:'smooth'});};
+    const open=()=>{snap();st.design=v.design;st.screen=v.screen||'home';st.applied={...DEF,...v.roles};st.draft={...st.applied};st.cur=v.id;store();renderTabs();renderRoles();loadPicker();renderMain();renderSaved();scrollTo({top:0,behavior:'smooth'});};
     mini.onclick=open;c.querySelector('.ld').onclick=open;
     c.querySelector('.star').onclick=()=>{v.star=!v.star;v.m=Date.now();save();renderSaved();};
     c.querySelector('.nm').onchange=e=>{v.name=e.target.value.trim()||v.name;v.m=Date.now();save();};
