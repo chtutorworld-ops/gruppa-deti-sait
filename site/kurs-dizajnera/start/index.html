@@ -13,25 +13,61 @@
 .mini-card.flat .a,.mini-card.flat .b,.mini-card.flat .c{font:400 13px var(--sans);color:#1c1b22;margin:0}
 .btnrow{display:flex;gap:6px}
 .btnrow span{font-size:12px;padding:6px 10px;border-radius:7px}
-.figui{display:grid;grid-template-columns:110px 1fr 120px;grid-template-rows:28px 210px;gap:0;width:min(560px,100%);border:1px solid var(--line2);border-radius:10px;overflow:hidden;font-size:11.5px;background:#fff}
-.figui .tb{grid-column:1/-1;background:#2c2c2c;color:#ddd;display:flex;align-items:center;gap:12px;padding:0 10px}
-.figui .tb span{opacity:.85}
-.figui .ly{border-right:1px solid #e5e5e5;padding:8px;color:#444}
-.figui .ly div{padding:2px 4px;border-radius:3px}
-.figui .ly .sel{background:#e5ecff}
-.figui .cv{background:#e9e9e9;display:flex;align-items:center;justify-content:center;position:relative}
-.figui .fr{width:96px;height:170px;background:#fff;position:relative;box-shadow:0 0 0 1px #0d99ff}
-.figui .fr::before{content:"iPhone 16";position:absolute;top:-15px;left:0;font-size:10px;color:#0d99ff}
-.figui .fr i{position:absolute;left:10px;right:10px;border-radius:5px;background:#e8e4f3}
-.figui .pr{border-left:1px solid #e5e5e5;padding:8px;color:#444;display:flex;flex-direction:column;gap:6px}
-.figui .pr b{font-size:10.5px;color:#888;font-weight:600}
-.figui .lab{position:absolute;background:var(--accent-deep);color:#fff;font-size:11px;border-radius:5px;padding:2px 7px;white-space:nowrap}
 .keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:14px 0}
 .keys div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px}
 .keys kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent-ink);border-radius:5px;padding:2px 7px;margin-right:6px}
 .books{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .books div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
 .books b{display:block;font:500 17px var(--serif)}
+kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent-ink);border-radius:5px;padding:1px 6px}
+.fw{display:grid;grid-template-columns:120px 1fr 120px;height:260px;width:min(600px,100%);border:1px solid var(--line2);border-radius:10px;overflow:hidden;font-size:11.5px;background:#fff;position:relative;color:#333}
+.fw.small{height:240px}
+.fw-l,.fw-r{display:flex;flex-direction:column;gap:5px;padding:9px;min-width:0}
+.fw-l{border-right:1px solid #e5e5e5}.fw-r{border-left:1px solid #e5e5e5}
+.fw-h{font-size:10px;color:#999;font-weight:600;margin-top:6px}
+.fw-e{color:#aaa;font-style:italic}
+.fw-tabs{font-size:11px;color:#999}.fw-tabs b{color:#222;margin-right:6px}
+.fw-c{background:#e6e6e6;position:relative;display:flex;align-items:center;justify-content:center;min-width:0}
+.fw-hint{color:#aaa;font-size:12px}
+.fw-bar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:2px;background:#fff;border-radius:9px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.fw-bar span{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:12px}
+.fw-bar span.on{background:#0d99ff;color:#fff}
+.fw-m{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--accent-deep);color:#fff;font:700 11px/20px var(--sans);text-align:center;font-style:normal}
+.m1{left:96px;top:30px}.m2{left:45%;top:40%}.m3{left:50%;bottom:44px;margin-left:60px}.m4{right:8px;top:30px}
+.fw-frame{display:none;width:84px;height:150px;background:#fff;box-shadow:0 0 0 1.5px #0d99ff;position:relative;margin-bottom:30px}
+.fw-frame s{position:absolute;top:-15px;left:0;font-size:10px;color:#0d99ff;text-decoration:none;white-space:nowrap}
+.fw.has .fw-frame{display:block}.fw.has .fw-hint{display:none}
+.fw-r .pick{display:flex;flex-direction:column;gap:2px}.fw-r .pick span{padding:2px 4px;border-radius:4px}
+.fw-r .pick .hl{background:#e5f1ff;color:#0d6efd;font-weight:600}
+.lay-demo{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ld-list{background:#fff;border:1px solid #e5e5e5;border-radius:8px;padding:8px;font-size:12.5px;width:200px;display:flex;flex-direction:column;gap:2px}
+.ld-list b{font-size:10.5px;color:#999}
+.ld-list div{padding:3px 6px;border-radius:4px;cursor:pointer}.ld-list div.in{padding-left:20px}
+.ld-list div.sel{background:#e5f1ff}
+.ld-phone{width:120px;height:200px;background:#fff;border-radius:16px;box-shadow:0 0 0 1px #ddd,0 8px 20px -12px rgba(0,0,0,.4);position:relative}
+.ld-phone i{position:absolute;border-radius:8px;font-style:normal;transition:outline .15s}
+.ld-phone .p1{left:12px;right:12px;top:40px;height:90px;background:#ddd6ee;z-index:1}
+.ld-phone .p2{left:24px;width:60px;top:30px;height:30px;background:#f3d27a;z-index:2}
+.ld-phone .p3{left:22px;top:90px;font:600 12px var(--sans);color:#2a2340;z-index:3}
+.ld-phone.swap .p2{z-index:0}
+.ld-phone i.sel{outline:2px solid #0d99ff;outline-offset:2px}
+.al{position:relative;width:240px;height:250px;font-size:13px}
+.al span{position:absolute;background:#6b5f8a;color:#fff;border-radius:8px;padding:8px 14px;white-space:nowrap;transition:all .45s cubic-bezier(.2,.8,.2,1)}
+.al span:nth-child(1){left:10px;top:12px}.al span:nth-child(2){left:70px;top:70px}.al span:nth-child(3){left:20px;top:150px}.al span:nth-child(4){left:110px;top:200px}.al span:nth-child(5){left:30px;top:220px}.al span:nth-child(6){left:120px;top:20px}
+.al.on{position:static;width:auto;height:auto;display:flex;flex-direction:column;align-items:flex-start;gap:var(--g,12px);padding:16px;outline:1.5px dashed #0d99ff;border-radius:6px}
+.al.on span{position:static}
+.al.on.row{flex-direction:row;flex-wrap:wrap;max-width:100%}
+.cmp{display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:center;--r:8px;--c:#6b5f8a}
+.cmp span{background:var(--c);color:#fff;border-radius:var(--r);padding:8px 14px;font-size:13px;transition:all .3s}
+.cmp-main{display:flex;flex-direction:column;gap:6px;align-items:flex-start;border:1.5px dashed #9747ff;border-radius:8px;padding:10px}
+.cmp-main s{text-decoration:none;font-size:11px;color:#9747ff;font-weight:600}
+.cmp-copies{display:grid;grid-template-columns:repeat(2,auto);gap:10px}
+.sty{display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;--c:#6b5f8a}
+.sty-jar{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px}
+.sty-jar i{width:48px;height:56px;border-radius:8px 8px 12px 12px;background:var(--c);box-shadow:inset 0 6px 0 rgba(255,255,255,.35);transition:background .3s}
+.sty-use{display:flex;flex-direction:column;gap:8px}
+.sty-use span{background:var(--c);color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;transition:background .3s}
+@media (max-width:560px){.fw{grid-template-columns:78px 1fr 78px;font-size:10px}.m1{left:56px}.m3{margin-left:40px}}
 </style>
 </head>
 <body data-mod="start">
@@ -44,28 +80,28 @@
   <p class="k">Модуль 0</p>
   <h1>Старт</h1>
   <p>Как учиться на этом курсе, где ты сейчас, первые шаги в Figma и с чего начинается проект «Кабинет ученика».</p>
-  <p class="meta">6 глав · около 50 минут</p>
+  <p class="meta">8 глав · около 70 минут</p>
 </div>
 
 <section class="ch" id="kak" data-t="Как устроен курс">
   <h2>Как устроен курс</h2>
-  <p>Курс собран так, как устроены программы в онлайн-школах дизайна: короткая теория, сразу практика руками, потом разбор. Различие одно: вместо группы и наставника здесь ты и я, а вместо учебных кейсов настоящая школа AIKITAY.</p>
+  <p>Курс устроен как обучение вождению. Сначала коротко объясняют, что где, потом сразу садишься за руль, а инструктор рядом подсказывает. Здесь «руль» это Figma и твои собственные экраны, а инструктор я. Учимся не на выдуманных примерах, а на настоящей школе AIKITAY: её кабинете, сайте, презентациях.</p>
   <h3>Одна глава это четыре шага</h3>
   <ol>
-    <li><b>Прочитать</b> 3–5 абзацев. Новое слово выделено, рядом английское название в скобках: так его ищут в интернете и так его понимаю я.</li>
+    <li><b>Прочитать</b> 3–5 абзацев. Новое слово выделено и сразу объяснено простыми словами. Рядом в скобках английское название: по нему удобно искать видео и примеры в интернете.</li>
     <li><b>Потрогать пример.</b> Двигай ползунки, нажимай кнопки. Глаз учится быстрее, чем голова.</li>
     <li><b>Ответить на мини-тест.</b> После ответа появляется объяснение, почему так. Ошибаться можно и полезно.</li>
     <li><b>Сделать практику</b> в Figma или «смотрим». Это занимает 10 минут, не больше.</li>
   </ol>
   <div class="key">Не нужно проходить всё подряд и быстро. Одна глава в день с практикой даёт больше, чем пять глав за вечер без неё.</div>
   <h3>Пять блоков</h3>
-  <p><b>А.</b> Визуальная база: как глаз читает экран и как всё называется. <b>Б.</b> UX: задача ученика, путь по экранам, наброски, прототип. <b>В.</b> UI: дизайн-система, приложение, сайт, презентации и задания. <b>Г.</b> Критика и тренды. <b>Д.</b> Факультатив: как устроены анимации, код и генерация картинок.</p>
-  <p>Блоки А и Г готовы первыми, остальные будут добавляться по одному.</p>
+  <p><b>А. Глаз.</b> Учимся видеть экран, как дизайнер: куда смотрит человек первым делом и как называются все детали экрана. <b>Б. Удобство.</b> Учимся думать, как ученик: что ему нужно, по каким экранам он идёт, где может запутаться. Рисуем черновики и проверяем их. <b>В. Красота и порядок.</b> Собираем набор деталей (кнопки, карточки, цвета) и делаем из них кабинет, сайт, презентации. <b>Г. Критика.</b> Учимся объяснять, почему одно выглядит дорого, а другое дёшево. <b>Д. Дополнительно.</b> Как устроены анимации, кнопки и картинки, сделанные нейросетью.</p>
+  <p>Все модули уже открыты. Проходи по порядку: каждый следующий опирается на предыдущий.</p>
 </section>
 
 <section class="ch" id="test" data-t="Входной тест">
   <h2>Входной тест</h2>
-  <p>Десять вопросов, чтобы увидеть точку отсчёта. Это не экзамен: в конце курса пройдёшь такой же и сравнишь. Отвечай быстро, как чувствуешь.</p>
+  <p>Десять вопросов, чтобы увидеть, с чего ты начинаешь. Это не экзамен. Многие слова здесь пока незнакомы, и это нормально: отвечай наугад, как чувствуешь, а после ответа прочитай объяснение. В конце курса пройдёшь такой же тест и сравнишь.</p>
   <div class="quiz"><h4>Входной тест</h4>
     <div class="q" data-a="1"><p>1. Что сильнее всего делает интерфейс «дорогим»?</p><div class="opts"><button>Много эффектов: блики, тени, анимации</button><button>Ровные отступы, мало цветов, точный шрифт</button><button>Яркий градиент на фоне</button></div><p class="why">Дорогое впечатление создаёт порядок: одинаковые отступы, сдержанная палитра, продуманные размеры шрифта. Эффекты без порядка выглядят дёшево.</p></div>
     <div class="q" data-a="0"><p>2. В какой карточке сразу понятно, что главное?</p><div class="opts vis"><button><span class="v"><span class="mini-card"><p class="a">Урок 8. Семья</p><p class="b">40 минут · группа «Дети»</p><p class="c">Учим 爸爸 и 妈妈</p></span></span><span class="l">А</span></button><button><span class="v"><span class="mini-card flat"><p class="a">Урок 8. Семья</p><p class="b">40 минут · группа «Дети»</p><p class="c">Учим 爸爸 и 妈妈</p></span></span><span class="l">Б</span></button></div><p class="why">В А есть иерархия: крупный жирный заголовок, мелкая серая подпись, обычный текст. В Б всё одного размера и цвета, глазу не за что зацепиться.</p></div>
@@ -80,47 +116,136 @@
   </div>
 </section>
 
-<section class="ch" id="figma" data-t="Figma: первые шаги">
-  <h2>Figma: первые шаги</h2>
-  <p><span class="term">Figma</span> это главная программа дизайнеров интерфейсов. В ней рисуют экраны, собирают компоненты (повторяющиеся детали) и делают кликабельные прототипы. Блогеры правы в главном: без своих рук в Figma трудно отличить хороший макет от среднего. Поэтому практика в курсе начинается сразу.</p>
-  <h3>Как начать</h3>
+<section class="ch" id="figma" data-t="Figma: открываем и кладём лист">
+  <h2>Figma: открываем и кладём первый лист</h2>
+  <p><span class="term">Figma</span> это программа, в которой рисуют экраны приложений и сайтов. Представь большой пустой стол, на который ты раскладываешь листы бумаги и рисуешь на них. Стол это холст Figma, листы это будущие экраны. Всё, что ниже, делай сразу руками, по одному шагу.</p>
+
+  <h3>Шаг 1. Заходим и создаём файл</h3>
   <ol>
-    <li>Зарегистрируйся на figma.com. Бесплатного плана (Starter) для учёбы хватает полностью. Если сайт не открывается, включи VPN.</li>
-    <li>Поставь приложение для компьютера: в нём работать удобнее, чем в браузере. На телефоне Figma годится только для просмотра.</li>
-    <li>Создай файл «Курс AIKITAY». В нём будут все практики, по странице на модуль.</li>
+    <li>Открой <b>figma.com</b> и войди (через Google проще всего). Бесплатного тарифа хватает. Если сайт не открывается, включи VPN.</li>
+    <li>Ты попадёшь на <b>главную страницу со списком файлов</b>. Там пока пусто, это нормально.</li>
+    <li>Справа вверху есть кнопка <b>«+ Create»</b> (создать). Нажми её и выбери <b>«Design»</b> (дизайн). Не «FigJam» (это доска для стикеров), не «Slides» (презентации) и не «Make» (там чат с ИИ). Нам нужен именно Design.</li>
+    <li>Откроется новый файл. Слева вверху написано «Untitled» (без названия). Нажми на это слово два раза и назови файл «Курс AIKITAY».</li>
   </ol>
-  <h3>Из чего состоит окно</h3>
+  <p>Интерфейс Figma только на английском. Ниже рядом с каждой кнопкой есть перевод.</p>
+
+  <h3>Шаг 2. Пустое серое окно, и это правильно</h3>
+  <p>Новый файл выглядит как большое серое поле, и на нём ничего нет. Ничего не сломалось: это пустой стол, на котором ещё не лежит ни одного листа. Лист ты положишь сама в шаге 3.</p>
   <div class="ex"><div class="stage">
-    <div class="figui"><div class="tb"><span>▭ Фрейм</span><span>□ Фигура</span><span>T Текст</span><span>✎ Перо</span></div>
-      <div class="ly"><b style="font-size:10.5px;color:#888">Слои</b><div class="sel">▭ iPhone 16</div><div>&nbsp;&nbsp;▭ Карточка урока</div><div>&nbsp;&nbsp;&nbsp;&nbsp;T Заголовок</div><div>&nbsp;&nbsp;&nbsp;&nbsp;T Подпись</div><div>&nbsp;&nbsp;▭ Кнопка</div></div>
-      <div class="cv"><div class="fr"><i style="top:14px;height:38px"></i><i style="top:60px;height:14px;right:40px"></i><i style="bottom:14px;height:22px;background:#6b5f8a"></i></div></div>
-      <div class="pr"><b>Дизайн</b><span>W 393 · H 852</span><span>Заливка #FFFFFF</span><span>Скругление 0</span><b>Автолейаут</b><span>Отступ 16 · Промежуток 12</span></div></div>
-  </div><div class="cap">Слева <b>слои</b> (всё, что есть в макете, деревом), по центру <b>холст</b>, справа <b>свойства</b> выделенного: размеры, цвет, скругления, отступы.</div></div>
-  <h3>Пять слов, без которых нельзя</h3>
-  <ul>
-    <li><span class="term">Фрейм</span> <span class="en">(frame)</span>: «лист» или контейнер. Экран телефона это фрейм, карточка внутри него тоже фрейм.</li>
-    <li><span class="term">Слой</span> <span class="en">(layer)</span>: любой объект. Слои лежат друг на друге, как бумажки.</li>
-    <li><span class="term">Автолейаут</span> <span class="en">(auto layout)</span>: фрейм, который сам расставляет содержимое в столбик или в строку с заданными отступами. Это главный навык Figma, и он же учит думать отступами.</li>
-    <li><span class="term">Компонент</span> <span class="en">(component)</span>: деталь-образец. Меняешь образец, и меняются все копии.</li>
-    <li><span class="term">Стили и переменные</span> <span class="en">(styles, variables)</span>: сохранённые цвета, шрифты, отступы с именами. Из них потом собирается дизайн-система.</li>
-  </ul>
+    <div class="fw">
+      <div class="fw-l"><b>Untitled</b><span class="fw-h">Pages</span><span>Page 1</span><span class="fw-h">Layers</span><span class="fw-e">пусто</span></div>
+      <div class="fw-c"><span class="fw-hint">пустой холст</span>
+        <div class="fw-bar"><span>↖</span><span class="on">#</span><span>□</span><span>✎</span><span>T</span><span>💬</span></div></div>
+      <div class="fw-r"><span class="fw-tabs"><b>Design</b> Prototype</span><span class="fw-h">Page</span><span>Background</span></div>
+      <i class="fw-m m1">1</i><i class="fw-m m2">2</i><i class="fw-m m3">3</i><i class="fw-m m4">4</i>
+    </div>
+  </div><div class="cap"><b>1</b> Левая панель: название файла и список <b>слоёв</b> (всего, что лежит на холсте). Пока пусто. <b>2</b> Серое поле по центру это <b>холст</b>, тот самый стол. <b>3</b> Внизу по центру <b>панель инструментов</b>: стрелка, решётка # (фрейм), квадрат, перо, буква T (текст). <b>4</b> Правая панель: <b>свойства</b> того, что выделено. Пока ничего не выделено, там почти пусто.</div></div>
+  <div class="why-box"><b>Не видишь панелей слева и справа?</b> Значит, они спрятаны. Нажми <kbd>Ctrl</kbd> + <kbd>\</kbd> (на Mac <kbd>Cmd</kbd> + <kbd>\</kbd>), и они появятся. Это же сочетание прячет их обратно.</div>
+
+  <h3>Шаг 3. Кладём лист: фрейм</h3>
+  <p><span class="term">Фрейм</span> <span class="en">(frame)</span> это лист, положенный на стол. На холсте можно рисовать и без листа, но тогда рисунок висит в воздухе. Экран телефона всегда рисуют на фрейме нужного размера. Попробуй здесь, а потом в Figma.</p>
+  <div class="ex"><div class="stage">
+    <div class="fw small" id="fdemo">
+      <div class="fw-l"><b>Курс AIKITAY</b><span class="fw-h">Layers</span><span class="fw-e" id="fd-lay">пусто</span></div>
+      <div class="fw-c"><span class="fw-hint" id="fd-hint">пустой холст</span><div class="fw-frame" id="fd-frame"><s>iPhone 16</s></div>
+        <div class="fw-bar"><span>↖</span><span id="fd-f">#</span><span>□</span><span>T</span></div></div>
+      <div class="fw-r" id="fd-r"><span class="fw-tabs"><b>Design</b></span><span class="fw-e">ничего не выделено</span></div>
+    </div>
+  </div>
+  <div class="ctl"><button id="fd-key">1. Нажать F на клавиатуре</button><button id="fd-pick" disabled>2. Выбрать iPhone 16</button><button id="fd-reset">Сначала</button></div>
+  <div class="cap">Нажала F, и справа появился список готовых размеров: телефоны, планшеты, компьютеры. Выбрала <b>iPhone 16</b>, и на холсте появился белый лист с подписью. Слева в слоях тоже появилась строчка «iPhone 16».</div></div>
+  <ol>
+    <li>В Figma щёлкни мышкой по серому полю, чтобы окно было активным.</li>
+    <li>Нажми на клавиатуре букву <kbd>F</kbd> (в английской раскладке). Или нажми значок <b>#</b> на нижней панели.</li>
+    <li>Справа появится список размеров. Открой раздел <b>Phone</b> (телефон) и нажми <b>iPhone 16</b>.</li>
+    <li>Готово: на холсте белый прямоугольник 393 на 852. Если его не видно, нажми <kbd>Shift</kbd> + <kbd>1</kbd>, Figma покажет всё, что есть на холсте.</li>
+  </ol>
+
+  <h3>Шаг 4. Слои: бумажки на листе</h3>
+  <p>Всё, что ты кладёшь на лист, называется <span class="term">слой</span> <span class="en">(layer)</span>. Прямоугольник это слой, надпись это слой, картинка это слой. Представь, что ты вырезаешь бумажки и кладёшь их на лист одну на другую. Та, что положена позже, лежит сверху и может закрыть нижнюю.</p>
+  <p>Левая панель <b>Layers</b> показывает стопку бумажек списком. Что выше в списке, то выше и в стопке. Строчки со сдвигом вправо лежат <i>внутри</i> листа над ними.</p>
+  <div class="ex"><div class="stage">
+    <div class="lay-demo" id="ldemo">
+      <div class="ld-list"><b>Layers</b><div data-l="0">▭ iPhone 16</div><div data-l="3" class="in">T Урок 8. Семья</div><div data-l="2" class="in">□ Жёлтая плашка</div><div data-l="1" class="in">□ Сиреневая карточка</div></div>
+      <div class="ld-phone"><i class="p1"></i><i class="p2"></i><i class="p3">Урок 8. Семья</i></div>
+    </div>
+  </div>
+  <div class="ctl"><button id="ld-swap">Переложить жёлтую плашку под карточку</button></div>
+  <div class="cap">Нажми строчку в списке слева, и на телефоне подсветится эта бумажка. Кнопка меняет порядок: плашка уходит под карточку и прячется. В Figma порядок меняют, перетаскивая строчку в списке мышкой.</div></div>
+  <div class="task">В своём фрейме iPhone 16 нажми <kbd>R</kbd> (прямоугольник) и нарисуй мышкой карточку. Потом нажми <kbd>T</kbd>, щёлкни по карточке и напиши «Урок 8. Семья». Посмотри в левую панель: обе строчки появились внутри «iPhone 16». Перетащи строчку текста ниже прямоугольника и посмотри, как текст спрятался.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Ты открыла новый файл, а там только серое поле. Что делать?</p><div class="opts"><button>Переустановить Figma</button><button>Положить лист: нажать F и выбрать iPhone 16</button><button>Открыть FigJam</button></div><p class="why">Пустой холст в новом файле это норма. Лист (фрейм) кладёшь сама.</p></div>
+    <div class="q" data-a="0"><p>Текст не видно, хотя в списке слоёв он есть. Скорее всего…</p><div class="opts"><button>его закрывает прямоугольник, который лежит выше в списке</button><button>Figma удалила текст</button><button>текст нельзя класть на фрейм</button></div><p class="why">Что выше в списке слоёв, то лежит сверху. Перетащи текст выше.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="figma2" data-t="Figma: автолейаут, компонент, стили">
+  <h2>Figma: три умных приёма</h2>
+  <p>Фрейм и слои у тебя уже есть. Теперь три приёма, ради которых дизайнеры и любят Figma. Каждый экономит часы работы.</p>
+
+  <h3>Автолейаут: полка, которая сама держит промежутки</h3>
+  <p>Представь книжную полку, где между книгами всегда ровно палец. Ставишь новую книгу, и остальные сами сдвигаются, чтобы промежутки остались одинаковыми. Убираешь книгу, и полка сама сжимается. Это и есть <span class="term">автолейаут</span> <span class="en">(auto layout)</span>, по-русски «авто-расстановка».</p>
+  <p>Без него ты двигаешь каждую кнопку мышкой и на глаз ловишь одинаковые расстояния. С ним Figma делает это за тебя. Попробуй:</p>
+  <div class="ex"><div class="stage" style="min-height:300px">
+    <div class="al" id="al"><span>Продолжить</span><span>Словарь</span><span>Домашка</span></div>
+  </div>
+  <div class="ctl"><button id="al-on">Нажать Shift A</button><button id="al-add">+ добавить кнопку</button><button id="al-del">− убрать</button><button id="al-dir" disabled>Повернуть в строку</button><button id="al-reset">Сначала</button></div>
+  <div class="ctl"><span>Промежуток между кнопками</span><input type="range" id="al-gap" min="0" max="32" value="12" disabled><output id="al-go">12</output></div>
+  <div class="cap">Сначала три кнопки разбросаны вручную, расстояния разные. После <b>Shift A</b> они встают в столбик с одинаковым промежутком, а вокруг появляется рамка. Добавь кнопку: остальные подвинутся сами. Подвигай ползунок: меняется промежуток сразу у всех.</div></div>
+  <ol>
+    <li>В Figma нарисуй три кнопки внутри фрейма (прямоугольник <kbd>R</kbd> плюс текст <kbd>T</kbd>, или просто три надписи).</li>
+    <li>Выдели их все: зажми <kbd>Shift</kbd> и щёлкни по каждой.</li>
+    <li>Нажми <kbd>Shift</kbd> + <kbd>A</kbd>. Вокруг появится рамка, кнопки выстроятся ровно.</li>
+    <li>Справа в разделе <b>Auto layout</b> есть стрелки (столбик или строка), поле <b>gap</b> (промежуток между вещами) и <b>padding</b> (поля от рамки до вещей). Поменяй цифры и посмотри.</li>
+    <li>Выдели одну кнопку и нажми <kbd>Ctrl</kbd> + <kbd>D</kbd> (на Mac <kbd>Cmd</kbd> + <kbd>D</kbd>): появится копия, и все сдвинутся.</li>
+  </ol>
+
+  <h3>Компонент: образец и его копии</h3>
+  <p>Вспомни шаблон письма в почте. Ты правишь шаблон, и все новые письма уже с правкой. <span class="term">Компонент</span> <span class="en">(component)</span> работает так же, только мгновенно и для уже сделанных копий. Сделала кнопку образцом, расставила 20 копий по экранам, потом решила скруглить углы. Правишь образец, и меняются все 20 копий.</p>
+  <div class="ex"><div class="stage">
+    <div class="cmp" id="cmp"><div class="cmp-main"><s>◆ образец</s><span>Продолжить</span></div><div class="cmp-copies"><span>Продолжить</span><span>Продолжить</span><span>Продолжить</span><span>Продолжить</span></div></div>
+  </div>
+  <div class="ctl"><span>Правим образец:</span><button data-cr="0">острые углы</button><button data-cr="8" aria-pressed="true">мягкие</button><button data-cr="99">круглые</button><button id="cmp-c">другой цвет</button></div>
+  <div class="cap">Слева образец (в Figma его значок это ромбик ◆), справа копии на разных экранах. Меняешь образец, и копии повторяют за ним.</div></div>
+  <ol>
+    <li>Выдели готовую кнопку.</li>
+    <li>Нажми <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>K</kbd> (на Mac <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>K</kbd>). Или правая кнопка мыши и <b>Create component</b>. В слоях у кнопки появится фиолетовый ромбик.</li>
+    <li>Скопируй её <kbd>Ctrl</kbd> + <kbd>D</kbd> несколько раз. Копии отмечены пустым ромбиком ◇.</li>
+    <li>Поменяй цвет у образца и посмотри на копии.</li>
+  </ol>
+
+  <h3>Стили и переменные: краски с именами</h3>
+  <p>Представь коробку красок, где на каждой баночке написано, зачем она: «Цвет кнопки», «Цвет текста», «Фон». Ты красишь кнопки из баночки «Цвет кнопки». Если потом в баночку налить другой оттенок, все кнопки перекрасятся сами. Это <span class="term">стиль</span> <span class="en">(style)</span> или <span class="term">переменная</span> <span class="en">(variable)</span>. Так же сохраняют шрифты («Заголовок», «Обычный текст») и размеры отступов.</p>
+  <div class="ex"><div class="stage">
+    <div class="sty" id="sty"><div class="sty-jar"><i></i><b>Цвет кнопки</b></div><div class="sty-use"><span>Начать урок</span><span>Сдать ДЗ</span><span>Открыть словарь</span></div></div>
+  </div>
+  <div class="ctl"><span>Наливаем в баночку:</span><button data-sc="#6b5f8a" aria-pressed="true">сиреневый</button><button data-sc="#2f5fb3">синий</button><button data-sc="#c2694f">лососевый</button></div>
+  <div class="cap">Три кнопки покрашены из одной баночки. Меняешь содержимое баночки, и перекрашиваются все сразу. Цвета здесь просто для примера, палитру AIKITAY ты выберешь сама.</div></div>
+  <ol>
+    <li>Выдели кнопку. Справа найди раздел <b>Fill</b> (заливка).</li>
+    <li>Нажми значок из четырёх точек рядом с цветом, потом <b>+</b>. Назови стиль «Цвет кнопки».</li>
+    <li>Покрась этим стилем ещё пару вещей. Потом поменяй цвет самого стиля и посмотри, что всё перекрасилось.</li>
+  </ol>
+  <p>Переменные это то же самое, только умнее: в них можно хранить и цвета, и числа, и держать два набора сразу (светлая и тёмная тема). Подробно они будут в модуле «Дизайн-система».</p>
+
   <h3>Горячие клавиши первого дня</h3>
   <div class="keys">
-    <div><kbd>F</kbd>фрейм</div><div><kbd>R</kbd>прямоугольник</div><div><kbd>T</kbd>текст</div><div><kbd>Shift A</kbd>автолейаут</div><div><kbd>Ctrl/Cmd D</kbd>дублировать</div><div><kbd>Alt</kbd> + наведение: расстояния</div><div><kbd>Shift 1</kbd>показать всё</div><div><kbd>Ctrl/Cmd G</kbd>сгруппировать</div>
+    <div><kbd>F</kbd>фрейм (лист)</div><div><kbd>R</kbd>прямоугольник</div><div><kbd>T</kbd>текст</div><div><kbd>Shift A</kbd>автолейаут</div><div><kbd>Ctrl/Cmd D</kbd>копия</div><div><kbd>Ctrl/Cmd Z</kbd>отменить</div><div><kbd>Shift 1</kbd>показать всё</div><div><kbd>Ctrl/Cmd \</kbd>спрятать или показать панели</div><div><kbd>Alt</kbd> + наведение: расстояния</div><div><kbd>Пробел</kbd> + мышь: двигать холст</div>
   </div>
-  <div class="task">Создай фрейм iPhone 16 (393 × 852). Внутри нарисуй карточку урока: заголовок «Урок 8. Семья», подпись «40 минут», кнопку «Продолжить». Выдели всё внутри карточки и нажми Shift A. Поменяй отступ (padding) и промежуток (gap) справа и посмотри, как карточка перестраивается.</div>
+  <div class="task">Итоговое упражнение на 10 минут. В фрейме iPhone 16 сделай карточку урока: заголовок «Урок 8. Семья», подпись «40 минут», кнопка «Продолжить». Выдели все три и нажми <kbd>Shift</kbd> + <kbd>A</kbd>. Поставь промежуток (gap) 12 и поля (padding) 16. Кнопку сделай компонентом, а её цвет сохрани стилем «Цвет кнопки». Скопируй карточку два раза и поменяй цвет стиля: все три кнопки перекрасятся.</div>
   <div class="quiz"><h4>Мини-тест</h4>
-    <div class="q" data-a="2"><p>Что делает автолейаут?</p><div class="opts"><button>Красит слои в один цвет</button><button>Сохраняет файл автоматически</button><button>Сам расставляет содержимое с заданными отступами</button></div><p class="why">Автолейаут ведёт себя как настоящая вёрстка: добавила строку, и карточка сама выросла.</p></div>
-    <div class="q" data-a="0"><p>Ты поменяла цвет у кнопки-образца, и он поменялся на всех 20 экранах. Значит, кнопка была…</p><div class="opts"><button>компонентом</button><button>группой</button><button>картинкой</button></div><p class="why">Компонент это образец с копиями. Группа просто объединяет слои, связи между копиями у неё нет.</p></div>
+    <div class="q" data-a="2"><p>Что делает автолейаут?</p><div class="opts"><button>Красит слои в один цвет</button><button>Сохраняет файл автоматически</button><button>Сам держит одинаковые промежутки, как полка с книгами</button></div><p class="why">Добавила кнопку, и остальные сами подвинулись. Промежутки задаёшь цифрой, а не на глаз.</p></div>
+    <div class="q" data-a="0"><p>Ты поменяла цвет у кнопки-образца, и он поменялся на всех 20 экранах. Значит, кнопка была…</p><div class="opts"><button>компонентом</button><button>группой</button><button>картинкой</button></div><p class="why">Компонент это образец с копиями. Группа просто скрепляет слои, связи между копиями у неё нет.</p></div>
+    <div class="q" data-a="1"><p>Зачем давать цвету имя «Цвет кнопки», а не просто выбирать его каждый раз?</p><div class="opts"><button>Так красивее в списке</button><button>Чтобы потом поменять цвет в одном месте, и он сменился везде</button><button>Иначе Figma не сохранит файл</button></div><p class="why">Баночка с именем: меняешь содержимое один раз, и перекрашивается всё.</p></div>
   </div>
-  <p class="src">Официальная справка и бесплатные уроки: <a href="https://help.figma.com/" target="_blank" rel="noopener">help.figma.com</a> (на английском).</p>
+  <p class="src">Официальная справка и бесплатные видеоуроки: <a href="https://help.figma.com/" target="_blank" rel="noopener">help.figma.com</a> (на английском, в браузере можно включить перевод страницы).</p>
 </section>
 
 <section class="ch" id="razbor" data-t="Как присылать работы на разбор">
   <h2>Как присылать работы на разбор</h2>
-  <p>В школах самое ценное это не лекции, а разбор работ наставником. Здесь наставник я. Чтобы разбор был полезным, нужно немного порядка.</p>
+  <p>Разбор это когда ты показываешь свою работу, а я говорю, что получилось и что поправить. Как учитель проверяет тетрадь, только с объяснениями. Именно на разборах учатся быстрее всего.</p>
   <ol>
-    <li>Пришли картинку (в Figma: выдели фрейм → справа внизу «Export» → PNG, 2x) или ссылку на файл с доступом «может смотреть».</li>
+    <li>Пришли картинку своего экрана. Как её сделать в Figma: щёлкни по названию фрейма (синяя подпись над листом), справа в самом низу найди раздел <b>Export</b> (сохранить как картинку), нажми <b>+</b>, оставь PNG и выбери <b>2x</b> (в два раза чётче), потом нажми кнопку <b>Export</b>. Картинка сохранится на компьютер. Можно и проще: сделай снимок экрана.</li>
     <li>Напиши номер главы и что хотела сделать: «Глава А1.4, отступы карточки, хотела, чтобы было воздушно».</li>
     <li>Если сомневаешься в чём-то, скажи, в чём именно.</li>
   </ol>
@@ -130,7 +255,7 @@
 
 <section class="ch" id="dnevnik" data-t="Насмотренность каждый день">
   <h2>Насмотренность каждый день</h2>
-  <p><span class="term">Насмотренность</span> это не «посмотреть много картинок», а умение назвать, что именно работает. Растёт она от ежедневной привычки, поэтому в школах её делают сквозной, а не отдельным уроком в конце.</p>
+  <p><span class="term">Насмотренность</span> это как вкус у повара. Повар пробует много блюд и со временем может сказать не просто «вкусно», а «тут не хватает кислоты». Дизайнер смотрит много экранов и учится говорить не «красиво», а «красиво, потому что много свободного места вокруг заголовка». Растёт насмотренность от маленькой ежедневной привычки.</p>
   <h3>Правило 10 минут</h3>
   <ol>
     <li>Открой один источник: <a href="https://mobbin.com/" target="_blank" rel="noopener">Mobbin</a> (экраны приложений), <a href="https://www.siteinspire.com/" target="_blank" rel="noopener">Siteinspire</a> (сайты) или любой из <a href="../../referensy/">виджета референсов</a>.</li>
@@ -143,7 +268,7 @@
 
 <section class="ch" id="proekt" data-t="Проект: Кабинет ученика">
   <h2>Проект: Кабинет ученика AIKITAY</h2>
-  <p>Сквозной проект связывает весь курс. Каждый блок добавляет в него кусок, и к концу у тебя готов настоящий дизайн кабинета, который можно отдать в разработку.</p>
+  <p>Через весь курс ты делаешь одну настоящую вещь: личный кабинет ученика AIKITAY. Это страница или приложение, куда ученик заходит, чтобы увидеть урок, сделать домашку и посмотреть свои успехи. Как ремонт квартиры по шагам: сначала план, потом черновая отделка, потом чистовая. Каждый модуль добавляет кусочек, и к концу у тебя готовый дизайн, который можно отдать программисту.</p>
   <ul>
     <li><b>Старт:</b> короткий бриф.</li>
     <li><b>Блок Б:</b> интервью с учениками, путь ученика, наброски, прототип и проверка.</li>
@@ -151,7 +276,7 @@
     <li><b>Блок Г:</b> самокритика по чек-листу и доработка.</li>
   </ul>
   <h3>Что такое бриф</h3>
-  <p><span class="term">Бриф</span> <span class="en">(brief)</span> это 5–10 строк о задаче, с которых начинается любая работа в студии. Он спасает от главной ошибки новичка: рисовать красиво, не зная зачем.</p>
+  <p><span class="term">Бриф</span> <span class="en">(brief)</span> это короткое задание на 5–10 строк: для кого делаем, зачем и что важно. Как список, с которым идёшь в магазин. Без списка купишь много красивого, но не то, что нужно для ужина. Без брифа нарисуешь красивый экран, который не помогает ученику.</p>
   <div class="proj">Напиши бриф кабинета в пяти строках. 1) Кто ученик (возраст, уровень, с какого устройства заходит). 2) Зачем он открывает кабинет (одна главная задача). 3) Что ещё он там делает. 4) Что для школы важно (например, чтобы ДЗ сдавали вовремя). 5) Чего точно не должно быть. Пришли мне, разберём.</div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="1"><p>С чего начинается работа над кабинетом?</p><div class="opts"><button>С выбора красивого стиля</button><button>С брифа: кто ученик и зачем он приходит</button><button>С логотипа</button></div><p class="why">Стиль выбирают под задачу. Без брифа красота получается «вообще», а не для ученика.</p></div>
@@ -175,5 +300,35 @@
 </main></div>
 <footer class="foot">Курс молодого дизайнера · модуль 0. Прогресс хранится только в этом браузере.</footer>
 <script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+/* фрейм */
+const fd=$('fdemo'),key=$('fd-key'),pick=$('fd-pick'),r=$('fd-r'),lay=$('fd-lay'),fb=$('fd-f');
+const r0=r.innerHTML;
+key.onclick=()=>{fb.classList.add('on');r.innerHTML='<span class="fw-tabs"><b>Frame</b></span><div class="pick"><span class="fw-h">Phone</span><span class="hl">iPhone 16</span><span>iPhone 16 Pro Max</span><span>Android</span><span class="fw-h">Desktop</span><span>MacBook</span></div>';pick.disabled=false;key.disabled=true;};
+pick.onclick=()=>{fd.classList.add('has');fb.classList.remove('on');r.innerHTML='<span class="fw-tabs"><b>Design</b></span><span class="fw-h">Frame</span><span>W 393</span><span>H 852</span><span>Fill FFFFFF</span>';lay.className='';lay.textContent='▭ iPhone 16';pick.disabled=true;};
+$('fd-reset').onclick=()=>{fd.classList.remove('has');fb.classList.remove('on');r.innerHTML=r0;lay.className='fw-e';lay.textContent='пусто';key.disabled=false;pick.disabled=true;};
+/* слои */
+const ld=$('ldemo'),ph=ld.querySelector('.ld-phone'),list=ld.querySelector('.ld-list');
+list.querySelectorAll('[data-l]').forEach(d=>d.onclick=()=>{list.querySelectorAll('div').forEach(x=>x.classList.toggle('sel',x===d));ph.querySelectorAll('i').forEach((x,i)=>x.classList.toggle('sel',String(i+1)===d.dataset.l));ph.style.outline=d.dataset.l==='0'?'2px solid #0d99ff':'';});
+$('ld-swap').onclick=function(){const s=ph.classList.toggle('swap');this.textContent=s?'Вернуть жёлтую плашку наверх':'Переложить жёлтую плашку под карточку';const a=list.querySelector('[data-l="2"]'),b=list.querySelector('[data-l="1"]');s?list.insertBefore(b,a):list.insertBefore(a,b);};
+/* автолейаут */
+const al=$('al'),gap=$('al-gap'),go=$('al-go'),dir=$('al-dir');const names=['Продолжить','Словарь','Домашка','Карточки','Игра','Чат'];
+$('al-on').onclick=function(){al.classList.add('on');gap.disabled=false;dir.disabled=false;this.disabled=true;};
+$('al-add').onclick=()=>{const n=al.children.length;if(n>=6)return;const s=document.createElement('span');s.textContent=names[n];al.appendChild(s);};
+$('al-del').onclick=()=>{if(al.children.length>1)al.lastElementChild.remove();};
+dir.onclick=function(){const r=al.classList.toggle('row');this.textContent=r?'Повернуть в столбик':'Повернуть в строку';};
+gap.oninput=()=>{al.style.setProperty('--g',gap.value+'px');go.textContent=gap.value;};
+$('al-reset').onclick=()=>{al.className='al';al.style.removeProperty('--g');gap.value=12;go.textContent=12;gap.disabled=true;dir.disabled=true;dir.textContent='Повернуть в строку';$('al-on').disabled=false;while(al.children.length>3)al.lastElementChild.remove();};
+/* компонент */
+const cmp=$('cmp');const cols=['#6b5f8a','#2f5fb3','#c2694f','#2a2340'];let ci=0;
+document.querySelectorAll('[data-cr]').forEach(b=>b.onclick=()=>{cmp.style.setProperty('--r',b.dataset.cr+'px');document.querySelectorAll('[data-cr]').forEach(x=>x.setAttribute('aria-pressed',x===b));});
+$('cmp-c').onclick=()=>{ci=(ci+1)%cols.length;cmp.style.setProperty('--c',cols[ci]);};
+/* стили */
+const sty=$('sty');document.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{sty.style.setProperty('--c',b.dataset.sc);document.querySelectorAll('[data-sc]').forEach(x=>x.setAttribute('aria-pressed',x===b));});
+})();
+</script>
+
 </body>
 </html>
