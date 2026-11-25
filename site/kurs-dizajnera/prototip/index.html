@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Структура, наброски, прототип · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+/* карта экранов */
+.tree{font-size:13px;text-align:left;width:100%;overflow-x:auto}
+.tree ul{list-style:none;margin:0;padding:0 0 0 18px!important;position:relative}
+.tree > ul{padding-left:0!important}
+.tree li{position:relative;margin:6px 0!important}
+.tree li::before{content:"";position:absolute;left:-12px;top:-6px;bottom:50%;border-left:1.5px solid #cfcadb;border-bottom:1.5px solid #cfcadb;width:10px;border-bottom-left-radius:4px}
+.tree > ul > li::before{display:none}
+.tree span{display:inline-block;background:#fff;border:1px solid #ddd8e8;border-radius:8px;padding:4px 10px}
+.tree .tab > span{background:#6b5f8a;color:#fff;border-color:#6b5f8a;font-weight:600}
+.tree .root > span{background:#3d3456;color:#fff;border-color:#3d3456;font-weight:600}
+.tree .cols{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:8px}
+.tree .cols > li::before{display:none}
+/* сортировка карточек */
+.cs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:560px}
+.cs span{background:#fff;border:1px solid #ddd8e8;border-radius:8px;padding:6px 10px;font-size:12.5px;cursor:grab;user-select:none}
+.cs span.p{background:#eeebf5;border-color:#6b5f8a}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:12px}
+.bins div{background:#fff;border:1.5px dashed #cfcadb;border-radius:10px;padding:8px;min-height:90px;font-size:12px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;cursor:pointer}
+.bins div b{width:100%;font-size:12px;color:#4a4068}
+.bins div span{background:#eeebf5;border-radius:6px;padding:3px 7px}
+/* флоу */
+.flow svg{width:100%;max-width:640px;height:auto;display:block;margin:0 auto}
+.flow text{font:12px var(--sans);fill:#221f2b}
+/* детализация */
+.fi{width:250px}
+.fi .card{background:#fff;border-radius:14px;padding:16px;text-align:left;transition:all .3s;box-shadow:0 10px 24px -16px rgba(40,30,70,.5)}
+.fi .l1{height:12px;width:40%;border-radius:4px;background:#d9d6e0;margin-bottom:10px;transition:all .3s}
+.fi .l2{height:36px;width:70%;border-radius:4px;background:#d9d6e0;margin-bottom:8px;transition:all .3s}
+.fi .l3{height:10px;width:85%;border-radius:4px;background:#e6e3ec;margin-bottom:14px}
+.fi .btn{height:38px;border-radius:8px;background:#bdb8c8;transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
+.fi .tx{display:none}
+.stage.f1 .card{box-shadow:none;border:2px solid #333;border-radius:2px;font-family:"Comic Sans MS","Marker Felt",cursive}
+.stage.f1 .l1,.stage.f1 .l2,.stage.f1 .l3{background:none;border-bottom:2px solid #333;border-radius:0}
+.stage.f1 .l2{border:2px solid #333;background:repeating-linear-gradient(45deg,transparent 0 6px,#ddd 6px 7px)}
+.stage.f1 .btn{background:none;border:2px solid #333;border-radius:4px;color:#333}
+.stage.f3 .l1,.stage.f3 .l2,.stage.f3 .l3{display:none}
+.stage.f3 .tx{display:block}
+.stage.f3 .btn{background:#6b5f8a;color:#fff;font-weight:600}
+.stage.f2 .btn{color:#4a4658}
+.stage.f2 .l1,.stage.f2 .l2,.stage.f2 .l3{display:none}
+.stage.f2 .tx{display:block;color:#4a4658}
+.stage.f2 .tx .hz{color:#4a4658}
+/* прототип */
+.pp .s{position:relative;overflow:hidden}
+.pp .scr{position:absolute;inset:0;background:#f6f5f8;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.pp .scr.off-r{transform:translateX(100%)}
+.pp .scr.off-l{transform:translateX(-30%);opacity:.6}
+.pp.instant .scr{transition:none}
+.pp.fade .scr.off-r,.pp.fade .scr.off-l{transform:none;opacity:0}
+.pp .sb{display:flex;justify-content:space-between;padding:10px 18px 0;font-size:11px;font-weight:600}
+.pp .tl{padding:12px 16px 6px;font:700 22px var(--sans)}
+.pp .bk{padding:10px 14px 0;color:#6b5f8a;font-size:13px;cursor:pointer}
+.pp .it{margin:0 12px 8px;background:#fff;border-radius:12px;padding:11px 12px;font-size:13px;display:flex;justify-content:space-between;cursor:pointer}
+.pp .it:hover{box-shadow:inset 0 0 0 2px #d9d0f0}
+.pp .b1{margin:auto 12px 26px;background:#6b5f8a;color:#fff;border-radius:12px;padding:12px;text-align:center;font:600 13px var(--sans);cursor:pointer}
+.pp .hot{outline:2px solid rgba(58,120,255,.0);transition:outline-color .2s}
+.stage.hs .pp .hot{outline-color:rgba(58,120,255,.65);outline-offset:2px}
+.pp .big{font-size:56px;text-align:center;margin:18px 0 6px}
+/* тяжесть */
+.sev{width:100%;overflow-x:auto}
+.sev table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px;text-align:left}
+.sev th,.sev td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.sev th{font:600 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sev .d{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+@media (max-width:640px){.tree .cols{grid-template-columns:1fr 1fr}.bins{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="prototip">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/" class="on">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль Б2 · Структура и прототип</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок Б · Модуль Б2</p>
+  <h1>Структура, наброски, прототип</h1>
+  <p>Между «поняла задачу» и «красивые экраны» есть три шага, которые новички пропускают: разложить всё по полкам, набросать экраны серыми прямоугольниками и сделать кликабельный прототип, чтобы проверить его на живых людях до того, как тратить время на красоту.</p>
+  <p class="meta">9 глав · по 5–10 минут · в конце второй шаг проекта</p>
+</div>
+
+<section class="ch" id="karta" data-t="Карта экранов">
+  <h2>Карта экранов</h2>
+  <p><span class="term">Информационная архитектура</span> <span class="en">(information architecture, IA)</span> это то, как разложено содержание: какие разделы, что в каждом и как они связаны. Рисуют её деревом, которое называют <span class="term">картой экранов</span> <span class="en">(sitemap)</span>.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="tree"><ul><li class="root"><span>Кабинет ученика</span>
+    <ul class="cols">
+      <li class="tab"><span>Главная</span><ul><li><span>Урок дня</span></li><li><span>ДЗ со сроком</span></li><li><span>Серия дней</span></li></ul></li>
+      <li class="tab"><span>Уроки</span><ul><li><span>Список уроков</span><ul><li><span>Урок</span><ul><li><span>Упражнение</span></li><li><span>Результат</span></li></ul></li></ul></li></ul></li>
+      <li class="tab"><span>Слова</span><ul><li><span>Повторить сегодня</span></li><li><span>Все слова</span><ul><li><span>Карточка слова</span></li></ul></li></ul></li>
+      <li class="tab"><span>Профиль</span><ul><li><span>Прогресс</span></li><li><span>Расписание</span></li><li><span>Настройки</span></li></ul></li>
+    </ul></li></ul></div></div>
+  <div class="cap">Тёмные плашки это вкладки таб-бара. Глубже трёх уровней лучше не уходить: «Урок → Упражнение» уже третий.</div></div>
+  <h3>Сортировка карточек</h3>
+  <p>Как понять, куда люди будут искать «Расписание»: в Профиле или на Главной? Дизайнеры проводят <span class="term">сортировку карточек</span> <span class="en">(card sorting)</span>: дают ученикам названия на бумажках и просят разложить по стопкам. Попробуй сама: нажми на карточку, потом на стопку.</p>
+  <div class="ex"><div class="stage" style="flex-direction:column"><div class="cs" id="cs"><span>Расписание</span><span>Оплата</span><span>Домашка</span><span>Слова урока</span><span>Запись урока</span><span>Напоминания</span><span>Мой уровень</span><span>Чат с учителем</span><span>Тест HSK</span></div>
+    <div class="bins" id="bins"><div data-b="0"><b>Учёба</b></div><div data-b="1"><b>Я и прогресс</b></div><div data-b="2"><b>Связь и оплата</b></div></div></div>
+  <div class="cap">Здесь нет правильного ответа. Если трое учеников из пяти положили «Расписание» в «Учёбу», значит, его там и ищут.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Зачем рисовать карту экранов до макетов?</p><div class="opts"><button>Чтобы было что показать заказчику</button><button>Чтобы увидеть всё содержание целиком и не потерять разделы</button><button>Так требует Figma</button></div><p class="why">Карта показывает, всё ли учтено и не слишком ли глубоко спрятаны важные вещи. Переставить плашку проще, чем перерисовать двадцать экранов.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="flow" data-t="Сценарий">
+  <h2>Сценарий: схема шагов</h2>
+  <p>Карта показывает, <b>что</b> есть. <span class="term">Сценарий</span> <span class="en">(user flow)</span> показывает, <b>как</b> человек проходит одну задачу: экраны, действия и развилки. Прямоугольник это экран, ромб это развилка (да или нет), стрелка это действие.</p>
+  <div class="ex"><div class="stage flow"><svg viewBox="0 0 640 220" role="img" aria-label="Схема сценария сдачи домашнего задания">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b5f8a"/></marker></defs>
+    <g fill="#fff" stroke="#6b5f8a" stroke-width="1.5"><rect x="10" y="80" width="100" height="44" rx="8"/><rect x="150" y="80" width="100" height="44" rx="8"/><rect x="290" y="80" width="100" height="44" rx="8"/><path d="M470 62 L512 102 L470 142 L428 102 Z"/><rect x="560" y="20" width="74" height="44" rx="8"/><rect x="560" y="140" width="74" height="44" rx="8"/></g>
+    <g stroke="#6b5f8a" stroke-width="1.5" fill="none" marker-end="url(#ar)"><path d="M110 102H148"/><path d="M250 102H288"/><path d="M390 102H426"/><path d="M490 82 L556 46"/><path d="M490 122 L556 160"/><path d="M597 184 V205 H340 V126"/></g>
+    <text x="60" y="106" text-anchor="middle">Главная</text><text x="200" y="100" text-anchor="middle">Задание</text><text x="200" y="114" text-anchor="middle" font-size="10">упр. 1–3</text><text x="340" y="106" text-anchor="middle">Проверить</text><text x="470" y="100" text-anchor="middle">Всё</text><text x="470" y="114" text-anchor="middle">верно?</text><text x="597" y="46" text-anchor="middle">Результат</text><text x="597" y="166" text-anchor="middle">Подсказка</text><text x="522" y="58" font-size="10">да</text><text x="522" y="152" font-size="10">нет</text><text x="470" y="217" text-anchor="middle" font-size="10">попробовать снова</text>
+  </svg></div>
+  <div class="cap">Развилка «Всё верно?» сразу показывает, что нужен экран «Подсказка», про который легко забыть, если рисовать только счастливый путь.</div></div>
+  <div class="key">Рисуй сценарий для каждой важной задачи из брифа: «сдать ДЗ», «повторить слова», «найти запись урока». Каждая развилка это экран или состояние, которое надо нарисовать.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Что обозначает ромб на схеме сценария?</p><div class="opts"><button>Главный экран</button><button>Кнопку</button><button>Развилку: дальше путь зависит от условия</button></div><p class="why">Ромб это решение «да / нет». Из него всегда выходит минимум две стрелки.</p></div>
+  </div>
+  <div class="task paper">Нарисуй сценарий «повторить слова на сегодня» от открытия кабинета до результата. Найди хотя бы две развилки (например, «слов на сегодня нет»).</div>
+</section>
+
+<section class="ch" id="detalizaciya" data-t="Наброски и детализация">
+  <h2>Наброски: от бумаги к макету</h2>
+  <p><span class="term">Вайрфрейм</span> <span class="en">(wireframe, «проволочный каркас»)</span> это черновик экрана: серые прямоугольники вместо картинок, без цвета и шрифтов. Насколько он подробный, называют <span class="term">детализацией</span> <span class="en">(fidelity)</span>: низкая (lo-fi), средняя (mid-fi), высокая (hi-fi).</p>
+  <div class="ex"><div class="stage f1"><div class="fi"><div class="card"><div class="l1"></div><div class="l2"></div><div class="l3"></div><div class="tx"><div style="font-size:11px;color:#77728a;font-weight:600">Урок 8 · Семья</div><div class="hz" style="font-size:30px;margin:4px 0">爸爸 妈妈</div><div style="font-size:12.5px;margin-bottom:12px">bàba · māma · папа, мама</div></div><div class="btn">Начать урок</div></div></div></div>
+  <div class="ctl"><button data-cls="f1" aria-pressed="true">Набросок (lo-fi)</button><button data-cls="f2">Серый макет (mid-fi)</button><button data-cls="f3">Готовый (hi-fi)</button></div>
+  <div class="cap">Lo-fi рисуют за минуты на бумаге. Mid-fi уже с настоящим текстом, но без цвета. Hi-fi это финальный вид.</div></div>
+  <h3>Почему сначала серое</h3>
+  <ul>
+    <li>Когда нет цвета, обсуждают <b>структуру</b>, а не «мне не нравится этот фиолетовый».</li>
+    <li>Набросок не жалко выбросить. Хороший дизайнер делает 5–8 вариантов главного экрана и выбирает, а не полирует первый.</li>
+    <li>Серый быстро показывает иерархию: если на сером макете непонятно, что главное, цвет не спасёт.</li>
+  </ul>
+  <div class="key">Правило «crazy 8» (восемь безумных): сложи лист А4 на 8 частей и за 8 минут нарисуй 8 разных вариантов одного экрана. Первые 3 будут очевидными, интересное начинается с пятого.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Почему на этапе набросков не используют цвет?</p><div class="opts"><button>Чтобы обсуждать структуру, а не вкусы</button><button>Цвет в Figma платный</button><button>Так быстрее загружается</button></div><p class="why">Цвет вызывает эмоции и споры о вкусе. Серый заставляет смотреть на главное: что где стоит и в каком порядке.</p></div>
+  </div>
+  <div class="task paper">Сделай «crazy 8» для главного экрана кабинета: 8 вариантов за 8 минут. Выбери два лучших и объясни почему.</div>
+</section>
+
+<section class="ch" id="kontent" data-t="Сначала содержание">
+  <h2>Сначала содержание</h2>
+  <p>Частая ошибка: рисовать экран с текстом «Lorem ipsum» и идеальными короткими словами. Потом приходит настоящий текст, и всё ломается. Профессионалы работают по принципу <span class="term">«контент вперёд»</span> <span class="en">(content first)</span>: макет делают на реальных словах, иероглифах и числах.</p>
+  <div class="pair">
+    <div class="bad"><span class="lab">Было</span><div class="stage"><div style="background:#fff;border-radius:12px;padding:12px;width:220px;text-align:left;font-size:13px"><b>Lorem ipsum</b><br><span style="color:#77728a">Dolor sit amet</span><div style="margin-top:8px;background:#6b5f8a;color:#fff;border-radius:8px;padding:7px;text-align:center">Button</div></div></div></div>
+    <div class="good"><span class="lab">Стало</span><div class="stage"><div style="background:#fff;border-radius:12px;padding:12px;width:220px;text-align:left;font-size:13px"><b>Урок 14. Как пройти до станции метро «Площадь Революции»</b><br><span style="color:#77728a">问路 wèn lù · 45 минут · 18 новых слов</span><div style="margin-top:8px;background:#6b5f8a;color:#fff;border-radius:8px;padding:7px;text-align:center">Продолжить с упражнения 3</div></div></div></div>
+  </div>
+  <div class="because"><b>Почему.</b> Справа видно, что длинное название занимает три строки, кнопке нужен длинный текст, а под иероглифы нужно место. Если это обнаружить в конце, придётся переделывать все экраны.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Что проверить на макете списка учеников для учителя?</p><div class="opts"><button>Только как выглядят три ученика с короткими именами</button><button>Длинное имя, 1 ученик, 40 учеников и ученика без фото</button><button>Только цвета</button></div><p class="why">Крайние случаи (очень длинное, пустое, много) ломают вёрстку чаще всего. Их проверяют заранее.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="figma-nabroski" data-t="Наброски в Figma">
+  <h2>Наброски в Figma: быстрые приёмы</h2>
+  <p>Чтобы наброски делались быстро, в Figma есть несколько вещей, которые экономят часы.</p>
+  <ul>
+    <li><b>Автолейаут</b> <span class="en">(auto layout, Shift + A)</span>: элементы внутри фрейма сами выстраиваются в столбик или строку с заданным промежутком. Добавила строку, остальные сдвинулись сами.</li>
+    <li><b>Компоненты</b> <span class="en">(components, Ctrl/Cmd + Alt + K)</span>: нарисовала строку списка один раз, а дальше вставляешь копии. Поменяла оригинал, поменялись все.</li>
+    <li><b>Готовые наборы для набросков</b> <span class="en">(wireframe kits)</span>: в разделе Community есть бесплатные наборы серых блоков. Поищи «wireframe kit».</li>
+    <li><b>Дублировать фрейм</b> (Ctrl/Cmd + D): для вариантов и состояний.</li>
+    <li><b>Секции</b> <span class="en">(sections, Shift + S)</span>: группируют экраны одного сценария на холсте.</li>
+  </ul>
+  <div class="key">Автолейаут это главный навык Figma. Почти всё в профессиональных макетах собрано им: кнопка, карточка, список, весь экран.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Ты добавила в карточку ещё одну строку текста, и кнопка под ней сама опустилась ниже. Что это?</p><div class="opts"><button>Компонент</button><button>Сетка</button><button>Автолейаут</button></div><p class="why">Автолейаут сам расставляет элементы по порядку с заданными промежутками и подстраивает размер рамки.</p></div>
+  </div>
+  <div class="task">Собери в Figma строку списка урока автолейаутом: слева номер, в середине название и подпись, справа стрелка. Сделай её компонентом и вставь 5 копий в столбик.</div>
+</section>
+
+<section class="ch" id="prototip" data-t="Кликабельный прототип">
+  <h2>Кликабельный прототип</h2>
+  <p><span class="term">Прототип</span> <span class="en">(prototype)</span> это макет, по которому можно «ходить»: нажимаешь на кнопку и попадаешь на следующий экран. Его открывают на телефоне и дают ученику, как будто это настоящее приложение. Попробуй: нажимай на строки и кнопки.</p>
+  <div class="ex"><div class="stage"><div class="phone pp mk" id="pp"><div class="s">
+    <div class="scr" data-i="0"><div class="sb"><span>9:41</span><span>●●● ▮</span></div><div class="tl">Уроки</div><div class="it hot" data-go="1"><span>Урок 8 · Семья</span><span>›</span></div><div class="it"><span>Урок 9 · Еда</span><span>›</span></div></div>
+    <div class="scr off-r" data-i="1"><div class="sb"><span>9:41</span><span>●●● ▮</span></div><div class="bk hot" data-back="0">‹ Уроки</div><div class="tl">Урок 8</div><div class="big hz">爸爸</div><div style="text-align:center;color:#77728a;font-size:13px">bàba · папа</div><div class="b1 hot" data-go="2">Начать упражнение</div></div>
+    <div class="scr off-r" data-i="2"><div class="sb"><span>9:41</span><span>●●● ▮</span></div><div class="bk hot" data-back="1">✕</div><div class="tl" style="font-size:16px;font-weight:500;color:#77728a">Упражнение 1 из 5</div><div class="big hz">妈妈</div><div style="text-align:center;font-size:13px">Как переводится?</div><div class="b1 hot" data-back="0" style="margin-top:auto">Готово, к урокам</div></div>
+  </div></div></div>
+  <div class="ctl"><button data-set="x|slide" class="pt" aria-pressed="true">Сдвиг (slide)</button><button data-set="x|fade" class="pt">Растворение</button><button data-set="x|instant" class="pt">Мгновенно</button><button data-tog="hs">Показать зоны нажатия</button></div>
+  <div class="cap">В Figma синие рамки зон нажатия называются hotspots. Сдвиг вправо говорит «я пошла вглубь», растворение «сменился режим», мгновенно используют редко: теряется ощущение пути.</div></div>
+  <h3>Как сделать в Figma</h3>
+  <ol>
+    <li>Справа вверху переключись на вкладку <b>Prototype</b>.</li>
+    <li>Выдели кнопку, потяни синий кружок к следующему экрану. Появится <b>связь</b> <span class="en">(connection)</span>.</li>
+    <li>Выбери <b>триггер</b> <span class="en">(trigger)</span>: On tap (по нажатию), After delay (через время), On drag (перетаскивание).</li>
+    <li>Выбери <b>анимацию</b>: Instant, Dissolve, Move in, Push или Smart animate (Figma сама анимирует одинаково названные слои, так делают «перетекания»).</li>
+    <li>Нажми ▶ Present или открой приложение Figma на телефоне и запусти прототип там.</li>
+  </ol>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Как сделать, чтобы карточка урока плавно «перетекала» в открытый экран урока?</p><div class="opts"><button>Instant</button><button>Smart animate с одинаково названными слоями</button><button>After delay 5 секунд</button></div><p class="why">Smart animate ищет слои с одинаковыми именами на двух экранах и плавно меняет их размер и место.</p></div>
+    <div class="q" data-a="0"><p>Зачем прототип, если есть макеты?</p><div class="opts"><button>Проверить путь на живом человеке до программирования</button><button>Для красоты в портфолио</button><button>Прототип заменяет программиста</button></div><p class="why">Прототип дешёвый способ узнать, понятен ли путь. Исправить в Figma за 10 минут дешевле, чем переделывать готовый сайт.</p></div>
+  </div>
+  <div class="task">Свяжи в прототип свои 3 экрана: Список уроков → Урок → Упражнение, и «назад». Анимация Push для «вглубь», Dissolve для открытия упражнения. Открой на телефоне.</div>
+</section>
+
+<section class="ch" id="test" data-t="Проверка на учениках">
+  <h2>Проверка на учениках</h2>
+  <p><span class="term">Юзабилити-тест</span> <span class="en">(usability test)</span>: даёшь человеку прототип и задачу, а сама молчишь и смотришь. По исследованиям Якоба Нильсена, пять человек находят около 85% проблем.</p>
+  <h3>Как провести за 20 минут</h3>
+  <ol>
+    <li>Скажи: «Мы проверяем не тебя, а приложение. Если что-то непонятно, это ошибка приложения».</li>
+    <li>Попроси думать вслух <span class="en">(think aloud)</span>: говорить всё, что видит и думает.</li>
+    <li>Дай задачу как ситуацию, а не как инструкцию (см. пару ниже).</li>
+    <li><b>Не помогай.</b> Если спросит «куда нажать?», ответь «а куда бы ты нажала?».</li>
+    <li>Записывай: где застряла, что сказала, сколько заняло, справилась или нет.</li>
+  </ol>
+  <div class="pair">
+    <div class="bad"><span class="lab">Плохая задача</span><p class="tx">«Нажми на вкладку Слова и открой раздел Повторить сегодня».</p></div>
+    <div class="good"><span class="lab">Хорошая задача</span><p class="tx">«Ты едешь в автобусе, есть 5 минут. Хочешь повторить слова с последнего урока. Покажи, как будешь это делать».</p></div>
+  </div>
+  <div class="because"><b>Почему.</b> Плохая задача уже содержит ответ: названия вкладки и раздела. Ты проверишь только, умеет ли человек читать. Хорошая описывает ситуацию, и видно, где он реально будет искать.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Ученица застряла и спрашивает: «А где тут домашка?» Что ответить?</p><div class="opts"><button>Показать пальцем</button><button>Сказать «во вкладке Уроки»</button><button>«А где бы ты стала её искать?» и записать ответ</button></div><p class="why">Если помочь, ты не узнаешь, где проблема. Её ответ «где бы искала» и есть самая ценная находка теста.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="iteracii" data-t="Итерации">
+  <h2>Итерации: найти, исправить, проверить</h2>
+  <p>После теста у тебя список проблем. Все сразу не исправить, поэтому их оценивают по <span class="term">тяжести</span> <span class="en">(severity)</span>.</p>
+  <div class="sev"><table>
+    <tr><th>Тяжесть</th><th>Что значит</th><th>Пример</th></tr>
+    <tr><td><span class="d" style="background:#a03a3a"></span>Критично</td><td>Не может выполнить задачу</td><td>Не нашла, где сдать ДЗ</td></tr>
+    <tr><td><span class="d" style="background:#97611a"></span>Серьёзно</td><td>Справилась, но с трудом и долго</td><td>Нашла ДЗ только с третьей вкладки</td></tr>
+    <tr><td><span class="d" style="background:#6b5f8a"></span>Мелочь</td><td>Заметила, но не мешает</td><td>«Странная иконка у Слов»</td></tr>
+    <tr><td><span class="d" style="background:#bdb8c8"></span>Пожелание</td><td>Хочет больше, чем есть</td><td>«А можно тёмную тему?»</td></tr>
+  </table></div>
+  <p>Исправляешь критичные и серьёзные, проверяешь ещё на 2–3 людях. Этот круг называется <span class="term">итерацией</span> <span class="en">(iteration)</span>. Хорошие продукты проходят десятки итераций.</p>
+  <div class="key">Пожелания пользователей не равны их проблемам. Люди просят тёмную тему, а уходят, потому что не нашли домашку.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Двое из пяти не нашли запись урока, один попросил другой шрифт. Что исправлять первым?</p><div class="opts"><button>Место записи урока</button><button>Шрифт</button><button>Ничего, большинство справилось</button></div><p class="why">40% не выполнили задачу: это критично. Шрифт это пожелание одного человека.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="proekt" data-t="Проект: шаг 2">
+  <h2>Проект: шаг 2. Путь и наброски</h2>
+  <div class="proj">Сделай для кабинета ученика: карту экранов (дерево с 4 вкладками); сценарий «сдать ДЗ» с развилками; серые наброски (mid-fi, с настоящим текстом) пяти экранов: Главная, Урок, Задание, Результат, Профиль; кликабельный прототип между ними. Проверь его хотя бы на двух учениках по задаче-ситуации и запиши, где они застряли. Пришли всё на разбор.</div>
+  <p class="src">Почитать и посмотреть: Стив Круг «Не заставляйте меня думать» (главы про тесты), <a href="https://help.figma.com/hc/en-us/articles/360040314193-Guide-to-prototyping-in-Figma" target="_blank" rel="noopener">справка Figma о прототипах</a>, <a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" target="_blank" rel="noopener">почему достаточно 5 пользователей</a>.</p>
+</section>
+
+<nav class="next"><a href="../ux/"><small>← Назад</small>Б1. Задача и пользователь</a><a href="../dizajn-sistema/"><small>Дальше →</small>В1. Дизайн-система</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль Б2. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ /* сортировка карточек */
+ let picked=null; const cs=document.getElementById('cs');
+ cs.addEventListener('click',e=>{ const s=e.target.closest('span'); if(!s) return; cs.querySelectorAll('span').forEach(x=>x.classList.toggle('p',x===s&&!s.classList.contains('p'))); picked=s.classList.contains('p')?s:null; });
+ document.getElementById('bins').addEventListener('click',e=>{ const b=e.target.closest('[data-b]'); if(!b) return;
+  if(picked){ picked.classList.remove('p'); b.append(picked); picked=null; return; }
+  const s=e.target.closest('span'); if(s&&b.contains(s)) cs.append(s); });
+ /* прототип */
+ const pp=document.getElementById('pp'); const scr=[...pp.querySelectorAll('.scr')]; let cur=0;
+ function go(n){ scr.forEach((s,i)=>{ s.classList.toggle('off-r',i>n); s.classList.toggle('off-l',i<n); }); cur=n; }
+ pp.addEventListener('click',e=>{ const g=e.target.closest('[data-go]'), b=e.target.closest('[data-back]'); if(g) go(+g.dataset.go); else if(b) go(+b.dataset.back); });
+ document.querySelectorAll('.pt').forEach(b=>b.addEventListener('click',()=>{ pp.classList.remove('instant','fade'); const m=b.dataset.set.split('|')[1]; if(m!=='slide') pp.classList.add(m); }));
+})();
+</script>
+</body>
+</html>

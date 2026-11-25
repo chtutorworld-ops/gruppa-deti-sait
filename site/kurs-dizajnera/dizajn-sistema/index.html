@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дизайн-система · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+/* мини-интерфейс на токенах */
+.ui{--bg:#f4f3f7;--surface:#fff;--text:#1d1b24;--text2:#6c6880;--border:#e4e1ea;--accent:var(--acc,#6b5f8a);--on-accent:#fff;--ok:#2f7a55;--r:var(--rad,14px);--sp:var(--space,16px);
+  background:var(--bg);color:var(--text);border-radius:16px;padding:var(--sp);width:min(420px,100%);text-align:left;transition:background .3s,color .3s;font-size:13.5px}
+.stage.dark .ui{--bg:#17151d;--surface:#24212c;--text:#eeecf3;--text2:#a5a1b3;--border:#35313f;--on-accent:#fff}
+.ui .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:var(--sp);transition:all .3s}
+.ui .card + .card{margin-top:calc(var(--sp) * .75)}
+.ui .t2{color:var(--text2);font-size:12px}
+.ui .h{font:700 17px var(--sans);margin:2px 0 6px}
+.ui .btn{display:inline-block;background:var(--accent);color:var(--on-accent);border-radius:calc(var(--r) * .7);padding:8px 14px;font-weight:600;font-size:12.5px;transition:all .3s}
+.ui .btn.s{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.ui .chip{display:inline-block;border:1px solid var(--border);color:var(--text2);border-radius:99px;padding:3px 9px;font-size:11.5px;margin-right:4px}
+.ui .chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.ui .bar{height:6px;border-radius:3px;background:var(--border);margin:8px 0;overflow:hidden}
+.ui .bar i{display:block;height:100%;width:60%;background:var(--accent)}
+.sws{display:flex;gap:6px;flex-wrap:wrap}
+.sws button{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line2);cursor:pointer;padding:0}
+.sws button[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+/* схема токенов */
+.tok{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;width:100%;font-size:12.5px}
+.tok > div{background:#fff;border:1px solid #ddd8e8;border-radius:10px;padding:8px 10px;font-family:var(--mono);font-size:11.5px;line-height:1.5}
+.tok > div b{display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#77728a}
+.tok i.c{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:4px}
+.tok .arr{color:#6b5f8a;font-size:18px;text-align:center}
+/* шкала */
+.ts{display:flex;flex-direction:column;gap:4px;text-align:left;width:100%}
+.ts div{display:flex;align-items:baseline;gap:12px;white-space:nowrap;overflow:hidden}
+.ts small{font:11px var(--mono);color:#77728a;width:96px;flex:none}
+.ts span{font-family:var(--sans);line-height:1.1;color:#1d1b24}
+/* отступы и тени */
+.spc{display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
+.spc div{text-align:center;font:11px var(--mono);color:#4a4658}
+.spc i{display:block;background:#d9d0f0;border:1px solid #6b5f8a;margin:0 auto 4px}
+.elev{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.elev div{width:96px;height:70px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#4a4658}
+/* конструктор кнопки */
+.bb{font:600 var(--fz,14px) var(--sans);padding:var(--py,10px) var(--px,18px);border-radius:10px;border:0;display:inline-flex;align-items:center;gap:8px;transition:all .15s;cursor:default}
+.stage.v-pri .bb{background:#6b5f8a;color:#fff}
+.stage.v-sec .bb{background:#fff;color:#4a4068;box-shadow:inset 0 0 0 1.5px #bdb6cf}
+.stage.v-gh .bb{background:transparent;color:#4a4068}
+.stage.v-dan .bb{background:#a03a3a;color:#fff}
+.stage.z-s{--fz:12.5px;--py:6px;--px:12px}
+.stage.z-l{--fz:16px;--py:14px;--px:24px}
+.stage.st-hover.v-pri .bb{background:#5d5279}.stage.st-hover.v-sec .bb{background:#f6f4fa}.stage.st-hover.v-gh .bb{background:#eeebf5}.stage.st-hover.v-dan .bb{background:#8b3030}
+.stage.st-press .bb{transform:scale(.96);filter:brightness(.9)}
+.stage.st-focus .bb{outline:3px solid #8fb4ff;outline-offset:2px}
+.stage.st-dis .bb{opacity:.4}
+.stage.st-load .bb .lbl{opacity:.0}
+.bb .sp{display:none;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .7s linear infinite;position:absolute}
+.stage.st-load .bb{position:relative}
+.stage.st-load .bb .sp{display:block;left:calc(50% - 7px)}
+@keyframes rot{to{transform:rotate(1turn)}}
+.ctl .lb{font-size:12px;color:var(--muted);min-width:76px}
+/* состояния */
+.stg{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;text-align:center;font-size:11.5px;color:#4a4658}
+.stg span.b{display:block;background:#6b5f8a;color:#fff;border-radius:9px;padding:8px 4px;font:600 12px var(--sans);margin-bottom:5px}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.dd > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.dd .do{border-top:3px solid var(--ok)}.dd .dont{border-top:3px solid var(--bad)}
+.dd b{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.dd .do b{color:var(--ok)}.dd .dont b{color:var(--bad)}
+@media (max-width:640px){.tok{grid-template-columns:1fr}.tok .arr{transform:rotate(90deg)}.stg{grid-template-columns:repeat(3,1fr)}.dd{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="dizajn-sistema">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/" class="on">Система</a><a href="../prilozheniya/">Приложения</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль В1 · Дизайн-система</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок В · Модуль В1</p>
+  <h1>Дизайн-система</h1>
+  <p>Дизайн-система это набор деталей и правил, из которых собираются все экраны продукта: как конструктор, где каждая деталь уже продумана. Это то, что отличает «каждый экран нарисован заново» от продукта, который выглядит цельным и дорогим.</p>
+  <p class="meta">9 глав · по 5–10 минут · в конце третий шаг проекта</p>
+</div>
+
+<section class="ch" id="chto" data-t="Что это">
+  <h2>Что такое дизайн-система</h2>
+  <p>Представь конструктор. Есть <b>материалы</b> (цвета, шрифты, размеры), есть <b>детали</b> (кнопка, карточка, поле), есть <b>инструкция</b> (когда какую деталь брать). Вместе это и есть <span class="term">дизайн-система</span> <span class="en">(design system)</span>.</p>
+  <ul>
+    <li><b>Токены</b> <span class="en">(design tokens)</span>: материалы, записанные как переменные с именами. Не «#6b5f8a», а «цвет акцента».</li>
+    <li><b>Компоненты</b> <span class="en">(components)</span>: готовые детали со всеми вариантами и состояниями.</li>
+    <li><b>Паттерны</b> <span class="en">(patterns)</span>: типовые сборки из деталей: форма входа, экран результата.</li>
+    <li><b>Документация</b>: когда что использовать и как нельзя.</li>
+  </ul>
+  <p>У больших компаний системы открыты, их можно изучать: <a href="https://m3.material.io/" target="_blank" rel="noopener">Material 3</a> (Google), <a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener">Human Interface Guidelines</a> (Apple), <a href="https://gravity-ui.com/" target="_blank" rel="noopener">Gravity UI</a> (Яндекс), <a href="https://atlassian.design/" target="_blank" rel="noopener">Atlassian Design</a>.</p>
+  <div class="key">Система нужна даже школе с одним дизайнером. Ты делаешь презентации, задания, кабинет и сайт: если у них общие токены, ученик чувствует один бренд, а ты не решаешь каждый раз заново, какой радиус у кнопки.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Что из этого компонент?</p><div class="opts"><button>Цвет акцента</button><button>Кнопка со всеми вариантами и состояниями</button><button>Правило «одна главная кнопка на экране»</button></div><p class="why">Цвет это токен, правило это документация, а кнопка как готовая деталь это компонент.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="tokeny" data-t="Токены">
+  <h2>Токены: материалы с именами</h2>
+  <p>Токены бывают двух уровней. <b>Базовые</b> <span class="en">(primitive)</span> описывают, что есть в палитре: «фиолетовый 500». <b>Смысловые</b> <span class="en">(semantic)</span> описывают, для чего: «цвет акцента», «фон карточки». Компоненты используют только смысловые.</p>
+  <div class="ex"><div class="stage"><div class="tok">
+    <div><b>Базовый</b><i class="c" style="background:#6b5f8a"></i>violet-500</div><span class="arr">→</span>
+    <div><b>Смысловой</b>color.accent</div><span class="arr">→</span>
+    <div><b>Компонент</b>button.primary.bg</div>
+  </div></div><div class="cap">Захочешь сменить акцент на другой цвет, меняешь одну строку, и все кнопки, ссылки и прогресс-бары меняются сами.</div></div>
+  <p>Попробуй: ниже мини-интерфейс, собранный только на токенах. Поменяй акцент, радиус и отступ.</p>
+  <div class="ex"><div class="stage"><div class="ui">
+    <div class="card"><span class="t2">Урок 8 · Семья</span><div class="h">爸爸 妈妈 <span class="t2">bàba · māma</span></div><div class="bar"><i></i></div><span class="chip on">HSK 1</span><span class="chip">Семья</span></div>
+    <div class="card"><span class="t2">Домашка · до пятницы</span><div class="h">3 упражнения</div><span class="btn">Начать</span> <span class="btn s">Позже</span></div>
+  </div></div>
+  <div class="ctl"><span class="lb">Акцент</span><span class="sws"><button style="background:#6b5f8a" data-set="--acc|#6b5f8a" aria-pressed="true" aria-label="серо-фиолетовый"></button><button style="background:#2f5fd0" data-set="--acc|#2f5fd0" aria-label="кобальт"></button><button style="background:#c7774f" data-set="--acc|#c7774f" aria-label="лосось"></button><button style="background:#a88a3a" data-set="--acc|#a88a3a" aria-label="золото"></button><button style="background:#1d1b24" data-set="--acc|#1d1b24" aria-label="графит"></button></span></div>
+  <div class="ctl">Радиус<input type="range" min="0" max="24" value="14" data-v="--rad" data-u="px"><output></output></div>
+  <div class="ctl">Отступ<input type="range" min="8" max="28" step="4" value="16" data-v="--space" data-u="px"><output></output></div>
+  <div class="cap">Цвета здесь учебные, не палитра AIKITAY: её ты выберешь сама. Смысл в том, что весь интерфейс послушно меняется от одной переменной.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Какое имя токена правильное для фона кнопки?</p><div class="opts"><button>purple-light-2</button><button>#6b5f8a</button><button>color.accent</button></div><p class="why">Смысловое имя говорит, для чего цвет. Если завтра акцент станет синим, имя «purple» начнёт врать.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="cvet-roli" data-t="Цветовые роли и тёмная тема">
+  <h2>Цветовые роли и тёмная тема</h2>
+  <p>В системе у каждого цвета есть <b>роль</b>. Обычный набор ролей: фон, поверхность (карточки), текст основной, текст второстепенный, граница, акцент, текст на акценте, успех, ошибка, предупреждение.</p>
+  <p>Тёмная тема получается почти бесплатно: те же роли, другие значения. Фон становится тёмным, поверхность чуть светлее фона, текст светлым.</p>
+  <div class="ex"><div class="stage"><div class="ui">
+    <div class="card"><span class="t2">Слова на повтор</span><div class="h">12 карточек</div><div class="bar"><i></i></div><span class="btn">Повторить</span></div>
+    <div class="card"><span class="t2">Серия</span><div class="h">5 дней подряд</div><span class="chip on">Пн</span><span class="chip on">Вт</span><span class="chip on">Ср</span><span class="chip">Чт</span></div>
+  </div></div>
+  <div class="ctl"><button data-tog="dark">Тёмная тема</button></div>
+  <div class="cap">Ни один компонент не менялся. Поменялись только значения ролей.</div></div>
+  <ul>
+    <li>В тёмной теме не используют чисто чёрный фон и чисто белый текст: глазам тяжело. Берут очень тёмный серый с оттенком и светлый, но не белый текст.</li>
+    <li>Поверхности в тёмной теме показывают высоту не тенью, а <b>светлее</b>: чем выше карточка, тем светлее.</li>
+    <li>Акцент в тёмной теме часто чуть светлее, чтобы хватало контраста.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Как показать в тёмной теме, что окно лежит над экраном?</p><div class="opts"><button>Сделать поверхность окна светлее фона</button><button>Чёрная тень</button><button>Белая рамка 3 px</button></div><p class="why">На тёмном фоне тень почти не видна. Поэтому высоту показывают тоном: выше значит светлее.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="shkala" data-t="Шкала шрифтов">
+  <h2>Шкала шрифтов</h2>
+  <p>Размеры текста в системе тоже не случайны. Их берут из <span class="term">типографической шкалы</span> <span class="en">(type scale)</span>: каждый следующий размер больше предыдущего в одно и то же число раз. Это число называют <b>модулем</b>. 1,125 даёт спокойную шкалу для приложений, 1,333 выразительную для сайтов и слайдов.</p>
+  <div class="ex"><div class="stage"><div class="ts" id="ts"></div></div>
+  <div class="ctl">Модуль<input type="range" id="tsr" min="1.067" max="1.5" step="0.001" value="1.2"><output id="tso">1,200</output></div>
+  <div class="cap">Подвигай: при маленьком модуле заголовки почти не отличаются от текста, при большом шкала драматичная, как в журнале.</div></div>
+  <div class="key">Каждому размеру дают имя по роли: display, заголовок 1, заголовок 2, текст, подпись. В макете пишут «заголовок 2», а не «22 px».</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Для слайдов урока, где нужен крупный эффектный заголовок, какой модуль подходит?</p><div class="opts"><button>1,067</button><button>1,333 или больше</button><button>1,0</button></div><p class="why">Слайду нужна сильная иерархия на расстоянии, поэтому шаг между размерами крупный. В плотном интерфейсе кабинета шаг меньше.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="otstupy" data-t="Отступы, радиусы, тени">
+  <h2>Отступы, радиусы и тени как токены</h2>
+  <p>Шкала отступов, о которой шла речь в модуле <a href="../glaz/#otstupy">Глаз дизайнера</a>, в системе получает имена.</p>
+  <div class="ex"><div class="stage"><div class="spc"><div><i style="width:4px;height:4px"></i>xs 4</div><div><i style="width:8px;height:8px"></i>s 8</div><div><i style="width:12px;height:12px"></i>m 12</div><div><i style="width:16px;height:16px"></i>l 16</div><div><i style="width:24px;height:24px"></i>xl 24</div><div><i style="width:32px;height:32px"></i>2xl 32</div><div><i style="width:48px;height:48px"></i>3xl 48</div></div></div></div>
+  <p>Так же с радиусами (маленький для чипов, средний для кнопок, большой для карточек и листов) и с тенями. Тени в системе называют <span class="term">уровнями высоты</span> <span class="en">(elevation)</span>:</p>
+  <div class="ex"><div class="stage"><div class="elev"><div style="box-shadow:none;border:1px solid #e4e1ea">0 · на фоне</div><div style="box-shadow:0 1px 2px rgba(50,30,90,.1),0 2px 6px -2px rgba(50,30,90,.12)">1 · карточка</div><div style="box-shadow:0 2px 4px rgba(50,30,90,.08),0 10px 20px -6px rgba(50,30,90,.2)">2 · при наведении</div><div style="box-shadow:0 4px 8px rgba(50,30,90,.08),0 24px 48px -12px rgba(50,30,90,.32)">3 · окно, лист</div></div></div><div class="cap">Чем выше уровень, тем мягче и дальше тень. Не больше 3–4 уровней на всю систему.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>На одном экране карточки с тенями пяти разных видов. Что не так?</p><div class="opts"><button>Ничего, разнообразие</button><button>Мало теней</button><button>Нет системы уровней: глаз не понимает, что выше, что ниже</button></div><p class="why">Тень говорит о высоте. Пять случайных теней значит пять случайных высот без смысла.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="komponenty" data-t="Компоненты и варианты">
+  <h2>Компоненты и варианты</h2>
+  <p>Компонент это одна деталь, у которой есть <b>варианты</b> <span class="en">(variants)</span>: вид (главная, второстепенная, текстовая, опасная), размер (маленькая, средняя, большая) и состояние. Собери кнопку из вариантов:</p>
+  <div class="ex"><div class="stage v-pri z-m st-def" style="min-height:120px"><button class="bb" type="button" tabindex="-1"><span class="sp"></span><span class="lbl">Сдать задание</span></button></div>
+  <div class="ctl"><span class="lb">Вид</span><button data-cls="v-pri" aria-pressed="true">Главная</button><button data-cls="v-sec">Второстепенная</button><button data-cls="v-gh">Текстовая</button><button data-cls="v-dan">Опасная</button></div>
+  <div class="ctl"><span class="lb">Размер</span><button data-cls="z-s">S</button><button data-cls="z-m" aria-pressed="true">M</button><button data-cls="z-l">L</button></div>
+  <div class="ctl"><span class="lb">Состояние</span><button data-cls="st-def" aria-pressed="true">Обычное</button><button data-cls="st-hover">Наведение</button><button data-cls="st-press">Нажатие</button><button data-cls="st-focus">Фокус</button><button data-cls="st-dis">Неактивная</button><button data-cls="st-load">Загрузка</button></div>
+  <div class="cap">4 вида × 3 размера × 6 состояний = 72 варианта одной кнопки. В системе они нарисованы один раз, а в макетах ты просто выбираешь нужный.</div></div>
+  <div class="key">Иерархия кнопок: на экране одна главная, рядом может быть второстепенная, остальное текстовыми. «Опасную» (удалить, выйти без сохранения) используют только для необратимого.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>В окне «Удалить слово из словаря?» какие кнопки?</p><div class="opts"><button>Две главные фиолетовые</button><button>«Отмена» текстовая, «Удалить» опасная</button><button>Обе красные</button></div><p class="why">Опасная кнопка выделяет необратимое действие, а отмена спокойная. Так человек не удалит случайно.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="sostoyaniya" data-t="Состояния компонентов">
+  <h2>Состояния компонентов</h2>
+  <p>Каждая нажимаемая деталь должна отвечать человеку. Для этого у неё рисуют все состояния. Новички рисуют одно, профессионалы шесть.</p>
+  <div class="ex"><div class="stage"><div class="stg">
+    <div><span class="b">Сдать</span>Обычное<br><small>default</small></div>
+    <div><span class="b" style="background:#5d5279">Сдать</span>Наведение<br><small>hover</small></div>
+    <div><span class="b" style="background:#544a6e;transform:scale(.96)">Сдать</span>Нажатие<br><small>pressed</small></div>
+    <div><span class="b" style="outline:3px solid #8fb4ff;outline-offset:2px">Сдать</span>Фокус<br><small>focus</small></div>
+    <div><span class="b" style="opacity:.4">Сдать</span>Неактивное<br><small>disabled</small></div>
+    <div><span class="b">···</span>Загрузка<br><small>loading</small></div>
+  </div></div><div class="cap">Фокус нужен тем, кто ходит по сайту клавишей Tab. Его нельзя просто убрать, потому что «некрасиво».</div></div>
+  <p>У поля ввода свои состояния: пустое, с подсказкой, активное (курсор внутри), заполненное, ошибка, неактивное. У карточки: обычная, наведение, выбранная.</p>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Ученик нажал «Сдать», а ничего не изменилось 2 секунды. Чего не хватает?</p><div class="opts"><button>Состояния загрузки</button><button>Состояния наведения</button><button>Другого цвета</button></div><p class="why">Без отклика человек думает, что не нажал, и жмёт ещё раз. Загрузка говорит «я услышал, работаю».</p></div>
+  </div>
+</section>
+
+<section class="ch" id="figma" data-t="Система в Figma">
+  <h2>Система в Figma</h2>
+  <ol>
+    <li><b>Переменные</b> <span class="en">(Variables)</span>: панель справа, когда ничего не выделено → Local variables. Создай коллекцию «Цвета» с базовыми цветами, потом коллекцию «Роли», где каждое значение ссылается на базовый цвет.</li>
+    <li><b>Режимы</b> <span class="en">(Modes)</span>: в коллекции ролей добавь режимы Светлая и Тёмная. Переключаешь режим у фрейма, и весь экран меняет тему.</li>
+    <li><b>Стили текста</b> <span class="en">(Text styles)</span>: заведи стиль на каждый размер шкалы с именем роли.</li>
+    <li><b>Компонент с вариантами</b>: нарисуй кнопку автолейаутом, сделай компонентом, нажми «Add variant». Добавь свойства Вид, Размер, Состояние.</li>
+    <li><b>Свойства компонента</b> <span class="en">(component properties)</span>: текст кнопки, показывать иконку или нет. Тогда кнопку настраивают справа, не залезая внутрь.</li>
+    <li><b>Библиотека</b> <span class="en">(Library)</span>: опубликуй файл системы, и подключай его во всех файлах: презентации, кабинет, сайт.</li>
+  </ol>
+  <div class="task">В Figma заведи переменные: 6 ролей цвета в режимах Светлая и Тёмная. Сделай кнопку с вариантами Вид (главная, второстепенная, текстовая) и Состояние (обычное, нажатие, неактивное). Цвета можно взять временные, палитру ты выберешь отдельно.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Как в Figma сделать, чтобы экран переключался между светлой и тёмной темой одним действием?</p><div class="opts"><button>Перекрасить все слои вручную</button><button>Переменные-роли с двумя режимами</button><button>Сделать копию файла</button></div><p class="why">Режимы переменных это и есть «тема». Меняешь режим у фрейма, и все роли подставляют другие значения.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="proekt" data-t="Проект: шаг 3">
+  <h2>Документация и проект</h2>
+  <p>Система работает, только если записано, как ей пользоваться. Самый полезный формат это пары «делай / не делай» с картинкой.</p>
+  <div class="dd"><div class="do"><b>Делай</b>Одна главная кнопка на экране, остальные второстепенные или текстовые.</div><div class="dont"><b>Не делай</b>Две главные кнопки рядом: человек не понимает, какое действие основное.</div></div>
+  <div class="dd"><div class="do"><b>Делай</b>Иероглиф крупно, пиньинь под ним мельче, перевод ещё мельче и серым.</div><div class="dont"><b>Не делай</b>Иероглиф, пиньинь и перевод одного размера в строку.</div></div>
+  <div class="proj">Шаг 3 проекта: набор компонентов кабинета в Figma. Переменные ролей цвета (светлая и тёмная), шкала шрифтов из 5 стилей, шкала отступов, 3 уровня теней. Компоненты: кнопка (3 вида × 3 состояния), поле ввода (4 состояния), карточка урока, строка списка, таб-бар, чип. И одна страница «делай / не делай» на 4–6 правил. Палитру используй ту, которую выберешь для AIKITAY, или временную нейтральную.</div>
+  <p class="src">Изучить живые системы: <a href="https://m3.material.io/" target="_blank" rel="noopener">Material 3</a>, <a href="https://gravity-ui.com/" target="_blank" rel="noopener">Gravity UI</a>, <a href="https://atlassian.design/" target="_blank" rel="noopener">Atlassian</a>, <a href="https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma" target="_blank" rel="noopener">справка Figma о переменных</a>.</p>
+</section>
+
+<nav class="next"><a href="../prototip/"><small>← Назад</small>Б2. Структура, наброски, прототип</a><a href="../prilozheniya/"><small>Дальше →</small>В2. Приложения</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль В1. Цвета в примерах учебные, палитру AIKITAY выбирает Дарья. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ const box=document.getElementById('ts'), r=document.getElementById('tsr'), o=document.getElementById('tso');
+ const rows=[['подпись',-1],['текст',0],['заголовок 3',1],['заголовок 2',2],['заголовок 1',3],['display',5]];
+ function draw(){ const m=+r.value; o.textContent=m.toFixed(3).replace('.',',');
+  box.innerHTML=rows.map(([n,k])=>{ const s=Math.round(16*Math.pow(m,k)); return `<div><small>${n} · ${s}</small><span style="font-size:${s}px;font-weight:${k>0?700:400}">Урок 8 · 家</span></div>`; }).join(''); }
+ r.addEventListener('input',draw); draw();
+})();
+</script>
+</body>
+</html>
