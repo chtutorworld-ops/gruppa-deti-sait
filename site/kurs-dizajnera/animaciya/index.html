@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как устроены анимации и кнопки · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+pre.code{background:#1f1c27;color:#e7e3f1;border-radius:10px;padding:12px 14px;font:12.5px/1.55 var(--mono);overflow-x:auto;margin:12px 0;white-space:pre}
+pre.code .c{color:#8d87a3}
+pre.code .k{color:#c9b8ff}
+pre.code .v{color:#ffd29a}
+/* три слоя */
+.lay3 .demo{font:16px var(--sans)}
+.stage.css1 .demo button{all:unset;cursor:pointer;background:#6b5f8a;color:#fff;border-radius:14px;padding:14px 26px;font:600 16px var(--sans);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 10px 20px -10px rgba(60,40,110,.8);transition:transform .15s,box-shadow .15s}
+.stage.css1 .demo button:hover{transform:translateY(-2px)}
+.stage.css1 .demo button:active{transform:translateY(1px) scale(.98);box-shadow:0 4px 10px -6px rgba(60,40,110,.8)}
+.demo .out{display:block;margin-top:10px;font-size:13px;color:var(--ok);min-height:18px}
+/* свойства */
+.prop{width:90px;height:90px;border-radius:20px;background:#6b5f8a;color:#fff;display:flex;align-items:center;justify-content:center;font:400 40px "Kaiti SC","STKaiti","KaiTi",serif;transition:all .6s cubic-bezier(.3,1.4,.5,1)}
+.stage.p-mv .prop{transform:translateX(90px)}
+.stage.p-sc .prop{transform:scale(1.4)}
+.stage.p-rt .prop{transform:rotate(25deg)}
+.stage.p-op .prop{opacity:.2}
+.stage.p-bl .prop{filter:blur(5px)}
+.stage.p-sh .prop{box-shadow:0 30px 50px -14px rgba(60,40,110,.9)}
+/* кривые */
+.track{width:100%;max-width:520px;height:64px;background:#fff;border-radius:12px;position:relative}
+.ball{position:absolute;left:10px;top:12px;width:40px;height:40px;border-radius:50%;background:#6b5f8a;transition-property:left;transition-duration:var(--d,600ms);transition-timing-function:var(--e,ease-out)}
+.track.on .ball{left:calc(100% - 50px)}
+.curves{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.curves svg{width:70px;height:70px;background:#fff;border-radius:10px}
+/* кнопки из находок */
+.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;align-items:center;justify-items:center}
+.kit figure{margin:0;text-align:center;font-size:12px;color:#4a4658;display:flex;flex-direction:column;align-items:center;gap:10px}
+.neu{background:#ece8e1;border-radius:22px;padding:20px}
+.nbtn{all:unset;cursor:pointer;width:64px;height:64px;border-radius:18px;background:#ece8e1;box-shadow:6px 6px 12px #cfc9be,-6px -6px 12px #fff;display:flex;align-items:center;justify-content:center;font:400 26px "Kaiti SC","STKaiti","KaiTi",serif;color:#3a3542;transition:box-shadow .15s}
+.nbtn:active,.nbtn.pr{box-shadow:inset 5px 5px 10px #cfc9be,inset -5px -5px 10px #fff}
+.tg{position:relative;width:64px;height:34px;display:inline-block}
+.tg input{opacity:0;width:0;height:0;position:absolute}
+.tg span{position:absolute;inset:0;border-radius:99px;background:#d8d3e0;transition:background .25s;cursor:pointer;box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
+.tg span::after{content:"";position:absolute;left:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.3,1.5,.6,1)}
+.tg input:checked + span{background:#6b5f8a}
+.tg input:checked + span::after{transform:translateX(30px)}
+.gl-bg{background:linear-gradient(135deg,#c8bfe6,#f1c9d6 55%,#f3e3c4);border-radius:18px;padding:22px 16px}
+.gbtn{all:unset;cursor:pointer;padding:12px 18px;border-radius:14px;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 20px -10px rgba(60,40,110,.5),inset 0 1px 0 rgba(255,255,255,.8);font:600 14px var(--sans);color:#3d3456;transition:transform .2s}
+.gbtn:hover{transform:translateY(-2px)}
+.pearl{all:unset;cursor:pointer;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 12%,#f3eef9 30%,#dcd3ea 62%,#c5b8da 100%);box-shadow:0 10px 18px -8px rgba(80,60,120,.6),inset -4px -6px 10px rgba(120,100,160,.25);transition:transform .2s}
+.pearl:hover{transform:scale(1.06)}
+.pearl:active{transform:scale(.96)}
+/* курсор */
+.cz{position:relative;width:100%;height:240px;background:#fbfaf7;border-radius:12px;overflow:hidden;cursor:none}
+.cz .dot{position:absolute;left:0;top:0;width:12px;height:12px;border-radius:50%;background:#6b5f8a;pointer-events:none;transform:translate(-50%,-50%)}
+.cz .ring{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;border:1.5px solid #6b5f8a;pointer-events:none;transform:translate(-50%,-50%)}
+.cz .spot{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(107,95,138,.18),transparent 70%)}
+.cz.m-spot .spot{opacity:1}.cz.m-spot .dot,.cz.m-spot .ring{display:none}.cz.m-spot{cursor:default}
+.cz .hzz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:40px;font:400 64px "Kaiti SC","STKaiti","KaiTi",serif;color:#3a3542}
+.cz .mag{all:unset;position:relative;padding:14px 26px;border-radius:99px;background:#6b5f8a;color:#fff;font:600 14px var(--sans);transition:transform .25s cubic-bezier(.3,1.4,.5,1);cursor:pointer}
+.cz .tilt{width:170px;height:120px;border-radius:18px;background:linear-gradient(160deg,#fff,#efeaf6);box-shadow:0 20px 40px -18px rgba(60,40,110,.6);display:flex;align-items:center;justify-content:center;font:400 56px "Kaiti SC","STKaiti","KaiTi",serif;color:#3a3542;transform:perspective(600px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s ease-out}
+.cz [data-m]{display:none}
+.cz.m-follow [data-m~=follow],.cz.m-mag [data-m~=mag],.cz.m-tilt [data-m~=tilt],.cz.m-spot [data-m~=spot]{display:flex}
+/* прокрутка */
+.scb{height:260px;overflow:auto;background:#fbfaf7;border-radius:12px;padding:20px;width:100%;scroll-behavior:smooth}
+.scb .rv{background:#fff;border-radius:14px;padding:18px;margin:0 0 90px;box-shadow:0 10px 24px -16px rgba(40,30,70,.5);opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:14px;font-size:14px}
+.scb .rv.in{opacity:1;transform:none}
+.scb .rv .hz{font-size:42px}
+/* 3D */
+.flip{width:150px;height:190px;perspective:800px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,1.2,.5,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 30px -16px rgba(40,30,70,.6)}
+.flip .f{background:#fff;font:400 84px "Kaiti SC","STKaiti","KaiTi",serif;color:#2a2733}
+.flip .b{background:#3d3456;color:#fff;transform:rotateY(180deg);font-size:15px;gap:4px}
+.flip .b b{font-size:26px}
+.cube{width:120px;height:120px;position:relative;transform-style:preserve-3d;transform:rotateX(var(--cx,-20deg)) rotateY(var(--cy,30deg));transition:transform .1s}
+.cube div{position:absolute;inset:0;border:1px solid rgba(255,255,255,.8);background:rgba(220,210,240,.35);box-shadow:inset 0 0 30px rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font:400 64px "Kaiti SC","STKaiti","KaiTi",serif;color:rgba(60,50,90,.85);backdrop-filter:blur(2px)}
+.cube .c1{transform:translateZ(60px)}.cube .c2{transform:rotateY(180deg) translateZ(60px)}.cube .c3{transform:rotateY(90deg) translateZ(60px)}.cube .c4{transform:rotateY(-90deg) translateZ(60px)}.cube .c5{transform:rotateX(90deg) translateZ(60px)}.cube .c6{transform:rotateX(-90deg) translateZ(60px)}
+.persp{perspective:700px;display:flex;align-items:center;justify-content:center;height:220px;width:100%;background:linear-gradient(180deg,#f4f1ea,#e8e2d6);border-radius:12px}
+.libs{width:100%;overflow-x:auto}
+.libs table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px;text-align:left}
+.libs th,.libs td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.libs th{font:600 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.libs td:first-child{font-weight:700;white-space:nowrap}
+@media (max-width:700px){.kit{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body data-mod="animaciya">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../sajt/">Сайт</a><a href="../prezentacii/">Презентации</a><a href="../horosho-ploho/">Хорошо и плохо</a><a href="../animaciya/" class="on">Анимации</a><a href="../kartinki/">Картинки</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль Д1 · Анимации и кнопки</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок Д · Факультатив · Модуль Д1</p>
+  <h1>Как устроены анимации и кнопки</h1>
+  <p>Ты собираешь находки: стеклянные и жемчужные кнопки, переключатели, карточки-перевёртыши, эффекты за курсором. Здесь разберём, из чего они сделаны. Не чтобы писать код самой, а чтобы понимать, что видишь, и точно описывать, что хочешь.</p>
+  <p class="meta">9 глав · по 5–10 минут · все примеры живые, их можно трогать</p>
+</div>
+
+<section class="ch" id="tri-yazyka" data-t="HTML, CSS, JS">
+  <h2>Три языка любой страницы</h2>
+  <p>Любая кнопка на сайте сделана из трёх слоёв. Это как человек: скелет, внешность и поведение.</p>
+  <ul>
+    <li><b>HTML</b>: скелет. Что это за вещь: кнопка, заголовок, картинка.</li>
+    <li><b>CSS</b>: внешность. Цвет, размер, скругления, тени, анимации при наведении.</li>
+    <li><b>JS</b> <span class="en">(JavaScript)</span>: поведение. Что случится по нажатию: проверить ответ, открыть окно, посчитать.</li>
+  </ul>
+  <div class="ex"><div class="stage lay3"><div class="demo"><button type="button" id="b3">Проверить</button><span class="out" id="b3o"></span></div></div>
+  <div class="ctl"><button data-tog="css1">Добавить CSS</button><button type="button" id="jsb" aria-pressed="false">Добавить JS</button></div>
+  <div class="cap">Без CSS это серая системная кнопка из 1995 года. С CSS она красивая и реагирует на наведение. С JS по нажатию что-то происходит.</div></div>
+  <pre class="code"><span class="c">&lt;!-- HTML: что это --&gt;</span>
+&lt;<span class="k">button</span>&gt;Проверить&lt;/<span class="k">button</span>&gt;
+
+<span class="c">/* CSS: как выглядит */</span>
+<span class="k">button</span> { background: <span class="v">#6b5f8a</span>; border-radius: <span class="v">14px</span>; }
+<span class="k">button:hover</span> { transform: <span class="v">translateY(-2px)</span>; }
+
+<span class="c">// JS: что делает</span>
+button.onclick = () =&gt; <span class="k">проверитьОтвет</span>();</pre>
+  <div class="key">Почти всё, что ты собираешь в находках, это CSS. JS нужен, только когда эффект зависит от курсора, прокрутки или логики задания.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Кнопка при наведении приподнимается. Чем это сделано?</p><div class="opts"><button>HTML</button><button>CSS (:hover и transform)</button><button>JS</button></div><p class="why">Наведение и простые анимации это CSS. JS для этого не нужен.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="svojstva" data-t="Что двигается">
+  <h2>Что именно двигается</h2>
+  <p>Анимация это плавное изменение какого-то свойства. Самые частые: <b>сдвиг</b>, <b>масштаб</b>, <b>поворот</b> (все три это <code>transform</code>), <b>прозрачность</b> (<code>opacity</code>), <b>размытие</b> (<code>filter: blur</code>) и <b>тень</b>. Нажимай и смотри:</p>
+  <div class="ex"><div class="stage" style="min-height:200px"><div class="prop">天</div></div>
+  <div class="ctl"><button data-cls="" aria-pressed="true">Обычно</button><button data-cls="p-mv">Сдвиг</button><button data-cls="p-sc">Масштаб</button><button data-cls="p-rt">Поворот</button><button data-cls="p-op">Прозрачность</button><button data-cls="p-bl">Размытие</button><button data-cls="p-sh">Тень</button></div>
+  <div class="cap">Сдвиг, масштаб, поворот и прозрачность браузер рисует легко и плавно даже на слабом телефоне. Размытие и большие тени тяжелее: если их много, анимация дёргается.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Карточка «вылетает» снизу и проявляется. Какие два свойства?</p><div class="opts"><button>Сдвиг и прозрачность</button><button>Поворот и тень</button><button>Размытие и масштаб</button></div><p class="why">Это самая частая анимация появления: translateY от 20–30 px до 0 и opacity от 0 до 1.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="krivye" data-t="Длительность и кривые">
+  <h2>Длительность и кривая</h2>
+  <p>Два числа решают, будет ли анимация «дорогой». <b>Длительность</b>: для интерфейса 150–350 мс, для больших переходов 400–600. И <b>кривая</b> <span class="en">(easing)</span>: как скорость меняется во времени.</p>
+  <div class="ex"><div class="stage" style="flex-direction:column"><div class="track" id="trk"><div class="ball"></div></div></div>
+  <div class="ctl"><button data-set="--e|linear">linear: робот</button><button data-set="--e|ease-in">ease-in: разгон</button><button data-set="--e|ease-out" aria-pressed="true">ease-out: мягкая остановка</button><button data-set="--e|cubic-bezier(.3,1.6,.5,1)">пружина</button></div>
+  <div class="ctl">Длительность<input type="range" min="100" max="1500" step="50" value="600" data-v="--d" data-u="ms"><output></output><button type="button" id="trkgo">▶ Запустить</button></div>
+  <div class="cap">Linear выглядит механически. Ease-in медленно трогается, будто думает. Ease-out быстро откликается и мягко останавливается: это выбор по умолчанию для интерфейса. Пружина чуть перелетает и возвращается: живо, игриво.</div></div>
+  <div class="key">Правило: то, что появляется, использует ease-out (быстрый старт). То, что исчезает, использует ease-in и короче. Предметы в реальном мире не двигаются с постоянной скоростью.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Меню открывается за 1,2 секунды. Что не так?</p><div class="opts"><button>Слишком быстро</button><button>Нужна кривая linear</button><button>Слишком долго: интерфейс кажется медленным</button></div><p class="why">Больше полсекунды на открытие меню ощущается как ожидание. 200–300 мс достаточно.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="knopki" data-t="Кнопки из находок">
+  <h2>Как сделаны кнопки из твоих находок</h2>
+  <p>Четыре приёма, которые встречаются в твоих находках чаще всего. Нажимай их.</p>
+  <div class="ex"><div class="stage"><div class="kit">
+    <figure><div class="neu"><button class="nbtn" type="button" id="nb">好</button></div>Неоморфизм</figure>
+    <figure><label class="tg"><input type="checkbox" checked><span></span></label>Переключатель</figure>
+    <figure><div class="gl-bg"><button class="gbtn" type="button">Стекло</button></div>Стекло</figure>
+    <figure><button class="pearl" type="button" aria-label="жемчужная кнопка"></button>Жемчуг</figure>
+  </div></div></div>
+  <h3>Неоморфизм: две тени</h3>
+  <p>Кнопка того же цвета, что фон. Объём дают две тени: тёмная справа снизу и светлая слева сверху. При нажатии тени становятся <b>внутренними</b> (<code>inset</code>), и кнопка «вдавливается».</p>
+  <pre class="code"><span class="k">box-shadow</span>: <span class="v">6px 6px 12px</span> тёмная, <span class="v">-6px -6px 12px</span> белая;
+<span class="c">/* нажата */</span>
+<span class="k">box-shadow</span>: <span class="v">inset</span> 5px 5px 10px тёмная, <span class="v">inset</span> -5px -5px 10px белая;</pre>
+  <h3>Переключатель: скрытая галочка</h3>
+  <p>Внутри обычный чекбокс, только невидимый. Рисуют дорожку и кружок, а когда галочка стоит (<code>:checked</code>), кружок сдвигается вправо с пружиной, дорожка меняет цвет.</p>
+  <h3>Стекло: размытие того, что сзади</h3>
+  <p>Полупрозрачный белый фон, светлая рамка 1 px и <code>backdrop-filter: blur()</code>: браузер размывает всё, что под кнопкой. Стекло работает только на цветном или фото-фоне. На белом его не видно.</p>
+  <h3>Жемчуг: градиент как свет</h3>
+  <p><code>radial-gradient</code> от белого блика в левом верхнем углу к сиреневому краю, плюс внутренняя тень снизу справа. Глаз читает это как гладкую выпуклую поверхность.</p>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Ты положила стеклянную кнопку на белый фон, и она «пропала». Почему?</p><div class="opts"><button>Сломался код</button><button>Стеклу нечего размывать: нужен цветной или фото-фон сзади</button><button>Нужна тень потемнее</button></div><p class="why">Эффект стекла это размытие фона. Белое размытое белое остаётся белым.</p></div>
+    <div class="q" data-a="0"><p>Что делает слово inset в тени?</p><div class="opts"><button>Делает тень внутренней, предмет кажется вдавленным</button><button>Убирает тень</button><button>Делает тень цветной</button></div><p class="why">inset переносит тень внутрь элемента. Так рисуют нажатое состояние в неоморфизме и вдавленные поля.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="kursor" data-t="Эффекты за курсором">
+  <h2>Эффекты за курсором</h2>
+  <p>Все эффекты «за курсором» устроены одинаково: <b>JS слушает движение мыши</b> (событие <code>mousemove</code>), берёт координаты и меняет CSS-свойство: сдвиг, поворот или положение света. Поводи мышью по полю.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="cz m-follow" id="cz"><span class="dot" data-m="follow"></span><span class="ring" data-m="follow"></span><div class="spot"></div>
+    <div class="hzz" data-m="follow">你 好</div>
+    <div class="hzz" data-m="mag"><button class="mag" type="button" id="mag">Записаться</button></div>
+    <div class="hzz" data-m="tilt"><div class="tilt" id="tilt">天</div></div>
+    <div class="hzz" data-m="spot">学 习</div></div></div>
+  <div class="ctl" id="czc"><button data-cm="m-follow" aria-pressed="true">Свой курсор</button><button data-cm="m-mag">Магнитная кнопка</button><button data-cm="m-tilt">Наклон карточки</button><button data-cm="m-spot">Фонарик</button></div>
+  <div class="cap">Кольцо догоняет точку с запаздыванием: каждый кадр оно проходит часть пути до курсора. Это и даёт «живую» плавность.</div></div>
+  <ul>
+    <li><b>Свой курсор</b>: точка и кольцо вместо стрелки. Кольцо «догоняет» с задержкой.</li>
+    <li><b>Магнитная кнопка</b>: кнопка немного тянется к курсору, когда он рядом.</li>
+    <li><b>Наклон</b> <span class="en">(tilt)</span>: карточка поворачивается в 3D к курсору, будто её держат в руке.</li>
+    <li><b>Фонарик</b> <span class="en">(spotlight)</span>: мягкое пятно света следует за курсором.</li>
+  </ul>
+  <div class="key">На телефоне курсора нет. Эти эффекты должны быть украшением для компьютера, а не единственным способом что-то увидеть. На телефоне их заменяют наклоном самого телефона (гироскоп) или просто выключают.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Почему кольцо курсора выглядит плавным, а не прилипшим?</p><div class="opts"><button>Оно больше точки</button><button>У него тень</button><button>Каждый кадр оно проходит только часть пути до курсора, то есть догоняет</button></div><p class="why">Этот приём называют интерполяцией (lerp). Чем меньше доля пути за кадр, тем сильнее «тянется» хвост.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="skroll" data-t="Анимации при прокрутке">
+  <h2>Анимации при прокрутке</h2>
+  <p>Элементы появляются, когда до них доходит прокрутка. JS следит, какой блок вошёл в экран (это делает <code>IntersectionObserver</code>, «наблюдатель за пересечением»), и добавляет ему класс, а CSS проигрывает анимацию. Прокрути окно ниже:</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="scb" id="scb">
+    <div class="rv"><span class="hz">一</span>Один. Блок появился, когда вошёл в окно.</div>
+    <div class="rv"><span class="hz">二</span>Два. Сдвиг снизу и проявление, ease-out.</div>
+    <div class="rv"><span class="hz">三</span>Три. Анимация проигрывается один раз.</div>
+    <div class="rv"><span class="hz">四</span>Четыре. Не повторяется при прокрутке назад.</div>
+    <div class="rv"><span class="hz">五</span>Пять. Готово.</div>
+  </div></div><div class="cap">Хорошее появление короткое (0,5–0,7 с) и небольшое (20–40 px). Если каждый блок прилетает с разных сторон с поворотом, это шумно и устаёт глаз.</div></div>
+  <ul>
+    <li><b>Параллакс</b> <span class="en">(parallax)</span>: фон двигается медленнее переднего плана, появляется глубина.</li>
+    <li><b>Липкие блоки</b> <span class="en">(sticky)</span>: картинка стоит на месте, а текст рядом прокручивается. Хорошо для «шагов».</li>
+    <li><b>Анимация, привязанная к прокрутке</b> <span class="en">(scroll-driven)</span>: иероглиф пишется по мере того, как человек листает. Так делают «вау»-сайты.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Человек быстро листает до цен, а блоки всё ещё медленно проявляются. Что поправить?</p><div class="opts"><button>Сделать анимацию дольше</button><button>Короче и меньше, или показывать сразу, если человек листает быстро</button><button>Добавить звук</button></div><p class="why">Анимация не должна мешать дойти до нужного. Короткое появление не задерживает чтение.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="tri-d" data-t="3D">
+  <h2>3D: от карточки до стеклянного куба</h2>
+  <p>Есть два способа сделать 3D на сайте.</p>
+  <h3>1. CSS 3D: для плоских предметов в пространстве</h3>
+  <p>CSS умеет поворачивать плоскости в пространстве. Нужна <b>перспектива</b> <span class="en">(perspective)</span>, то есть расстояние до зрителя, и поворот по осям. Так сделаны карточки-перевёртыши из твоих находок. Нажми на карточку, а куб покрути мышью или пальцем.</p>
+  <div class="ex"><div class="stage" style="gap:30px;flex-wrap:wrap"><div class="flip" id="flip"><div class="in"><div class="f">家</div><div class="b"><b>jiā</b>дом, семья</div></div></div>
+    <div class="persp" id="persp" style="width:260px"><div class="cube" id="cube"><div class="c1">天</div><div class="c2">天</div><div class="c3">天</div><div class="c4">天</div><div class="c5"></div><div class="c6"></div></div></div></div>
+  <div class="cap">Карточка: две стороны, повёрнутые друг к другу спинами, и поворот на 180°. Куб: шесть граней, каждая повёрнута и выдвинута на половину размера.</div></div>
+  <h3>2. WebGL и three.js: для настоящего объёма</h3>
+  <p>Когда нужен настоящий объём со светом, отражениями, стеклом и преломлением (твой стеклянный куб с 天 на фарфоре), используют <b>WebGL</b>: видеокарта рисует трёхмерную сцену. Библиотека <b>three.js</b> упрощает работу с ним, а редактор <b>Spline</b> позволяет собрать сцену мышкой, как в Figma, и вставить на сайт.</p>
+  <ul>
+    <li><b>Шейдер</b> <span class="en">(shader)</span>: маленькая программа для видеокарты, которая рисует каждый пиксель. Переливающиеся градиентные фоны из твоих находок (shadergradient, paper shaders) это шейдеры.</li>
+    <li>3D тяжёлое: на слабом телефоне может тормозить и сажать батарею. Обычно делают запасную картинку.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Для карточки-перевёртыша со словом что нужно?</p><div class="opts"><button>CSS 3D: perspective и rotateY</button><button>three.js и WebGL</button><button>Видео</button></div><p class="why">Плоская карточка в пространстве это простой CSS. WebGL нужен для настоящего объёма, стекла и света.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="biblioteki" data-t="Библиотеки">
+  <h2>Библиотеки и инструменты</h2>
+  <p>Сложные анимации редко пишут с нуля. Вот что встречается в находках и что значит каждое название.</p>
+  <div class="libs"><table>
+    <tr><th>Название</th><th>Для чего</th><th>Пример</th></tr>
+    <tr><td>CSS</td><td>Наведение, нажатие, простые появления</td><td>Твои кнопки с uiverse</td></tr>
+    <tr><td>Framer Motion (Motion)</td><td>Анимации в React: появления, перетекания, жесты</td><td>Карточка перетекает в открытый экран</td></tr>
+    <tr><td>GSAP</td><td>Сложные цепочки, анимации по прокрутке</td><td>Иероглиф пишется при прокрутке</td></tr>
+    <tr><td>Lottie</td><td>Готовая векторная анимация из After Effects</td><td>Персонаж радуется ответу</td></tr>
+    <tr><td>Rive</td><td>Интерактивная анимация с состояниями</td><td>Маскот следит глазами за курсором</td></tr>
+    <tr><td>three.js</td><td>3D-сцены на WebGL</td><td>Стеклянный куб с 天</td></tr>
+    <tr><td>Spline</td><td>3D-редактор без кода, экспорт на сайт</td><td>Вращающийся объект на первом экране</td></tr>
+  </table></div>
+  <h3>Как описать анимацию словами</h3>
+  <p>Профессиональные дизайнеры передают анимацию разработчику не словами «красиво выезжает», а по схеме из пяти пунктов. Так же удобно описывать находку, которую хочешь использовать.</p>
+  <div class="why-box"><b>Триггер</b> (что запускает): нажатие, наведение, появление в экране, загрузка.<br><b>Что меняется</b>: сдвиг снизу 24 px и прозрачность 0 → 1.<br><b>Длительность</b>: 400 мс, задержка между карточками 60 мс.<br><b>Кривая</b>: ease-out или пружина с небольшим перелётом.<br><b>Зачем</b>: показать, что карточки урока появились, и направить взгляд сверху вниз.</div>
+  <div class="task look">Открой <a href="../../nahodki/">свои находки</a> и опиши три любимые по этой схеме из пяти пунктов.</div>
+</section>
+
+<section class="ch" id="pravila" data-t="Правила хорошего движения">
+  <h2>Правила хорошего движения</h2>
+  <ol>
+    <li><b>У движения есть причина.</b> Оно показывает связь (откуда пришло), отклик (я нажал) или внимание (смотри сюда). Движение «просто красиво» быстро надоедает.</li>
+    <li><b>Коротко.</b> 150–350 мс для интерфейса. Человек не должен ждать анимацию.</li>
+    <li><b>Одна физика.</b> Все элементы двигаются с похожими кривыми и длительностями, как будто в одном мире.</li>
+    <li><b>Не во время чтения.</b> Пока человек читает или решает задание, фон стоит на месте.</li>
+    <li><b>Уважай настройку «уменьшить движение».</b> У некоторых людей от анимаций кружится голова. В системе есть настройка <span class="en">(prefers-reduced-motion)</span>, и хороший сайт её слушается. Этот курс тоже.</li>
+  </ol>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>На экране задания иероглифы на фоне медленно плавают и мерцают. Что сказать?</p><div class="opts"><button>Атмосферно, оставить</button><button>Убрать: движение во время задания отвлекает и мешает читать</button><button>Ускорить</button></div><p class="why">Глаз всегда реагирует на движение. Во время задания всё внимание должно быть на задании.</p></div>
+  </div>
+  <div class="proj">Для кабинета ученика опиши по схеме из пяти пунктов три анимации: нажатие клавиши ответа, появление панели «Верно», переход из списка уроков в урок. Пришли на разбор вместе с находками, на которые опираешься.</div>
+</section>
+
+<nav class="next"><a href="../horosho-ploho/"><small>← Назад</small>Г. Хорошо, плохо, ИИ-слоп и тренды</a><a href="../kartinki/"><small>Дальше →</small>Д2. Картинки, персонажи, видео</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль Д1. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ /* три слоя */
+ let js=false; const b3=document.getElementById('b3'), o=document.getElementById('b3o');
+ document.getElementById('jsb').addEventListener('click',e=>{ js=!js; e.currentTarget.setAttribute('aria-pressed',js); o.textContent=''; });
+ b3.addEventListener('click',()=>{ o.textContent= js ? '✓ Верно! Ответ проверен скриптом.' : ''; });
+ /* кривые */
+ const trk=document.getElementById('trk');
+ document.getElementById('trkgo').addEventListener('click',()=>trk.classList.toggle('on'));
+ /* неоморфная кнопка: залипает при нажатии */
+ const nb=document.getElementById('nb'); nb.addEventListener('click',()=>nb.classList.toggle('pr'));
+ /* курсор */
+ const cz=document.getElementById('cz'), dot=cz.querySelector('.dot'), ring=cz.querySelector('.ring'), mag=document.getElementById('mag'), tilt=document.getElementById('tilt');
+ let mx=0,my=0,rx=0,ry=0;
+ cz.addEventListener('pointermove',e=>{ const r=cz.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;
+  dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`; cz.style.setProperty('--mx',mx+'px'); cz.style.setProperty('--my',my+'px');
+  if(cz.classList.contains('m-mag')){ const b=mag.getBoundingClientRect(); const cx=b.left+b.width/2-r.left, cy=b.top+b.height/2-r.top; const dx=mx-cx, dy=my-cy; const d=Math.hypot(dx,dy);
+    mag.style.transform = d<140 ? `translate(${dx*.35}px,${dy*.35}px)` : ''; }
+  if(cz.classList.contains('m-tilt')){ const px=mx/r.width-.5, py=my/r.height-.5; tilt.style.setProperty('--ry',(px*30)+'deg'); tilt.style.setProperty('--rx',(-py*30)+'deg'); }
+ });
+ cz.addEventListener('pointerleave',()=>{ mag.style.transform=''; tilt.style.setProperty('--rx','0deg'); tilt.style.setProperty('--ry','0deg'); });
+ (function loop(){ rx+=(mx-rx)*(reduce?1:.15); ry+=(my-ry)*(reduce?1:.15); ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
+ document.getElementById('czc').addEventListener('click',e=>{ const b=e.target.closest('[data-cm]'); if(!b) return; cz.className='cz '+b.dataset.cm; document.querySelectorAll('[data-cm]').forEach(x=>x.setAttribute('aria-pressed',x===b)); });
+ /* прокрутка */
+ const scb=document.getElementById('scb');
+ const io=new IntersectionObserver(en=>en.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } }),{root:scb,threshold:.4});
+ scb.querySelectorAll('.rv').forEach(x=>io.observe(x));
+ /* 3D */
+ const flip=document.getElementById('flip'); flip.addEventListener('click',()=>flip.classList.toggle('on'));
+ const persp=document.getElementById('persp'), cube=document.getElementById('cube'); let drag=null, ax=-20, ay=30;
+ persp.addEventListener('pointerdown',e=>{ drag=[e.clientX,e.clientY,ax,ay]; persp.setPointerCapture(e.pointerId); });
+ persp.addEventListener('pointermove',e=>{ if(!drag) return; ay=drag[3]+(e.clientX-drag[0])*.6; ax=drag[2]-(e.clientY-drag[1])*.6; cube.style.setProperty('--cx',ax+'deg'); cube.style.setProperty('--cy',ay+'deg'); });
+ persp.addEventListener('pointerup',()=>drag=null);
+ persp.style.touchAction='none';
+})();
+</script>
+</body>
+</html>

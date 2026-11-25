@@ -19,7 +19,9 @@ img{max-width:100%}
 .top .in{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .top .brand{font:500 17px var(--serif);text-decoration:none;color:var(--ink)}
 .top .brand b{color:var(--accent);font-weight:500}
-.top nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.top nav{display:flex;gap:4px;flex-wrap:nowrap;margin-left:auto;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap}
 .top nav a{font-size:14px;text-decoration:none;color:var(--ink2);padding:5px 10px;border-radius:8px}
 .top nav a:hover,.top nav a.on{background:var(--accent-soft);color:var(--accent-ink)}
 

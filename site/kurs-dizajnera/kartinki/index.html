@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Картинки, персонажи, видео · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+/* серия */
+.ser{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.ser div{aspect-ratio:4/5;border-radius:10px;position:relative;overflow:hidden;transition:filter .4s}
+.ser div span{position:absolute;inset:auto 0 0 0;padding:6px 8px;font-size:11px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.45))}
+.ser .p1{background:radial-gradient(circle at 35% 35%,#ffd9a8 0 18%,transparent 19%),linear-gradient(160deg,#3a6fd8,#7fd1ff)}
+.ser .p2{background:radial-gradient(circle at 60% 40%,#2a2a2a 0 14%,transparent 15%),linear-gradient(200deg,#f6f1e8,#d2c4ac)}
+.ser .p3{background:radial-gradient(ellipse at 50% 80%,#ff4f8a 0 30%,transparent 31%),linear-gradient(180deg,#0f1a3c,#5a2f8a)}
+.ser .p4{background:radial-gradient(circle at 40% 45%,#e7c9a5 0 16%,transparent 17%),linear-gradient(170deg,#9fbf7a,#e9e1b8)}
+.stage.one .ser div{filter:sepia(.35) saturate(.55) hue-rotate(-8deg) brightness(1.04) contrast(.92)}
+.stage.one .ser .p3{filter:sepia(.5) saturate(.4) brightness(1.5) contrast(.8)}
+/* конструктор запроса */
+.pb{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px;width:100%;text-align:left}
+.pb label{font-size:12.5px;color:var(--muted);display:flex;flex-direction:column;gap:3px;min-width:0}
+.pb select{width:100%;min-width:0;font:inherit;font-size:14px;color:var(--ink);padding:7px 9px;border:1px solid var(--line2);border-radius:8px;background:#fff}
+.pout{margin-top:12px;background:#1f1c27;color:#e7e3f1;border-radius:10px;padding:12px 14px;font:13px/1.55 var(--mono);text-align:left;width:100%}
+.pout b{color:#c9b8ff;font-weight:400}
+/* персонаж */
+.chr{display:flex;gap:26px;align-items:flex-end;justify-content:center;flex-wrap:wrap}
+.chr figure{margin:0;text-align:center;font-size:12px;color:#4a4658}
+.bd{position:relative;width:110px;height:130px;margin:0 auto 6px}
+.bd .body{position:absolute;inset:20px 10px 0 10px;background:var(--cc,#e8dfcf);border-radius:var(--sh,50% 50% 46% 46%);box-shadow:inset -8px -10px 0 rgba(0,0,0,.06)}
+.bd .ear{position:absolute;top:8px;width:28px;height:30px;background:var(--cc,#e8dfcf);border-radius:50% 50% 10% 10%}
+.bd .ear.l{left:16px;transform:rotate(-14deg)}.bd .ear.r{right:16px;transform:rotate(14deg)}
+.bd .eye{position:absolute;top:62px;width:10px;height:var(--eh,12px);border-radius:50%;background:#2a2733;transition:height .2s}
+.bd .eye.l{left:38px}.bd .eye.r{right:38px}
+.bd .mo{position:absolute;left:50%;top:84px;width:18px;height:8px;transform:translateX(-50%);border:2.5px solid #2a2733;border-top:0;border-radius:0 0 12px 12px;transition:all .2s}
+.bd .ch{position:absolute;top:78px;width:12px;height:7px;border-radius:50%;background:#f0b3a8;opacity:.8}
+.bd .ch.l{left:24px}.bd .ch.r{right:24px}
+.stage.e-sad .bd .mo{border:2.5px solid #2a2733;border-bottom:0;border-radius:12px 12px 0 0;top:88px}
+.stage.e-wow .bd .mo{width:12px;height:12px;border-radius:50%;border:2.5px solid #2a2733}
+.stage.e-wow .bd{--eh:16px}
+.stage.e-think .bd .mo{width:14px;height:0;border-bottom:2.5px solid #2a2733;border-radius:0;left:58%}
+.stage.e-think .bd .eye{top:58px}
+.stage.e-happy .bd{--eh:5px}
+.stage.e-happy .bd .mo{width:24px;height:12px}
+.sil .bd .body,.sil .bd .ear{background:#2a2733!important;box-shadow:none}
+.sil .bd .eye,.sil .bd .mo,.sil .bd .ch{display:none}
+.stage.silh .chr figure{}
+.stage.silh .bd .body,.stage.silh .bd .ear{background:#2a2733;box-shadow:none}
+.stage.silh .bd .eye,.stage.silh .bd .mo,.stage.silh .bd .ch{opacity:0}
+/* таблицы */
+.tb{width:100%;overflow-x:auto}
+.tb table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px;text-align:left}
+.tb th,.tb td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tb th{font:600 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tb td:first-child{font-weight:700;white-space:nowrap}
+/* камера */
+.cam{width:min(420px,100%);aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative;background:#e9e2d4}
+.cam .sc{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 55%,#fbf8f2 0 13%,transparent 14%),radial-gradient(circle at 50% 70%,rgba(0,0,0,.12) 0 18%,transparent 19%),repeating-linear-gradient(90deg,#e4dccb 0 40px,#ddd4c1 40px 80px);display:flex;align-items:center;justify-content:center}
+.cam .sc span{font:400 56px "Kaiti SC","STKaiti","KaiTi",serif;color:#2a2733;margin-top:6%}
+.stage.c-pan .cam .sc{animation:pan 4s ease-in-out infinite alternate}
+.stage.c-dolly .cam .sc{animation:dolly 4s ease-in-out infinite alternate}
+.stage.c-orbit .cam .sc{animation:orbit 5s ease-in-out infinite alternate}
+@keyframes pan{from{transform:translateX(-8%)}to{transform:translateX(8%)}}
+@keyframes dolly{from{transform:scale(1)}to{transform:scale(1.35)}}
+@keyframes orbit{from{transform:perspective(600px) rotateY(-12deg) translateX(4%)}to{transform:perspective(600px) rotateY(12deg) translateX(-4%)}}
+@media (max-width:640px){.ser{grid-template-columns:1fr 1fr}.pb{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="kartinki">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../sajt/">Сайт</a><a href="../prezentacii/">Презентации</a><a href="../horosho-ploho/">Хорошо и плохо</a><a href="../animaciya/">Анимации</a><a href="../kartinki/" class="on">Картинки</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль Д2 · Картинки и видео</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок Д · Факультатив · Модуль Д2</p>
+  <h1>Картинки, персонажи, видео</h1>
+  <p>Фото и иллюстрации для сайта и уроков, персонаж в одном стиле, генерация картинок и коротких видео, живые заставки. Главное здесь не «какую кнопку нажать в генераторе», а как сделать, чтобы картинки выглядели одной серией и не отдавали ИИ-слопом.</p>
+  <p class="meta">9 глав · по 5–10 минут · конструктор запроса для генератора</p>
+</div>
+
+<section class="ch" id="vidy" data-t="Виды изображений">
+  <h2>Какие бывают изображения</h2>
+  <div class="tb"><table>
+    <tr><th>Вид</th><th>Когда брать</th><th>Риск</th></tr>
+    <tr><td>Фото</td><td>Люди, учитель, урок, реальные места. Вызывает доверие.</td><td>Сток выглядит фальшиво.</td></tr>
+    <tr><td>Иллюстрация</td><td>Объяснить идею, создать характер, детская версия.</td><td>Смесь стилей из разных наборов.</td></tr>
+    <tr><td>3D-рендер</td><td>Предметы, «материал» бренда, твой фарфор и стекло.</td><td>Тяжёлый вес, «пластиковый» вид.</td></tr>
+    <tr><td>Иконки</td><td>Подписать действие или раздел.</td><td>Разная толщина линий, эмодзи вместо иконок.</td></tr>
+    <tr><td>Скриншот</td><td>Показать продукт: кабинет, задание.</td><td>Мелко и нечитаемо, если не увеличить фрагмент.</td></tr>
+  </table></div>
+  <div class="key">Для каждой картинки задай вопрос: «что она объясняет или доказывает?» Если ответ «просто украшает», она, скорее всего, лишняя.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Что убедительнее для блока «Учитель» на сайте?</p><div class="opts"><button>Красивая 3D-иллюстрация девушки с книгой</button><button>Настоящее фото учителя в хорошем свете</button><button>Иконка «учитель»</button></div><p class="why">Человек хочет знать, кто будет учить. Настоящее лицо отвечает на вопрос и вызывает доверие.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="seriya" data-t="Одна серия">
+  <h2>Одна серия: свет, цвет, ракурс</h2>
+  <p>Картинки выглядят «дорого», когда это <b>серия</b>: один свет, одна цветовая обработка, похожий ракурс, похожий фон. Даже телефонные фото становятся цельными, если их одинаково обработать.</p>
+  <div class="ex"><div class="stage"><div class="ser"><div class="p1"><span>сток</span></div><div class="p2"><span>фото урока</span></div><div class="p3"><span>генерация</span></div><div class="p4"><span>фото учителя</span></div></div></div>
+  <div class="ctl"><button data-tog="one">Привести к одной обработке</button></div>
+  <div class="cap">Условные картинки из четырёх источников. Общая обработка (тёплый тон, меньше насыщенности, мягкий контраст) делает из разнобоя набор.</div></div>
+  <h3>Что держать одинаковым</h3>
+  <ul>
+    <li><b>Свет</b>: мягкий дневной из окна или студийный, но не вперемешку.</li>
+    <li><b>Цвет</b>: одна цветовая обработка (в Lightroom это «пресет»).</li>
+    <li><b>Ракурс и крупность</b>: например, всё на уровне глаз и по пояс.</li>
+    <li><b>Фон</b>: однотонный или одна среда (стол, комната).</li>
+    <li><b>Кадрирование</b>: одинаковые пропорции (4:5, 16:9) и скругления.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>На сайте 4 фото: тёмное вечернее, яркий сток, чёрно-белое и генерация в неоне. Как исправить быстрее всего?</p><div class="opts"><button>Добавить рамки</button><button>Сделать фото больше</button><button>Одна обработка на все, а выпадающее заменить</button></div><p class="why">Общий свет и цвет собирают серию. Картинку, которая не приводится к серии (неон среди дневного света), лучше заменить.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="zapros" data-t="Запрос для генератора">
+  <h2>Запрос для генератора картинок</h2>
+  <p>Генератор (Midjourney, Flux, Kandinsky, Шедеврум, GPT Image и другие) рисует то, что описано, и додумывает всё остальное сам, обычно самым шаблонным образом. Поэтому хороший запрос описывает <b>все решения</b>, которые иначе примет машина. Собери запрос:</p>
+  <div class="ex"><div class="stage" style="flex-direction:column"><div class="pb" id="pb">
+    <label>Что в кадре<select data-k="obj"><option>a porcelain cup with the Chinese character 茶 painted on it</option><option>a teenage girl writing Chinese characters in a notebook</option><option>a teacher's desk with a laptop, notebook and tea</option><option>a glass cube on a porcelain surface</option></select></label>
+    <label>Где<select data-k="place"><option>on a light beige linen tablecloth</option><option>in a bright minimal room</option><option>on a seamless warm beige background</option></select></label>
+    <label>Свет<select data-k="light"><option>soft morning window light from the left</option><option>soft diffused studio light</option><option>golden hour sunlight, long soft shadows</option></select></label>
+    <label>Камера<select data-k="cam"><option>eye level, 50mm lens, shallow depth of field</option><option>top-down flat lay</option><option>close-up macro, 100mm lens</option></select></label>
+    <label>Стиль<select data-k="style"><option>editorial photography, natural, quiet</option><option>product photography, clean and premium</option><option>documentary photo, candid</option></select></label>
+    <label>Цвет<select data-k="col"><option>muted warm palette, low saturation</option><option>neutral palette with one soft lavender accent</option><option>porcelain white and soft grey</option></select></label>
+    <label>Формат<select data-k="ar"><option>--ar 4:5</option><option>--ar 16:9</option><option>--ar 1:1</option></select></label>
+    <label>Без чего<select data-k="neg"><option>no text, no letters, no logos</option><option>no people, no text</option><option>no clutter, no neon, no text</option></select></label>
+  </div><div class="pout" id="pout"></div></div>
+  <div class="cap">Запрос пишут на английском: так генераторы понимают точнее. Порядок важен: сначала главное.</div></div>
+  <div class="key">Формула: <b>что</b> + <b>где</b> + <b>свет</b> + <b>камера</b> + <b>стиль</b> + <b>цвет</b> + <b>формат</b> + <b>без чего</b>. Для серии меняешь только «что», а остальное копируешь без изменений.</div>
+  <div class="why-box"><b>Иероглифы генераторы пишут плохо.</b> Почти всегда получится «каша» из похожих черт. Правильный путь: генерируй картинку без текста, а иероглиф добавь потом в Figma нормальным шрифтом или своей прописью.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Нужно 4 фото для сайта в одном стиле. Как писать запросы?</p><div class="opts"><button>Один блок про свет, камеру, стиль и цвет, меняется только объект</button><button>Каждый раз новыми словами для разнообразия</button><button>Одно слово «красиво»</button></div><p class="why">Повторяющийся блок стиля держит серию. Каждое новое описание света даёт новую картинку из другого мира.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="slop" data-t="ИИ-слоп в картинках">
+  <h2>ИИ-слоп в картинках</h2>
+  <p>Генерации легко узнать, и зрители уже научились это делать. Признаки, по которым картинка выдаёт себя:</p>
+  <ul>
+    <li><b>Каша вместо текста и иероглифов</b>: похоже на буквы, но не читается.</li>
+    <li><b>Руки и мелочи</b>: шесть пальцев, ручка сливается с ладонью, ложка растёт из чашки.</li>
+    <li><b>Пластиковая кожа</b> без пор, «глянцевые» лица, все одинаково красивые.</li>
+    <li><b>Оранжево-бирюзовая гамма и свечение</b> по краям, «эпичный» свет без причины.</li>
+    <li><b>Слишком много деталей</b>: всё резкое, всё блестит, глазу негде отдохнуть.</li>
+    <li><b>Стереотипы</b>: для Китая обязательно фонарики, драконы и пагоды.</li>
+    <li><b>Нет точки зрения</b>: картинка красивая, но непонятно, что она говорит.</li>
+  </ul>
+  <div class="key">Как избежать: проси спокойный, конкретный, «скучный» кадр (свет из окна, одна вещь на столе), убирай текст, проверяй руки и края, и всегда отбирай 1 из 10, а не публикуй первую.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Сгенерированная обложка урока: красные фонарики, дракон, золотое свечение, надпись иероглифами. Что не так?</p><div class="opts"><button>Мало деталей</button><button>Стереотипный Китай, свечение без причины и «каша» вместо иероглифов</button><button>Нужно больше золота</button></div><p class="why">Это набор клише, которые генератор выдаёт по умолчанию. Для премиальной школы лучше один спокойный предмет и настоящий иероглиф шрифтом.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="personazh" data-t="Персонаж">
+  <h2>Персонаж</h2>
+  <p>Персонаж (маскот) хорошо работает в детской версии: он радуется ответу, подсказывает, отмечает серию дней. Чтобы он был узнаваемым, у него должны быть <b>простой силуэт</b>, <b>характер в форме</b> и <b>набор эмоций</b>.</p>
+  <div class="ex"><div class="stage e-happy"><div class="chr">
+    <figure><div class="bd" style="--cc:#e8dfcf"><i class="ear l"></i><i class="ear r"></i><i class="body"></i><i class="eye l"></i><i class="eye r"></i><i class="ch l"></i><i class="ch r"></i><i class="mo"></i></div>Круглый: добрый</figure>
+    <figure><div class="bd" style="--cc:#d9d0f0;--sh:22px"><i class="ear l" style="border-radius:6px"></i><i class="ear r" style="border-radius:6px"></i><i class="body"></i><i class="eye l"></i><i class="eye r"></i><i class="ch l"></i><i class="ch r"></i><i class="mo"></i></div>Квадратный: надёжный</figure>
+    <figure><div class="bd" style="--cc:#f0d3c4;--sh:50% 50% 12% 12% / 70% 70% 12% 12%"><i class="ear l" style="border-radius:50% 50% 0 0;height:38px;top:0"></i><i class="ear r" style="border-radius:50% 50% 0 0;height:38px;top:0"></i><i class="body"></i><i class="eye l"></i><i class="eye r"></i><i class="ch l"></i><i class="ch r"></i><i class="mo"></i></div>Острый: энергичный</figure>
+  </div></div>
+  <div class="ctl"><button data-cls="e-happy" aria-pressed="true">Радость</button><button data-cls="e-wow">Удивление</button><button data-cls="e-think">Задумался</button><button data-cls="e-sad">Грусть</button><button data-cls="silh">Тест силуэта</button></div>
+  <div class="cap">Тест силуэта: залей персонажа чёрным. Если его всё ещё можно узнать, силуэт хороший. Эмоции делаются всего двумя деталями: глаза и рот.</div></div>
+  <h3>Лист персонажа</h3>
+  <p>Перед тем как рисовать персонажа в уроках, делают <span class="term">лист персонажа</span> <span class="en">(character sheet)</span>: он анфас, в три четверти, в профиль и сзади; 6–8 эмоций; цвета; что можно и нельзя (например, «никогда не злится»).</p>
+  <h3>Как держать персонажа одинаковым в генерации</h3>
+  <ul>
+    <li>Сначала получи <b>одну</b> удачную картинку и сохрани её как образец.</li>
+    <li>Дальше генерируй <b>по образцу</b> <span class="en">(character reference, image reference)</span>: в большинстве генераторов можно приложить картинку и указать, что это тот же персонаж.</li>
+    <li>Держи <b>одинаковый блок описания</b>: «маленький круглый фарфоровый кот, бежевый, тонкий контур, без текстур».</li>
+    <li>Проверяй мелочи: количество ушей, цвет, форма глаз. Генератор любит их «улучшать».</li>
+    <li>Для уроков надёжнее нарисовать персонажа один раз (или заказать иллюстратору) и дальше собирать позы из частей.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Персонаж в каждом уроке выглядит немного по-разному. Что помогает больше всего?</p><div class="opts"><button>Каждый раз новый запрос</button><button>Генерировать без описания</button><button>Лист персонажа и генерация по образцу с постоянным блоком описания</button></div><p class="why">Образец и одинаковое описание удерживают внешность. Без них генератор каждый раз придумывает персонажа заново.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="video" data-t="Генерация видео">
+  <h2>Генерация видео</h2>
+  <p>Генераторы видео (Kling, Runway, Veo, Hailuo и другие) делают короткие ролики по 5–10 секунд. Лучший результат даёт режим <b>«из картинки в видео»</b> <span class="en">(image to video)</span>: сначала делаешь удачный кадр, потом просишь его оживить.</p>
+  <h3>Движение камеры</h3>
+  <p>В запросе для видео главное описать движение: что двигается и как двигается камера. Одно простое движение выглядит дорого, три сразу выглядят как слоп.</p>
+  <div class="ex"><div class="stage c-dolly"><div class="cam"><div class="sc"><span>茶</span></div></div></div>
+  <div class="ctl"><button data-cls="c-pan">Панорама (pan)</button><button data-cls="c-dolly" aria-pressed="true">Наезд (dolly in)</button><button data-cls="c-orbit">Облёт (orbit)</button><button data-cls="">Статика</button></div>
+  <div class="cap">Медленный наезд на предмет это самый частый «дорогой» приём для заставки. Статичная камера и лёгкое движение внутри кадра (пар над чаем, ткань) тоже работают.</div></div>
+  <div class="why-box"><b>Пример запроса:</b> slow dolly in on a porcelain cup of tea on a beige linen table, gentle steam rising, soft morning window light, calm, no people, no text, seamless loop, 6 seconds.</div>
+  <ul>
+    <li>Лица и руки в движении генераторы портят чаще всего. Для заставки лучше предметы и пространство.</li>
+    <li>Для фона сайта нужен <b>бесшовный цикл</b> <span class="en">(seamless loop)</span>: конец совпадает с началом.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Какой запрос для заставки даст результат лучше?</p><div class="opts"><button>Медленный наезд на одну чашку, пар, свет из окна</button><button>Камера летает вокруг, взрывы, люди танцуют, дракон</button><button>Просто «красивое видео про Китай»</button></div><p class="why">Одно простое движение и один предмет генератор делает чисто. Сложная сцена почти всегда ломается.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="zastavki" data-t="Живые заставки">
+  <h2>Живые заставки на сайт</h2>
+  <p>«Живой» первый экран можно сделать пятью способами. Они сильно отличаются весом и тем, как работают на телефоне.</p>
+  <div class="tb"><table>
+    <tr><th>Способ</th><th>Как выглядит</th><th>Вес и скорость</th><th>Когда брать</th></tr>
+    <tr><td>Видео-фон</td><td>Настоящее или сгенерированное видео в цикле</td><td>Тяжело: 2–6 МБ, нужен кадр-заглушка</td><td>Атмосфера, место, предмет</td></tr>
+    <tr><td>Шейдер-градиент</td><td>Переливающийся цветной фон</td><td>Лёгкий файл, но нагружает видеокарту</td><td>Абстрактный «дорогой» фон</td></tr>
+    <tr><td>3D (Spline, three.js)</td><td>Объект, который вращается и реагирует на курсор</td><td>Тяжело, на слабых телефонах тормозит</td><td>Главный герой бренда, твой куб</td></tr>
+    <tr><td>Lottie, Rive</td><td>Векторная анимация, персонаж</td><td>Лёгкая, чёткая на любом экране</td><td>Персонаж, иконки, иллюстрации</td></tr>
+    <tr><td>CSS и SVG</td><td>Пишущийся иероглиф, мягкое появление</td><td>Почти ничего не весит</td><td>Типографика, черты, простое движение</td></tr>
+  </table></div>
+  <div class="key">Правила для любой заставки: видео без звука и с кадром-заглушкой, текст поверх читается (под ним затемнение или чистая зона), на телефоне можно облегчить или заменить картинкой, при настройке «уменьшить движение» заставка стоит.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Для первого экрана AIKITAY с пишущимся иероглифом что легче и надёжнее всего?</p><div class="opts"><button>Видео 8 МБ</button><button>SVG-черты с CSS-анимацией</button><button>Тяжёлая 3D-сцена</button></div><p class="why">Черты иероглифа это линии. SVG рисует их чётко, весит килобайты и работает везде.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="prava" data-t="Права и этика">
+  <h2>Права и этика</h2>
+  <ul>
+    <li><b>Фото учеников</b> публикуются только с письменного согласия, для детей с согласия родителей. Лица детей на сайте лучше не показывать вовсе: снимай руки, тетради, экран.</li>
+    <li><b>Стоки</b>: смотри лицензию. Бесплатные (Unsplash, Pexels) обычно можно использовать на сайте, но нельзя продавать картинку как есть.</li>
+    <li><b>Генерации</b>: условия у каждого сервиса свои. Для коммерческого использования часто нужен платный тариф.</li>
+    <li><b>Не генерируй «в стиле» конкретного живого художника или копию чужого персонажа</b>: это и неэтично, и юридически рискованно.</li>
+    <li><b>Шрифты</b>: у каждого шрифта тоже есть лицензия. Бесплатные с Google Fonts можно, но для сайта в России их скачивают и кладут на свой сервер.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Хочешь поставить на сайт фото с урока, где видны лица детей группы. Что сделать?</p><div class="opts"><button>Поставить, это же реклама школы</button><button>Размыть фон</button><button>Взять письменное согласие родителей или выбрать кадр без лиц</button></div><p class="why">Фото детей без согласия родителей публиковать нельзя. Кадры рук, тетрадей и экрана рассказывают про урок не хуже.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="praktika" data-t="Практика">
+  <h2>Практика</h2>
+  <div class="proj">Сделай серию из 4 изображений для сайта AIKITAY по формуле запроса: блок стиля одинаковый, меняется только объект (чашка, тетрадь с прописью, ноутбук с уроком, рабочий стол учителя). Иероглифы на картинках не генерируй, добавь их в Figma. Разложи серию в Figma рядом и проверь: один ли свет, цвет и ракурс? Пришли на разбор вместе с запросами.</div>
+  <p class="src">Где смотреть и учиться: раздел «Где искать» в <a href="../../nahodki/">находках</a>, <a href="../../katalog-stiley/">каталог стилей</a>, галерея <a href="https://www.behance.net/" target="_blank" rel="noopener">Behance</a> (ищи «brand photography», «character sheet»).</p>
+</section>
+
+<nav class="next"><a href="../animaciya/"><small>← Назад</small>Д1. Анимации и кнопки</a><a href="../"><small>Оглавление →</small>Все модули</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль Д2. Названия сервисов приведены как примеры. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ const pb=document.getElementById('pb'), out=document.getElementById('pout');
+ function up(){ const v=k=>pb.querySelector('[data-k='+k+']').value;
+  out.innerHTML=`<b>${v('obj')}</b>, ${v('place')}, ${v('light')}, ${v('cam')}, ${v('style')}, ${v('col')}, ${v('neg')} ${v('ar')}`; }
+ pb.addEventListener('change',up); up();
+})();
+</script>
+</body>
+</html>
