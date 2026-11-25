@@ -38,7 +38,9 @@ if(side && 'IntersectionObserver' in window){
 }
 
 /* тесты: .q[data-a] > .opts > button ; правильный ответ = номер кнопки с 0 */
+/* «Не знаю»: честный ответ вместо угадывания. Показывает верный вариант, засчитывается как не знаю */
 document.querySelectorAll('.q').forEach((q,i)=>{
+  const o=q.querySelector('.opts'); if(o && !q.querySelector('.idk')){ const k=document.createElement('button'); k.type='button'; k.className='idk'; k.textContent='Не знаю'; o.after(k); }
   const id=mod+'/q'+i; q.dataset.qid=id;
   const prev=st.q[id];
   if(prev!=null){ mark(q,prev,false); }
@@ -46,6 +48,7 @@ document.querySelectorAll('.q').forEach((q,i)=>{
 function mark(q,pick,store){
   const a=+q.dataset.a; const bs=[...q.querySelectorAll('.opts > button')];
   bs.forEach((b,j)=>{ b.classList.remove('right','wrong'); if(j===a) b.classList.add('right'); else if(j===pick) b.classList.add('wrong'); });
+  const k=q.querySelector('.idk'); if(k) k.classList.toggle('on',pick==='x');
   q.classList.add('answered');
   if(store){ st.q[q.dataset.qid]=pick; save(); }
 }
@@ -53,9 +56,10 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('.q .opts > button'); if(!b) return;
   const q=b.closest('.q'); const bs=[...q.querySelectorAll('.opts > button')]; mark(q,bs.indexOf(b),true);
 });
+document.addEventListener('click',e=>{ const k=e.target.closest('.q .idk'); if(!k) return; mark(k.closest('.q'),'x',true); });
 document.querySelectorAll('.quiz').forEach(z=>{
   const r=document.createElement('button'); r.type='button'; r.className='sbtn'; r.textContent='Пройти тест заново'; r.style.marginTop='10px';
-  r.addEventListener('click',()=>{ z.querySelectorAll('.q').forEach(q=>{ q.classList.remove('answered'); q.querySelectorAll('button').forEach(b=>b.classList.remove('right','wrong')); delete st.q[q.dataset.qid]; }); save(); });
+  r.addEventListener('click',()=>{ z.querySelectorAll('.q').forEach(q=>{ q.classList.remove('answered'); q.querySelectorAll('button').forEach(b=>b.classList.remove('right','wrong','on')); delete st.q[q.dataset.qid]; }); save(); });
   z.append(r);
 });
 
@@ -63,6 +67,9 @@ document.querySelectorAll('.quiz').forEach(z=>{
 document.querySelectorAll('.find').forEach((f,fi)=>{
   const tasks=JSON.parse(f.dataset.tasks); let i=0, ok=0, tries=0;
   const ask=f.querySelector('.ask'), cnt=f.querySelector('.cnt'), msg=f.querySelector('.fmsg');
+  const nk=document.createElement('button'); nk.type='button'; nk.className='sbtn'; nk.textContent='Не знаю, покажи'; nk.style.marginLeft='10px'; cnt.after(nk);
+  nk.onclick=()=>{ if(i>=tasks.length) return; const el=f.querySelector('[data-el="'+tasks[i][0]+'"]'); if(el){ el.classList.add('hit'); el.scrollIntoView({block:'nearest'}); setTimeout(()=>el.classList.remove('hit'),1800); }
+    msg.innerHTML='<b>Вот он: «'+tasks[i][1]+'».</b> '+(tasks[i][2]||'')+' Не засчитано, это честно.'; i++; setTimeout(show,1900); };
   function show(){
     if(i>=tasks.length){ ask.innerHTML='Готово!'; cnt.textContent=''; msg.innerHTML=`С первой попытки: ${ok} из ${tasks.length}. <button class="sbtn" type="button">Ещё раз</button>`;
       st.find[mod+'/f'+fi]=ok+'/'+tasks.length; save(); msg.querySelector('button').onclick=()=>{i=0;ok=0;tries=0;f.querySelectorAll('.hit,.miss').forEach(x=>x.classList.remove('hit','miss'));show();}; return; }

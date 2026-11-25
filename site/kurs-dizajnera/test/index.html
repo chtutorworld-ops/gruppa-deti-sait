@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тест по словам · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.dg{max-width:760px;margin:0 auto;padding:40px 24px 60px}
+.dg h1{font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0 0 14px}
+.dg .lead{font-size:18px;color:var(--ink2);margin:0 0 12px}
+.rules{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:18px 0;font-size:15px;color:var(--ink2)}
+.rules li{margin:4px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:18px 0}
+.top-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.top-row b{color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:16px}.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qq{font:600 20px/1.35 var(--sans);margin:0 0 14px}
+.ch-o{display:flex;flex-direction:column;gap:8px}
+.ch-o button{font:inherit;font-size:15.5px;text-align:left;border:1px solid var(--line2);background:var(--card);border-radius:12px;padding:11px 14px;cursor:pointer;color:var(--ink)}
+.ch-o button:hover:not(:disabled){border-color:var(--accent)}
+.ch-o button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.ch-o button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.ch-o button.idk2{border-style:dashed;color:var(--muted)}
+.ch-o button.idk2.on{border-style:solid;background:var(--card2);color:var(--ink)}
+.expl{margin:14px 0 0;background:var(--card2);border-radius:10px;padding:10px 14px;font-size:15px;color:var(--ink2)}
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.big{font:600 15px var(--sans);background:var(--accent);color:#fff;border:0;border-radius:12px;padding:11px 20px;cursor:pointer}
+.big:disabled{opacity:.35;cursor:default}
+.t-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.t-row{display:grid;grid-template-columns:1fr 150px 110px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14.5px}
+.t-row a{color:var(--ink);font-weight:600;text-decoration:none}.t-row a:hover{color:var(--accent)}
+.seg{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
+.seg .s-ok{background:var(--ok)}.seg .s-bad{background:var(--bad)}.seg .s-idk{background:var(--muted);opacity:.5}
+.lvl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:right}
+.lvl.l0{color:var(--bad)}.lvl.l1{color:var(--warn)}.lvl.l2{color:var(--ok)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);flex-wrap:wrap}.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .a::before{background:var(--ok)}.legend .b::before{background:var(--bad)}.legend .c::before{background:var(--muted);opacity:.5}
+.route ol{padding-left:22px}.route li{margin:10px 0}.route li small{display:block;color:var(--muted);font-size:13.5px}
+.route li .ch-links a{display:inline-block;margin:4px 6px 0 0;font-size:13.5px;background:var(--accent-soft);color:var(--accent-ink);border-radius:8px;padding:2px 8px;text-decoration:none}
+textarea.copy{width:100%;min-height:130px;font:13px var(--mono);border:1px solid var(--line2);border-radius:10px;padding:10px;background:var(--card2);color:var(--ink)}
+@media (max-width:620px){.dg{padding:28px 16px 50px}.t-row{grid-template-columns:1fr 90px}.t-row .lvl{grid-column:1/-1;text-align:left}}
+</style>
+
+</head>
+<body data-mod="test">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../">Все модули</a><a href="../diagnostika/">Большой входной тест</a></nav></div></header>
+<div class="dg" id="app"></div>
+<footer class="foot">Курс молодого дизайнера · итоговый тест по словам. Результаты хранятся только в этом браузере.</footer>
+<script src="../obshchee/slovar-data.js"></script>
+<script>
+(function(){
+const W=window.SLOVAR||[], app=document.getElementById('app'), N=20, LS='kurs2-slovar';
+let K={};try{K=JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MN={start:'Старт',glaz:'Глаз дизайнера',anatomiya:'Анатомия',ux:'UX',prototip:'Прототип','dizajn-sistema':'Дизайн-система',prilozheniya:'Приложения',sajt:'Сайт',prezentacii:'Презентации','horosho-ploho':'Хорошо и плохо',animaciya:'Анимации',kartinki:'Картинки'};
+const rnd=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function mask(t){ let d=t.d; t.n.split(/[\s,()/]+/).filter(w=>w.length>3).forEach(w=>{ const r=new RegExp(w.slice(0,Math.max(4,w.length-2)).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[а-яёa-z]*','gi'); d=d.replace(r,'…'); }); return d; }
+let set=[],i=0,res=[];
+function start(mod){
+  const pool=mod?W.filter(t=>t.m===mod):W; set=rnd(pool).slice(0,Math.min(N,pool.length)); i=0; res=[]; ask();
+}
+function intro(){
+  app.innerHTML=`<h1>Тест по словам</h1><p class="lead">${N} случайных слов из ${W.length}, что встречались в курсе. Показываю объяснение, ты выбираешь слово. Каждый раз набор новый.</p>
+  <div class="rules"><ul><li><b>Не знаешь, жми «Не знаю».</b> Угаданное слово не выучено, а так тест покажет честно, что повторить.</li><li>В конце список слов для повторения со ссылками в словарики модулей.</li></ul></div>
+  <button class="big" id="go">Начать: все слова</button>
+  <p style="margin-top:18px;color:var(--ink2);font-size:15px">Или только слова одного модуля:</p>
+  <p>${Object.keys(MN).filter(m=>W.some(t=>t.m===m)).map(m=>`<button class="sbtn" data-m="${m}" style="margin:0 6px 6px 0">${MN[m]} · ${W.filter(t=>t.m===m).length}</button>`).join('')}</p>`;
+  document.getElementById('go').onclick=()=>start();
+  app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>start(b.dataset.m));
+}
+function ask(){
+  if(i>=set.length) return fin();
+  const t=set[i]; const same=W.filter(x=>x!==t&&x.m===t.m), other=W.filter(x=>x!==t&&x.m!==t.m);
+  const opts=rnd([t,...rnd(same).slice(0,2),...rnd(other)].filter((x,j,a)=>a.findIndex(y=>y.n===x.n)===j).slice(0,4));
+  app.innerHTML=`<div class="card"><div class="top-row"><b>Какое это слово?</b><span>${i+1} из ${set.length}</span></div><div class="bar"><i style="width:${i/set.length*100}%"></i></div>
+  <p class="qq">${esc(mask(t))}</p>${t.p?`<p style="margin:-6px 0 14px;color:var(--ink2)">Как в жизни: ${esc(mask({n:t.n,d:t.p}))}</p>`:''}
+  <div class="ch-o">${opts.map(o=>`<button type="button" data-n="${esc(o.n)}">${esc(o.n)}</button>`).join('')}<button type="button" class="idk2" data-n="">Не знаю</button></div>
+  <div id="ex"></div><div class="nav-row"><span></span><button class="big" id="next" disabled>Дальше →</button></div></div>`;
+  const bs=[...app.querySelectorAll('.ch-o button')];
+  bs.forEach(b=>b.onclick=()=>{ if(res[i]) return; const p=b.dataset.n; res[i]=p===''?'idk':p===t.n?'ok':'bad';
+    bs.forEach(x=>{x.disabled=true; if(x.dataset.n===t.n) x.classList.add('right'); else if(x===b&&p!=='') x.classList.add('wrong'); if(x===b&&p==='') x.classList.add('on');});
+    document.getElementById('ex').innerHTML=`<p class="expl"><b>${esc(t.n)}</b> <i style="color:var(--muted)">${esc(t.en)}</i>. ${esc(t.d)}</p>`;
+    document.getElementById('next').disabled=false; });
+  document.getElementById('next').onclick=()=>{i++;ask();window.scrollTo(0,0);};
+}
+function fin(){
+  const ok=res.filter(r=>r==='ok').length, idk=res.filter(r=>r==='idk').length;
+  const rep=set.filter((t,j)=>res[j]!=='ok');
+  rep.forEach(t=>{delete K[t.n];}); set.forEach((t,j)=>{ if(res[j]==='ok') K[t.n]=1; }); try{localStorage.setItem(LS,JSON.stringify(K));}catch(e){}
+  app.innerHTML=`<h1>${ok} из ${set.length}</h1><p class="lead">Честное «не знаю»: ${idk}. Верные слова отмечены «Знаю» в словариках модулей, остальные сняты, чтобы ты их повторила.</p>
+  ${rep.length?`<div class="card"><h2 style="margin:0 0 8px;font-size:22px">Повторить</h2>${rep.map(t=>`<p style="margin:8px 0"><b>${esc(t.n)}</b> · ${esc(t.d)} <a href="../${t.m}/#slovar">словарик «${esc(MN[t.m]||t.m)}» →</a></p>`).join('')}</div>`:'<p>Все слова верно. Отлично!</p>'}
+  <p><button class="big" id="again">Ещё раз, новые слова</button> <a class="sbtn" href="../" style="text-decoration:none">К модулям</a></p>`;
+  document.getElementById('again').onclick=intro;
+}
+intro();
+})();
+</script>
+</body>
+</html>

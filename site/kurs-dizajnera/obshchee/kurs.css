@@ -160,3 +160,31 @@ footer.foot{max-width:1180px;margin:0 auto;padding:30px 24px 60px;color:var(--mu
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent-ink);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.slovar{margin:14px 0}
+.sv-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--ink2);margin-bottom:10px}
+.sv-cnt{font-weight:600;color:var(--accent-ink)}
+.sv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.sv{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.sv.known{background:var(--card2);opacity:.75}
+.sv-h{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.sv-h b{display:block;font:500 17px var(--serif);color:var(--ink)}
+.sv-h i{font-style:normal;font-size:12.5px;color:var(--muted)}
+.sv-h button{font:inherit;font-size:12.5px;border:1px solid var(--line2);background:var(--card);border-radius:8px;padding:3px 10px;cursor:pointer;white-space:nowrap;color:var(--ink)}
+.sv-h button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sv p{margin:6px 0 0;color:var(--ink2)}
+.sv .sv-p{font-size:13.5px;color:var(--muted)}.sv .sv-p::before{content:"Как в жизни: ";font-weight:600;color:var(--accent-ink)}
+/* сайт как магазин */
+.inet{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:14px 0 18px}
+.inet>div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px;color:var(--ink2)}
+.inet b{display:block;font-size:17px;color:var(--ink)}
+.inet i{display:block;font:12.5px var(--mono);color:var(--muted);margin-bottom:6px;font-style:normal}
+/* разрядка */
+.trk{--ls:0;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.trk span{letter-spacing:calc(var(--ls) * .01em)}
+.trk .cap1{font:600 12px var(--sans);color:var(--accent)}
+.trk .big{font:500 44px var(--serif);line-height:1}
+/* кнопка «Не знаю» */
+.q .idk{font:inherit;font-size:13.5px;border:1px dashed var(--line2);background:transparent;color:var(--muted);border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:8px}
+.q .idk:hover{border-color:var(--accent);color:var(--ink)}
+.q .idk.on{border-style:solid;border-color:var(--muted);color:var(--ink);background:var(--card2)}
+.q.answered .idk:not(.on){display:none}

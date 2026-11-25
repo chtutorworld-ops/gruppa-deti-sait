@@ -27,6 +27,12 @@ a.m:hover{border-color:var(--accent);transform:translateY(-2px)}
 .m .st .ready{color:var(--ok)}
 .m.soon{background:transparent;border-style:dashed}
 .m .meter{flex:1;max-width:120px;margin:0}
+.m .dl{position:absolute;top:14px;right:16px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:2px 7px}
+.m .dl.l0{background:var(--bad-soft);color:var(--bad)}.m .dl.l1{background:var(--warn-soft);color:var(--warn)}.m .dl.l2{background:var(--ok-soft);color:var(--ok)}
+.rt{background:var(--accent-deep);color:#ece8f6;border-radius:18px;padding:22px 24px;margin:10px 0 0}
+.rt h2{color:#fff;margin:0 0 6px;font-size:26px}.rt p{margin:0 0 10px;color:#d6d0e8;max-width:70ch}
+.rt ol{margin:8px 0 12px;padding-left:22px}.rt li{margin:6px 0}.rt a{color:#fff}
+.rt .go{display:inline-block;background:#fff;color:var(--accent-deep);border-radius:10px;padding:9px 16px;font-weight:600;text-decoration:none}
 .road{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:r}
 .road div{background:var(--accent-deep);color:#e8e4f3;border-radius:14px;padding:14px 16px;font-size:14px}
 .road div b{display:block;font:500 18px var(--serif);color:#fff;margin-bottom:4px}
@@ -55,6 +61,7 @@ a.m:hover{border-color:var(--accent);transform:translateY(-2px)}
 </div>
 
 <div class="wrap">
+  <div id="route"></div>
   <h2 class="bl">Как устроено обучение</h2>
   <p class="bld">В онлайн-школах дизайна результат складывается из трёх вещей одновременно: теории, практики руками и разбора работ. Здесь так же.</p>
   <div class="habit">
@@ -95,12 +102,13 @@ a.m:hover{border-color:var(--accent);transform:translateY(-2px)}
 
   <h2 class="bl">Справочник</h2>
   <p class="bld">Учить его заранее не нужно. Иди по модулям: все главные слова объясняются прямо в них. Сюда заглядывай, как в словарь на полке, когда встретила незнакомое слово в чате, на сайте или в видео.</p>
-  <div class="mods"><a class="m" href="arhiv/"><span class="code">Справочник</span><h3>Словарь и старые главы</h3><p>153 термина с ползунками, этапы создания сайта, галереи для насмотренности, лендинг из блоков, чек-лист косяков.</p><span class="st"><span class="ready">открыть</span></span></a></div>
+  <div class="mods"><a class="m" href="test/"><span class="code">Тест</span><h3>Тест по словам</h3><p>20 случайных слов из 153, с кнопкой «Не знаю». Можно по всем словам или по одному модулю. Каждый раз новый набор.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="diagnostika/"><span class="code">Карта знаний</span><h3>Большой входной тест</h3><p>85 вопросов по 17 темам. Показывает, где ты уверена, а где плаваешь, и строит личный маршрут по курсу.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="arhiv/"><span class="code">Справочник</span><h3>Старый словарь с ползунками</h3><p>Те же 153 слова, но с живыми ползунками-примерами, этапы создания сайта, галереи для насмотренности, лендинг из блоков, чек-лист косяков.</p><span class="st"><span class="ready">открыть</span></span></a></div>
 </div>
 
 <footer class="foot">Учебная страница для себя. Названия компаний и продуктов упоминаются как учебные примеры. Соседние страницы: <a href="../referensy/">Референсы приложений</a> · <a href="../nahodki/">Находки</a> · <a href="../katalog-stiley/">Каталог стилей</a>.</footer>
 
 <script src="obshchee/kurs.js"></script>
+<script src="diagnostika/dannye.js"></script>
 <script>
 const M = {
  mA:[['start','0','Старт','Как устроен курс, входной тест, первые шаги в Figma, дневник насмотренности и проект.',1],
@@ -117,10 +125,24 @@ const M = {
      ['kartinki','Д2','Картинки, персонажи, видео','Генерация фото и видео, персонажи в одном стиле, заставки для сайта.',1]]
 };
 const S = (window.KURS&&KURS.st.mods)||{};
+/* карта из большого входного теста */
+let D=null; try{D=JSON.parse(localStorage.getItem('kurs2-diag')||'null');}catch(e){}
+const LV=['пусто','плаваю','уверенно'], ML={};
+let TS=[];
+if(D&&D.ans&&window.DIAG){
+  TS=DIAG_TEMY.map(([k,name,link])=>{ const ix=DIAG.map((q,i)=>i).filter(i=>DIAG[i].t===k); const ok=ix.filter(i=>D.ans[i]&&D.ans[i].r==='ok').length; const ans=ix.filter(i=>D.ans[i]).length;
+    const lv=ok>=4?2:ok>=2?1:0; const m=link.split('/')[0]; if(ans===ix.length) ML[m]=Math.min(ML[m]??2,lv); return {name,link,ok,n:ix.length,ans,lv}; });
+}
+const R=document.getElementById('route'), answered=TS.reduce((s,x)=>s+x.ans,0);
+if(!D||!answered){ R.innerHTML='<div class="rt"><h2>Начни с большого входного теста</h2><p>85 вопросов с кнопкой «Не знаю». По ответам курс покажет, в каких темах ты плаваешь, и соберёт личный маршрут прямо здесь.</p><a class="go" href="diagnostika/">Пройти тест →</a></div>'; }
+else if(!D.done){ R.innerHTML='<div class="rt"><h2>Входной тест не закончен</h2><p>Отвечено '+answered+' из '+DIAG.length+'. Допройди, и здесь появится твой маршрут.</p><a class="go" href="diagnostika/">Продолжить →</a></div>'; }
+else { const weak=TS.filter(x=>x.lv<2).sort((a,b)=>a.ok-b.ok).slice(0,5);
+  R.innerHTML='<div class="rt"><h2>Твой маршрут</h2><p>'+(weak.length?'По входному тесту начни с этих тем:':'По входному тесту ты уверенно знаешь все темы. Иди по модулям быстро, упор на практику.')+'</p>'+(weak.length?'<ol>'+weak.map(x=>'<li><a href="'+x.link+'">'+x.name+'</a> · '+LV[x.lv]+', '+x.ok+' из '+x.n+'</li>').join('')+'</ol>':'')+'<a class="go" href="diagnostika/">Вся карта и главы →</a></div>'; }
 for(const k in M){
   document.getElementById(k).innerHTML = M[k].map(m=>{
     const p=S[m[0]]; const pr = p&&p.total? `<span class="meter"><i style="width:${p.done/p.total*100}%"></i></span>`:'';
-    return m[4]? `<a class="m" href="${m[0]}/"><span class="code">Модуль ${m[1]}</span><h3>${m[2]}</h3><p>${m[3]}</p><span class="st"><span class="ready">${p&&p.done?`пройдено ${p.done} из ${p.total}`:'готов'}</span>${pr}</span></a>`
+    const dl = ML[m[0]]!=null? `<span class="dl l${ML[m[0]]}">${LV[ML[m[0]]]}</span>`:'';
+    return m[4]? `<a class="m" href="${m[0]}/">${dl}<span class="code">Модуль ${m[1]}</span><h3>${m[2]}</h3><p>${m[3]}</p><span class="st"><span class="ready">${p&&p.done?`пройдено ${p.done} из ${p.total}`:'готов'}</span>${pr}</span></a>`
                : `<div class="m soon"><span class="code">Модуль ${m[1]}</span><h3>${m[2]}</h3><p>${m[3]}</p><span class="st">скоро</span></div>`;
   }).join('');
 }

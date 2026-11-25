@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Большой входной тест · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.dg{max-width:760px;margin:0 auto;padding:40px 24px 60px}
+.dg h1{font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0 0 14px}
+.dg .lead{font-size:18px;color:var(--ink2);margin:0 0 12px}
+.rules{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:18px 0;font-size:15px;color:var(--ink2)}
+.rules li{margin:4px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:18px 0}
+.top-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.top-row b{color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:16px}.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qq{font:600 20px/1.35 var(--sans);margin:0 0 14px}
+.ch-o{display:flex;flex-direction:column;gap:8px}
+.ch-o button{font:inherit;font-size:15.5px;text-align:left;border:1px solid var(--line2);background:var(--card);border-radius:12px;padding:11px 14px;cursor:pointer;color:var(--ink)}
+.ch-o button:hover:not(:disabled){border-color:var(--accent)}
+.ch-o button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.ch-o button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.ch-o button.idk2{border-style:dashed;color:var(--muted)}
+.ch-o button.idk2.on{border-style:solid;background:var(--card2);color:var(--ink)}
+.expl{margin:14px 0 0;background:var(--card2);border-radius:10px;padding:10px 14px;font-size:15px;color:var(--ink2)}
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.big{font:600 15px var(--sans);background:var(--accent);color:#fff;border:0;border-radius:12px;padding:11px 20px;cursor:pointer}
+.big:disabled{opacity:.35;cursor:default}
+.t-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.t-row{display:grid;grid-template-columns:1fr 150px 170px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14.5px}
+.t-row a{color:var(--ink);font-weight:600;text-decoration:none}.t-row a:hover{color:var(--accent)}
+.seg{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
+.seg .s-ok{background:var(--ok)}.seg .s-bad{background:var(--bad)}.seg .s-idk{background:var(--muted);opacity:.5}
+.lvl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:right}
+.lvl.l0{color:var(--bad)}.lvl.l1{color:var(--warn)}.lvl.l2{color:var(--ok)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);flex-wrap:wrap}.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .a::before{background:var(--ok)}.legend .b::before{background:var(--bad)}.legend .c::before{background:var(--muted);opacity:.5}
+.route ol{padding-left:22px}.route li{margin:10px 0}.route li small{display:block;color:var(--muted);font-size:13.5px}
+.route li .ch-links a{display:inline-block;margin:4px 6px 0 0;font-size:13.5px;background:var(--accent-soft);color:var(--accent-ink);border-radius:8px;padding:2px 8px;text-decoration:none}
+textarea.copy{width:100%;min-height:130px;font:13px var(--mono);border:1px solid var(--line2);border-radius:10px;padding:10px;background:var(--card2);color:var(--ink)}
+@media (max-width:620px){.dg{padding:28px 16px 50px}.t-row{grid-template-columns:1fr 90px}.t-row .lvl{grid-column:1/-1;text-align:left}}
+</style>
+</head>
+<body data-mod="diagnostika">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../">Все модули</a><a href="../test/">Тест по словам</a></nav></div></header>
+<div class="dg" id="app"></div>
+<footer class="foot">Курс молодого дизайнера · большой входной тест. Ответы хранятся только в этом браузере.</footer>
+<script src="dannye.js"></script>
+<script>
+(function(){
+const LS='kurs2-diag', T=window.DIAG_TEMY, Q=window.DIAG, app=document.getElementById('app');
+let S={ans:{},pos:0,done:false,date:null};
+try{const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.ans) S=Object.assign(S,s);}catch(e){}
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tname=k=>(T.find(t=>t[0]===k)||[])[1];
+function shuffle(n,seed){const a=[...Array(n).keys()];let s=seed*9301+49297;for(let i=n-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function intro(){
+  const n=Object.keys(S.ans).length;
+  app.innerHTML=`<h1>Большой входной тест</h1>
+  <p class="lead">${Q.length} вопросов по ${T.length} темам, от самых простых слов до технологий. Цель не оценка, а карта: где ты уверена, где плаваешь, а где пока пусто. По ней курс подстроится под тебя.</p>
+  <div class="rules"><ul>
+   <li><b>Не знаешь, жми «Не знаю».</b> Угадать правильно это не знание, тест тогда врёт. «Не знаю» здесь самый полезный ответ.</li>
+   <li>Знаешь «примерно», но не уверена? Тоже честнее нажать «Не знаю».</li>
+   <li>После каждого ответа короткое объяснение. Можно прерваться: ответы сохраняются, продолжишь с того же места.</li>
+   <li>Займёт 20–30 минут.</li></ul></div>
+  <button class="big" id="go">${n?`Продолжить (отвечено ${n} из ${Q.length})`:'Начать'}</button>
+  ${n?` <button class="sbtn" id="reset" style="margin-left:8px">Начать заново</button>`:''}`;
+  document.getElementById('go').onclick=()=>{ if(n>=Q.length) results(); else { S.pos=firstOpen(); save(); ask(); } };
+  const r=document.getElementById('reset'); if(r) r.onclick=()=>{ S={ans:{},pos:0,done:false,date:null}; save(); intro(); };
+}
+function firstOpen(){ for(let i=0;i<Q.length;i++) if(!S.ans[i]) return i; return Q.length; }
+
+function ask(){
+  const i=S.pos; if(i>=Q.length){ S.done=true; S.date=new Date().toISOString().slice(0,10); save(); return results(); }
+  const q=Q[i], ord=shuffle(q.o.length,i+7), done=S.ans[i];
+  const topicN=Q.filter(x=>x.t===q.t), k=topicN.indexOf(q)+1;
+  app.innerHTML=`<div class="card"><div class="top-row"><b>${esc(tname(q.t))}</b><span>вопрос ${i+1} из ${Q.length}</span></div>
+   <div class="bar"><i style="width:${i/Q.length*100}%"></i></div>
+   <p class="qq">${esc(q.q)}</p>
+   <div class="ch-o">${ord.map(j=>`<button type="button" data-j="${j}">${esc(q.o[j])}</button>`).join('')}<button type="button" class="idk2" data-j="x">Не знаю</button></div>
+   <div id="ex"></div>
+   <div class="nav-row"><button class="sbtn" id="back" ${i?'':'disabled'}>← Назад</button><span><button class="sbtn" id="pause">Прервать</button> <button class="big" id="next" ${done?'':'disabled'}>Дальше →</button></span></div></div>`;
+  const bs=[...app.querySelectorAll('.ch-o button')];
+  function show(pick){
+    bs.forEach(b=>{ b.disabled=true; const j=b.dataset.j; if(j==String(q.a)) b.classList.add('right'); else if(j===String(pick)&&pick!=='x') b.classList.add('wrong'); if(j==='x'&&pick==='x') b.classList.add('on'); });
+    document.getElementById('ex').innerHTML=`<p class="expl">${pick==='x'?'Честно, спасибо. ':pick==q.a?'<b style="color:var(--ok)">Верно.</b> ':'<b style="color:var(--bad)">Не совсем.</b> '}${esc(q.w)} <a href="../${q.l}">Где это в курсе →</a></p>`;
+    document.getElementById('next').disabled=false;
+  }
+  if(done) show(done.p);
+  bs.forEach(b=>b.onclick=()=>{ if(S.ans[i]) return; const p=b.dataset.j==='x'?'x':+b.dataset.j; S.ans[i]={p,r:p==='x'?'idk':(p===q.a?'ok':'bad')}; save(); show(p); });
+  document.getElementById('next').onclick=()=>{ S.pos=i+1; save(); ask(); window.scrollTo(0,0); };
+  document.getElementById('back').onclick=()=>{ S.pos=i-1; save(); ask(); };
+  document.getElementById('pause').onclick=()=>intro();
+}
+
+function stats(){
+  return T.map(([k,name,link])=>{ const idx=Q.map((q,i)=>i).filter(i=>Q[i].t===k);
+    const c={ok:0,bad:0,idk:0}; idx.forEach(i=>{const a=S.ans[i]; if(a) c[a.r]++;});
+    const lv=c.ok>=4?2:c.ok>=2?1:0;
+    const miss=[...new Set(idx.filter(i=>S.ans[i]&&S.ans[i].r!=='ok').map(i=>Q[i].l))];
+    return {k,name,link,n:idx.length,...c,lv,miss}; });
+}
+const LV=['Пока пусто','Плаваю','Уверенно'];
+function chName(l){ const [m,h]=l.split('#'); const map={'start/':'Старт','glaz/':'Глаз','anatomiya/':'Анатомия','ux/':'UX','prototip/':'Прототип','dizajn-sistema/':'Система','prilozheniya/':'Приложения','sajt/':'Сайт','prezentacii/':'Презентации','horosho-ploho/':'Хорошо и плохо','animaciya/':'Анимации','kartinki/':'Картинки'}; const ch=(window.DIAG_CH||{})[l]; return (map[m]||m)+(h?' · '+(ch||h):''); }
+
+function results(){
+  const s=stats(), tot={ok:0,bad:0,idk:0}; s.forEach(x=>{tot.ok+=x.ok;tot.bad+=x.bad;tot.idk+=x.idk;});
+  const weak=s.filter(x=>x.lv<2).sort((a,b)=>a.ok-b.ok||b.idk-a.idk);
+  const strong=s.filter(x=>x.lv===2);
+  const txt='Результат большого входного теста ('+(S.date||'')+'): знаю '+tot.ok+', ошибка '+tot.bad+', не знаю '+tot.idk+' из '+Q.length+'.\n'+
+    s.map(x=>'- '+x.name+': '+x.ok+'/'+x.n+' верно, ошибок '+x.bad+', не знаю '+x.idk+' → '+LV[x.lv]).join('\n')+
+    '\nПромахи по главам: '+[...new Set(s.flatMap(x=>x.miss))].join(', ');
+  app.innerHTML=`<h1>Твоя карта</h1>
+  <p class="lead">Верно ${tot.ok} из ${Q.length}, честное «не знаю» ${tot.idk}, ошибок ${tot.bad}. Ниже по темам, от слабых к сильным, и твой личный маршрут.</p>
+  <div class="legend"><span class="a">знаю</span><span class="b">ошиблась</span><span class="c">не знаю</span></div>
+  <div class="t-list">${[...s].sort((a,b)=>a.ok-b.ok).map(x=>`<div class="t-row"><a href="../${x.link}">${esc(x.name)}</a><div class="seg"><i class="s-ok" style="width:${x.ok/x.n*100}%"></i><i class="s-bad" style="width:${x.bad/x.n*100}%"></i><i class="s-idk" style="width:${x.idk/x.n*100}%"></i></div><span class="lvl l${x.lv}">${LV[x.lv]} · ${x.ok}/${x.n}</span></div>`).join('')}</div>
+  <div class="card route"><h2 style="margin:0 0 6px;font-size:24px">Твой маршрут</h2>
+  ${weak.length?`<p style="margin:0;color:var(--ink2)">Начни с этих тем по порядку. Под каждой главы, где был промах или «не знаю».</p><ol>${weak.map(x=>`<li><b>${esc(x.name)}</b> <small>${LV[x.lv]}: верно ${x.ok} из ${x.n}</small><span class="ch-links">${x.miss.map(l=>`<a href="../${l}">${esc(chName(l))}</a>`).join('')}</span></li>`).join('')}</ol>`:'<p>Всё уверенно. Можно идти по модулям быстро и сразу к практике.</p>'}
+  ${strong.length?`<p style="color:var(--ink2);font-size:15px">Уверенно: ${strong.map(x=>esc(x.name)).join(', ')}. Эти главы можно пролистать и сразу пройти мини-тесты.</p>`:''}
+  </div>
+  <div class="card"><h2 style="margin:0 0 6px;font-size:22px">Отправь результат мне</h2><p style="margin:0 0 10px;color:var(--ink2);font-size:15px">Скопируй текст и пришли в чат. По нему я перестрою программу: добавлю главы про то, где пусто, и сокращу то, что ты уже знаешь.</p>
+  <textarea class="copy" readonly>${esc(txt)}</textarea><button class="big" id="cp" style="margin-top:10px">Скопировать</button></div>
+  <p><button class="sbtn" id="again">Пройти тест заново</button> <a class="sbtn" href="../" style="text-decoration:none">К модулям</a></p>`;
+  document.getElementById('cp').onclick=e=>{ const ta=app.querySelector('textarea'); ta.select(); try{navigator.clipboard.writeText(ta.value);}catch(_){document.execCommand('copy');} e.target.textContent='Скопировано ✓'; };
+  document.getElementById('again').onclick=()=>{ S={ans:{},pos:0,done:false,date:null}; save(); intro(); };
+}
+if(S.done) results(); else intro();
+})();
+</script>
+</body>
+</html>
