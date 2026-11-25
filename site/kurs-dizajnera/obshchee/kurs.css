@@ -188,3 +188,19 @@ kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent
 .q .idk:hover{border-color:var(--accent);color:var(--ink)}
 .q .idk.on{border-style:solid;border-color:var(--muted);color:var(--ink);background:var(--card2)}
 .q.answered .idk:not(.on){display:none}
+/* как это в жизни: настоящие скриншоты с номерами */
+.real{margin:22px 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.real h4{margin:0 0 12px;font:700 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.real-shots{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.shot{flex:0 0 auto;display:flex;flex-direction:column;gap:6px}
+.shot.m{width:210px}.shot.d{width:min(600px,100%)}
+@media (max-width:620px){.real-shots{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}.shot.d{width:86vw}}
+.shot>span{font-size:12.5px;color:var(--muted)}
+.sh-in{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 8px 20px -14px rgba(30,20,60,.5)}
+.sh-in img{display:block;width:100%;height:auto}
+.sh-in i{position:absolute;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font:700 11px/20px var(--sans);text-align:center;font-style:normal;box-shadow:0 0 0 2px #fff,0 2px 6px rgba(0,0,0,.35);transition:transform .15s}
+.sh-in i.on{transform:translate(-50%,-50%) scale(1.45);background:var(--accent-deep)}
+.real ol{margin:12px 0 0;padding-left:24px;font-size:14.5px;color:var(--ink2)}
+.real li{margin:5px 0;cursor:default;border-radius:6px;padding:1px 4px}
+.real li.on{background:var(--accent-soft)}
+.real .src{margin:10px 0 0;font-size:12.5px;color:var(--muted)}

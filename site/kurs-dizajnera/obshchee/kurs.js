@@ -99,4 +99,11 @@ document.addEventListener('click',e=>{
   if(b.dataset.set!=null){ const [k,v]=b.dataset.set.split('|'); t.style.setProperty(k,v); b.parentElement.querySelectorAll('[data-set]').forEach(x=>x.setAttribute('aria-pressed',x===b)); }
   if(b.dataset.cls!=null){ const grp=b.dataset.grp||''; b.parentElement.querySelectorAll('[data-cls]').forEach(x=>{ if(x.dataset.cls) t.classList.remove(x.dataset.cls); x.setAttribute('aria-pressed',x===b); }); if(b.dataset.cls) t.classList.add(b.dataset.cls); }
 });
+/* как это в жизни: связь пункта списка и номера на скриншоте */
+document.querySelectorAll('.real').forEach(f=>{
+  const on=(n,v)=>f.querySelectorAll('[data-n="'+n+'"]').forEach(x=>x.classList.toggle('on',v));
+  f.addEventListener('mouseover',e=>{const x=e.target.closest('[data-n]'); if(x) on(x.dataset.n,true);});
+  f.addEventListener('mouseout',e=>{const x=e.target.closest('[data-n]'); if(x) on(x.dataset.n,false);});
+  f.addEventListener('click',e=>{const x=e.target.closest('[data-n]'); if(!x) return; const n=x.dataset.n; f.querySelectorAll('.on').forEach(y=>y.classList.remove('on')); on(n,true);});
+});
 })();
