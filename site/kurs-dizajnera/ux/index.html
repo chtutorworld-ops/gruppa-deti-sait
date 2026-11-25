@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задача и пользователь · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+/* мини-телефон для состояний */
+.ph .s{padding:0}
+.ph .hd{padding:30px 16px 10px;font:700 20px var(--sans)}
+.ph .bd{padding:0 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ph .it{background:#fff;border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.ph .it small{color:#77728a}
+.ph .b1{background:#6b5f8a;color:#fff;border:0;border-radius:10px;padding:9px 14px;font:600 12.5px var(--sans)}
+.ph .sk{background:linear-gradient(90deg,#eceaf1 0,#f6f5f9 40%,#eceaf1 80%);background-size:300% 100%;animation:sk 1.3s linear infinite;border-radius:12px;height:44px}
+@keyframes sk{to{background-position:-150% 0}}
+.ph .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:0 18px;color:#4a4658}
+.ph .mid .ic{width:54px;height:54px;border-radius:16px;background:#eeebf5;display:flex;align-items:center;justify-content:center;font:400 26px "Kaiti SC","STKaiti","KaiTi",serif;color:#6b5f8a}
+.ph .mid b{color:#1c1b22;font-size:14px}
+.ph .er{background:#f7e6e6;color:#a03a3a;border-radius:10px;padding:8px 10px;font-size:12px}
+.ph [data-s]{display:none}
+.stage.s-ideal [data-s~=ideal],.stage.s-empty [data-s~=empty],.stage.s-load [data-s~=load],.stage.s-err [data-s~=err],.stage.s-part [data-s~=part]{display:flex}
+/* персоны */
+.pers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.pers > div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:14.5px;color:var(--ink2)}
+.pers .av{width:42px;height:42px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font:500 18px var(--serif);margin-bottom:8px}
+.pers h4{margin:0 0 2px;font-size:19px}
+.pers .who{font-size:13px;color:var(--muted);margin:0 0 8px}
+.pers p{margin:0 0 6px!important}
+.pers b{color:var(--ink)}
+/* путь пользователя */
+.jr{width:100%;overflow-x:auto}
+.jr table{border-collapse:collapse;min-width:640px;width:100%;font-size:13px;text-align:left}
+.jr th{font:600 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 8px;white-space:nowrap;vertical-align:top}
+.jr td{padding:6px 8px;vertical-align:top;border-left:1px solid var(--line);color:#3d3a48}
+.jr tr.st td{font-weight:700;color:#1c1b22}
+.jr svg{display:block;width:100%;height:70px}
+/* закон Фиттса и Хика */
+.fit{width:100%;height:200px;position:relative;background:#fff;border-radius:10px;overflow:hidden;cursor:crosshair}
+.fit .tg{position:absolute;background:#6b5f8a;border-radius:10px;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer}
+.fitres{font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+.hick{display:flex;flex-wrap:wrap;gap:6px;max-width:460px;justify-content:center}
+.hick span{background:#fff;border:1px solid #ddd8e8;border-radius:8px;padding:6px 10px;font-size:12.5px}
+.hick span.t{display:none}
+.stage.many .hick span.t{display:inline-block}
+.stage.many .hick span.main{order:9}
+/* тексты */
+.mc{background:#fff;border-radius:12px;padding:12px 14px;width:100%;max-width:280px;text-align:left;font-size:13px;box-shadow:0 8px 20px -14px rgba(40,30,70,.4)}
+.mc b{display:block;font-size:14px;margin-bottom:4px;color:#1c1b22}
+.mc .bt{display:inline-block;margin-top:8px;background:#6b5f8a;color:#fff;border-radius:8px;padding:6px 11px;font-weight:600;font-size:12px}
+.mc .bt.g{background:none;color:#6b5f8a;padding-left:0}
+/* доступность */
+.tt{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
+.tt div{text-align:center;font-size:12px;color:#4a4658}
+.tt i{display:block;margin:0 auto 6px;background:#6b5f8a;border-radius:8px}
+.stage.gray .cb2{filter:grayscale(1)}
+.cb2{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cb2 span{padding:7px 11px;border-radius:8px;font-size:12.5px;background:#fff;border:1px solid #ddd8e8}
+@media (max-width:700px){.pers{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="ux">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/" class="on">UX</a><a href="../prilozheniya/">Приложения</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль Б1 · Задача и пользователь</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок Б · Модуль Б1</p>
+  <h1>Задача и пользователь</h1>
+  <p>UX начинается не с красоты и не с Figma, а с вопроса: кто будет этим пользоваться, что он хочет сделать и что ему мешает. Здесь ты научишься отвечать на него так же, как продуктовые дизайнеры.</p>
+  <p class="meta">10 глав · по 5–10 минут · в конце первый шаг проекта «Кабинет ученика»</p>
+</div>
+
+<section class="ch" id="ux-ui" data-t="UX и UI">
+  <h2>UX и UI: в чём разница</h2>
+  <p><span class="term">UX</span> <span class="en">(user experience, опыт пользователя)</span> отвечает на вопрос «понятно ли и удобно ли». Это логика: какие экраны есть, в каком порядке, что на каждом главное, что будет при ошибке. <span class="term">UI</span> <span class="en">(user interface, интерфейс)</span> отвечает на вопрос «как это выглядит»: шрифты, цвета, кнопки, тени.</p>
+  <p>Если сравнить с домом: UX это планировка (где кухня, сколько шагов от двери до ванной), UI это отделка. Самая дорогая отделка не спасёт квартиру, где в спальню можно попасть только через ванную.</p>
+  <div class="pair">
+    <div class="bad"><span class="lab">Красиво, но плохой UX</span><div class="stage"><div class="mc" style="background:linear-gradient(160deg,#fff,#f1edf9)"><b>Домашнее задание</b>Урок 8 · 3 упражнения<br><span style="color:#aaa">Срок неизвестен</span><div style="margin-top:8px;display:flex;gap:6px"><span class="bt" style="background:#c9c3d8">Открыть</span><span class="bt" style="background:#c9c3d8">Скачать</span><span class="bt" style="background:#c9c3d8">Сдать</span></div></div></div></div>
+    <div class="good"><span class="lab">Скромно, но хороший UX</span><div class="stage"><div class="mc"><b>Домашнее задание к уроку 8</b>3 упражнения · примерно 15 минут<br><span style="color:#a03a3a">Сдать до пятницы, 18:00</span><br><span class="bt">Начать с упражнения 1</span></div></div></div>
+  </div>
+  <div class="because"><b>Почему.</b> Слева ученик не понимает, сколько это займёт, когда сдавать и что нажать первым: три одинаковые кнопки. Справа понятно время, срок и единственный следующий шаг. Это UX, хотя визуально правая карточка проще.</div>
+  <div class="key">Хороший дизайн это сначала хороший UX, потом хороший UI. Блогеры обычно спорят про UI, а ученики уходят из-за UX.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Ученик не нашёл, где сдать домашку. Это проблема чего?</p><div class="opts"><button>UI: кнопка некрасивая</button><button>UX: путь к действию непонятен</button><button>Ни того, ни другого, ученик невнимательный</button></div><p class="why">Если человек не может выполнить задачу, это почти всегда UX. «Пользователь невнимательный» дизайнер не говорит никогда: значит, экран не помог ему быть внимательным.</p></div>
+    <div class="q" data-a="0"><p>Что из этого решение UI?</p><div class="opts"><button>Скруглить углы карточек до 16</button><button>Убрать лишний шаг перед началом урока</button><button>Показывать срок сдачи ДЗ на главной</button></div><p class="why">Скругления это внешний вид. Убрать шаг и вынести срок на главную это логика и приоритеты, то есть UX.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="brif" data-t="Бриф">
+  <h2>Бриф: зачем мы это делаем</h2>
+  <p><span class="term">Бриф</span> <span class="en">(brief)</span> это короткий документ в начале любого проекта. Он защищает от главной ошибки новичка: начать рисовать раньше, чем понял задачу. В студиях без брифа работу не берут.</p>
+  <h3>Пять вопросов брифа</h3>
+  <ol>
+    <li><b>Что делаем?</b> Одним предложением.</li>
+    <li><b>Для кого?</b> Конкретно: возраст, ситуация, устройство.</li>
+    <li><b>Какую задачу человека решаем?</b> Не «показать расписание», а «не пропустить урок».</li>
+    <li><b>Как поймём, что получилось?</b> Измеримо: ученик сдаёт ДЗ вовремя чаще, чем сейчас.</li>
+    <li><b>Ограничения.</b> Сроки, бюджет, техника, что уже есть.</li>
+  </ol>
+  <div class="why-box"><b>Пример для AIKITAY.</b> Делаем кабинет ученика онлайн-школы китайского. Для подростков 12–17 и взрослых, чаще с телефона, вечером. Задача: за 2 минуты понять, что сделать сегодня, и сделать это. Успех: 8 из 10 учеников сдают ДЗ до срока. Ограничения: сайт на GitHub Pages, без отдельного приложения в магазине, делаю сама.</div>
+  <div class="key">Если не получается ответить на вопрос 3, рисовать рано. Красивый экран, который не решает задачу человека, это иллюстрация, а не дизайн.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Какая формулировка задачи лучше для брифа?</p><div class="opts"><button>Сделать красивый кабинет</button><button>Показать ученику все разделы школы</button><button>Ученик за минуту видит, что ему сделать сегодня</button></div><p class="why">Хорошая задача сформулирована с точки зрения человека и её можно проверить. «Красивый» и «все разделы» проверить нельзя.</p></div>
+  </div>
+  <div class="task write">Напиши бриф кабинета ученика своими словами: 5 пунктов, каждый в одну-две строки. Сохрани, он понадобится в проекте.</div>
+</section>
+
+<section class="ch" id="intervyu" data-t="Интервью">
+  <h2>Интервью с учениками</h2>
+  <p>Дизайнер не придумывает, что нужно людям, а спрашивает. <span class="term">Интервью</span> <span class="en">(user interview)</span> это разговор на 15–20 минут с одним человеком. Пяти интервью обычно хватает, чтобы увидеть 80% проблем.</p>
+  <h3>Как спрашивать</h3>
+  <ul>
+    <li>Спрашивай о <b>прошлом опыте</b>, а не о мечтах: «Расскажи, как ты делал последнюю домашку» вместо «Хотел бы ты приложение?».</li>
+    <li>Не подсказывай ответ: никаких «Удобно же, правда?».</li>
+    <li>Проси показать: «Открой, пожалуйста, где ты смотришь расписание».</li>
+    <li>Молчи после ответа 3 секунды. Самое важное люди говорят после паузы.</li>
+  </ul>
+  <div class="pair">
+    <div class="bad"><span class="lab">Плохой вопрос</span><p class="tx">«Тебе бы понравилось, если бы в кабинете были игры?»</p></div>
+    <div class="good"><span class="lab">Хороший вопрос</span><p class="tx">«Когда ты в последний раз повторял слова? Как это было, где, сколько времени?»</p></div>
+  </div>
+  <div class="because"><b>Почему.</b> На вопрос «понравилось бы?» почти все отвечают «да», из вежливости. Это ничего не говорит о поведении. Рассказ о реальном случае показывает, что человек правда делает, где ему неудобно и что он уже использует вместо тебя.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Какой вопрос наводящий?</p><div class="opts"><button>Что ты делаешь, если не понял задание?</button><button>Правда же, напоминания о ДЗ удобны?</button><button>Покажи, как ты находишь запись урока.</button></div><p class="why">«Правда же…» подсказывает правильный ответ. Человек согласится, чтобы не спорить.</p></div>
+    <div class="q" data-a="0"><p>Ученик говорит: «Всё удобно». Что делать?</p><div class="opts"><button>Попросить показать, как он делал последнее задание</button><button>Записать «проблем нет»</button><button>Спросить, какие цвета ему нравятся</button></div><p class="why">Слова и поведение расходятся. Когда человек показывает, проблемы видно сразу: он ищет кнопку, листает, возвращается назад.</p></div>
+  </div>
+  <div class="task write">Составь 6 вопросов для интервью с учеником о домашних заданиях. Проверь каждый: он про прошлый опыт? Нет ли подсказки ответа?</div>
+</section>
+
+<section class="ch" id="portret" data-t="Портрет ученика">
+  <h2>Портрет ученика и его задача</h2>
+  <p>После интервью дизайнер собирает <span class="term">портрет</span> <span class="en">(persona)</span>: собирательный образ реального типа пользователей. Не «женщина 25–45», а живой человек с ситуацией, целью и болью. Обычно хватает двух-трёх портретов.</p>
+  <div class="pers">
+    <div><div class="av">М</div><h4>Маша, 12</h4><p class="who">школьница, группа «Дети»</p><p><b>Ситуация:</b> делает ДЗ вечером с телефона, между другими уроками.</p><p><b>Хочет:</b> быстро понять, что задали, и не забыть.</p><p><b>Боль:</b> задания в разных местах, срок теряется.</p></div>
+    <div><div class="av">А</div><h4>Аня, 17</h4><p class="who">готовится к HSK 3</p><p><b>Ситуация:</b> занимается сама каждый день по 30 минут.</p><p><b>Хочет:</b> видеть прогресс к экзамену.</p><p><b>Боль:</b> непонятно, что уже выучено, а что нет.</p></div>
+    <div><div class="av">О</div><h4>Олег, 34</h4><p class="who">работает, учит для поездок</p><p><b>Ситуация:</b> 10 минут в метро утром.</p><p><b>Хочет:</b> короткие задания, которые можно бросить и продолжить.</p><p><b>Боль:</b> длинный урок не помещается в дорогу.</p></div>
+  </div>
+  <h3>Формула задачи</h3>
+  <p>Задачу записывают по формуле <span class="term">Jobs to be done</span> <span class="en">(«работа, ради которой нанимают продукт»)</span>: <b>Когда</b> [ситуация], <b>я хочу</b> [действие], <b>чтобы</b> [результат].</p>
+  <div class="why-box">Когда я еду в метро 10 минут, я хочу повторить слова урока, чтобы не забыть их до следующего занятия.</div>
+  <div class="key">Портрет нужен, чтобы в споре «а как лучше?» спрашивать не «как мне нравится», а «как удобнее Маше с телефона вечером».</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Что из этого полезный портрет?</p><div class="opts"><button>Женщины 25–45, интересуются Китаем</button><button>Все, кто хочет учить китайский</button><button>Олег, 34, учит в метро по 10 минут, теряет место в уроке</button></div><p class="why">Полезный портрет описывает ситуацию и боль. Из «женщины 25–45» нельзя понять ни одного решения для экрана.</p></div>
+    <div class="q" data-a="0"><p>Какое решение следует из портрета Олега?</p><div class="opts"><button>Задания по 2–3 минуты и «продолжить с того же места»</button><button>Длинное видео на 40 минут</button><button>Тёмная тема</button></div><p class="why">Его боль: мало времени и прерывания. Значит короткие куски и запоминание места.</p></div>
+  </div>
+  <div class="task write">Напиши два портрета своих настоящих учеников (имена можно изменить) и для каждого одну фразу по формуле «Когда… я хочу… чтобы…».</div>
+</section>
+
+<section class="ch" id="put" data-t="Путь пользователя">
+  <h2>Путь пользователя</h2>
+  <p><span class="term">Путь пользователя</span> <span class="en">(user journey, CJM)</span> это шаги, которые человек проходит, чтобы решить задачу, с его мыслями и эмоциями на каждом шаге. Карта пути показывает, где именно человеку плохо. Там и нужен дизайн.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="jr"><table>
+    <tr class="st"><th>Шаг</th><td>Вспомнила про ДЗ</td><td>Ищет задание</td><td>Делает</td><td>Не поняла упражнение</td><td>Сдаёт</td></tr>
+    <tr><th>Думает</th><td>«Что там задали?»</td><td>«Где это было, в чате?»</td><td>«О, интересно»</td><td>«Что тут надо?»</td><td>«Дошло или нет?»</td></tr>
+    <tr><th>Эмоция</th><td colspan="5"><svg viewBox="0 0 500 70" preserveAspectRatio="none"><path d="M50 30 C 100 30,120 58,150 58 S 230 14,250 14 S 320 62,350 62 S 430 30,450 36" fill="none" stroke="#6b5f8a" stroke-width="3"/><g fill="#6b5f8a"><circle cx="50" cy="30" r="5"/><circle cx="150" cy="58" r="5" fill="#a03a3a"/><circle cx="250" cy="14" r="5" fill="#2f7a55"/><circle cx="350" cy="62" r="5" fill="#a03a3a"/><circle cx="450" cy="36" r="5"/></g></svg></td></tr>
+    <tr><th>Идея</th><td>Напоминание</td><td>ДЗ на главной</td><td>—</td><td>Пример выполнения</td><td>«Отправлено, учитель увидит»</td></tr>
+  </table></div></div>
+  <div class="cap">Красные точки это провалы. Каждый провал превращается в строку «Идея», то есть в задачу для дизайна.</div></div>
+  <div class="key">Карту рисуют до экранов. Сначала находишь провалы, потом решаешь, какими экранами их закрыть.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Зачем на карте пути строка «Эмоция»?</p><div class="opts"><button>Для красоты отчёта</button><button>Чтобы увидеть, где человеку плохо, и начать с этих мест</button><button>Чтобы выбрать цвета интерфейса</button></div><p class="why">Провалы эмоции показывают, где теряются ученики. Дизайн начинают с них, а не с главной страницы.</p></div>
+  </div>
+  <div class="task paper">Нарисуй на бумаге путь Маши «сдать ДЗ» из 5–6 шагов: шаг, что думает, эмоция вверх или вниз, идея. Сфотографируй.</div>
+</section>
+
+<section class="ch" id="sostoyaniya" data-t="Состояния экрана">
+  <h2>Пять состояний экрана</h2>
+  <p>Новички рисуют только «идеальный» экран, где всё загрузилось и всё заполнено. Настоящий экран живёт минимум в пяти состояниях, и каждое надо продумать.</p>
+  <div class="ex"><div class="stage s-ideal"><div class="phone ph mk"><div class="s">
+    <div class="hd">Домашка</div>
+    <div class="bd" data-s="ideal part" style="flex-direction:column"><div class="it"><span>Урок 8 · Семья<br><small>до пятницы</small></span><button class="b1">Начать</button></div><div class="it" data-s="ideal"><span>Тоны: 3 упражнения<br><small>до субботы</small></span><small>2/3</small></div><div class="it" data-s="ideal"><span>Иероглифы 家 人<br><small>без срока</small></span><small>✓</small></div><div class="it" data-s="part" style="background:none;padding:6px 2px"><small>Пока одно задание. Остальные появятся после урока.</small></div></div>
+    <div class="bd" data-s="load" style="flex-direction:column"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+    <div class="mid" data-s="empty"><div class="ic">好</div><b>Всё сдано</b>Новое задание появится после урока в четверг.<button class="b1">Повторить слова</button></div>
+    <div class="mid" data-s="err"><div class="er">Нет связи с интернетом</div>Задания не загрузились. Ответы, которые ты уже ввела, сохранены.<button class="b1">Попробовать снова</button></div>
+  </div></div></div>
+  <div class="ctl"><button data-cls="s-ideal" aria-pressed="true">Идеальное</button><button data-cls="s-empty">Пустое</button><button data-cls="s-load">Загрузка</button><button data-cls="s-err">Ошибка</button><button data-cls="s-part">Частичное</button></div>
+  <div class="cap">Пустое состояние подсказывает, что делать дальше. Загрузка показывает скелет будущего экрана. Ошибка объясняет, что случилось, успокаивает и даёт выход.</div></div>
+  <ul>
+    <li><b>Идеальное</b> <span class="en">(ideal)</span>: всё есть.</li>
+    <li><b>Пустое</b> <span class="en">(empty state)</span>: ещё ничего нет. Лучшее место, чтобы подсказать следующий шаг.</li>
+    <li><b>Загрузка</b> <span class="en">(loading, skeleton)</span>: серые «скелеты» на месте контента лучше, чем крутилка, потому что экран не прыгает.</li>
+    <li><b>Ошибка</b> <span class="en">(error)</span>: что случилось, что с данными, что нажать.</li>
+    <li><b>Частичное</b> <span class="en">(partial)</span>: одно задание вместо десяти, длинное имя, которое не влезает.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Что лучше показать, когда у ученика нет домашки?</p><div class="opts"><button>Пустой белый экран</button><button>Надпись «Нет данных»</button><button>«Всё сдано» и кнопку повторить слова</button></div><p class="why">Пустое состояние это не тупик, а приглашение. Человек получает похвалу и понятный следующий шаг.</p></div>
+    <div class="q" data-a="0"><p>Хорошее сообщение об ошибке:</p><div class="opts"><button>«Нет связи. Твои ответы сохранены. Попробовать снова»</button><button>«Ошибка 503»</button><button>«Что-то пошло не так»</button></div><p class="why">Хорошая ошибка говорит, что случилось, успокаивает насчёт данных и даёт действие. Код ошибки человеку ничего не говорит.</p></div>
+  </div>
+  <div class="task">В Figma нарисуй экран «Домашка» в пяти состояниях: пять фреймов рядом. Это классическое задание на собеседованиях UX-дизайнеров.</div>
+</section>
+
+<section class="ch" id="zakony" data-t="Законы UX">
+  <h2>Законы UX</h2>
+  <p>Есть несколько законов из психологии, на которые опирается любой интерфейс. Их удобно знать по именам: так объясняют решения на разборах. Все собраны на сайте <a href="https://lawsofux.com/" target="_blank" rel="noopener">Laws of UX</a>.</p>
+  <h3>Закон Фиттса</h3>
+  <p><span class="term">Закон Фиттса</span> <span class="en">(Fitts's law)</span>: в цель тем легче попасть, чем она <b>больше</b> и <b>ближе</b>. Поэтому главные кнопки на телефоне крупные и внизу, под большим пальцем. Попробуй сам: кликни по цели несколько раз и сравни время.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="fit" id="fit"><button class="tg" id="tg">цель</button></div><p class="fitres" id="fitres" style="margin:8px 0 0">Нажимай на фиолетовую цель. Она будет прыгать.</p></div>
+  <div class="ctl">Размер цели<input type="range" id="fitsz" min="16" max="90" value="48"><output id="fitszo">48 px</output></div>
+  <div class="cap">При 16 пикселях ты промахиваешься и тратишь заметно больше времени. Поэтому минимальный размер нажимаемого на телефоне 44 пикселя.</div></div>
+  <h3>Закон Хика</h3>
+  <p><span class="term">Закон Хика</span> <span class="en">(Hick's law)</span>: чем больше вариантов, тем дольше человек выбирает. Не прячь всё, но покажи главное, а остальное убери на шаг глубже.</p>
+  <div class="ex"><div class="stage"><div class="hick"><span class="main" style="background:#6b5f8a;color:#fff;border-color:#6b5f8a">Начать урок</span><span>ДЗ</span><span>Слова</span><span class="t">Тесты</span><span class="t">Расписание</span><span class="t">Оплата</span><span class="t">Профиль</span><span class="t">Чат</span><span class="t">Записи</span><span class="t">Материалы</span><span class="t">Настройки</span><span class="t">Помощь</span><span class="t">Новости</span></div></div>
+  <div class="ctl"><button data-tog="many">Показать все 13 вариантов</button></div>
+  <div class="cap">С тремя вариантами главное видно сразу. С тринадцатью кнопка «Начать урок» теряется и уезжает в конец.</div></div>
+  <h3>Ещё четыре закона</h3>
+  <ul>
+    <li><b>Закон Якоба</b> <span class="en">(Jakob's law)</span>: люди проводят больше времени в чужих приложениях, чем в твоём, и ждут, что твоё работает так же. Не изобретай, где не надо.</li>
+    <li><b>Закон Миллера</b> <span class="en">(Miller's law, chunking)</span>: в голове помещается около 5–7 штук сразу. Длинное делят на куски: номер телефона 900 123 45 67, урок на 3 блока.</li>
+    <li><b>Порог Доэрти</b> <span class="en">(Doherty threshold)</span>: если ответ системы быстрее 0,4 секунды, человек не замечает ожидания. Дольше нужно показать, что идёт процесс.</li>
+    <li><b>Правило пика и конца</b> <span class="en">(peak-end rule)</span>: опыт запоминается по самому яркому моменту и по концу. Поэтому финал урока или ДЗ должен быть приятным: похвала, итог, прогресс.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Почему кнопка «Сдать» на телефоне внизу во всю ширину?</p><div class="opts"><button>Так модно</button><button>Закон Фиттса: большая цель под пальцем</button><button>Закон Миллера</button></div><p class="why">Большая и близкая к пальцу цель нажимается быстрее и без промахов.</p></div>
+    <div class="q" data-a="2"><p>Почему в конце ДЗ стоит показать «Отлично, 9 из 10, +12 слов»?</p><div class="opts"><button>Закон Хика</button><button>Закон Якоба</button><button>Правило пика и конца</button></div><p class="why">Конец окрашивает воспоминание обо всём задании. Приятный финал повышает шанс, что ученик вернётся завтра.</p></div>
+    <div class="q" data-a="0"><p>Свою иконку «домик» ты хочешь поставить для профиля, а не для главной. Какой закон против?</p><div class="opts"><button>Закон Якоба</button><button>Порог Доэрти</button><button>Закон Фиттса</button></div><p class="why">Везде домик значит «главная». Человек нажмёт его и окажется не там.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="teksty" data-t="Тексты в интерфейсе">
+  <h2>Тексты в интерфейсе</h2>
+  <p>Половина UX это слова. <span class="term">UX-тексты</span> <span class="en">(UX writing, microcopy)</span> это надписи на кнопках, подсказки, ошибки. Хороший текст короткий, говорит языком человека и объясняет, что будет дальше.</p>
+  <div class="pair">
+    <div class="bad"><span class="lab">Было</span><div class="stage"><div class="mc"><b>Внимание!</b>Вы действительно желаете осуществить выход без сохранения внесённых изменений?<br><span class="bt">ОК</span> <span class="bt g">Отмена</span></div></div></div>
+    <div class="good"><span class="lab">Стало</span><div class="stage"><div class="mc"><b>Выйти без сохранения?</b>Ответы в этом упражнении пропадут.<br><span class="bt">Остаться</span> <span class="bt g">Выйти</span></div></div></div>
+  </div>
+  <div class="because"><b>Почему.</b> Справа вопрос в заголовке, последствие в одной строке, кнопки говорят глаголом, что именно произойдёт. «ОК» и «Отмена» заставляют перечитывать вопрос: что я отменяю, выход или сохранение?</div>
+  <h3>Правила</h3>
+  <ul>
+    <li>Кнопка это <b>глагол</b> с результатом: «Сдать задание», а не «Отправить» и тем более не «ОК».</li>
+    <li>Ошибка говорит, <b>как исправить</b>: «В номере 10 цифр, ты ввела 9».</li>
+    <li>Одно и то же называется <b>одинаково</b> везде: если «Домашка», то не «ДЗ» на соседнем экране.</li>
+    <li>Без канцелярита: не «осуществить», «данный», «в случае если».</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Лучший текст кнопки в конце теста:</p><div class="opts"><button>ОК</button><button>Далее</button><button>Узнать результат</button></div><p class="why">Глагол с результатом говорит, что произойдёт после нажатия.</p></div>
+  </div>
+  <div class="task look">Найди в любом приложении на своём телефоне три неудачных текста (кнопку, ошибку, подсказку) и перепиши их по правилам.</div>
+</section>
+
+<section class="ch" id="dostupnost" data-t="Доступность">
+  <h2>Доступность</h2>
+  <p><span class="term">Доступность</span> <span class="en">(accessibility, a11y)</span> значит, что интерфейсом удобно пользоваться всем: с плохим зрением, на солнце, одной рукой в метро, с дальтонизмом. Это не забота «о редких людях»: каждый иногда в такой ситуации.</p>
+  <div class="ex"><div class="stage"><div class="tt"><div><i style="width:24px;height:24px"></i>24 px<br>мало</div><div><i style="width:44px;height:44px"></i>44 px<br>минимум iOS</div><div><i style="width:48px;height:48px"></i>48 px<br>минимум Android</div></div></div>
+  <div class="cap">Зона нажатия может быть больше видимой иконки: иконка 24, а область вокруг неё 44.</div></div>
+  <h3>Четыре правила минимума</h3>
+  <ul>
+    <li><b>Контраст</b> текста не ниже 4,5 : 1 (мы считали его в модуле <a href="../glaz/#kontrast">Глаз дизайнера</a>).</li>
+    <li><b>Зона нажатия</b> не меньше 44 на 44.</li>
+    <li><b>Не только цвет</b>: ошибку показывают и цветом, и значком, и текстом. Около 8% мужчин плохо различают красный и зелёный.</li>
+    <li><b>Текст можно увеличить</b>, и вёрстка не ломается.</li>
+  </ul>
+  <div class="ex"><div class="stage"><div class="cb2"><span style="border-color:#2f7a55">家</span><span style="border-color:#a03a3a">人</span><span style="border-color:#2f7a55">好</span></div></div>
+  <div class="ctl"><button data-tog="gray">Посмотреть без цвета</button></div>
+  <div class="cap">Где ошибка? Без цвета не понять. Добавь ✓ и ✗, и ответ виден всем.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Правильные ответы зелёные, неправильные красные. Чего не хватает?</p><div class="opts"><button>Ничего, всё понятно</button><button>Значка или текста, которые не зависят от цвета</button><button>Ещё одного цвета</button></div><p class="why">Цвет не должен быть единственным носителем смысла. Значок или слово решают задачу для всех.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="proekt" data-t="Проект: шаг 1">
+  <h2>Проект: шаг 1. Бриф и ученик</h2>
+  <p>Собери всё, что делала в этом модуле, в одну страницу в Figma (или FigJam, это доска для схем от Figma). Это первый лист твоего портфолио-кейса «Кабинет ученика AIKITAY».</p>
+  <div class="proj">Что положить на лист: бриф из 5 пунктов; 2–3 портрета учеников с формулой «Когда… я хочу… чтобы…»; карту пути «сдать ДЗ» с эмоциями и идеями; 3 главных вывода из интервью (если успела поговорить хотя бы с двумя учениками). Пришли на разбор.</div>
+  <div class="key">В портфолио дизайнеров ценят именно эту часть: как ты поняла задачу. Красивые экраны умеют многие, объяснить, почему они такие, умеют единицы.</div>
+  <p class="src">Почитать: Стив Круг «Не заставляйте меня думать», глава про юзабилити-тесты; сайт <a href="https://lawsofux.com/" target="_blank" rel="noopener">Laws of UX</a>; <a href="https://www.nngroup.com/articles/" target="_blank" rel="noopener">статьи Nielsen Norman Group</a> (на английском, но с картинками).</p>
+</section>
+
+<nav class="next"><a href="../anatomiya/"><small>← Назад</small>А2. Анатомия интерфейса</a><a href="../prilozheniya/"><small>Дальше →</small>В2. Приложения</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль Б1. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ const box=document.getElementById('fit'), tg=document.getElementById('tg'), res=document.getElementById('fitres'), sz=document.getElementById('fitsz'), szo=document.getElementById('fitszo');
+ let t0=0, times=[], miss=0;
+ function place(){ const s=+sz.value; tg.style.width=tg.style.height=s+'px'; tg.textContent=s>=40?'цель':'';
+  const W=box.clientWidth-s, H=box.clientHeight-s; tg.style.left=Math.random()*W+'px'; tg.style.top=Math.random()*H+'px'; t0=performance.now(); }
+ sz.addEventListener('input',()=>{ szo.textContent=sz.value+' px'; times=[]; miss=0; place(); res.textContent='Размер '+sz.value+' px. Нажимай на цель.'; });
+ tg.addEventListener('click',e=>{ e.stopPropagation(); times.push(performance.now()-t0); if(times.length>8) times.shift();
+  const avg=times.reduce((a,b)=>a+b,0)/times.length; res.textContent='Размер '+sz.value+' px · среднее время '+Math.round(avg)+' мс · промахов '+miss; place(); });
+ box.addEventListener('click',()=>{ miss++; res.textContent='Промах. Размер '+sz.value+' px · промахов '+miss; });
+ place();
+})();
+</script>
+</body>
+</html>

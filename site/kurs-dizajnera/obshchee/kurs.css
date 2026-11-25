@@ -83,6 +83,8 @@ section.ch li{margin:3px 0}
 .task{background:var(--card);border:1px dashed var(--line2)}
 .task::before{content:"Практика в Figma · 10 минут";display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:4px}
 .task.look::before{content:"Практика: смотрим · 10 минут"}
+.task.paper::before{content:"Практика на бумаге · 10 минут"}
+.task.write::before{content:"Практика: пишем · 10 минут"}
 .proj{background:var(--accent-deep);color:#efecf6}
 .proj::before{content:"Проект «Кабинет ученика»";display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#c9c0e6;margin-bottom:4px}
 .proj a{color:#fff}
