@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сайт · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+/* лендинг-макет */
+.ld{background:#fff;text-align:left;font-size:11.5px;color:#24212c}
+.ld .hd{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #eeeaf3}
+.ld .hd b{font:700 13px var(--sans);letter-spacing:.06em}
+.ld .hd span{color:#6c6880;display:flex;gap:10px}
+.ld .bl{padding:18px 16px;border-bottom:1px solid #f0edf4;position:relative}
+.ld .bl h5{margin:0 0 6px;font:700 17px/1.15 var(--sans)}
+.ld .bl p{margin:0 0 8px;color:#5d5868}
+.ld .b1{display:inline-block;background:#3d3456;color:#fff;border-radius:9px;padding:7px 12px;font-weight:600}
+.ld .b2{display:inline-block;color:#3d3456;border-radius:9px;padding:7px 12px;box-shadow:inset 0 0 0 1px #c9c3d8;font-weight:600}
+.ld .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ld .g3 > div{background:#f6f4f9;border-radius:9px;padding:8px}
+.ld .hero{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;align-items:center}
+.ld .ph{aspect-ratio:4/3;border-radius:12px;background:linear-gradient(160deg,#ded6ea,#efe6d8);display:flex;align-items:center;justify-content:center;font-size:44px;color:#3d3456}
+.ld .tag{position:absolute;right:8px;top:8px;background:#b03a7a;color:#fff;font:700 9.5px var(--sans);padding:2px 6px;border-radius:4px;opacity:0;transition:opacity .3s}
+.stage.tags .ld .tag{opacity:1}
+.ld .fq{border-bottom:1px solid #eeeaf3;padding:5px 0;display:flex;justify-content:space-between}
+.ld .price{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ld .price > div{border:1px solid #e4e0ea;border-radius:10px;padding:10px}
+.ld .price > div.m{border:1.5px solid #3d3456}
+.ld .price b{font-size:16px;display:block}
+.ld .ft{background:#24212c;color:#bdb8c8;padding:12px 16px;display:flex;justify-content:space-between}
+.br-scroll{max-height:440px;overflow:auto}
+/* адаптив */
+.rs{width:var(--w,100%);max-width:100%;margin:0 auto;background:#fff;border:1px solid #ddd8e8;border-radius:10px;padding:12px;container-type:inline-size;text-align:left}
+.rs .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.rs .grid div{background:#f3f0f8;border-radius:8px;padding:10px;font-size:12px}
+.rs h5{margin:0 0 8px;font:700 clamp(15px,5cqi,26px)/1.1 var(--sans)}
+.rs .nav{display:flex;gap:10px;font-size:12px;color:#6c6880;margin-bottom:10px;justify-content:flex-end}
+.rs .nav .bg{display:none}
+@container (max-width:520px){.rs .nav span{display:none}.rs .nav .bg{display:inline}}
+.bp{font:12.5px var(--mono);color:var(--ink2)}
+/* герои */
+.hb{background:#fff;border-radius:12px;padding:16px;text-align:left;width:100%;font-size:12px}
+.hb h5{margin:0 0 6px;font:700 18px/1.15 var(--sans)}
+/* текст */
+.mx{max-width:var(--mx,60ch);font-size:15px;line-height:1.6;background:#fff;padding:14px 16px;border-radius:10px;text-align:left;color:#2a2733;transition:max-width .2s}
+.stps{display:flex;flex-wrap:wrap;gap:6px;counter-reset:s}
+.stps div{counter-increment:s;flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--ink2)}
+.stps div::before{content:counter(s);display:block;font:500 22px var(--serif);color:var(--accent)}
+.stps b{display:block;color:var(--ink)}
+@media (max-width:640px){.ld .g3{grid-template-columns:1fr}.ld .hero{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="sajt">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../sajt/" class="on">Сайт</a><a href="../prezentacii/">Презентации</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль В3 · Сайт</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок В · Модуль В3</p>
+  <h1>Сайт</h1>
+  <p>Сайт школы это не «визитка», а рассказ, который ведёт человека от «что это?» до «записаться на пробный». Разберём, из каких блоков он собирается, как работает первый экран, как сайт перестраивается под телефон и как сделать так, чтобы ему доверяли.</p>
+  <p class="meta">9 глав · по 5–10 минут · в конце структура будущего сайта AIKITAY</p>
+</div>
+
+<section class="ch" id="lending" data-t="Лендинг как рассказ">
+  <h2>Лендинг как рассказ</h2>
+  <p><span class="term">Лендинг</span> <span class="en">(landing page, «посадочная страница»)</span> это одна длинная страница с одной целью, например записаться на пробный урок. Её читают сверху вниз, как рассказ, и каждый блок отвечает на следующий вопрос посетителя.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="browser" style="margin:0 auto"><div class="chrome"><i></i><i></i><i></i></div><div class="br-scroll"><div class="ld">
+    <div class="hd"><b>AIKITAY</b><span><i>Курсы</i><i>Учителя</i><i>Цены</i></span></div>
+    <div class="bl"><em class="tag">1 · Что это?</em><div class="hero"><div><h5>Китайский, который хочется учить</h5><p>Онлайн-уроки для подростков и взрослых. Тоны, иероглифы и живая речь с первого урока.</p><span class="b1">Записаться на пробный</span> <span class="b2">Программа</span></div><div class="ph hz">爱</div></div></div>
+    <div class="bl"><em class="tag">2 · Мне подходит?</em><h5>Для кого</h5><div class="g3"><div><b>Подросткам</b><br>HSK к поступлению</div><div><b>Взрослым</b><br>для работы и путешествий</div><div><b>С нуля</b><br>и после перерыва</div></div></div>
+    <div class="bl"><em class="tag">3 · Как это будет?</em><h5>Как проходит урок</h5><p>Учитель в Zoom, задания на телефоне, домашка в личном кабинете.</p></div>
+    <div class="bl"><em class="tag">4 · Кто учит?</em><h5>Учитель</h5><p>Фото, опыт, 2–3 факта, видео-приветствие.</p></div>
+    <div class="bl"><em class="tag">5 · А другим понравилось?</em><h5>Отзывы</h5><div class="g3"><div>«Сдала HSK 3»</div><div>«Наконец слышу тоны»</div><div>«Сын ждёт уроков»</div></div></div>
+    <div class="bl"><em class="tag">6 · Сколько стоит?</em><h5>Цены</h5><div class="price"><div>Группа<b>2 400 ₽</b>в неделю</div><div class="m">Индивидуально<b>1 800 ₽</b>за урок</div></div></div>
+    <div class="bl"><em class="tag">7 · А если…?</em><h5>Вопросы</h5><div class="fq">Нужен ли учебник?<span>+</span></div><div class="fq">Можно перенести урок?<span>+</span></div></div>
+    <div class="bl"><em class="tag">8 · Что сделать?</em><h5>Первый урок бесплатно</h5><span class="b1">Записаться на пробный</span></div>
+    <div class="ft"><span>© AIKITAY</span><span>Политика · Контакты</span></div>
+  </div></div></div></div>
+  <div class="ctl"><button data-tog="tags">Показать вопросы посетителя</button></div>
+  <div class="cap">Прокрути макет внутри окна. Каждый блок отвечает на вопрос, который возникает у человека после предыдущего. Цены и цифры условные.</div></div>
+  <div class="key">Если не можешь сказать, на какой вопрос посетителя отвечает блок, блок лишний.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Почему кнопка «Записаться» есть и наверху, и в самом низу?</p><div class="opts"><button>Для симметрии</button><button>Ошибка, достаточно одной</button><button>Один решает сразу, другой дочитывает до конца: кнопка нужна в обоих местах</button></div><p class="why">У лендинга одна цель, и действие для неё повторяют там, где человек может быть готов: после первого экрана и после цен и вопросов.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="hero" data-t="Первый экран">
+  <h2>Первый экран</h2>
+  <p><span class="term">Первый экран</span> <span class="en">(hero, above the fold)</span> это то, что видно без прокрутки. За 5 секунд человек решает, остаться или уйти. На первом экране должно быть: <b>обещание</b> (что получу), <b>для кого</b>, <b>одно главное действие</b> и <b>визуал</b>, который подтверждает слова.</p>
+  <div class="pair">
+    <div class="bad"><span class="lab">Было</span><div class="stage"><div class="hb" style="text-align:center;background:linear-gradient(135deg,#7b3cff,#ff4fa3);color:#fff"><h5>Добро пожаловать в мир китайского языка!</h5><p>Мы рады видеть вас на нашем сайте</p><span style="display:inline-block;border:1px solid #fff;border-radius:20px;padding:5px 12px">Подробнее</span> <span style="display:inline-block;border:1px solid #fff;border-radius:20px;padding:5px 12px">О нас</span> <span style="display:inline-block;border:1px solid #fff;border-radius:20px;padding:5px 12px">Контакты</span></div></div></div>
+    <div class="good"><span class="lab">Стало</span><div class="stage"><div class="hb"><h5>Китайский с тонами и иероглифами с первого урока</h5><p style="color:#5d5868">Онлайн-школа для подростков от 12 и взрослых. Группы до 6 человек, кабинет с домашкой.</p><span style="display:inline-block;background:#3d3456;color:#fff;border-radius:9px;padding:7px 12px;font-weight:600">Записаться на пробный</span> <span style="color:#3d3456;padding:7px 8px">Первый урок бесплатно</span></div></div></div>
+  </div>
+  <div class="because"><b>Почему.</b> «Добро пожаловать» ничего не обещает и ни о чём не говорит. Три равные кнопки не дают понять, что делать. Справа обещание конкретное, понятно, для кого, одна главная кнопка и снятие страха («бесплатно»).</div>
+  <div class="key">Тест пяти секунд: покажи первый экран человеку на 5 секунд и спроси «что это за сайт и что тут можно сделать?». Если не ответил, первый экран не работает.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Какой заголовок первого экрана сильнее?</p><div class="opts"><button>«Лучшая школа китайского»</button><button>«Заговоришь на китайском за 3 месяца: 300 слов и все тоны»</button><button>«Китайский язык»</button></div><p class="why">Конкретное обещание с цифрами проверяемо и понятно. «Лучшая» говорят все, ей не верят. Если обещание неправда, его нельзя писать: проверь, что школа может его выполнить.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="bloki" data-t="Блоки и тренажёр">
+  <h2>Как называются блоки</h2>
+  <p>У блоков лендинга есть устойчивые названия. Их полезно знать, чтобы ставить задачу и искать референсы: в галереях сайтов блоки ищут именно по ним.</p>
+  <ul>
+    <li><b>Хедер</b> <span class="en">(header)</span> и <b>навигация</b>: логотип, меню, иногда кнопка.</li>
+    <li><b>Первый экран</b> <span class="en">(hero)</span>.</li>
+    <li><b>Логотипы и цифры</b> <span class="en">(social proof, trust bar)</span>: «500 учеников», «партнёры».</li>
+    <li><b>Выгоды</b> <span class="en">(features, benefits)</span>: обычно 3–6 карточек.</li>
+    <li><b>Как это работает</b> <span class="en">(how it works)</span>: шаги 1-2-3.</li>
+    <li><b>Отзывы</b> <span class="en">(testimonials)</span>.</li>
+    <li><b>Тарифы</b> <span class="en">(pricing)</span>.</li>
+    <li><b>Вопросы и ответы</b> <span class="en">(FAQ)</span>, раскрывающиеся <span class="en">(accordion)</span>.</li>
+    <li><b>Призыв к действию</b> <span class="en">(CTA section)</span>: последний крупный блок с кнопкой.</li>
+    <li><b>Подвал</b> <span class="en">(footer)</span>.</li>
+  </ul>
+  <div class="find" data-tasks='[["nav","навигацию",""],["hero","первый экран (hero)",""],["cta1","главную кнопку первого экрана","CTA, call to action."],["proof","социальное доказательство","Цифры и отзывы, которым верят."],["steps","блок «как это работает»",""],["pricing","тарифы",""],["faq","вопросы и ответы (аккордеон)",""],["footer","подвал",""]]'>
+    <div class="fhead"><span class="ask"></span><span class="cnt"></span></div>
+    <div class="fstage"><div class="browser"><div class="chrome"><i></i><i></i><i></i></div><div class="ld">
+      <div class="hd"><b>AIKITAY</b><span data-el="nav"><i>Курсы</i><i>Учителя</i><i>Цены</i></span></div>
+      <div class="bl" data-el="hero"><div class="hero"><div><h5>Китайский, который хочется учить</h5><p>Тоны, иероглифы и живая речь.</p><span class="b1" data-el="cta1">Записаться</span></div><div class="ph hz">爱</div></div></div>
+      <div class="bl" data-el="proof" style="display:flex;justify-content:space-around;text-align:center"><div><b style="font-size:18px">500+</b><br>учеников</div><div><b style="font-size:18px">4,9</b><br>оценка</div><div><b style="font-size:18px">HSK</b><br>подготовка</div></div>
+      <div class="bl" data-el="steps"><div class="g3"><div>1. Пробный урок</div><div>2. Группа по уровню</div><div>3. Кабинет и ДЗ</div></div></div>
+      <div class="bl" data-el="pricing"><div class="price"><div>Группа<b>2 400 ₽</b></div><div class="m">Лично<b>1 800 ₽</b></div></div></div>
+      <div class="bl" data-el="faq"><div class="fq">Нужен учебник?<span>+</span></div><div class="fq">Можно перенести?<span>+</span></div></div>
+      <div class="ft" data-el="footer"><span>© AIKITAY</span><span>Контакты</span></div>
+    </div></div></div>
+    <div class="fmsg"></div>
+  </div>
+  <div class="task look">Открой <a href="https://land-book.com/" target="_blank" rel="noopener">Land-book</a> или <a href="https://www.lapa.ninja/" target="_blank" rel="noopener">Lapa Ninja</a>, найди 3 сайта онлайн-школ (education). Выпиши порядок их блоков и сравни: что общее, что разное?</div>
+</section>
+
+<section class="ch" id="adaptiv" data-t="Адаптив">
+  <h2>Адаптив: сайт на телефоне</h2>
+  <p>Больше половины посетителей школы придут с телефона. <span class="term">Адаптивный сайт</span> <span class="en">(responsive)</span> перестраивается под ширину экрана: колонки встают друг под друга, меню прячется, шрифты уменьшаются. Ширины, где макет перестраивается, называют <span class="term">точками перелома</span> <span class="en">(breakpoints)</span>.</p>
+  <div class="ex"><div class="stage" style="display:block"><div class="rs" id="rs"><div class="nav"><span>Курсы</span><span>Учителя</span><span>Цены</span><b class="bg">☰</b></div><h5>Китайский, который хочется учить</h5><div class="grid"><div><b>Тоны</b><br>за 2 недели</div><div><b>HSK 1</b><br>12 уроков</div><div><b>Кабинет</b><br>ДЗ и слова</div><div><b>Группы</b><br>до 6 человек</div></div></div></div>
+  <div class="ctl">Ширина экрана<input type="range" id="rsw" min="300" max="1000" value="1000"><output id="rso" class="bp"></output></div>
+  <div class="cap">Сужай: 4 карточки в ряд → 2 → 1, меню превращается в бургер, заголовок уменьшается плавно. На сайте бургер допустим, в приложении лучше таб-бар.</div></div>
+  <ul>
+    <li><b>Телефон</b> 360–430: 1 колонка, поля 16–20.</li>
+    <li><b>Планшет</b> 768–1024: 2 колонки.</li>
+    <li><b>Компьютер</b> 1280–1440: 3–4 колонки, ширина текста ограничена.</li>
+  </ul>
+  <div class="key">Рисуй сначала телефон <span class="en">(mobile first)</span>. На маленьком экране сразу видно, что главное: всё лишнее туда просто не помещается.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Таблица тарифов из 3 колонок на телефоне. Как лучше?</p><div class="opts"><button>Карточки тарифов друг под другом, рекомендованный первым</button><button>Та же таблица, уменьшенная в 3 раза</button><button>Горизонтальная прокрутка всей страницы</button></div><p class="why">На телефоне колонки встают в столбик. Уменьшенная таблица нечитаема, а прокрутка вбок всей страницы считается ошибкой вёрстки.</p></div>
+  </div>
+  <div class="task">В Figma сделай один блок «выгоды» в трёх фреймах: 1440, 768 и 390. Используй автолейаут с переносом (Wrap), чтобы карточки перестраивались сами.</div>
+</section>
+
+<section class="ch" id="tekst" data-t="Текст на сайте">
+  <h2>Текст на сайте</h2>
+  <p>Сайт читают не подряд, а сканируют: заголовки, первые слова, кнопки. Поэтому заголовки блоков должны работать даже без текста под ними, а длинный текст должен легко читаться.</p>
+  <div class="ex"><div class="stage"><p class="mx">На пробном уроке учитель узнает ваш уровень и цель, вы попробуете различить четыре тона и напишете первый иероглиф. После урока мы предложим группу или индивидуальные занятия и пришлём доступ в личный кабинет с домашним заданием.</p></div>
+  <div class="ctl">Длина строки<input type="range" min="25" max="120" value="60" data-v="--mx" data-u="ch" data-show=" знаков"><output></output></div>
+  <div class="cap">Удобная длина строки 50–75 знаков. Длиннее, и глаз теряет начало следующей строки. Короче, и текст рвётся.</div></div>
+  <ul>
+    <li>Заголовок блока говорит выгоду, а не тему: «Слышишь тоны через 2 недели», а не «Наша методика».</li>
+    <li>Абзац не длиннее 3–4 строк.</li>
+    <li>Списки вместо перечислений через запятую.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Какой заголовок блока лучше работает при быстром просмотре?</p><div class="opts"><button>«О методике»</button><button>«Заговоришь через месяц: учим фразами, а не правилами»</button><button>«Информация»</button></div><p class="why">Человек сканирует заголовки. Заголовок-выгода сразу говорит, зачем читать блок.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="foto" data-t="Фото и иллюстрации">
+  <h2>Фото и иллюстрации</h2>
+  <p>Картинки на сайте школы решают, поверят ли ей. Самое сильное это <b>настоящие</b> фото: учитель, урок, кабинет ученика на экране телефона. Стоковые фото «улыбающихся студентов в наушниках» видели все, и они сразу снижают доверие.</p>
+  <div class="pair">
+    <div class="bad"><span class="lab">Было</span><p class="tx">Сток: девушка в наушниках улыбается ноутбуку; китайский фонарик; иероглифы шрифтом с «кистью»; три иллюстрации из разных наборов.</p></div>
+    <div class="good"><span class="lab">Стало</span><p class="tx">Учитель за своим столом в естественном свете; скриншот настоящего кабинета на телефоне; иероглиф урока крупно; одна серия фото в одном цвете и свете.</p></div>
+  </div>
+  <div class="because"><b>Почему.</b> Посетитель хочет понять, как это будет у него. Настоящие кадры отвечают на этот вопрос, сток отвечает «у нас как у всех». Единый свет и обработка делают даже телефонные фото «дорогими». Подробно про съёмку и генерацию в модуле Д2.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Что лучше всего в блок «Как проходит урок»?</p><div class="opts"><button>Стоковое фото студентов</button><button>Иллюстрация пагоды</button><button>Скриншот урока и задания на телефоне</button></div><p class="why">Показать, а не рассказать: скриншот реального урока сразу отвечает на вопрос «как это будет».</p></div>
+  </div>
+</section>
+
+<section class="ch" id="doverie" data-t="Доверие и заявка">
+  <h2>Доверие и заявка</h2>
+  <p>Цель сайта школы это заявка. Чтобы человек её оставил, ему должно быть <b>понятно</b>, <b>не страшно</b> и <b>легко</b>.</p>
+  <ul>
+    <li><b>Понятно:</b> цены на сайте, а не «узнайте у менеджера». Скрытая цена отталкивает больше, чем высокая.</li>
+    <li><b>Не страшно:</b> бесплатный пробный, «можно перенести урок», отзывы с именами и фото, лицо учителя.</li>
+    <li><b>Легко:</b> форма из 2–3 полей (имя, телефон или мессенджер, удобное время). Каждое лишнее поле теряет часть заявок.</li>
+  </ul>
+  <div class="pair">
+    <div class="bad"><span class="lab">Было</span><p class="tx">Форма: ФИО, e-mail, телефон, возраст, город, уровень, цель, откуда узнали, комментарий. Кнопка «Отправить».</p></div>
+    <div class="good"><span class="lab">Стало</span><p class="tx">Форма: имя, телефон или Telegram. Кнопка «Записаться на пробный». Под ней: «Перезвоним в течение дня, урок бесплатный».</p></div>
+  </div>
+  <div class="because"><b>Почему.</b> Уровень, цель и возраст учитель узнает на пробном уроке. На сайте их спрашивать рано: каждый вопрос это повод отложить заявку на «потом».</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Что сильнее снижает доверие?</p><div class="opts"><button>Цена «по запросу»</button><button>Цена 2 400 ₽ в неделю</button><button>Ссылка на Telegram</button></div><p class="why">Скрытая цена читается как «дорого и будут уговаривать». Открытая цена, даже высокая, честнее.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="etapy" data-t="Как делают сайт">
+  <h2>Как делают сайт: этапы и инструменты</h2>
+  <div class="stps">
+    <div><b>Бриф</b>Цель, аудитория, что должен сделать посетитель.</div>
+    <div><b>Структура</b>Список блоков и вопрос посетителя для каждого.</div>
+    <div><b>Тексты</b>Сначала слова, потом дизайн (контент вперёд).</div>
+    <div><b>Прототип</b>Серые блоки на телефоне и компьютере.</div>
+    <div><b>Дизайн</b>Стиль, типографика, фото, анимации.</div>
+    <div><b>Сборка</b>Конструктор или код.</div>
+    <div><b>Проверка</b>Телефоны, скорость, тест пяти секунд.</div>
+  </div>
+  <h3>Чем собирают</h3>
+  <ul>
+    <li><b>Tilda</b>: российский конструктор, готовые блоки, просто, хостинг в России. Предел гибкости виден быстро.</li>
+    <li><b>Framer</b>: дизайн почти как в Figma и сразу сайт, красивые анимации. Сервера за рубежом.</li>
+    <li><b>Webflow</b>: мощный, но сложный и тоже за рубежом.</li>
+    <li><b>Код</b> (HTML, CSS, JS): максимум свободы, можно разместить у российского хостинга (Selectel, Yandex Cloud). Так сделан и этот курс.</li>
+  </ul>
+  <div class="key">Для AIKITAY важно: сайт размещается в России, шрифты и библиотеки лежат на своём сервере, без зарубежных CDN. Это влияет на выбор инструмента ещё до дизайна.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Что делают раньше: тексты или дизайн блоков?</p><div class="opts"><button>Дизайн, потом подставляют текст</button><button>Тексты, потом под них дизайн</button><button>Всё равно</button></div><p class="why">Дизайн под реальные слова не ломается, когда приходит длинный заголовок или три абзаца вместо одного.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="proekt" data-t="Проект: сайт AIKITAY">
+  <h2>Практика: структура сайта AIKITAY</h2>
+  <div class="proj">Сделай в FigJam структуру лендинга AIKITAY: 8–10 блоков сверху вниз, для каждого вопрос посетителя, заголовок-выгода и что в нём будет (текст, фото, скриншот). Потом в Figma серый прототип первого экрана и блока цен в двух ширинах: 390 и 1440. Пришли на разбор. Цвета и шрифты пока не нужны.</div>
+  <p class="src">Где смотреть сайты: <a href="https://land-book.com/" target="_blank" rel="noopener">Land-book</a>, <a href="https://www.lapa.ninja/" target="_blank" rel="noopener">Lapa Ninja</a>, <a href="https://www.awwwards.com/" target="_blank" rel="noopener">Awwwards</a> (вау-сайты, для вдохновения, не для копирования), <a href="https://godly.website/" target="_blank" rel="noopener">Godly</a>. Каталог стилей курса: <a href="../../katalog-stiley/">каталог стилей</a>.</p>
+</section>
+
+<nav class="next"><a href="../prilozheniya/"><small>← Назад</small>В2. Приложения</a><a href="../prezentacii/"><small>Дальше →</small>В4. Презентации и учебные виджеты</a></nav>
+</main></div>
+<footer class="foot">Курс молодого дизайнера · модуль В3. Цены и цифры в макетах условные. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ const r=document.getElementById('rsw'), o=document.getElementById('rso'), box=document.getElementById('rs');
+ function up(){ const w=+r.value; box.style.setProperty('--w',w+'px'); const real=box.getBoundingClientRect().width; o.textContent=Math.round(real)+' px · '+(real<520?'телефон':real<800?'планшет':'компьютер'); }
+ r.addEventListener('input',up); addEventListener('resize',up); up();
+})();
+</script>
+</body>
+</html>
