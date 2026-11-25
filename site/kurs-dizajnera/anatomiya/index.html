@@ -122,13 +122,13 @@
 <div class="mhead">
   <p class="k">Блок А · Модуль А2</p>
   <h1>Анатомия интерфейса</h1>
-  <p>Как называется каждая деталь экрана. Это словарь, на котором разговаривают дизайнеры и разработчики. Когда знаешь названия, можно точно сказать, что понравилось в референсе: «таб-бар», «чипы», «нижний лист».</p>
+  <p>Чтобы объяснить мастеру, что сломалось в машине, нужно знать, как называются детали. «Вот эта штучка спереди» мастер не поймёт, а «фара» поймёт сразу. С экранами так же. В этом модуле мы пройдём по экрану, как по машине, и назовём каждую деталь. Тогда ты сможешь точно сказать программисту или мне, что нужно: «нижний лист», «чипы», «таб-бар».</p>
   <p class="meta">9 глав · в конце тренажёр «найди элемент» на трёх экранах</p>
 </div>
 
 <section class="ch" id="skelet" data-t="Скелет экрана">
   <h2>Скелет экрана</h2>
-  <p>Почти любой экран приложения устроен одинаково: сверху <span class="term">статус-бар</span> (время, батарея, это не наше), под ним <span class="term">шапка</span> <span class="en">(navigation bar, header)</span> с заголовком, в середине <span class="term">контент</span>, внизу <span class="term">навигация</span>. У сайта то же самое, только навигация обычно в шапке, а внизу <span class="term">футер</span> (подвал).</p>
+  <p>Почти любой экран устроен, как дом: крыша, комнаты, фундамент. На самом верху телефона <span class="term">статус-бар</span>: время, сеть, батарея. Его рисует сам телефон, мы туда ничего не кладём. Под ним <span class="term">шапка</span> <span class="en">(navigation bar, header)</span> с названием экрана, это «табличка на двери». В середине <span class="term">контент</span>, то есть всё самое интересное: уроки, задания, текст. Внизу <span class="term">навигация</span>, кнопки для перехода между главными разделами. У сайта похоже, только меню обычно наверху, в шапке, а в самом низу <span class="term">футер</span> (подвал) с контактами и мелкими ссылками.</p>
   <div class="ex"><div class="stage"><div class="skelapp">
     <div style="width:150px;height:290px;border-radius:24px;background:#1d1c22;padding:6px"><div style="height:100%;border-radius:19px;background:#f6f5f8;display:flex;flex-direction:column;gap:4px;padding:4px;overflow:hidden">
       <div class="zone" style="height:16px;background:#e2dfe8">статус-бар</div><div class="zone" style="height:34px;background:#d9d3ea">шапка</div><div class="zone" style="flex:1;background:#ece9f3">контент</div><div class="zone" style="height:38px;background:#cbc3e0">таб-бар</div></div></div>
@@ -142,17 +142,17 @@
 
 <section class="ch" id="knopki" data-t="Кнопки">
   <h2>Кнопки</h2>
-  <p>Кнопка запускает действие. У кнопок есть <b>уровни важности</b>, и на хорошем экране они всегда видны:</p>
+  <p>Кнопка это то, что нажимают, чтобы что-то произошло. Как в лифте: есть кнопки этажей, а есть «Вызов диспетчера», и выглядят они по-разному. На экране у кнопок тоже есть <b>уровни важности</b>, и по виду сразу понятно, какая главная:</p>
   <div class="gal">
-    <div class="el"><div class="v"><button class="b1">Начать урок</button></div><div class="d"><b>Главная</b><i>primary button</i><br>Залитая акцентом. Одна на экран или на блок.</div></div>
-    <div class="el"><div class="v"><button class="b2">Расписание</button></div><div class="d"><b>Вторичная</b><i>secondary, outline</i><br>Контурная или светлая. Для второго по важности.</div></div>
-    <div class="el"><div class="v"><button class="b3">Пропустить</button></div><div class="d"><b>Текстовая</b><i>text button, ghost</i><br>Без рамки. Для «отмена», «позже», «подробнее».</div></div>
-    <div class="el"><div class="v"><span class="ib">♥</span><span class="ib">⋯</span></div><div class="d"><b>Кнопка-иконка</b><i>icon button</i><br>Только значок. Действие должно быть понятно без слов.</div></div>
-    <div class="el"><div class="v"><span class="fab">+</span></div><div class="d"><b>Плавающая кнопка</b><i>FAB</i><br>Висит в углу над контентом. Главное действие на Android.</div></div>
-    <div class="el"><div class="v"><button class="b1" disabled>Сдать</button></div><div class="d"><b>Неактивная</b><i>disabled</i><br>Нельзя нажать, пока не выполнено условие.</div></div>
+    <div class="el"><div class="v"><button class="b1">Начать урок</button></div><div class="d"><b>Главная</b><i>primary button</i><br>Залита ярким цветом. Как кнопка «Пуск» на стиральной машине: одна и сразу видна. На экране или в блоке такая одна.</div></div>
+    <div class="el"><div class="v"><button class="b2">Расписание</button></div><div class="d"><b>Вторичная</b><i>secondary, outline</i><br>С контуром или светлая. Для второго по важности действия, как кнопка «Отложить» рядом с «Купить».</div></div>
+    <div class="el"><div class="v"><button class="b3">Пропустить</button></div><div class="d"><b>Текстовая</b><i>text button, ghost</i><br>Просто слово без рамки. Для «Отмена», «Позже», «Подробнее»: можно нажать, но не зовёт.</div></div>
+    <div class="el"><div class="v"><span class="ib">♥</span><span class="ib">⋯</span></div><div class="d"><b>Кнопка-иконка</b><i>icon button</i><br>Только значок без слов: крестик, сердечко, корзина. Годится, когда значок понятен всем.</div></div>
+    <div class="el"><div class="v"><span class="fab">+</span></div><div class="d"><b>Плавающая кнопка</b><i>FAB</i><br>Круглая кнопка, которая висит в углу поверх всего, например «+» в заметках. Так часто делают на Android.</div></div>
+    <div class="el"><div class="v"><button class="b1" disabled>Сдать</button></div><div class="d"><b>Неактивная</b><i>disabled</i><br>Бледная, нажать нельзя, пока не сделано условие. Как кнопка лифта, которая не работает, пока дверь открыта.</div></div>
   </div>
-  <p>У каждой кнопки есть <span class="term">состояния</span> <span class="en">(states)</span>: обычное, наведение (hover), нажатие (pressed), фокус с клавиатуры (focus), неактивное (disabled), загрузка. Наведи и нажми на «Начать урок»: она темнеет и чуть сжимается. Кнопка без отклика ощущается сломанной.</p>
-  <div class="key">Текст кнопки это глагол, который говорит, что произойдёт: «Начать урок», «Сдать ДЗ». А не «ОК» или «Далее».</div>
+  <p>Кнопка, как живая, по-разному выглядит в разные моменты. Это называется <span class="term">состояния</span> <span class="en">(states)</span>. <b>Обычное</b>: просто лежит. <b>Наведение</b> (hover): мышка над ней, кнопка чуть меняется, будто говорит «да, меня можно нажать». <b>Нажатие</b> (pressed): чуть темнеет и вдавливается, как настоящая клавиша. <b>Фокус</b> (focus): вокруг рамка, когда человек ходит по экрану клавишей Tab. <b>Неактивная</b> (disabled): бледная, нажать нельзя. <b>Загрузка</b>: крутится кружок, «подожди». Наведи и нажми на «Начать урок» ниже. Кнопка, которая никак не отвечает на нажатие, кажется сломанной, как звонок, который не звенит.</p>
+  <div class="key">На кнопке пиши, что случится после нажатия: «Начать урок», «Сдать ДЗ». Не «ОК» и не «Далее»: по ним непонятно, что будет.</div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="2"><p>На экране результатов три действия: «Следующий урок», «Повторить», «На главную». Как распределить уровни?</p><div class="opts"><button>Все три главные</button><button>Все три текстовые</button><button>«Следующий урок» главная, «Повторить» вторичная, «На главную» текстовая</button></div><p class="why">Уровни показывают, чего мы ждём от ученика больше всего. Остальные действия доступны, но не спорят с главным.</p></div>
   </div>
@@ -160,14 +160,14 @@
 
 <section class="ch" id="polya" data-t="Поля и формы">
   <h2>Поля и формы</h2>
-  <p><span class="term">Форма</span> <span class="en">(form)</span> это набор полей, куда человек что-то вводит: имя, ответ, пароль. У поля есть части, и у каждой своё имя:</p>
+  <p><span class="term">Форма</span> <span class="en">(form)</span> это экранный бланк, как анкета в поликлинике: несколько окошек, куда человек пишет имя, телефон, ответ. Каждое окошко называется <span class="term">поле</span>. У поля есть части, и у каждой своё имя:</p>
   <div class="gal">
-    <div class="el"><div class="v"><div class="inp"><label>Имя ученика</label><div class="f">Например, Маша</div><small>Как к тебе обращаться на уроке</small></div></div><div class="d"><b>Поле ввода</b><i>text field, input</i><br>Сверху <b>подпись</b> (label), внутри серая <b>подсказка-пример</b> (placeholder), снизу <b>пояснение</b> (helper text).</div></div>
-    <div class="el"><div class="v"><div class="inp"><label>Пиньинь</label><div class="f err">mama</div><small class="e">Добавь тоны: māma</small></div></div><div class="d"><b>Ошибка</b><i>error state</i><br>Красная рамка и текст: что не так и как исправить.</div></div>
-    <div class="el"><div class="v"><div class="inp sel"><label>Уровень</label><div class="f" style="color:#1c1b22">HSK 1</div></div></div><div class="d"><b>Выпадающий список</b><i>select, dropdown</i><br>Выбор из длинного списка вариантов.</div></div>
-    <div class="el"><div class="v"><div class="inp srch"><div class="f">Найти слово</div></div></div><div class="d"><b>Поиск</b><i>search field</i><br>Поле с лупой, часто в шапке.</div></div>
+    <div class="el"><div class="v"><div class="inp"><label>Имя ученика</label><div class="f">Например, Маша</div><small>Как к тебе обращаться на уроке</small></div></div><div class="d"><b>Поле ввода</b><i>text field, input</i><br>Окошко, куда печатают. Сверху <b>подпись</b> (label), что вводить. Внутри серый <b>пример</b> (placeholder), он исчезает, когда начинаешь печатать. Снизу <b>пояснение</b> (helper text).</div></div>
+    <div class="el"><div class="v"><div class="inp"><label>Пиньинь</label><div class="f err">mama</div><small class="e">Добавь тоны: māma</small></div></div><div class="d"><b>Ошибка</b><i>error state</i><br>Красная рамка и текст под полем: что не так и как исправить. Не «Ошибка!», а «Пароль короче 8 символов».</div></div>
+    <div class="el"><div class="v"><div class="inp sel"><label>Уровень</label><div class="f" style="color:#1c1b22">HSK 1</div></div></div><div class="d"><b>Выпадающий список</b><i>select, dropdown</i><br>Нажимаешь, и раскрывается список вариантов, как выбор города при доставке.</div></div>
+    <div class="el"><div class="v"><div class="inp srch"><div class="f">Найти слово</div></div></div><div class="d"><b>Поиск</b><i>search field</i><br>Окошко с лупой, обычно наверху. Как поиск в телефонной книге.</div></div>
   </div>
-  <div class="key">Подпись всегда над полем, а не только внутри него. Плейсхолдер исчезает, когда начинаешь печатать, и человек забывает, что вводил.</div>
+  <div class="key">Подпись пиши над полем, а не только серым внутри. Серый пример внутри исчезает, как только начинаешь печатать, и человек через секунду не помнит, что это было за окошко.</div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="0"><p>Серый текст «Например, Маша» внутри пустого поля называется…</p><div class="opts"><button>плейсхолдер</button><button>подпись</button><button>тултип</button></div><p class="why">Плейсхолдер (placeholder, «заполнитель») показывает пример и исчезает при вводе.</p></div>
   </div>
@@ -175,14 +175,14 @@
 
 <section class="ch" id="vybor" data-t="Элементы выбора">
   <h2>Элементы выбора</h2>
-  <p>Выбор можно сделать по-разному, и у каждого способа свой смысл. Путать их значит путать ученика.</p>
+  <p>Когда человеку нужно что-то выбрать, есть несколько видов «переключателей». Они похожи, но значат разное. Как в меню кафе: «выберите один гарнир» и «добавьте любые соусы» это разные правила. Если перепутать вид, ученик не поймёт правило.</p>
   <div class="gal">
-    <div class="el"><div class="v"><span class="cb"><i class="on">✓</i>Слова</span><span class="cb"><i class="on">✓</i>Тоны</span><span class="cb"><i></i>Иероглифы</span></div><div class="d"><b>Чекбокс</b><i>checkbox</i><br>Можно выбрать <b>несколько</b>.</div></div>
-    <div class="el"><div class="v"><span class="cb rd"><i class="on"></i>mā</span><span class="cb rd"><i></i>má</span><span class="cb rd"><i></i>mǎ</span></div><div class="d"><b>Радиокнопка</b><i>radio button</i><br>Можно выбрать <b>только один</b>. Как тест с одним ответом.</div></div>
-    <div class="el"><div class="v"><span class="tg"></span><span class="tg off"></span></div><div class="d"><b>Переключатель</b><i>toggle, switch</i><br>Вкл / выкл, срабатывает <b>сразу</b>, без «Сохранить».</div></div>
-    <div class="el"><div class="v"><span class="seg"><span class="on">День</span><span>Неделя</span><span>Месяц</span></span></div><div class="d"><b>Сегменты</b><i>segmented control</i><br>2–4 варианта вида одного и того же.</div></div>
-    <div class="el"><div class="v"><span class="chip on">HSK 1</span><span class="chip">Тоны</span><span class="chip">Семья</span></div><div class="d"><b>Чипы</b><i>chips, tags</i><br>Маленькие капсулы-фильтры или метки.</div></div>
-    <div class="el"><div class="v"><span class="sld"></span></div><div class="d"><b>Слайдер</b><i>slider</i><br>Выбор значения на шкале: громкость, скорость.</div></div>
+    <div class="el"><div class="v"><span class="cb"><i class="on">✓</i>Слова</span><span class="cb"><i class="on">✓</i>Тоны</span><span class="cb"><i></i>Иероглифы</span></div><div class="d"><b>Чекбокс</b><i>checkbox</i><br>Квадратик с галочкой. Можно отметить <b>несколько</b>, как пункты в списке покупок.</div></div>
+    <div class="el"><div class="v"><span class="cb rd"><i class="on"></i>mā</span><span class="cb rd"><i></i>má</span><span class="cb rd"><i></i>mǎ</span></div><div class="d"><b>Радиокнопка</b><i>radio button</i><br>Кружочек. Можно выбрать <b>только один</b>, как в тесте с одним правильным ответом.</div></div>
+    <div class="el"><div class="v"><span class="tg"></span><span class="tg off"></span></div><div class="d"><b>Переключатель</b><i>toggle, switch</i><br>Как выключатель света: вкл или выкл, срабатывает <b>сразу</b>, без кнопки «Сохранить».</div></div>
+    <div class="el"><div class="v"><span class="seg"><span class="on">День</span><span>Неделя</span><span>Месяц</span></span></div><div class="d"><b>Сегменты</b><i>segmented control</i><br>2–4 кнопки в одной полоске, выбрана одна. Как переключатель «день / неделя / месяц» в календаре.</div></div>
+    <div class="el"><div class="v"><span class="chip on">HSK 1</span><span class="chip">Тоны</span><span class="chip">Семья</span></div><div class="d"><b>Чипы</b><i>chips, tags</i><br>Маленькие капсулы со словами. Нажимаешь, чтобы отфильтровать: «HSK 1», «Тоны», «Новые».</div></div>
+    <div class="el"><div class="v"><span class="sld"></span></div><div class="d"><b>Слайдер</b><i>slider</i><br>Ползунок на линейке, как регулятор громкости.</div></div>
   </div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="1"><p>Задание «выбери правильный тон слова mā». Что использовать?</p><div class="opts"><button>Чекбоксы</button><button>Радиокнопки или большие кнопки-варианты</button><button>Переключатель</button></div><p class="why">Ответ один, значит радиокнопки или их «большая» версия, карточки-варианты. Чекбоксы скажут ученику, что можно выбрать несколько.</p></div>
@@ -192,13 +192,13 @@
 
 <section class="ch" id="konteinery" data-t="Карточки, списки, бенто">
   <h2>Карточки, списки и бенто</h2>
-  <p>Это способы сложить много однотипного на экран.</p>
+  <p>Когда на экране много похожих вещей (уроки, задания, слова), их нужно как-то сложить. Как вещи в шкафу: можно разложить по отдельным коробкам, повесить в ряд или рассортировать по ящикам разного размера. Вот главные способы.</p>
   <div class="gal">
-    <div class="el"><div class="v"><div class="card"><b>Урок 8</b>Семья · 40 мин</div></div><div class="d"><b>Карточка</b><i>card</i><br>Отдельный предмет с краями: картинка, заголовок, действие.</div></div>
-    <div class="el"><div class="v"><div class="cell"><div><i></i>Слова</div><div><i></i>Тоны</div><div><i></i>Иероглифы</div></div></div><div class="d"><b>Список и ячейка</b><i>list, cell</i><br>Строки одна под другой. Плотнее карточек.</div></div>
-    <div class="el"><div class="v"><div class="bento"><i></i><i></i><i></i><i></i><i></i></div></div><div class="d"><b>Бенто</b><i>bento grid</i><br>Плитки разного размера, как японская коробочка с едой. Для кабинетов и сводок.</div></div>
-    <div class="el"><div class="v"><div class="tabs"><span class="on">Слова</span><span>Грамматика</span><span>Тест</span></div></div><div class="d"><b>Вкладки</b><i>tabs</i><br>Переключают части одной страницы.</div></div>
-    <div class="el"><div class="v"><div class="acc"><div>Как сдать ДЗ? <span>−</span></div><p>Нажми «Сдать» в карточке задания.</p><div>Где оценки? <span>+</span></div></div></div><div class="d"><b>Аккордеон</b><i>accordion</i><br>Раскрывающиеся блоки. Для вопросов и ответов.</div></div>
+    <div class="el"><div class="v"><div class="card"><b>Урок 8</b>Семья · 40 мин</div></div><div class="d"><b>Карточка</b><i>card</i><br>Отдельная плашка с краями, как карточка в картотеке: картинка, заголовок, кнопка.</div></div>
+    <div class="el"><div class="v"><div class="cell"><div><i></i>Слова</div><div><i></i>Тоны</div><div><i></i>Иероглифы</div></div></div><div class="d"><b>Список и ячейка</b><i>list, cell</i><br>Строки одна под другой, как список контактов. Плотнее карточек, вмещает больше.</div></div>
+    <div class="el"><div class="v"><div class="bento"><i></i><i></i><i></i><i></i><i></i></div></div><div class="d"><b>Бенто</b><i>bento grid</i><br>Плитки разного размера, как японская коробочка с едой, где у каждого блюда своё отделение. Удобно для кабинетов и сводок.</div></div>
+    <div class="el"><div class="v"><div class="tabs"><span class="on">Слова</span><span>Грамматика</span><span>Тест</span></div></div><div class="d"><b>Вкладки</b><i>tabs</i><br>Как закладки-ярлычки в папке: переключают части одной страницы, не уводя на другую.</div></div>
+    <div class="el"><div class="v"><div class="acc"><div>Как сдать ДЗ? <span>−</span></div><p>Нажми «Сдать» в карточке задания.</p><div>Где оценки? <span>+</span></div></div></div><div class="d"><b>Аккордеон</b><i>accordion</i><br>Строчки, которые раскрываются по нажатию, как гармошка. Для вопросов и ответов.</div></div>
   </div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="2"><p>Кабинет, где сверху крупная плитка «Урок дня», рядом маленькие «Серия дней» и «Слова», ниже «Оценки». Как называется такая раскладка?</p><div class="opts"><button>Аккордеон</button><button>Список</button><button>Бенто</button></div><p class="why">Плитки разного размера в одной сетке это бенто. Главное в большой плитке, остальное в маленьких: иерархия через размер.</p></div>
@@ -207,14 +207,14 @@
 
 <section class="ch" id="navigaciya" data-t="Навигация">
   <h2>Навигация</h2>
-  <p>Навигация отвечает на два вопроса в любой момент: «где я?» и «как вернуться?».</p>
+  <p>Навигация это указатели в торговом центре. Где бы ты ни стояла, должно быть понятно два: «где я сейчас?» и «как вернуться назад или попасть в другой раздел?». Вот какие бывают указатели на экране.</p>
   <div class="gal">
-    <div class="el"><div class="v"><div class="tbar"><span class="on">Сегодня</span><span>Курс</span><span>Словарь</span><span>Я</span></div></div><div class="d"><b>Таб-бар</b><i>tab bar, bottom navigation</i><br>3–5 главных разделов внизу экрана телефона.</div></div>
-    <div class="el"><div class="v"><div class="nbar"><span style="color:#6b5f8a">‹ Курс</span><b>Урок 8</b><span>⋯</span></div></div><div class="d"><b>Шапка с «назад»</b><i>navigation bar</i><br>Заголовок экрана и путь назад.</div></div>
-    <div class="el"><div class="v"><div class="burger"><i></i><i></i><i></i></div></div><div class="d"><b>Бургер-меню</b><i>hamburger, drawer</i><br>Три полоски, за ними выезжающее меню. Экономит место, но прячет разделы.</div></div>
-    <div class="el"><div class="v"><span class="crumbs">Курсы › HSK 1 › <b>Урок 8</b></span></div><div class="d"><b>Хлебные крошки</b><i>breadcrumbs</i><br>Путь от главной до текущей страницы. На сайтах.</div></div>
-    <div class="el"><div class="v"><span class="pag"><span>‹</span><span>1</span><span class="on">2</span><span>3</span><span>›</span></span></div><div class="d"><b>Пагинация</b><i>pagination</i><br>Номера страниц длинного списка.</div></div>
-    <div class="el"><div class="v"><div style="width:180px;height:80px;border-radius:12px 12px 0 0;background:#fff;box-shadow:0 -6px 16px -8px rgba(0,0,0,.25);position:relative;align-self:flex-end"><i style="position:absolute;left:50%;top:6px;width:30px;height:4px;margin-left:-15px;border-radius:2px;background:#cfcadb"></i></div></div><div class="d"><b>Нижний лист</b><i>bottom sheet</i><br>Панель снизу поверх экрана для короткого дела.</div></div>
+    <div class="el"><div class="v"><div class="tbar"><span class="on">Сегодня</span><span>Курс</span><span>Словарь</span><span>Я</span></div></div><div class="d"><b>Таб-бар</b><i>tab bar, bottom navigation</i><br>Полоска с 3–5 значками внизу экрана телефона, главные разделы приложения. Как этажи в лифте: всегда под рукой.</div></div>
+    <div class="el"><div class="v"><div class="nbar"><span style="color:#6b5f8a">‹ Курс</span><b>Урок 8</b><span>⋯</span></div></div><div class="d"><b>Шапка с «назад»</b><i>navigation bar</i><br>Верхняя полоска с названием экрана и стрелкой назад. Отвечает на «где я» и «как вернуться».</div></div>
+    <div class="el"><div class="v"><div class="burger"><i></i><i></i><i></i></div></div><div class="d"><b>Бургер-меню</b><i>hamburger, drawer</i><br>Значок из трёх полосок (похож на бутерброд), за ним выезжает меню. Экономит место, но прячет разделы, и люди реже туда заходят.</div></div>
+    <div class="el"><div class="v"><span class="crumbs">Курсы › HSK 1 › <b>Урок 8</b></span></div><div class="d"><b>Хлебные крошки</b><i>breadcrumbs</i><br>Путь вида «Главная › Курсы › HSK 1», как крошки, по которым Гензель шёл обратно. Бывает на сайтах.</div></div>
+    <div class="el"><div class="v"><span class="pag"><span>‹</span><span>1</span><span class="on">2</span><span>3</span><span>›</span></span></div><div class="d"><b>Пагинация</b><i>pagination</i><br>Номера страниц внизу длинного списка: 1, 2, 3, дальше.</div></div>
+    <div class="el"><div class="v"><div style="width:180px;height:80px;border-radius:12px 12px 0 0;background:#fff;box-shadow:0 -6px 16px -8px rgba(0,0,0,.25);position:relative;align-self:flex-end"><i style="position:absolute;left:50%;top:6px;width:30px;height:4px;margin-left:-15px;border-radius:2px;background:#cfcadb"></i></div></div><div class="d"><b>Нижний лист</b><i>bottom sheet</i><br>Панель, которая выезжает снизу поверх экрана для короткого дела, как шторка. Смахнул вниз, и она ушла.</div></div>
   </div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="0"><p>Сколько разделов уместно в таб-баре?</p><div class="opts"><button>3–5</button><button>8–10</button><button>Один</button></div><p class="why">Больше пяти не помещаются по ширине пальца, и подписи становятся нечитаемыми. Остальное уходит во вкладку «Ещё» или в профиль.</p></div>
@@ -223,16 +223,16 @@
 
 <section class="ch" id="otklik" data-t="Обратная связь">
   <h2>Обратная связь</h2>
-  <p>Интерфейс должен отвечать человеку: «я понял», «подожди», «готово», «ошибка». Для этого есть свои элементы.</p>
+  <p>Представь, что ты говоришь человеку что-то, а он молчит и не кивает. Неуютно. Экран тоже должен «кивать»: «понял», «подожди, делаю», «готово», «что-то не так». Для этого есть свои детали.</p>
   <div class="gal">
-    <div class="el"><div class="v"><span class="toast">ДЗ сдано ✓</span></div><div class="d"><b>Тост, снэкбар</b><i>toast, snackbar</i><br>Короткое сообщение, исчезает само.</div></div>
-    <div class="el"><div class="v" style="background:#ddd9e6"><div class="modal"><b>Выйти из урока?</b>Прогресс сохранится<br><br><button class="b1" style="padding:6px 12px">Выйти</button></div></div><div class="d"><b>Модальное окно</b><i>modal, dialog</i><br>Окно поверх всего, которое надо закрыть. Только для важного.</div></div>
-    <div class="el"><div class="v"><span class="badge"></span></div><div class="d"><b>Бейдж</b><i>badge</i><br>Кружок с числом: новые сообщения, задания.</div></div>
-    <div class="el"><div class="v"><span class="pbar"><i></i></span></div><div class="d"><b>Прогресс-бар</b><i>progress bar</i><br>Сколько пройдено и сколько осталось.</div></div>
-    <div class="el"><div class="v"><div class="skel"><i style="width:60%"></i><i></i><i style="width:80%"></i></div></div><div class="d"><b>Скелетон</b><i>skeleton</i><br>Серые заготовки, пока грузится. Спокойнее, чем крутилка.</div></div>
-    <div class="el"><div class="v"><span class="spin"></span></div><div class="d"><b>Спиннер</b><i>spinner, loader</i><br>Крутилка загрузки. Для коротких ожиданий.</div></div>
-    <div class="el"><div class="v"><span class="tip">Третий тон: вниз и вверх</span></div><div class="d"><b>Тултип</b><i>tooltip</i><br>Подсказка при наведении или долгом нажатии.</div></div>
-    <div class="el"><div class="v"><div class="empty"><b>Заданий нет</b>Можно повторить слова</div></div><div class="d"><b>Пустое состояние</b><i>empty state</i><br>Что видно, когда данных ещё нет.</div></div>
+    <div class="el"><div class="v"><span class="toast">ДЗ сдано ✓</span></div><div class="d"><b>Тост, снэкбар</b><i>toast, snackbar</i><br>Короткое сообщение внизу, которое само исчезает через пару секунд: «Сохранено».</div></div>
+    <div class="el"><div class="v" style="background:#ddd9e6"><div class="modal"><b>Выйти из урока?</b>Прогресс сохранится<br><br><button class="b1" style="padding:6px 12px">Выйти</button></div></div><div class="d"><b>Модальное окно</b><i>modal, dialog</i><br>Окно поверх всего, а остальное затемнено. Пока не закроешь, дальше не пройти. Только для важного: «Удалить урок?»</div></div>
+    <div class="el"><div class="v"><span class="badge"></span></div><div class="d"><b>Бейдж</b><i>badge</i><br>Кружок с числом на значке, как красная цифра у непрочитанных сообщений.</div></div>
+    <div class="el"><div class="v"><span class="pbar"><i></i></span></div><div class="d"><b>Прогресс-бар</b><i>progress bar</i><br>Полоска, которая заполняется: сколько пройдено и сколько осталось. Как полоска загрузки.</div></div>
+    <div class="el"><div class="v"><div class="skel"><i style="width:60%"></i><i></i><i style="width:80%"></i></div></div><div class="d"><b>Скелетон</b><i>skeleton</i><br>Серые заготовки на месте будущего текста и картинок, пока всё грузится. Спокойнее, чем крутилка, потому что сразу видно, что будет.</div></div>
+    <div class="el"><div class="v"><span class="spin"></span></div><div class="d"><b>Спиннер</b><i>spinner, loader</i><br>Крутящийся кружок «подожди». Для коротких ожиданий, пару секунд.</div></div>
+    <div class="el"><div class="v"><span class="tip">Третий тон: вниз и вверх</span></div><div class="d"><b>Тултип</b><i>tooltip</i><br>Маленькая подсказка, которая всплывает, если навести мышь или подержать палец.</div></div>
+    <div class="el"><div class="v"><div class="empty"><b>Заданий нет</b>Можно повторить слова</div></div><div class="d"><b>Пустое состояние</b><i>empty state</i><br>Что показать, когда ещё ничего нет: «Пока нет заданий. Отдыхай!» вместо пустого белого экрана.</div></div>
   </div>
   <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="1"><p>Ученик сдал ДЗ. Как лучше сообщить об этом?</p><div class="opts"><button>Модальное окно «ОК», которое надо закрыть</button><button>Тост «ДЗ сдано» и отметка на карточке</button><button>Ничего не показывать</button></div><p class="why">Модальное окно прерывает и требует лишнего нажатия. Для подтверждения хватает тоста, а отметка на карточке остаётся как след.</p></div>
@@ -242,16 +242,16 @@
 <section class="ch" id="kartinki" data-t="Иконки и картинки">
   <h2>Иконки и картинки</h2>
   <div class="gal">
-    <div class="el"><div class="v"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span></div><div class="d"><b>Иконки</b><i>icons</i><br>Значки из одного набора: одна толщина линии, одни скругления. Контурные (outline) или залитые (filled).</div></div>
-    <div class="el"><div class="v"><span class="illu"></span></div><div class="d"><b>Иллюстрация</b><i>illustration</i><br>Рисунок для настроения: пустые состояния, онбординг.</div></div>
-    <div class="el"><div class="v"><span class="ava">Д</span><span class="ava" style="width:28px;height:28px;font-size:11px">М</span></div><div class="d"><b>Аватар</b><i>avatar</i><br>Фото или буква человека в кружке.</div></div>
+    <div class="el"><div class="v"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span></div><div class="d"><b>Иконки</b><i>icons</i><br>Маленькие значки. Все из одного набора: одна толщина линии, одни скругления. Бывают контурные (outline, только линия) и залитые (filled, закрашенные).</div></div>
+    <div class="el"><div class="v"><span class="illu"></span></div><div class="d"><b>Иллюстрация</b><i>illustration</i><br>Рисунок для настроения, например на пустом экране или на приветствии.</div></div>
+    <div class="el"><div class="v"><span class="ava">Д</span><span class="ava" style="width:28px;height:28px;font-size:11px">М</span></div><div class="d"><b>Аватар</b><i>avatar</i><br>Фото человека или первая буква имени в кружке.</div></div>
   </div>
-  <div class="key">Иконки из разных наборов на одном экране (где-то тонкие, где-то толстые, где-то залитые) это одна из самых заметных примет непрофессиональной работы.</div>
+  <div class="key">Значки на одном экране должны быть из одного набора, как посуда из одного сервиза. Когда один тонкий, другой толстый, а третий закрашенный, это как ужин на тарелках из пяти разных сервизов: сразу видно, что собрано наспех.</div>
 </section>
 
 <section class="ch" id="trenazher" data-t="Тренажёр: найди элемент">
   <h2>Тренажёр: найди элемент</h2>
-  <p>Три экрана. Тебя попросят нажать на элемент по названию. Если промахнёшься, подскажу, что ты нажала. Результат с первой попытки сохранится.</p>
+  <p>Игра на запоминание. Ниже три экрана. Сверху будет написано, какую деталь найти, например «таб-бар». Нажми на неё прямо на картинке. Промахнёшься, и я подскажу, что ты нажала на самом деле. Так названия запоминаются быстрее, чем по списку.</p>
 
   <h3>Экран 1. Приложение</h3>
   <div class="find" data-tasks='[["tabbar","таб-бар","Разделы приложения внизу экрана."],["navtitle","заголовок в шапке","Большой заголовок экрана, приём iOS."],["avatar","аватар","Кружок с буквой: вход в профиль."],["search","поле поиска",""],["seg","сегменты","Переключают вид одного и того же."],["card","карточку","Отдельный предмет с краями."],["progress","прогресс-бар",""],["primary","главную кнопку","Залитая акцентом, одна на блок."],["badge","бейдж","Число на значке: сколько нового."],["toggle","переключатель",""],["chips","чипы","Маленькие капсулы-метки."]]'>
@@ -299,8 +299,8 @@
     </div></div>
     <div class="fmsg"></div>
   </div>
-  <div class="task look">Открой любое приложение на телефоне и назови вслух каждый элемент на главном экране. Что не смогла назвать, поищи в этом модуле.</div>
-  <div class="proj">Для кабинета ученика: на бумаге или в Figma перечисли, какие элементы понадобятся на главном экране (например, таб-бар, карточка урока дня, прогресс-бар, бейдж сообщений). Это будущий список компонентов.</div>
+  <div class="task look">Открой любое приложение на телефоне, например банк или погоду. Пальцем показывай на каждую деталь главного экрана и называй вслух: «это шапка, это карточка, это таб-бар». Что не смогла назвать, найди в этом модуле.</div>
+  <div class="proj">Шаг проекта «Кабинет ученика». Представь, что ученик открыл кабинет. Что он видит? На листке бумаги или в Figma перечисли все детали главного экрана по их названиям. Например: шапка с именем, карточка «Урок дня», прогресс-бар «пройдено 8 из 20», таб-бар из четырёх разделов, бейдж с числом новых сообщений. Это будет список деталей, которые потом нарисуем.</div>
 </section>
 
 <nav class="next"><a href="../glaz/"><small>← Назад</small>А1. Глаз дизайнера</a><a href="../ux/"><small>Дальше →</small>Б1. Задача и пользователь</a></nav>
