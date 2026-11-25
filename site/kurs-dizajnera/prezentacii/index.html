@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Презентации и учебные виджеты · Курс дизайнера</title>
+<link rel="stylesheet" href="../obshchee/kurs.css">
+<style>
+.hz{font-family:"Kaiti SC","STKaiti","KaiTi","PingFang SC","Noto Sans SC",serif}
+/* мини-слайд 1600x900, масштабируется через --k */
+.sl{--k:.34;width:calc(1600px * var(--k));height:calc(900px * var(--k));position:relative;background:#f3eee4;border-radius:8px;overflow:hidden;box-shadow:0 12px 30px -18px rgba(40,30,70,.5);flex:none}
+.sl > .in{position:absolute;left:0;top:0;width:1600px;height:900px;transform:scale(var(--k));transform-origin:0 0;font-family:var(--sans);color:#24212c}
+.sl .svc{position:absolute;left:64px;right:64px;top:48px;height:32px;display:flex;justify-content:space-between;font:500 15px var(--mono);letter-spacing:.09em;color:#8a8478}
+.sl .h1{position:absolute;left:64px;top:104px;font:640 54px var(--sans);letter-spacing:-.01em}
+.sl .sub{position:absolute;left:64px;top:176px;font:400 26px var(--sans);color:#5d5868}
+.sl .work{position:absolute;left:64px;right:64px;top:228px;bottom:60px}
+.sl .pg{position:absolute;left:0;bottom:0;height:5px;width:22%;background:#3f4fa8}
+.sl .cell{position:absolute;left:0;top:0;width:470px;height:470px;background:#fbf8f2;border:1.5px solid #e3dccf;border-radius:32px;box-shadow:12px 12px 28px -6px rgba(120,100,70,.35);display:flex;align-items:center;justify-content:center;font-size:380px;line-height:1}
+.sl .row1{position:absolute;left:540px;top:0;display:flex;align-items:baseline;gap:22px}
+.sl .plate{position:absolute;left:540px;right:0;height:120px;background:#fbf8f2;border:1.5px solid #e3dccf;border-radius:22px;box-shadow:12px 12px 28px -6px rgba(120,100,70,.35);display:flex;align-items:center;gap:22px;padding:0 26px;font-size:30px}
+.sl .plate .hz{font-size:64px}
+.ovl{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s}
+.stage.grid .ovl{opacity:1}
+.ovl i{position:absolute;background:rgba(196,90,140,.18);border:1px dashed rgba(196,90,140,.7)}
+.ovl b{position:absolute;font:700 18px var(--mono);color:#b03a7a;background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
+/* типы слайдов-миниатюры */
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
+.types figure{margin:0;font-size:13px;color:#4a4658}
+.types .t{aspect-ratio:16/9;background:#f3eee4;border-radius:8px;position:relative;overflow:hidden;margin-bottom:6px;box-shadow:0 6px 16px -12px rgba(40,30,70,.5)}
+.types .t i{position:absolute;background:#d8cfbf;border-radius:3px}
+.types .t i.d{background:#fbf8f2;border:1px solid #d8cfbf;box-shadow:2px 2px 5px -2px rgba(120,100,70,.4)}
+.types .t i.a{background:#3f4fa8}
+.types .t span{position:absolute;font-size:30px;line-height:1}
+.types b{display:block;color:#1c1b22;font-size:14px}
+/* фото-разбор */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.ba figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ba img{display:block;width:100%;height:auto;cursor:zoom-in}
+.ba figcaption{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:8px 12px}
+.ba .b figcaption{color:var(--bad)}.ba .g figcaption{color:var(--ok)}
+.one{margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.one img{display:block;width:100%;height:auto;cursor:zoom-in}
+.zoom{position:fixed;inset:0;background:rgba(20,16,30,.88);display:none;align-items:center;justify-content:center;z-index:50;padding:16px;cursor:zoom-out}
+.zoom.on{display:flex}
+.zoom img{max-width:100%;max-height:100%;border-radius:8px}
+/* шкала */
+.sz{width:100%;overflow-x:auto}
+.sz table{border-collapse:collapse;width:100%;min-width:480px;font-size:14px;text-align:left}
+.sz th,.sz td{padding:7px 10px;border-bottom:1px solid var(--line)}
+.sz th{font:600 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sz td:last-child{font-family:var(--mono);font-size:13px;white-space:nowrap}
+/* виджет: 4 зоны */
+.wz .s{background:#f3eee4!important}
+.wz .z{position:relative;display:flex;flex-direction:column}
+.wz .st{display:flex;flex-direction:row;align-items:center;justify-content:space-between;padding:28px 14px 8px;white-space:nowrap;font:500 10.5px var(--mono);letter-spacing:.08em;color:#8a8478}
+.wz .tk{padding:12px 16px 4px}
+.wz .tk b{display:block;font:640 17px var(--sans);color:#24212c}
+.wz .tk small{color:#5d5868;font-size:12px}
+.wz .sc{flex:1;margin:8px 14px;background:#fbf8f2;border-radius:22px;box-shadow:6px 6px 14px #ddd4c4,-6px -6px 14px #fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.wz .sc .hz{font-size:96px;line-height:1;color:#24212c}
+.wz .sc small{color:#5d5868;font-size:13px;margin-top:6px}
+.wz .pu{padding:4px 14px 24px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wz .k{height:52px;border-radius:18px;background:#f3eee4;box-shadow:5px 5px 10px #ddd4c4,-5px -5px 10px #fff;display:flex;align-items:center;justify-content:center;font:500 14px var(--sans);color:#24212c}
+.wz .go{grid-column:1/-1;height:48px;border-radius:18px;background:#3f4fa8;color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px var(--sans)}
+.wz .lab{position:absolute;left:4px;top:2px;font:700 9.5px var(--sans);font-style:normal;color:#fff;background:#b03a7a;border-radius:4px;padding:1px 5px;white-space:nowrap;opacity:0;transition:opacity .3s;z-index:2}
+.wz .z::after{content:"";position:absolute;inset:0;border:1.5px dashed rgba(196,90,140,.0);border-radius:10px;pointer-events:none;transition:border-color .3s}
+.stage.zones .wz .z::after{border-color:rgba(196,90,140,.75)}
+.stage.zones .wz .lab{opacity:1}
+/* черта */
+.strk svg{width:220px;height:220px;background:#fbf8f2;border-radius:18px;border:1.5px solid #e3dccf}
+.strk .g{stroke:#ece5d8;stroke-width:1}
+.strk .ref{fill:none;stroke:#e6dfd2;stroke-width:16;stroke-linecap:round}
+.strk .p{fill:none;stroke:#24212c;stroke-width:16;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.strk .p.go{animation:wr var(--dur,.7s) cubic-bezier(.4,0,.2,1) forwards,gl calc(var(--dur,.7s) + .5s) ease-out forwards}
+@keyframes wr{to{stroke-dashoffset:0}}
+@keyframes gl{0%,60%{stroke:#e0874a;filter:drop-shadow(0 0 6px rgba(224,135,74,.8))}100%{stroke:#24212c;filter:none}}
+.chk2{list-style:none;padding:0!important;counter-reset:c}
+.chk2 li{counter-increment:c;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px 10px 46px;margin:6px 0!important;position:relative;font-size:15px}
+.chk2 li::before{content:counter(c);position:absolute;left:14px;top:9px;font:500 18px var(--serif);color:var(--accent)}
+@media (max-width:760px){.types{grid-template-columns:1fr 1fr}.ba{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-mod="prezentacii">
+<header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
+<nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../prezentacii/" class="on">Презентации</a><a href="../horosho-ploho/">Хорошо и плохо</a></nav></div></header>
+<div class="layout">
+<aside class="side"><p class="mod">Модуль В4 · Презентации и виджеты</p><ol></ol><div class="prog"><span></span><div class="meter"><i></i></div></div></aside>
+<main>
+<div class="mhead">
+  <p class="k">Блок В · Модуль В4</p>
+  <h1>Презентации и учебные виджеты</h1>
+  <p>Слайды урока, которые ты показываешь в Zoom, и задания, которые ученик делает на телефоне. На твоих настоящих слайдах «было / стало» разберём, почему одни читаются с первого взгляда, а другие нет.</p>
+  <p class="meta">9 глав · по 5–10 минут · фото-разборы твоих слайдов</p>
+</div>
+
+<section class="ch" id="zoom" data-t="Как видит ученик">
+  <h2>Как ученик видит твой слайд</h2>
+  <p>Ты делаешь слайд на большом экране макбука. Ученик видит его через Zoom: картинка сжата, окно меньше, часть экрана занимают лица. Поэтому на слайде урока всё должно быть <b>крупнее, контрастнее и проще</b>, чем кажется нужным.</p>
+  <div class="ex"><div class="stage" style="min-height:330px"><div class="sl" id="zsl"><div class="in">
+    <div class="svc"><span>УРОК 9 · ИЕРОГЛИФ</span><span>05 / 38</span></div>
+    <div class="h1">Из чего состоит 他?</div>
+    <div class="work"><div class="cell hz">他</div><div class="row1"><span class="hz" style="font-size:110px">他</span><span style="font:600 60px var(--sans);color:#3f78c8">tā</span><span style="font-size:38px">он</span></div>
+      <div class="plate" style="top:170px"><span class="hz">亻</span><span>«Человек». Значит, 他 это про человека.</span></div>
+      <div class="plate" style="top:310px"><span class="hz">也</span><span>Раньше подсказывала звук.</span></div></div>
+    <div class="pg"></div></div></div></div>
+  <div class="ctl">Ширина окна у ученика<input type="range" id="zw" min="260" max="760" value="544"><output id="zwo">544 px</output></div>
+  <div class="cap">Сдвинь до 400 пикселей: так слайд выглядит в маленьком окне Zoom на ноутбуке ученика. Текст 30 px на сцене 1600 становится около 8 px на экране. Поэтому для детей не мельче 24.</div></div>
+  <div class="key">Проверка «800 пикселей»: уменьши слайд до 800 по ширине. Если что-то не читается, это мелко для урока.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Какой минимальный размер текста для учеников на сцене 1600 × 900?</p><div class="opts"><button>14 px</button><button>24 px</button><button>60 px</button></div><p class="why">После сжатия в Zoom 24 px остаются читаемыми. Мельче можно только служебные подписи, которые ученику читать не обязательно.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="tipy" data-t="Шесть типов слайдов">
+  <h2>Шесть типов слайдов</h2>
+  <p>Хорошая презентация урока собрана из небольшого набора типов. Когда типов мало, ученик быстро привыкает, где что искать, и внимание уходит на китайский, а не на разглядывание нового макета.</p>
+  <div class="ex"><div class="stage"><div class="types">
+    <figure><div class="t"><span class="hz" style="left:10%;top:22%;font-size:44px">他她</span><i style="left:10%;top:66%;width:40%;height:6%"></i><i style="left:60%;top:30%;width:28%;height:5%"></i><i style="left:60%;top:42%;width:28%;height:5%"></i><i style="left:60%;top:54%;width:28%;height:5%"></i></div><b>1. Титул</b>Иероглифы темы, название, три пункта «что будет».</figure>
+    <figure><div class="t"><i class="d" style="left:5%;top:22%;width:30%;height:55%"></i><span class="hz" style="left:12%;top:32%;font-size:38px">他</span><i style="left:40%;top:22%;width:30%;height:9%"></i><i class="d" style="left:40%;top:38%;width:55%;height:15%"></i><i class="d" style="left:40%;top:57%;width:55%;height:15%"></i></div><b>2. Иероглиф</b>Слева клетка с иероглифом, справа значение и чтение.</figure>
+    <figure><div class="t"><i style="left:5%;top:12%;width:40%;height:7%"></i><i class="d" style="left:5%;top:28%;width:43%;height:17%"></i><i class="d" style="left:52%;top:28%;width:43%;height:17%"></i><i class="d" style="left:5%;top:49%;width:43%;height:17%"></i><i class="d" style="left:52%;top:49%;width:43%;height:17%"></i><i class="d" style="left:5%;top:70%;width:43%;height:17%"></i><i class="d" style="left:52%;top:70%;width:43%;height:17%"></i></div><b>3. Читаем</b>До 6 строк слогов в две колонки, легенда тонов.</figure>
+    <figure><div class="t"><i class="d" style="left:5%;top:20%;width:43%;height:45%"></i><i class="d" style="left:52%;top:20%;width:43%;height:45%"></i><i style="left:5%;top:74%;width:90%;height:10%"></i></div><b>4. Правило или сравнение</b>Две колонки с примером, вывод одной строкой.</figure>
+    <figure><div class="t"><i class="a" style="left:5%;top:25%;width:9%;height:8%"></i><i style="left:5%;top:38%;width:48%;height:12%"></i><i style="left:5%;top:58%;width:35%;height:5%"></i><i style="left:5%;top:67%;width:35%;height:5%"></i><i class="d" style="left:68%;top:20%;width:25%;height:55%"></i></div><b>5. Задание на телефоне</b>Номер, название, три шага, большой QR.</figure>
+    <figure><div class="t"><i style="left:0;top:0;width:50%;height:100%;background:#b9ad98"></i><i style="left:56%;top:30%;width:36%;height:8%"></i><i style="left:56%;top:44%;width:36%;height:5%"></i><i style="left:56%;top:53%;width:30%;height:5%"></i></div><b>6. Фото или история</b>Фото на половину, текст рядом на чистом фоне.</figure>
+  </div></div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="2"><p>Нужно сравнить ai и ei. Какой тип слайда?</p><div class="opts"><button>Титул</button><button>Фото или история</button><button>Правило или сравнение</button></div><p class="why">Две колонки с одним крупным примером в каждой и вывод одной строкой это ровно задача сравнения.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="setka" data-t="Сетка слайда">
+  <h2>Сетка слайда</h2>
+  <p>У каждого слайда одна и та же сетка. Тогда при листании ничего не прыгает: вопрос всегда в одном месте, служебная строка в одном месте, рабочая зона одинаковая.</p>
+  <div class="ex"><div class="stage"><div class="sl"><div class="in">
+    <div class="svc"><span>УРОК 9 · ИЕРОГЛИФ</span><span>05 / 38</span></div>
+    <div class="h1">Из чего состоит 他?</div>
+    <div class="work"><div class="cell hz">他</div><div class="row1"><span class="hz" style="font-size:110px">他</span><span style="font:600 60px var(--sans);color:#3f78c8">tā</span><span style="font-size:38px">он</span></div>
+      <div class="plate" style="top:170px"><span class="hz">亻</span><span>«Человек». Значит, 他 это про человека.</span></div>
+      <div class="plate" style="top:310px"><span class="hz">也</span><span>Раньше подсказывала звук.</span></div></div>
+    <div class="pg"></div>
+    <div class="ovl"><i style="left:0;top:0;width:64px;height:900px"></i><i style="right:0;top:0;width:64px;height:900px"></i><i style="left:64px;right:64px;top:0;height:48px"></i><i style="left:64px;right:64px;bottom:0;height:40px"></i><i style="left:64px;right:64px;top:48px;height:32px;background:rgba(80,120,200,.15);border-color:rgba(80,120,200,.7)"></i><i style="left:64px;right:64px;top:228px;bottom:60px;background:rgba(60,160,110,.1);border-color:rgba(60,160,110,.7)"></i>
+      <b style="left:80px;top:250px">рабочая зона</b><b style="left:900px;top:52px">служебная строка 32</b><b style="left:4px;top:440px">64</b><b style="left:900px;top:10px">48</b></div>
+  </div></div></div>
+  <div class="ctl"><button data-tog="grid">Показать сетку</button></div>
+  <div class="cap">Поля 64 по бокам, 48 сверху, 40 снизу, шаг 8. Рабочая зона заполнена до нижнего поля: пустая нижняя треть это ошибка.</div></div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Внизу слайда пустая треть. Что сделать?</p><div class="opts"><button>Увеличить главный объект, чтобы он занял рабочую зону</button><button>Добавить картинку-украшение</button><button>Оставить, воздух это хорошо</button></div><p class="why">Воздух хорош вокруг главного, но пустая нижняя треть значит, что объект мог бы быть крупнее и лучше читаться в Zoom.</p></div>
+  </div>
+  <div class="task">В Figma создай фрейм 1600 × 900 и добавь Layout grid: Columns 12, Margin 64, Gutter 24. Отдельной сеткой Rows задай поля 48 сверху и 40 снизу. Сохрани как шаблон слайда.</div>
+</section>
+
+<section class="ch" id="razmery" data-t="Шкала размеров">
+  <h2>Шкала размеров на слайде</h2>
+  <p>Как и в дизайн-системе, размеры на слайде берутся из короткой таблицы. Других размеров нет.</p>
+  <div class="sz"><table>
+    <tr><th>Что</th><th>Размер на сцене 1600 × 900</th></tr>
+    <tr><td>Главный иероглиф в клетке</td><td>400–520</td></tr>
+    <tr><td>Иероглиф в строке слова</td><td>96–120</td></tr>
+    <tr><td>Заголовок задания</td><td>88–96</td></tr>
+    <tr><td>Пиньинь в упражнении на чтение</td><td>64–72</td></tr>
+    <tr><td>Пиньинь рядом с иероглифом</td><td>56–64</td></tr>
+    <tr><td>Вопрос слайда</td><td>52–56</td></tr>
+    <tr><td>Перевод</td><td>36–40</td></tr>
+    <tr><td>Обычный текст, шаги</td><td>28–34</td></tr>
+    <tr><td>Служебная подпись (моно, капс)</td><td>14–16</td></tr>
+  </table></div>
+  <div class="key">Порядок всегда один: иероглиф, потом пиньинь, потом перевод. И по размеру тоже: иероглиф самый крупный, перевод самый мелкий из трёх.</div>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>Сколько слов русского текста максимум на обычном слайде?</p><div class="opts"><button>60</button><button>25</button><button>5</button></div><p class="why">25 слов это предел, который читают с экрана, пока учитель говорит. Исключение: слайд-история, до 40 слов.</p></div>
+    <div class="q" data-a="2"><p>Сколько одинаковых блоков (слогов, карточек) на одном слайде?</p><div class="opts"><button>Сколько поместится</button><button>До 14</button><button>До 6, дальше делить на два слайда</button></div><p class="why">Больше шести одинаковых блоков глаз не охватывает, и ученик теряет строку, которую читает класс.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="razbor" data-t="Было и стало: твои слайды">
+  <h2>Было и стало: твои слайды</h2>
+  <p>Три пары из твоих уроков. Нажми на картинку, чтобы рассмотреть крупно. Цвета на «стало» условные: палитра ещё не выбрана, смотри на компоновку и размеры.</p>
+  <h3>Иероглиф 他</h3>
+  <div class="ba"><figure class="b"><figcaption>Было</figcaption><img src="img/bylo-A.jpg" alt="Слайд с иероглифом 他, было" loading="lazy"></figure><figure class="g"><figcaption>Стало</figcaption><img src="img/stalo-A.jpg" alt="Слайд с иероглифом 他, стало" loading="lazy"></figure></div>
+  <div class="because"><b>Почему.</b> Было: вопроса слайда нет, есть «таблетка» с текстом мелко; три плашки трёх разных цветов спорят; эмодзи с рукой; клетка иероглифа в розовой рамке. Стало: вопрос «Из чего состоит 他?» читается первым; иероглиф, пиньинь и перевод в одной строке по порядку; две плашки «значение» и «чтение» в постоянных цветах ролей; служебная строка сверху; полоса прогресса внизу.</div>
+  <h3>Читаем хором</h3>
+  <div class="ba"><figure class="b"><figcaption>Было</figcaption><img src="img/bylo-B.jpg" alt="Слайд с цепочками тонов, было" loading="lazy"></figure><figure class="g"><figcaption>Стало</figcaption><img src="img/stalo-B.jpg" alt="Слайд с цепочками тонов, стало" loading="lazy"></figure></div>
+  <div class="because"><b>Почему.</b> Было: 14 блоков, два подзаголовка, цвет означает финаль, а не тон, слоги мелкие. Стало: 6 строк в две колонки, слоги в 2–3 раза крупнее, цвет означает только тон (легенда справа вверху), финаль подчёркнута линией, номера строк слева, статус микрофона в одном месте.</div>
+  <h3>Задание на телефоне</h3>
+  <div class="ba"><figure class="b"><figcaption>Было</figcaption><img src="img/bylo-C.jpg" alt="Слайд задания, было" loading="lazy"></figure><figure class="g"><figcaption>Стало</figcaption><img src="img/stalo-C.jpg" alt="Слайд задания, стало" loading="lazy"></figure></div>
+  <div class="because"><b>Почему.</b> Было: огромный круг с номером забирает внимание, а инструкция мелкая; ссылка вместо QR-кода; градиент. Стало: «Задание 1 из 11» как служебная подпись, крупное название, три пронумерованных шага, номер выглядит как клавиша из кабинета, большой QR справа.</div>
+</section>
+
+<section class="ch" id="najdi" data-t="Найди ошибки">
+  <h2>Найди ошибки сама</h2>
+  <p>Эти три слайда ещё не переделаны. Посмотри на каждый и ответь на вопрос, прежде чем читать объяснение.</p>
+  <div class="one"><img src="img/bylo-D.jpg" alt="Слайд про три способа записи" loading="lazy"></div>
+  <div class="quiz"><h4>Слайд «Три способа записать звуки»</h4>
+    <div class="q" data-a="2"><p>Что здесь главная проблема?</p><div class="opts"><button>Мало цвета</button><button>Шрифт с засечками</button><button>Три цвета верхних полосок и бейджей без смысла, эмодзи-флаги, много мелкого текста</button></div><p class="why">Красный, синий и фиолетовый ничего не значат, просто «чтобы было разное». Флаги-эмодзи выглядят дёшево и по-разному на разных компьютерах. В каждой колонке по 30 слов мелко. Лучше: одна строка-пример крупно в каждой колонке, без флагов, цвет только у главного.</p></div>
+  </div>
+  <div class="one"><img src="img/bylo-E.jpg" alt="Слайд про ai и ei" loading="lazy"></div>
+  <div class="quiz"><h4>Слайд «ai и ei»</h4>
+    <div class="q" data-a="0"><p>Что нарушает правила?</p><div class="opts"><button>Градиентная плашка с белым текстом и значком предупреждения, цвет означает финаль</button><button>Две колонки</button><button>Крупные буквы ai и ei</button></div><p class="why">Две колонки и крупный пример это как раз хорошо. Плохо: оранжево-розовая плашка с белым текстом (низкий контраст и «тревожный» вид для обычного правила), значок ⚠ пугает, а цвет здесь значит финаль, хотя на других слайдах он значит тон.</p></div>
+  </div>
+  <div class="one"><img src="img/bylo-F.jpg" alt="Слайд про отличия от европейских языков" loading="lazy"></div>
+  <div class="quiz"><h4>Слайд «Главные отличия»</h4>
+    <div class="q" data-a="1"><p>Этот слайд аккуратный. Почему он всё равно не годится для Zoom?</p><div class="opts"><button>Нет эмодзи</button><button>8 блоков и мелкий текст: в маленьком окне не прочитать, а пустая нижняя часть</button><button>Слишком мало текста</button></div><p class="why">Типографика спокойная и красивая, это плюс. Но 8 пунктов с пояснениями мелко это документ, а не слайд. Лучше 2 слайда по 4 пункта, заголовок пункта 34–40, пояснение 28.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="vidzhety" data-t="Виджеты заданий">
+  <h2>Виджеты заданий на телефоне</h2>
+  <p>Задание, которое ученик открывает по QR-коду, это маленькое приложение. Все правила из модуля <a href="../prilozheniya/#zadanie">Приложения</a> здесь работают, плюс несколько своих: идёт урок, времени мало, понять задание нужно за 3 секунды.</p>
+  <div class="ex"><div class="stage"><div class="phone wz mk"><div class="s">
+    <div class="z st"><span>‹</span><span>ЗАДАНИЕ 4</span><span>2 / 6</span><em class="lab">1. Строка состояния</em></div>
+    <div class="z tk"><b>Какой тон у слога?</b><small>Послушай и нажми клавишу.</small><em class="lab">2. Задание</em></div>
+    <div class="z sc" style="display:flex"><span class="hz">妈</span><small>ma</small><em class="lab">3. Сцена</em></div>
+    <div class="z pu"><span class="k">1 ˉ</span><span class="k">2 ˊ</span><span class="k">3 ˇ</span><span class="k">4 ˋ</span><span class="go">Проверить</span><em class="lab">4. Пульт</em></div>
+  </div></div></div>
+  <div class="ctl"><button data-tog="zones">Показать четыре зоны</button></div>
+  <div class="cap">Строка состояния 48, задание до 72, сцена не меньше 45% высоты, пульт в нижней трети. Один шаг помещается в экран без прокрутки.</div></div>
+  <ul>
+    <li><b>Один герой</b> на экран: иероглиф, поле письма или игровое поле.</li>
+    <li>Клавиши ответа не ниже 64 px, между ними не меньше 8.</li>
+    <li>Экранную клавиатуру телефона не вызываем: рисуем свои клавиши только с нужными буквами.</li>
+    <li>Ученика не ругаем: вместо «неверно» мягкий огонёк «попробуй ещё» и подсказка.</li>
+    <li>На компьютере не растягиваем телефонную колонку, а делаем две колонки: слева сцена, справа пульт.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="1"><p>В задании 10 слов для перевода. Как сделать?</p><div class="opts"><button>Длинная страница, все 10 сразу</button><button>10 шагов по одному слову, счётчик «3 / 10»</button><button>Мелкий шрифт, чтобы влезло</button></div><p class="why">Один шаг на экран без прокрутки. Счётчик показывает, сколько осталось, и ученику спокойнее.</p></div>
+  </div>
+  <div class="task">Нарисуй в Figma экран задания 360 × 640 с четырьмя зонами: «выбери иероглиф по пиньиню», четыре клавиши 2 × 2, главная кнопка 56 внизу. Второй фрейм: то же на компьютере 1280 × 800 в две колонки.</div>
+</section>
+
+<section class="ch" id="dvizhenie" data-t="Движение на слайде">
+  <h2>Движение на слайде</h2>
+  <p>Движение на уроке служит смыслу, а не украшает. Части слайда появляются по клику учителя, по одной, чтобы внимание шло за объяснением. Черта иероглифа пишется так, как её пишет рука.</p>
+  <div class="ex"><div class="stage strk"><svg viewBox="0 0 220 220" id="rn"><g class="g"><line x1="110" y1="10" x2="110" y2="210"/><line x1="10" y1="110" x2="210" y2="110"/><line x1="10" y1="10" x2="210" y2="210"/><line x1="210" y1="10" x2="10" y2="210"/></g>
+    <path class="ref" d="M112 40 C 110 90, 96 140, 50 186"/><path class="ref" d="M108 98 C 128 140, 150 170, 184 186"/>
+    <path class="p" d="M112 40 C 110 90, 96 140, 50 186" style="--len:170"/><path class="p" d="M108 98 C 128 140, 150 170, 184 186" style="--len:130"/></svg></div>
+  <div class="ctl"><button type="button" id="rgo">Написать 人</button><button type="button" data-d=".3s">Слишком быстро (300 мс)</button><button type="button" data-d=".75s" aria-pressed="true">Как рука (750 мс)</button><button type="button" data-d="2s">Слишком медленно (2 с)</button></div>
+  <div class="cap">Черта пишется 650–800 мс, вспыхивает светом и становится тёмной. Быстрее глаз не успевает за направлением, медленнее скучно.</div></div>
+  <ul>
+    <li>Переход между слайдами 400–600 мс, без вылетов и вращений.</li>
+    <li>Появление части по клику 300 мс.</li>
+    <li>Ничего не движется само, пока дети читают.</li>
+  </ul>
+  <div class="quiz"><h4>Мини-тест</h4>
+    <div class="q" data-a="0"><p>Пока класс читает слоги хором, на фоне медленно плавают иероглифы. Хорошо?</p><div class="opts"><button>Плохо: движение отвлекает от чтения</button><button>Хорошо: слайд живой</button><button>Хорошо, если медленно</button></div><p class="why">Глаз всегда реагирует на движение. Во время чтения всё лишнее должно стоять на месте.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="proverka" data-t="Проверка и практика">
+  <h2>Проверка перед уроком</h2>
+  <ol class="chk2">
+    <li>Уменьши слайд до 800 px по ширине. Всё читается?</li>
+    <li>Сделай скриншот чёрно-белым. Видно, где карточки и что главное?</li>
+    <li>Закрой глаза на 2 секунды и открой. Что увидела первым? Это главный объект?</li>
+    <li>Каждый цвет можешь объяснить одним словом: тон, значение, чтение, действие?</li>
+    <li>Нижнее поле заполнено? Слов не больше 25? Блоков не больше 6?</li>
+    <li>Файл открывается без интернета?</li>
+  </ol>
+  <div class="proj">Практика по модулю: в Figma на шаблоне 1600 × 900 сделай три слайда одного урока: «Иероглиф», «Читаем», «Задание на телефоне». Проверь каждый по шести пунктам и пришли на разбор вместе с ответами на проверку.</div>
+  <p class="src">Полные правила для сборщика презентаций и заданий лежат в файлах проекта: «Правила для презентаций урока» и «Правила дизайна виджетов Задания урока».</p>
+</section>
+
+<nav class="next"><a href="../prilozheniya/"><small>← Назад</small>В2. Приложения</a><a href="../horosho-ploho/"><small>Дальше →</small>Г. Хорошо, плохо, ИИ-слоп и тренды</a></nav>
+</main></div>
+<div class="zoom" id="lbx"><img alt=""></div>
+<footer class="foot">Курс молодого дизайнера · модуль В4. Слайды на фото из уроков AIKITAY, цвета на них условные. Прогресс хранится только в этом браузере.</footer>
+<script src="../obshchee/kurs.js"></script>
+<script>
+(function(){
+ /* масштаб слайда */
+ const sls=[...document.querySelectorAll('.sl')];
+ function fit(){ sls.forEach(s=>{ if(s.id==='zsl') return; const cs=getComputedStyle(s.parentElement); const w=Math.min(s.parentElement.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-4,620); s.style.setProperty('--k',w/1600); }); }
+ const zw=document.getElementById('zw'), zwo=document.getElementById('zwo'), z=document.getElementById('zsl');
+ function zf(){ const cs=getComputedStyle(z.parentElement); const max=z.parentElement.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-4; const w=Math.min(+zw.value,max); z.style.setProperty('--k',w/1600); zwo.textContent=zw.value+' px'; }
+ zw.addEventListener('input',zf); addEventListener('resize',()=>{fit();zf();}); fit(); zf();
+ /* увеличение фото */
+ const zm=document.getElementById("lbx");
+ document.addEventListener('click',e=>{ const i=e.target.closest('.ba img,.one img'); if(i){ zm.querySelector('img').src=i.src; zm.querySelector('img').alt=i.alt; zm.classList.add('on'); } else if(e.target.closest("#lbx")) zm.classList.remove('on'); });
+ addEventListener('keydown',e=>{ if(e.key==='Escape') zm.classList.remove('on'); });
+ /* черта */
+ let dur='.75s'; const ps=[...document.querySelectorAll('#rn .p')];
+ function write(){ ps.forEach(p=>{ p.classList.remove('go'); p.style.animationDelay=''; void p.getBoundingClientRect(); });
+  ps.forEach((p,i)=>{ p.style.setProperty('--dur',dur); p.style.animationDelay=(i*(parseFloat(dur)+.25))+'s'; p.classList.add('go'); }); }
+ document.getElementById('rgo').addEventListener('click',write);
+ document.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{ dur=b.dataset.d; document.querySelectorAll('[data-d]').forEach(x=>x.setAttribute('aria-pressed',x===b)); write(); }));
+})();
+</script>
+</body>
+</html>
