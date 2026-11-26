@@ -129,12 +129,13 @@ const S = (window.KURS&&KURS.st.mods)||{};
 let D=null; try{D=JSON.parse(localStorage.getItem('kurs2-diag')||'null');}catch(e){}
 const LV=['пусто','плаваю','уверенно'], ML={};
 let TS=[];
-if(D&&D.ans&&window.DIAG){
-  TS=DIAG_TEMY.map(([k,name,link])=>{ const ix=DIAG.map((q,i)=>i).filter(i=>DIAG[i].t===k); const ok=ix.filter(i=>D.ans[i]&&D.ans[i].r==='ok').length; const ans=ix.filter(i=>D.ans[i]).length;
-    const lv=ok>=4?2:ok>=2?1:0; const m=link.split('/')[0]; if(ans===ix.length) ML[m]=Math.min(ML[m]??2,lv); return {name,link,ok,n:ix.length,ans,lv}; });
+if(D&&D.v===2&&D.ans&&window.DIAG){
+  TS=DIAG_TEMY.map(([k,name,link])=>{ const ix=DIAG.map((q,i)=>i).filter(i=>DIAG[i].t===k); const ok=ix.reduce((s,i)=>s+(D.ans[i]?({ok:1,half:.5}[D.ans[i].r]||0):0),0); const ans=ix.filter(i=>D.ans[i]).length;
+    const lv=ok>=4?2:ok>=2?1:0; const m=link.split('/')[0]; if(D.checked&&ans===ix.length) ML[m]=Math.min(ML[m]??2,lv); return {name,link,ok,n:ix.length,ans,lv}; });
 }
 const R=document.getElementById('route'), answered=TS.reduce((s,x)=>s+x.ans,0);
-if(!D||!answered){ R.innerHTML='<div class="rt"><h2>Начни с большого входного теста</h2><p>85 вопросов с кнопкой «Не знаю». По ответам курс покажет, в каких темах ты плаваешь, и соберёт личный маршрут прямо здесь.</p><a class="go" href="diagnostika/">Пройти тест →</a></div>'; }
+if(!D||!answered){ R.innerHTML='<div class="rt"><h2>Начни с большого входного теста</h2><p>85 вопросов, отвечаешь своими словами, проверяю я. По ответам курс покажет, в каких темах ты плаваешь, и соберёт личный маршрут прямо здесь.</p><a class="go" href="diagnostika/">Пройти тест →</a></div>'; }
+else if(D.done&&!D.checked){ R.innerHTML='<div class="rt"><h2>Ответы ждут проверки</h2><p>Скопируй ответы и пришли мне, потом вставь мою строчку-проверку, и здесь появится маршрут.</p><a class="go" href="diagnostika/">К ответам →</a></div>'; }
 else if(!D.done){ R.innerHTML='<div class="rt"><h2>Входной тест не закончен</h2><p>Отвечено '+answered+' из '+DIAG.length+'. Допройди, и здесь появится твой маршрут.</p><a class="go" href="diagnostika/">Продолжить →</a></div>'; }
 else { const weak=TS.filter(x=>x.lv<2).sort((a,b)=>a.ok-b.ok).slice(0,5);
   R.innerHTML='<div class="rt"><h2>Твой маршрут</h2><p>'+(weak.length?'По входному тесту начни с этих тем:':'По входному тесту ты уверенно знаешь все темы. Иди по модулям быстро, упор на практику.')+'</p>'+(weak.length?'<ol>'+weak.map(x=>'<li><a href="'+x.link+'">'+x.name+'</a> · '+LV[x.lv]+', '+x.ok+' из '+x.n+'</li>').join('')+'</ol>':'')+'<a class="go" href="diagnostika/">Вся карта и главы →</a></div>'; }

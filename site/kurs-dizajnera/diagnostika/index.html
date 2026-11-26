@@ -31,13 +31,15 @@
 .t-row{display:grid;grid-template-columns:1fr 150px 170px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14.5px}
 .t-row a{color:var(--ink);font-weight:600;text-decoration:none}.t-row a:hover{color:var(--accent)}
 .seg{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--line)}
-.seg .s-ok{background:var(--ok)}.seg .s-bad{background:var(--bad)}.seg .s-idk{background:var(--muted);opacity:.5}
+.seg .s-ok{background:var(--ok)}.seg .s-half{background:var(--warn)}.seg .s-bad{background:var(--bad)}.seg .s-idk{background:var(--muted);opacity:.5}
 .lvl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:right}
 .lvl.l0{color:var(--bad)}.lvl.l1{color:var(--warn)}.lvl.l2{color:var(--ok)}
 .legend{display:flex;gap:16px;font-size:13px;color:var(--muted);flex-wrap:wrap}.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.legend .a::before{background:var(--ok)}.legend .b::before{background:var(--bad)}.legend .c::before{background:var(--muted);opacity:.5}
+.legend .a::before{background:var(--ok)}.legend .h::before{background:var(--warn)}.legend .b::before{background:var(--bad)}.legend .c::before{background:var(--muted);opacity:.5}
 .route ol{padding-left:22px}.route li{margin:10px 0}.route li small{display:block;color:var(--muted);font-size:13.5px}
 .route li .ch-links a{display:inline-block;margin:4px 6px 0 0;font-size:13.5px;background:var(--accent-soft);color:var(--accent-ink);border-radius:8px;padding:2px 8px;text-decoration:none}
+textarea.ans{width:100%;font:16px/1.45 var(--sans);border:1px solid var(--line2);border-radius:12px;padding:12px 14px;background:var(--card);color:var(--ink);resize:vertical}textarea.ans:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.idkb{border-style:dashed!important}
 textarea.copy{width:100%;min-height:130px;font:13px var(--mono);border:1px solid var(--line2);border-radius:10px;padding:10px;background:var(--card2);color:var(--ink)}
 @media (max-width:620px){.dg{padding:28px 16px 50px}.t-row{grid-template-columns:1fr 90px}.t-row .lvl{grid-column:1/-1;text-align:left}}
 </style>
@@ -48,85 +50,108 @@ textarea.copy{width:100%;min-height:130px;font:13px var(--mono);border:1px solid
 <div class="dg" id="app"></div>
 <footer class="foot">Курс молодого дизайнера · большой входной тест. Ответы хранятся только в этом браузере.</footer>
 <script src="dannye.js"></script>
+<script src="otkrytye.js"></script>
 <script>
 (function(){
-const LS='kurs2-diag', T=window.DIAG_TEMY, Q=window.DIAG, app=document.getElementById('app');
-let S={ans:{},pos:0,done:false,date:null};
-try{const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.ans) S=Object.assign(S,s);}catch(e){}
+const LS='kurs2-diag', T=window.DIAG_TEMY, Q=window.DIAG, OQ=window.DIAG_OPEN, app=document.getElementById('app');
+const fresh=()=>({v:2,ans:{},pos:0,done:false,checked:false,date:null});
+let S=fresh();
+try{const s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.v===2&&s.ans) S=Object.assign(S,s);}catch(e){}
 const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const tname=k=>(T.find(t=>t[0]===k)||[])[1];
-function shuffle(n,seed){const a=[...Array(n).keys()];let s=seed*9301+49297;for(let i=n-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const firstOpen=()=>{ for(let i=0;i<Q.length;i++) if(!S.ans[i]) return i; return Q.length; };
 
 function intro(){
   const n=Object.keys(S.ans).length;
   app.innerHTML=`<h1>Большой входной тест</h1>
-  <p class="lead">${Q.length} вопросов по ${T.length} темам, от самых простых слов до технологий. Цель не оценка, а карта: где ты уверена, где плаваешь, а где пока пусто. По ней курс подстроится под тебя.</p>
+  <p class="lead">${Q.length} вопросов по ${T.length} темам. Вариантов ответа нет: отвечаешь своими словами, а проверяю я. Так угадать нельзя, и карта получится честной.</p>
   <div class="rules"><ul>
-   <li><b>Не знаешь, жми «Не знаю».</b> Угадать правильно это не знание, тест тогда врёт. «Не знаю» здесь самый полезный ответ.</li>
-   <li>Знаешь «примерно», но не уверена? Тоже честнее нажать «Не знаю».</li>
-   <li>После каждого ответа короткое объяснение. Можно прерваться: ответы сохраняются, продолжишь с того же места.</li>
-   <li>Займёт 20–30 минут.</li></ul></div>
+   <li><b>Пиши, как объяснила бы подруге.</b> Коротко, своими словами, без поиска в интернете. Одного-двух предложений хватит.</li>
+   <li><b>Не можешь объяснить, жми «Не знаю».</b> «Слышала, но объяснить не могу» тоже «не знаю».</li>
+   <li>Правильные ответы не показываются, чтобы не подсказывать в следующих вопросах. Объяснения пришлю после проверки.</li>
+   <li>Можно прерваться: ответы сохраняются в этом браузере, продолжишь с того же места.</li>
+   <li>В конце скопируешь ответы и пришлёшь мне. Я проверю и пришлю строчку-результат, её вставишь сюда, и появится карта и личный маршрут.</li></ul></div>
   <button class="big" id="go">${n?`Продолжить (отвечено ${n} из ${Q.length})`:'Начать'}</button>
   ${n?` <button class="sbtn" id="reset" style="margin-left:8px">Начать заново</button>`:''}`;
-  document.getElementById('go').onclick=()=>{ if(n>=Q.length) results(); else { S.pos=firstOpen(); save(); ask(); } };
-  const r=document.getElementById('reset'); if(r) r.onclick=()=>{ S={ans:{},pos:0,done:false,date:null}; save(); intro(); };
+  document.getElementById('go').onclick=()=>{ S.pos=firstOpen(); save(); ask(); };
+  const r=document.getElementById('reset'); if(r) r.onclick=()=>{ if(confirmReset()){ S=fresh(); save(); intro(); } };
 }
-function firstOpen(){ for(let i=0;i<Q.length;i++) if(!S.ans[i]) return i; return Q.length; }
+function confirmReset(){ const b=document.getElementById('reset'); if(b.dataset.sure) return true; b.dataset.sure=1; b.textContent='Точно стереть ответы? Нажми ещё раз'; return false; }
 
 function ask(){
   const i=S.pos; if(i>=Q.length){ S.done=true; S.date=new Date().toISOString().slice(0,10); save(); return results(); }
-  const q=Q[i], ord=shuffle(q.o.length,i+7), done=S.ans[i];
-  const topicN=Q.filter(x=>x.t===q.t), k=topicN.indexOf(q)+1;
+  const q=Q[i], done=S.ans[i];
   app.innerHTML=`<div class="card"><div class="top-row"><b>${esc(tname(q.t))}</b><span>вопрос ${i+1} из ${Q.length}</span></div>
    <div class="bar"><i style="width:${i/Q.length*100}%"></i></div>
-   <p class="qq">${esc(q.q)}</p>
-   <div class="ch-o">${ord.map(j=>`<button type="button" data-j="${j}">${esc(q.o[j])}</button>`).join('')}<button type="button" class="idk2" data-j="x">Не знаю</button></div>
-   <div id="ex"></div>
-   <div class="nav-row"><button class="sbtn" id="back" ${i?'':'disabled'}>← Назад</button><span><button class="sbtn" id="pause">Прервать</button> <button class="big" id="next" ${done?'':'disabled'}>Дальше →</button></span></div></div>`;
-  const bs=[...app.querySelectorAll('.ch-o button')];
-  function show(pick){
-    bs.forEach(b=>{ b.disabled=true; const j=b.dataset.j; if(j==String(q.a)) b.classList.add('right'); else if(j===String(pick)&&pick!=='x') b.classList.add('wrong'); if(j==='x'&&pick==='x') b.classList.add('on'); });
-    document.getElementById('ex').innerHTML=`<p class="expl">${pick==='x'?'Честно, спасибо. ':pick==q.a?'<b style="color:var(--ok)">Верно.</b> ':'<b style="color:var(--bad)">Не совсем.</b> '}${esc(q.w)} <a href="../${q.l}">Где это в курсе →</a></p>`;
-    document.getElementById('next').disabled=false;
-  }
-  if(done) show(done.p);
-  bs.forEach(b=>b.onclick=()=>{ if(S.ans[i]) return; const p=b.dataset.j==='x'?'x':+b.dataset.j; S.ans[i]={p,r:p==='x'?'idk':(p===q.a?'ok':'bad')}; save(); show(p); });
-  document.getElementById('next').onclick=()=>{ S.pos=i+1; save(); ask(); window.scrollTo(0,0); };
+   <p class="qq">${esc(OQ[i]||q.q)}</p>
+   <textarea class="ans" id="ta" rows="4" placeholder="Своими словами…">${done&&done.txt?esc(done.txt):''}</textarea>
+   ${done&&done.r==='idk'?'<p class="expl">Отмечено «Не знаю». Можешь всё-таки написать ответ и нажать «Ответить».</p>':''}
+   <div class="nav-row"><span><button class="sbtn" id="back" ${i?'':'disabled'}>← Назад</button> <button class="sbtn" id="pause">Прервать</button></span>
+   <span><button class="sbtn idkb" id="idk">Не знаю</button> <button class="big" id="ok" disabled>Ответить →</button></span></div></div>`;
+  const ta=document.getElementById('ta'), ok=document.getElementById('ok');
+  const upd=()=>{ ok.disabled=ta.value.trim().length<2; }; upd(); ta.oninput=upd; ta.focus();
+  ta.onkeydown=e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!ok.disabled) ok.click(); };
+  const go=()=>{ S.pos=i+1; save(); ask(); window.scrollTo(0,0); };
+  ok.onclick=()=>{ S.ans[i]={txt:ta.value.trim(),r:'new'}; S.checked=false; go(); };
+  document.getElementById('idk').onclick=()=>{ S.ans[i]={txt:'',r:'idk'}; go(); };
   document.getElementById('back').onclick=()=>{ S.pos=i-1; save(); ask(); };
   document.getElementById('pause').onclick=()=>intro();
 }
 
+const SC={ok:1,half:.5,bad:0,idk:0,new:0};
 function stats(){
   return T.map(([k,name,link])=>{ const idx=Q.map((q,i)=>i).filter(i=>Q[i].t===k);
-    const c={ok:0,bad:0,idk:0}; idx.forEach(i=>{const a=S.ans[i]; if(a) c[a.r]++;});
-    const lv=c.ok>=4?2:c.ok>=2?1:0;
+    const c={ok:0,half:0,bad:0,idk:0}; idx.forEach(i=>{const a=S.ans[i]; if(a&&c[a.r]!=null) c[a.r]++;});
+    const sc=c.ok+c.half*.5, lv=sc>=4?2:sc>=2?1:0;
     const miss=[...new Set(idx.filter(i=>S.ans[i]&&S.ans[i].r!=='ok').map(i=>Q[i].l))];
-    return {k,name,link,n:idx.length,...c,lv,miss}; });
+    return {k,name,link,n:idx.length,...c,sc,lv,miss}; });
 }
 const LV=['Пока пусто','Плаваю','Уверенно'];
 function chName(l){ const [m,h]=l.split('#'); const map={'start/':'Старт','glaz/':'Глаз','anatomiya/':'Анатомия','ux/':'UX','prototip/':'Прототип','dizajn-sistema/':'Система','prilozheniya/':'Приложения','sajt/':'Сайт','prezentacii/':'Презентации','horosho-ploho/':'Хорошо и плохо','animaciya/':'Анимации','kartinki/':'Картинки'}; const ch=(window.DIAG_CH||{})[l]; return (map[m]||m)+(h?' · '+(ch||h):''); }
 
+function answersText(){
+  return 'Мои ответы на большой входной тест ('+(S.date||'')+'). Проверь, пожалуйста.\n\n'+
+    Q.map((q,i)=>{const a=S.ans[i]; return (i+1)+'. ['+tname(q.t)+'] '+(OQ[i]||q.q)+'\nОтвет: '+(!a?'(нет ответа)':a.r==='idk'?'НЕ ЗНАЮ':a.txt);}).join('\n\n');
+}
+const CODE={'+':'ok','~':'half','-':'bad','0':'idk'};
+function applyCode(str){
+  const m=String(str).match(/AIKITAY-PROVERKA:\s*([+~\-0]+)/i); if(!m) return 'Не нашёл строчку, которая начинается с AIKITAY-PROVERKA. Скопируй её из моего сообщения целиком.';
+  const s=m[1]; if(s.length!==Q.length) return 'В строчке '+s.length+' знаков, а вопросов '+Q.length+'. Скопируй строчку целиком.';
+  [...s].forEach((ch,i)=>{ const a=S.ans[i]||(S.ans[i]={txt:'',r:'idk'}); a.r=CODE[ch]; });
+  S.checked=true; S.done=true; save(); return '';
+}
+
 function results(){
-  const s=stats(), tot={ok:0,bad:0,idk:0}; s.forEach(x=>{tot.ok+=x.ok;tot.bad+=x.bad;tot.idk+=x.idk;});
-  const weak=s.filter(x=>x.lv<2).sort((a,b)=>a.ok-b.ok||b.idk-a.idk);
+  if(!S.checked) return waitCheck();
+  const s=stats(), tot={ok:0,half:0,bad:0,idk:0}; s.forEach(x=>{tot.ok+=x.ok;tot.half+=x.half;tot.bad+=x.bad;tot.idk+=x.idk;});
+  const weak=s.filter(x=>x.lv<2).sort((a,b)=>a.sc-b.sc||b.idk-a.idk);
   const strong=s.filter(x=>x.lv===2);
-  const txt='Результат большого входного теста ('+(S.date||'')+'): знаю '+tot.ok+', ошибка '+tot.bad+', не знаю '+tot.idk+' из '+Q.length+'.\n'+
-    s.map(x=>'- '+x.name+': '+x.ok+'/'+x.n+' верно, ошибок '+x.bad+', не знаю '+x.idk+' → '+LV[x.lv]).join('\n')+
-    '\nПромахи по главам: '+[...new Set(s.flatMap(x=>x.miss))].join(', ');
   app.innerHTML=`<h1>Твоя карта</h1>
-  <p class="lead">Верно ${tot.ok} из ${Q.length}, честное «не знаю» ${tot.idk}, ошибок ${tot.bad}. Ниже по темам, от слабых к сильным, и твой личный маршрут.</p>
-  <div class="legend"><span class="a">знаю</span><span class="b">ошиблась</span><span class="c">не знаю</span></div>
-  <div class="t-list">${[...s].sort((a,b)=>a.ok-b.ok).map(x=>`<div class="t-row"><a href="../${x.link}">${esc(x.name)}</a><div class="seg"><i class="s-ok" style="width:${x.ok/x.n*100}%"></i><i class="s-bad" style="width:${x.bad/x.n*100}%"></i><i class="s-idk" style="width:${x.idk/x.n*100}%"></i></div><span class="lvl l${x.lv}">${LV[x.lv]} · ${x.ok}/${x.n}</span></div>`).join('')}</div>
+  <p class="lead">Верно ${tot.ok}, частично ${tot.half}, неверно ${tot.bad}, «не знаю» ${tot.idk} из ${Q.length}. Ниже темы от слабых к сильным и твой личный маршрут.</p>
+  <div class="legend"><span class="a">знаю</span><span class="h">частично</span><span class="b">неверно</span><span class="c">не знаю</span></div>
+  <div class="t-list">${[...s].sort((a,b)=>a.sc-b.sc).map(x=>`<div class="t-row"><a href="../${x.link}">${esc(x.name)}</a><div class="seg"><i class="s-ok" style="width:${x.ok/x.n*100}%"></i><i class="s-half" style="width:${x.half/x.n*100}%"></i><i class="s-bad" style="width:${x.bad/x.n*100}%"></i><i class="s-idk" style="width:${x.idk/x.n*100}%"></i></div><span class="lvl l${x.lv}">${LV[x.lv]} · ${x.sc}/${x.n}</span></div>`).join('')}</div>
   <div class="card route"><h2 style="margin:0 0 6px;font-size:24px">Твой маршрут</h2>
-  ${weak.length?`<p style="margin:0;color:var(--ink2)">Начни с этих тем по порядку. Под каждой главы, где был промах или «не знаю».</p><ol>${weak.map(x=>`<li><b>${esc(x.name)}</b> <small>${LV[x.lv]}: верно ${x.ok} из ${x.n}</small><span class="ch-links">${x.miss.map(l=>`<a href="../${l}">${esc(chName(l))}</a>`).join('')}</span></li>`).join('')}</ol>`:'<p>Всё уверенно. Можно идти по модулям быстро и сразу к практике.</p>'}
+  ${weak.length?`<p style="margin:0;color:var(--ink2)">Начни с этих тем по порядку. Под каждой главы, где был промах или «не знаю».</p><ol>${weak.map(x=>`<li><b>${esc(x.name)}</b> <small>${LV[x.lv]}: ${x.sc} из ${x.n}</small><span class="ch-links">${x.miss.map(l=>`<a href="../${l}">${esc(chName(l))}</a>`).join('')}</span></li>`).join('')}</ol>`:'<p>Всё уверенно. Можно идти по модулям быстро и сразу к практике.</p>'}
   ${strong.length?`<p style="color:var(--ink2);font-size:15px">Уверенно: ${strong.map(x=>esc(x.name)).join(', ')}. Эти главы можно пролистать и сразу пройти мини-тесты.</p>`:''}
   </div>
-  <div class="card"><h2 style="margin:0 0 6px;font-size:22px">Отправь результат мне</h2><p style="margin:0 0 10px;color:var(--ink2);font-size:15px">Скопируй текст и пришли в чат. По нему я перестрою программу: добавлю главы про то, где пусто, и сокращу то, что ты уже знаешь.</p>
-  <textarea class="copy" readonly>${esc(txt)}</textarea><button class="big" id="cp" style="margin-top:10px">Скопировать</button></div>
-  <p><button class="sbtn" id="again">Пройти тест заново</button> <a class="sbtn" href="../" style="text-decoration:none">К модулям</a></p>`;
-  document.getElementById('cp').onclick=e=>{ const ta=app.querySelector('textarea'); ta.select(); try{navigator.clipboard.writeText(ta.value);}catch(_){document.execCommand('copy');} e.target.textContent='Скопировано ✓'; };
-  document.getElementById('again').onclick=()=>{ S={ans:{},pos:0,done:false,date:null}; save(); intro(); };
+  <p><button class="sbtn" id="again">Пройти тест заново</button> <button class="sbtn" id="recheck">Вставить другую проверку</button> <a class="sbtn" href="../" style="text-decoration:none">К модулям</a></p>`;
+  document.getElementById('again').onclick=e=>{ if(e.target.dataset.sure){ S=fresh(); save(); intro(); } else { e.target.dataset.sure=1; e.target.textContent='Точно стереть ответы? Нажми ещё раз'; } };
+  document.getElementById('recheck').onclick=()=>{ S.checked=false; save(); waitCheck(); };
+}
+
+function waitCheck(){
+  const n=Object.keys(S.ans).length, idk=Object.values(S.ans).filter(a=>a.r==='idk').length;
+  app.innerHTML=`<h1>Ответы готовы</h1>
+  <p class="lead">Отвечено ${n} из ${Q.length}, из них «не знаю» ${idk}. Теперь моя очередь проверить.</p>
+  <div class="card"><h2 style="margin:0 0 6px;font-size:22px">Шаг 1. Пришли ответы мне</h2><p style="margin:0 0 10px;color:var(--ink2);font-size:15px">Нажми «Скопировать» и вставь в наш чат. Я проверю каждый ответ, объясню, где ошибка, и пришлю строчку с результатом.</p>
+  <textarea class="copy" readonly>${esc(answersText())}</textarea><button class="big" id="cp" style="margin-top:10px">Скопировать ответы</button></div>
+  <div class="card"><h2 style="margin:0 0 6px;font-size:22px">Шаг 2. Вставь мою проверку</h2><p style="margin:0 0 10px;color:var(--ink2);font-size:15px">Скопируй из моего ответа строчку, которая начинается с <b>AIKITAY-PROVERKA</b>, и вставь сюда. Появится карта по темам и личный маршрут, а на главной пометки у модулей.</p>
+  <textarea class="copy" id="code" style="min-height:70px" placeholder="AIKITAY-PROVERKA: +~-0…"></textarea><p id="err" style="color:var(--bad);font-size:14px;margin:6px 0 0"></p><button class="big" id="apply" style="margin-top:10px">Показать мою карту</button></div>
+  <p><button class="sbtn" id="edit">← Вернуться к ответам</button></p>`;
+  document.getElementById('cp').onclick=e=>{ const ta=app.querySelector('textarea.copy'); ta.select(); try{navigator.clipboard.writeText(ta.value);}catch(_){document.execCommand('copy');} e.target.textContent='Скопировано ✓'; };
+  document.getElementById('apply').onclick=()=>{ const er=applyCode(document.getElementById('code').value); if(er) document.getElementById('err').textContent=er; else { results(); window.scrollTo(0,0); } };
+  document.getElementById('edit').onclick=()=>{ S.pos=0; S.done=false; save(); ask(); };
 }
 if(S.done) results(); else intro();
 })();
