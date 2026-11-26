@@ -66,7 +66,7 @@
 @media (max-width:640px){.ser{grid-template-columns:1fr 1fr}.pb{grid-template-columns:1fr}}
 </style>
 </head>
-<body data-mod="kartinki">
+<body data-azy data-mod="kartinki">
 <header class="top"><div class="in"><a class="brand" href="../">Курс <b>молодого дизайнера</b></a>
 <nav><a href="../start/">Старт</a><a href="../glaz/">Глаз</a><a href="../anatomiya/">Анатомия</a><a href="../ux/">UX</a><a href="../prototip/">Прототип</a><a href="../dizajn-sistema/">Система</a><a href="../prilozheniya/">Приложения</a><a href="../sajt/">Сайт</a><a href="../prezentacii/">Презентации</a><a href="../horosho-ploho/">Хорошо и плохо</a><a href="../animaciya/">Анимации</a><a href="../kartinki/" class="on">Картинки</a></nav></div></header>
 <div class="layout">
@@ -200,6 +200,12 @@
     <li>Для уроков надёжнее нарисовать персонажа один раз (или заказать иллюстратору) и дальше собирать позы из частей.</li>
   </ul>
   <figure class="real" data-real="personazh"><h4>Как это в жизни: персонаж бренда</h4><div class="real-shots"><div class="shot m"><div class="sh-in"><div class="sh-c"><img src="../img/ref/duo-home.webp" alt="Duolingo, телефон" loading="lazy"><i style="left:15%;top:25%" data-n="1">1</i></div></div><span>Duolingo, телефон · <a href="https://www.duolingo.com" target="_blank" rel="noopener">открыть ↗</a></span></div><div class="shot m"><div class="sh-in"><div class="sh-c"><img src="../img/ref/headspace.webp" alt="Headspace, телефон" loading="lazy"><i style="left:6%;top:70%" data-n="2">2</i></div></div><span>Headspace, телефон · <a href="https://www.headspace.com" target="_blank" rel="noopener">открыть ↗</a></span></div></div><ol><li data-n="1"><b>Сова Duo</b> и компания учеников: персонаж узнаётся сам по себе, без логотипа.</li><li data-n="2"><b>Оранжевое солнышко</b> Headspace: простое лицо из двух дуг. Персонажу не нужно много деталей, чтобы быть живым.</li></ol><p class="src">Скриншоты настоящих сайтов, ноябрь 2026. Наведи на пункт или нажми его, и номер на картинке подсветится.</p></figure>
+<h3>Шаг за шагом: персонаж в одном стиле у нейросети</h3>
+<ol><li><b>Опиши персонажа один раз очень подробно</b> и сохрани этот текст: форма тела, цвета, одежда, стиль рисунка («плоская векторная иллюстрация, толстый контур, без теней»). Дальше копируй его в каждый запрос без изменений, меняй только действие.</li>
+<li><b>Сделай лист персонажа</b> (character sheet): одна картинка, где он нарисован спереди, сбоку, сзади и с 3–4 эмоциями.</li>
+<li><b>Давай картинку-образец.</b> Почти все генераторы умеют брать референс: загружаешь удачную картинку с персонажем, и нейросеть держится её. В Midjourney это параметр <code>--cref</code>, в других кнопка «референс персонажа» или «по образцу».</li>
+<li><b>Выбирай и дорисовывай.</b> Из 10 вариантов подходят 1–2. Мелкие отличия правят в Figma или в редакторе.</li>
+<li>Для серьёзного проекта персонажа обучают отдельно (это называется <b>LoRA</b>, «дообучение на своих картинках»), или заказывают иллюстратору базу, а нейросеть только помогает с вариантами.</li></ol>
 <div class="quiz"><h4>Мини-тест</h4>
     <div class="q" data-a="2"><p>Персонаж в каждом уроке выглядит немного по-разному. Что помогает больше всего?</p><div class="opts"><button>Каждый раз новый запрос</button><button>Генерировать без описания</button><button>Лист персонажа и генерация по образцу с постоянным блоком описания</button></div><p class="why">Образец и одинаковое описание удерживают внешность. Без них генератор каждый раз придумывает персонажа заново.</p></div>
   </div>
