@@ -108,6 +108,8 @@ function stats(){
     return {k,name,link,n:idx.length,...c,sc,lv,miss}; });
 }
 const LV=['Пока пусто','Плаваю','Уверенно'];
+const PACE=['притормози: тут пока пусто','читай внимательно','можно быстрее, упор на практику'];
+const MODS=[['start/','Старт'],['glaz/','Глаз дизайнера'],['anatomiya/','Анатомия интерфейса'],['ux/','Задача и пользователь'],['prototip/','Структура, наброски, прототип'],['dizajn-sistema/','Дизайн-система'],['prilozheniya/','Приложения'],['sajt/','Сайт'],['prezentacii/','Презентации и виджеты'],['horosho-ploho/','Хорошо, плохо, ИИ-слоп'],['animaciya/','Анимации'],['kartinki/','Картинки']];
 function chName(l){ const [m,h]=l.split('#'); const map={'start/':'Старт','glaz/':'Глаз','anatomiya/':'Анатомия','ux/':'UX','prototip/':'Прототип','dizajn-sistema/':'Система','prilozheniya/':'Приложения','sajt/':'Сайт','prezentacii/':'Презентации','horosho-ploho/':'Хорошо и плохо','animaciya/':'Анимации','kartinki/':'Картинки'}; const ch=(window.DIAG_CH||{})[l]; return (map[m]||m)+(h?' · '+(ch||h):''); }
 
 function answersText(){
@@ -125,15 +127,13 @@ function applyCode(str){
 function results(){
   if(!S.checked) return waitCheck();
   const s=stats(), tot={ok:0,half:0,bad:0,idk:0}; s.forEach(x=>{tot.ok+=x.ok;tot.half+=x.half;tot.bad+=x.bad;tot.idk+=x.idk;});
-  const weak=s.filter(x=>x.lv<2).sort((a,b)=>a.sc-b.sc||b.idk-a.idk);
-  const strong=s.filter(x=>x.lv===2);
   app.innerHTML=`<h1>Твоя карта</h1>
-  <p class="lead">Верно ${tot.ok}, частично ${tot.half}, неверно ${tot.bad}, «не знаю» ${tot.idk} из ${Q.length}. Ниже темы от слабых к сильным и твой личный маршрут.</p>
+  <p class="lead">Верно ${tot.ok}, частично ${tot.half}, неверно ${tot.bad}, «не знаю» ${tot.idk} из ${Q.length}. Ниже темы от слабых к сильным, а под ними путь по курсу по порядку модулей.</p>
   <div class="legend"><span class="a">знаю</span><span class="h">частично</span><span class="b">неверно</span><span class="c">не знаю</span></div>
   <div class="t-list">${[...s].sort((a,b)=>a.sc-b.sc).map(x=>`<div class="t-row"><a href="../${x.link}">${esc(x.name)}</a><div class="seg"><i class="s-ok" style="width:${x.ok/x.n*100}%"></i><i class="s-half" style="width:${x.half/x.n*100}%"></i><i class="s-bad" style="width:${x.bad/x.n*100}%"></i><i class="s-idk" style="width:${x.idk/x.n*100}%"></i></div><span class="lvl l${x.lv}">${LV[x.lv]} · ${x.sc}/${x.n}</span></div>`).join('')}</div>
-  <div class="card route"><h2 style="margin:0 0 6px;font-size:24px">Твой маршрут</h2>
-  ${weak.length?`<p style="margin:0;color:var(--ink2)">Начни с этих тем по порядку. Под каждой главы, где был промах или «не знаю».</p><ol>${weak.map(x=>`<li><b>${esc(x.name)}</b> <small>${LV[x.lv]}: ${x.sc} из ${x.n}</small><span class="ch-links">${x.miss.map(l=>`<a href="../${l}">${esc(chName(l))}</a>`).join('')}</span></li>`).join('')}</ol>`:'<p>Всё уверенно. Можно идти по модулям быстро и сразу к практике.</p>'}
-  ${strong.length?`<p style="color:var(--ink2);font-size:15px">Уверенно: ${strong.map(x=>esc(x.name)).join(', ')}. Эти главы можно пролистать и сразу пройти мини-тесты.</p>`:''}
+  <div class="card route"><h2 style="margin:0 0 6px;font-size:24px">Твой путь по курсу</h2>
+  <p style="margin:0;color:var(--ink2)">Модули идут по порядку, от простого к сложному. Тест не меняет порядок, он только подсказывает темп: где притормозить и какие главы читать особенно внимательно.</p>
+  <ol>${MODS.map(([slug,name])=>{ const ts=s.filter(x=>x.link.split('/')[0]+'/'===slug); if(!ts.length) return `<li><b>${esc(name)}</b></li>`; const av=ts.reduce((a,x)=>a+x.sc,0)/ts.length, lv=av>=3.5?2:av>=1.5?1:0; const miss=[...new Set(ts.flatMap(x=>x.miss))]; return `<li><b>${esc(name)}</b> <small class="lvl l${lv}" style="text-align:left">${PACE[lv]}</small>${miss.length&&lv<2?`<span class="ch-links">${miss.map(l=>`<a href="../${l}">${esc(chName(l))}</a>`).join('')}</span>`:''}</li>`; }).join('')}</ol>
   </div>
   <p><button class="sbtn" id="again">Пройти тест заново</button> <button class="sbtn" id="recheck">Вставить другую проверку</button> <a class="sbtn" href="../" style="text-decoration:none">К модулям</a></p>`;
   document.getElementById('again').onclick=e=>{ if(e.target.dataset.sure){ S=fresh(); save(); intro(); } else { e.target.dataset.sure=1; e.target.textContent='Точно стереть ответы? Нажми ещё раз'; } };

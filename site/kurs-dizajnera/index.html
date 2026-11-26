@@ -41,6 +41,7 @@ a.m:hover{border-color:var(--accent);transform:translateY(-2px)}
 .habit div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:14.5px;color:var(--ink2)}
 .habit b{display:block;font:500 19px var(--serif);color:var(--ink);margin-bottom:4px}
 @media (max-width:820px){.facts{grid-template-columns:1fr 1fr}.road{grid-template-columns:1fr}.habit{grid-template-columns:1fr}.hero{padding:36px 16px 20px}.wrap{padding:0 16px}}
+.rt li.now{font-weight:600}.pace{font-size:13px}.pace.l0{color:var(--bad)}.pace.l1{color:var(--warn)}.pace.l2{color:var(--ok)}
 </style>
 </head>
 <body>
@@ -102,7 +103,7 @@ a.m:hover{border-color:var(--accent);transform:translateY(-2px)}
 
   <h2 class="bl">Справочник</h2>
   <p class="bld">Учить его заранее не нужно. Иди по модулям: все главные слова объясняются прямо в них. Сюда заглядывай, как в словарь на полке, когда встретила незнакомое слово в чате, на сайте или в видео.</p>
-  <div class="mods"><a class="m" href="test/"><span class="code">Тест</span><h3>Тест по словам</h3><p>20 случайных слов из 153, с кнопкой «Не знаю». Можно по всем словам или по одному модулю. Каждый раз новый набор.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="diagnostika/"><span class="code">Карта знаний</span><h3>Большой входной тест</h3><p>85 вопросов по 17 темам. Показывает, где ты уверена, а где плаваешь, и строит личный маршрут по курсу.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="arhiv/"><span class="code">Справочник</span><h3>Старый словарь с ползунками</h3><p>Те же 153 слова, но с живыми ползунками-примерами, этапы создания сайта, галереи для насмотренности, лендинг из блоков, чек-лист косяков.</p><span class="st"><span class="ready">открыть</span></span></a></div>
+  <div class="mods"><a class="m" href="test/"><span class="code">Тест</span><h3>Тест по словам</h3><p>20 случайных слов из 153, с кнопкой «Не знаю». Можно по всем словам или по одному модулю. Каждый раз новый набор.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="diagnostika/"><span class="code">Карта знаний</span><h3>Большой входной тест</h3><p>85 вопросов по 17 темам. Показывает, где ты уверена, а где плаваешь, и подсказывает, где по ходу курса притормозить.</p><span class="st"><span class="ready">открыть</span></span></a><a class="m" href="arhiv/"><span class="code">Справочник</span><h3>Старый словарь с ползунками</h3><p>Те же 153 слова, но с живыми ползунками-примерами, этапы создания сайта, галереи для насмотренности, лендинг из блоков, чек-лист косяков.</p><span class="st"><span class="ready">открыть</span></span></a></div>
 </div>
 
 <footer class="foot">Учебная страница для себя. Названия компаний и продуктов упоминаются как учебные примеры. Соседние страницы: <a href="../referensy/">Референсы приложений</a> · <a href="../nahodki/">Находки</a> · <a href="../katalog-stiley/">Каталог стилей</a>.</footer>
@@ -127,18 +128,21 @@ const M = {
 const S = (window.KURS&&KURS.st.mods)||{};
 /* карта из большого входного теста */
 let D=null; try{D=JSON.parse(localStorage.getItem('kurs2-diag')||'null');}catch(e){}
-const LV=['пусто','плаваю','уверенно'], ML={};
+const LV=['пусто','плаваю','уверенно'], ML={}, MS={};
 let TS=[];
 if(D&&D.v===2&&D.ans&&window.DIAG){
   TS=DIAG_TEMY.map(([k,name,link])=>{ const ix=DIAG.map((q,i)=>i).filter(i=>DIAG[i].t===k); const ok=ix.reduce((s,i)=>s+(D.ans[i]?({ok:1,half:.5}[D.ans[i].r]||0):0),0); const ans=ix.filter(i=>D.ans[i]).length;
-    const lv=ok>=4?2:ok>=2?1:0; const m=link.split('/')[0]; if(D.checked&&ans===ix.length) ML[m]=Math.min(ML[m]??2,lv); return {name,link,ok,n:ix.length,ans,lv}; });
+    const lv=ok>=4?2:ok>=2?1:0; const m=link.split('/')[0]; if(D.checked&&ans===ix.length){ (MS[m]=MS[m]||[]).push(ok); } return {name,link,ok,n:ix.length,ans,lv}; });
 }
+for(const m in MS){ const av=MS[m].reduce((a,b)=>a+b,0)/MS[m].length; ML[m]=av>=3.5?2:av>=1.5?1:0; }
 const R=document.getElementById('route'), answered=TS.reduce((s,x)=>s+x.ans,0);
 if(!D||!answered){ R.innerHTML='<div class="rt"><h2>Начни с большого входного теста</h2><p>85 вопросов, отвечаешь своими словами, проверяю я. По ответам курс покажет, в каких темах ты плаваешь, и соберёт личный маршрут прямо здесь.</p><a class="go" href="diagnostika/">Пройти тест →</a></div>'; }
 else if(D.done&&!D.checked){ R.innerHTML='<div class="rt"><h2>Ответы ждут проверки</h2><p>Скопируй ответы и пришли мне, потом вставь мою строчку-проверку, и здесь появится маршрут.</p><a class="go" href="diagnostika/">К ответам →</a></div>'; }
 else if(!D.done){ R.innerHTML='<div class="rt"><h2>Входной тест не закончен</h2><p>Отвечено '+answered+' из '+DIAG.length+'. Допройди, и здесь появится твой маршрут.</p><a class="go" href="diagnostika/">Продолжить →</a></div>'; }
-else { const weak=TS.filter(x=>x.lv<2).sort((a,b)=>a.ok-b.ok).slice(0,5);
-  R.innerHTML='<div class="rt"><h2>Твой маршрут</h2><p>'+(weak.length?'По входному тесту начни с этих тем:':'По входному тесту ты уверенно знаешь все темы. Иди по модулям быстро, упор на практику.')+'</p>'+(weak.length?'<ol>'+weak.map(x=>'<li><a href="'+x.link+'">'+x.name+'</a> · '+LV[x.lv]+', '+x.ok+' из '+x.n+'</li>').join('')+'</ol>':'')+'<a class="go" href="diagnostika/">Вся карта и главы →</a></div>'; }
+else { const ORD=[].concat(...Object.values(M)).filter(m=>m[4]);
+  const PACE=['притормози: тут пока пусто','читай внимательно','можно быстрее, упор на практику'];
+  const cur=ORD.find(m=>{const p=S[m[0]]; return !(p&&p.total&&p.done>=p.total);})||ORD[0];
+  R.innerHTML='<div class="rt"><h2>Твой путь по курсу</h2><p>Идём по модулям по порядку, от простого к сложному. Входной тест подсказывает только темп: где притормозить, а где можно быстрее.</p><ol>'+ORD.map(m=>'<li'+(m===cur?' class="now"':'')+'><a href="'+m[0]+'/">'+m[2]+'</a>'+(ML[m[0]]!=null?' · <span class="pace l'+ML[m[0]]+'">'+PACE[ML[m[0]]]+'</span>':'')+(m===cur?' <b>← сейчас</b>':'')+'</li>').join('')+'</ol><a class="go" href="diagnostika/">Карта по темам →</a></div>'; }
 for(const k in M){
   document.getElementById(k).innerHTML = M[k].map(m=>{
     const p=S[m[0]]; const pr = p&&p.total? `<span class="meter"><i style="width:${p.done/p.total*100}%"></i></span>`:'';
