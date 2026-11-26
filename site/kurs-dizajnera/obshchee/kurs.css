@@ -256,3 +256,9 @@ section.ch > ol:not(:has(>li:nth-child(7))){list-style:none;padding:0;margin:14p
 section.ch > ol:not(:has(>li:nth-child(7)))>li{counter-increment:st;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;font-size:15px;line-height:1.5;margin:0}
 section.ch > ol:not(:has(>li:nth-child(7)))>li::before{content:counter(st);display:block;font:600 22px var(--serif);color:var(--accent);margin-bottom:4px}
 @media (min-width:1100px){.shot.d{width:calc(50% - 7px)}.shot.d:only-child{width:min(760px,100%)}}
+/* v3 (26.11): одна ровная колонка по центру, у всего один правый край */
+.layout{max-width:1300px;grid-template-columns:210px minmax(0,1fr);gap:48px}
+.top .in,footer.foot{max-width:1300px}
+section.ch,.next{max-width:none}
+section.ch > p, section.ch > h3, section.ch > ul:not(.cards), .mhead p{max-width:none}
+@media (min-width:1100px){body{font-size:17.5px}}
