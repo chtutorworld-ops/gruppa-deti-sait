@@ -18,7 +18,7 @@ SL.forEach(t=>{ if(SKIP_N.has(t.n)) return;
     const re=new RegExp('(?<!['+L+'])'+v.split(/[\s-]+/).map(stem).join('[\\s-]+')+'(?!['+L+'])',cs?'u':'iu');
     T.push({t,re,len:v.length}); }); });
 T.sort((a,b)=>b.len-a.len);
-const BAD='.serif-pic,h1,h2,h3,h4,a,button,label,.q,.quiz,.opts,.slovar,svg,.demo,.tb th,code,.tip,nav,.toc,script,style,.sh-in';
+const BAD='.serif-pic,h1,h2,h3,h4,a,button,label,.q,.quiz,.opts,.slovar,svg,.demo,.tb th,code,.gl-w,.tip,nav,.toc,script,style,.sh-in';
 document.querySelectorAll('section.ch').forEach(sec=>{
   if(sec.id==='slovar') return;
   const used=new Set();
@@ -30,7 +30,7 @@ document.querySelectorAll('section.ch').forEach(sec=>{
     if(!best) return;
     used.add(best.x.t.n);
     const r=node.splitText(best.m.index); r.splitText(best.m[0].length);
-    const s=document.createElement('span'); s.className='tip'; s.tabIndex=0; s.dataset.n=best.x.t.n; s.textContent=r.nodeValue; r.replaceWith(s);
+    const s=document.createElement('span'); s.className='gl-w'; s.tabIndex=0; s.dataset.n=best.x.t.n; s.textContent=r.nodeValue; r.replaceWith(s);
   });
 });
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -42,7 +42,7 @@ function show(el){ const t=SL.find(x=>x.n===el.dataset.n); if(!t) return; cur=el
   box.style.width=W+'px'; let x=r.left+scrollX; x=Math.max(12+scrollX,Math.min(x,scrollX+innerWidth-W-12)); box.style.left=x+'px';
   const h=box.offsetHeight; const below=r.bottom+8+h<innerHeight; box.style.top=(below? r.bottom+scrollY+8 : r.top+scrollY-h-8)+'px'; }
 function hide(){ box.hidden=true; cur=null; }
-document.addEventListener('click',e=>{ const el=e.target.closest('.tip'); if(el){ e.preventDefault(); if(cur===el) hide(); else show(el); return; } if(!e.target.closest('.tip-box')) hide(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('tip')) show(e.target); });
+document.addEventListener('click',e=>{ const el=e.target.closest('.gl-w'); if(el){ e.preventDefault(); if(cur===el) hide(); else show(el); return; } if(!e.target.closest('.tip-box')) hide(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('gl-w')) show(e.target); });
 addEventListener('scroll',()=>{ if(cur) hide(); },{passive:true});
 })();
