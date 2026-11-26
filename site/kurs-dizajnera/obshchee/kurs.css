@@ -16,7 +16,7 @@ img{max-width:100%}
 
 /* верх */
 .top{border-bottom:1px solid var(--line);background:var(--card)}
-.top .in{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top .in{max-width:1520px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .top .brand{font:500 17px var(--serif);text-decoration:none;color:var(--ink)}
 .top .brand b{color:var(--accent);font-weight:500}
 .top nav{display:flex;gap:4px;flex-wrap:nowrap;margin-left:auto;overflow-x:auto;scrollbar-width:none;max-width:100%}
@@ -26,7 +26,7 @@ img{max-width:100%}
 .top nav a:hover,.top nav a.on{background:var(--accent-soft);color:var(--accent-ink)}
 
 /* модуль */
-.layout{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:48px}
+.layout{max-width:1520px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
 .side{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:32px 0 32px}
 .side .mod{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 10px}
 .side ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
@@ -45,7 +45,7 @@ main{padding:40px 0 80px;min-width:0}
 .mhead p{font-size:18px;color:var(--ink2);max-width:62ch;margin:0 0 10px}
 .mhead .meta{font-size:14px;color:var(--muted)}
 
-section.ch{padding:44px 0 10px;border-top:1px solid var(--line);margin-top:40px;max-width:780px}
+section.ch{padding:44px 0 10px;border-top:1px solid var(--line);margin-top:40px;max-width:1160px}
 section.ch > .num{font:500 15px var(--serif);color:var(--accent);margin:0 0 4px}
 section.ch > h2{font-size:clamp(26px,3.4vw,34px);line-height:1.12;margin:0 0 14px}
 section.ch p{margin:0 0 14px}
@@ -126,12 +126,12 @@ section.ch li{margin:3px 0}
 .donebtn[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#fff}
 .src{font-size:14px;color:var(--muted);margin-top:10px}
 .src a{color:var(--muted)}
-.next{display:flex;justify-content:space-between;gap:12px;margin-top:50px;max-width:780px;flex-wrap:wrap}
+.next{display:flex;justify-content:space-between;gap:12px;margin-top:50px;max-width:1160px;flex-wrap:wrap}
 .next a{flex:1 1 220px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--ink)}
 .next a small{display:block;color:var(--muted);font-size:12.5px}
 .next a:hover{border-color:var(--accent)}
 
-footer.foot{max-width:1180px;margin:0 auto;padding:30px 24px 60px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line)}
+footer.foot{max-width:1520px;margin:0 auto;padding:30px 24px 60px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line)}
 
 /* мини-макеты (переиспользуются в примерах) */
 .mk{font-family:var(--sans);color:#1c1b22}
@@ -235,3 +235,24 @@ kbd{font:600 12.5px var(--mono);background:var(--accent-soft);color:var(--accent
 .serif-pic{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;text-align:center;margin:12px 0;background:var(--card);border-radius:12px;padding:12px}
 .serif-pic>span{font-size:72px;line-height:1.1}
 .serif-pic small{font-size:13px;color:var(--muted)}
+
+/* шире и горизонтальнее (26.11) */
+section.ch > p, section.ch > h3, .mhead p{max-width:900px}
+section.ch > ul:not(.cards){max-width:900px}
+.side a{font-size:14px;padding:6px 10px}
+/* азы: термины карточками в ряд */
+.nul{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;padding:16px}
+.nul>b:first-child{grid-column:1/-1;margin:0}
+.nul>p{margin:0;background:var(--bg,#fff);background:color-mix(in srgb,var(--card) 80%,transparent);border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5}
+.nul>p:only-of-type,.nul>.serif-pic,.nul>svg{grid-column:1/-1}
+.nul>p>b:first-child{display:block;font-size:16px;margin-bottom:2px;color:var(--ink)}
+/* ошибки: карточки в ряд */
+.err{border-left:0;border-top:3px solid var(--warn);border-radius:12px;padding:14px 16px}
+.err>ul{list-style:none;padding:0!important;margin:6px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.err li{background:var(--bg2,var(--accent-soft));background:color-mix(in srgb,var(--warn) 9%,transparent);border-radius:10px;padding:10px 12px;font-size:15px;line-height:1.45}
+.err li::before{content:"✗ ";color:var(--warn);font-weight:700}
+/* короткие пошаговые списки: шаги в ряд */
+section.ch > ol:not(:has(>li:nth-child(7))){list-style:none;padding:0;margin:14px 0 20px;counter-reset:st;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+section.ch > ol:not(:has(>li:nth-child(7)))>li{counter-increment:st;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;font-size:15px;line-height:1.5;margin:0}
+section.ch > ol:not(:has(>li:nth-child(7)))>li::before{content:counter(st);display:block;font:600 22px var(--serif);color:var(--accent);margin-bottom:4px}
+@media (min-width:1100px){.shot.d{width:calc(50% - 7px)}.shot.d:only-child{width:min(760px,100%)}}
