@@ -18,7 +18,7 @@ SL.forEach(t=>{ if(SKIP_N.has(t.n)) return;
     const re=new RegExp('(?<!['+L+'])'+v.split(/[\s-]+/).map(stem).join('[\\s-]+')+'(?!['+L+'])',cs?'u':'iu');
     T.push({t,re,len:v.length}); }); });
 T.sort((a,b)=>b.len-a.len);
-const BAD='h1,h2,h3,h4,a,button,label,.q,.quiz,.opts,.slovar,svg,.demo,.tb th,code,.tip,nav,.toc,script,style,.sh-in';
+const BAD='.serif-pic,h1,h2,h3,h4,a,button,label,.q,.quiz,.opts,.slovar,svg,.demo,.tb th,code,.tip,nav,.toc,script,style,.sh-in';
 document.querySelectorAll('section.ch').forEach(sec=>{
   if(sec.id==='slovar') return;
   const used=new Set();
