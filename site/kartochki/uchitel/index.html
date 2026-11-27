@@ -74,7 +74,7 @@ td.nm{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
 .zl b{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:22px;font-weight:400;color:var(--ac2);margin:0 3px}
 </style></head><body>
 <div class="app">
- <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Карточки: наши иероглифы 你 我 好 叫 妈 爸</h1><small>Результаты обновляются только по кнопке «↻ Обновить». Номера заданий — те же, что у детей.</small></div>
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Карточки: наши иероглифы 你 我 好 叫 妈 爸 他 她 们 吗 是 不</h1><small>Результаты обновляются только по кнопке «↻ Обновить». Номера заданий — те же, что у детей.</small></div>
   <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><a class="btn g" href="../?name=учитель" target="_blank" style="text-decoration:none">Открыть как ученик ↗</a></div></div>
  <div class="box n">
   <h2>📊 Прогресс <span class="st" id="st"></span><button class="btn" id="ref" style="margin-left:auto;padding:8px 14px;font-size:14px">↻ Обновить</button></h2>
@@ -88,8 +88,8 @@ td.nm{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
 </div>
 <script>
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-const T=['Узнай иероглиф','Напиши иероглиф'];const HWID='kart6';const NT=T.length;
-const W={'你':'ты','我':'я','好':'хороший, хорошо','叫':'звать, зваться','妈':'мама','爸':'папа'};const H6=Object.keys(W);
+const T=['Узнай иероглиф','Напиши иероглиф'];const HWID='kart12';const NT=T.length;
+const W={'你':'ты','我':'я','好':'хороший, хорошо','叫':'звать, зваться','妈':'мама','爸':'папа','他':'он','她':'она','们':'много (людей)','吗':'вопросительная частица','是':'являться · да','不':'не'};const H6=Object.keys(W);
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const OPEN=new Set();
@@ -99,7 +99,7 @@ function zones(P){const a={},b={};((P.t1||{}).res||[]).forEach(r=>a[r.c]=r);((P.
  const Z={g:[],y:[],r:[]};H6.forEach(c=>{const x=a[c],y=b[c];if(!x||!y)return;
   if(y.shown||(!x.ok&&y.hints>=2))Z.r.push(c);else if(x.ok&&!x.ap&&!y.hints&&!y.mist)Z.g.push(c);else Z.y.push(c);});return Z;}
 function report(s){const P=s.parts||{},L=[];const nm=(s.name||'').split(/\s+/)[0];const d=doneN(P),pc=Math.round(d*100/NT);
- L.push(`«Карточки: наши иероглифы» (你 我 好 叫 妈 爸) — ${nm}`);
+ L.push(`«Карточки: наши иероглифы» (12 иероглифов) — ${nm}`);
  L.push(`Выполнено: ${pc}% (${d} из ${NT} заданий)`);L.push('▓'.repeat(Math.round(pc/10))+'░'.repeat(10-Math.round(pc/10)));L.push('');
  T.forEach((x,i)=>{const p=P['t'+(i+1)];L.push(`${i+1}. ${x} — ${p?'✅ сделал(а)':'❌ не сделал(а)'}${p?` (${p.score} из ${p.of}${i===1?' сам(а), без подсказок':''})`:''}`);});
  const lf=leftL(P);L.push('');L.push(lf.length?`Нужно доделать: № ${lf.join(', № ')}.`:'Все задания сделаны! 🏆');
