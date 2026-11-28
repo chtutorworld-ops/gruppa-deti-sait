@@ -74,37 +74,42 @@ td.nm{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
 .zl b{font-family:'LXGW WenKai GB','Noto Sans SC','Microsoft YaHei',sans-serif;font-size:22px;font-weight:400;color:var(--ac2);margin:0 3px}
 </style></head><body>
 <div class="app">
- <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Карточки: наши иероглифы 你 我 好 叫 妈 爸 他 她 们 吗 是 不</h1><small>Результаты обновляются только по кнопке «↻ Обновить». Номера заданий — те же, что у детей.</small></div>
+ <div class="top n"><div><h1>🧑‍🏫 Кабинет учителя · Тренировка лексики и иероглифики 你 我 好 叫 妈 爸 他 她 们 吗 是 不</h1><small>Результаты обновляются только по кнопке «↻ Обновить». Номера заданий — те же, что у детей.</small></div>
   <div style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><a class="btn g" href="../?name=учитель" target="_blank" style="text-decoration:none">Открыть как ученик ↗</a></div></div>
  <div class="box n">
   <h2>📊 Прогресс <span class="st" id="st"></span><button class="btn" id="ref" style="margin-left:auto;padding:8px 14px;font-size:14px">↻ Обновить</button></h2>
   <div class="kpi" id="kpi"><div style="color:var(--mu)">Нажмите «↻ Обновить»</div></div>
   <div style="overflow-x:auto"><table id="tb"></table></div>
   <div class="miss" id="miss"></div>
-  <div class="tip">Задания: <b>№ 1 Узнай иероглиф</b> — видит иероглиф (можно послушать), пишет перевод по-русски; если ответ не принят, может нажать «🙋 мой ответ правильный» — такие ответы помечены <b>🙋 апелляция</b>, проверьте их. <b>№ 2 Напиши иероглиф</b> — видит перевод, пишет иероглиф пальцем; записано, сколько ошибок в чертах, сколько подсказок «Не помню» и показывали ли весь знак. № 2 открывается после № 1, каждое проходится один раз. <b>Зоны:</b> 🟢 знает — узнал и написал сам без ошибок; 🟡 повторить — ошибка в переводе, подсказки или ошибки в чертах; 🔴 особое внимание — смотрел весь знак, или перевод неверный и 2+ подсказки. Проверить самой: войдите под именем «учитель» — ничего не сохранится, есть кнопка «Сбросить».</div>
+  <div class="tip"><b>№ 1 Заучивание: 8 фаз</b> — каждое слово проходит фазы 1–8 (пиньинь → перевод → пиньинь и тон → иероглиф → звук → по памяти → диктант); ошибся — слово остаётся на фазе. Видно, на какой фазе каждое слово, и каждая проходка с ответами. Контроль: <b>№ 2 Узнай иероглиф</b> — видит иероглиф (можно послушать), пишет перевод по-русски; если ответ не принят, может нажать «🙋 мой ответ правильный» — такие ответы помечены <b>🙋 апелляция</b>, проверьте их. <b>№ 3 Напиши иероглиф</b> — видит перевод, пишет иероглиф пальцем; записано, сколько ошибок в чертах, сколько подсказок «Не помню» и показывали ли весь знак. № 3 открывается после № 2. Каждое задание можно проходить много раз — видны все попытки. <b>Зоны:</b> 🟢 знает — узнал и написал сам без ошибок; 🟡 повторить — ошибка в переводе, подсказки или ошибки в чертах; 🔴 особое внимание — смотрел весь знак, или перевод неверный и 2+ подсказки. Проверить самой: войдите под именем «учитель» — ничего не сохранится, есть кнопка «Сбросить».</div>
   <h2 style="margin-top:22px">🗂 Каждый ребёнок отдельно: нажмите на имя (здесь или в таблице)</h2>
   <div class="dos" id="dos"></div>
  </div>
 </div>
 <script>
 const API=/workers\.dev$/.test(location.hostname)?'/api/dz/':'https://gruppa-deti.ch-tutor-world.workers.dev/api/dz/';
-const T=['Узнай иероглиф','Напиши иероглиф'];const HWID='kart12';const NT=T.length;
+// порядок как у детей (28.11): № 1 Заучивание (тренировка, часть t3), № 2–3 Контроль (t1 узнай, t2 напиши); K — номер части минус 1
+const T=['Заучивание: 8 фаз','Контроль: узнай иероглиф','Контроль: напиши иероглиф'];const K=[2,0,1];const HWID='kart12';const NT=T.length;
 const W={'你':'ты','我':'я','好':'хороший, хорошо','叫':'звать, зваться','妈':'мама','爸':'папа','他':'он','她':'она','们':'много (людей)','吗':'вопросительная частица','是':'являться · да','不':'не'};const H6=Object.keys(W);
+const PHN=[null,'пиньинь → выбрать перевод','пиньинь → написать перевод','перевод → пиньинь и тон','пиньинь → выбрать иероглиф','звук → выбрать перевод','звук → написать перевод','перевод → выбрать иероглиф','диктант'];
 const isTest=n=>/^(учитель|учительница|teacher|тест)/i.test((n||'').trim());
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const OPEN=new Set();
 // все попытки задания n: части t1_<время> (с 27.11), а если их нет — одна t1
 const tries=(P,n)=>{const k=Object.keys(P).filter(x=>x.startsWith('t'+n+'_')).map(x=>P[x]).sort((a,b)=>(a.ts||0)-(b.ts||0));return k.length?k:(P['t'+n]?[P['t'+n]]:[]);};
 const tm=ts=>ts?new Date(ts).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
-const doneN=P=>T.filter((_,i)=>P['t'+(i+1)]).length;
-const leftL=P=>T.map((x,i)=>P['t'+(i+1)]?0:i+1).filter(Boolean);
+// № 3 (тренировка) засчитано, когда 100%; G — данные задания для таблицы (у № 3 score = % из 100)
+const Dn=(P,i)=>i<2?!!P['t'+(i+1)]:!!(P.t3&&P.t3.pct>=100);
+const G=(P,i)=>i<2?P['t'+(i+1)]:(P.t3?{score:P.t3.pct,of:100,tr:1,runs:P.t3.runs}:null);
+const doneN=P=>T.filter((_,i)=>Dn(P,K[i])).length;
+const leftL=P=>T.map((x,i)=>Dn(P,K[i])?0:i+1).filter(Boolean);
 function zones(P){const a={},b={};((P.t1||{}).res||[]).forEach(r=>a[r.c]=r);((P.t2||{}).res||[]).forEach(r=>b[r[0]]={mist:r[1],hints:r[2],shown:r[3]});
  const Z={g:[],y:[],r:[]};H6.forEach(c=>{const x=a[c],y=b[c];if(!x||!y)return;
   if(y.shown||(!x.ok&&y.hints>=2))Z.r.push(c);else if(x.ok&&!x.ap&&!y.hints&&!y.mist)Z.g.push(c);else Z.y.push(c);});return Z;}
 function report(s){const P=s.parts||{},L=[];const nm=(s.name||'').split(/\s+/)[0];const d=doneN(P),pc=Math.round(d*100/NT);
- L.push(`«Карточки: наши иероглифы» (12 иероглифов) — ${nm}`);
+ L.push(`«Тренировка лексики и иероглифики» (12 иероглифов) — ${nm}`);
  L.push(`Выполнено: ${pc}% (${d} из ${NT} заданий)`);L.push('▓'.repeat(Math.round(pc/10))+'░'.repeat(10-Math.round(pc/10)));L.push('');
- T.forEach((x,i)=>{const p=P['t'+(i+1)];L.push(`${i+1}. ${x} — ${p?'✅ сделал(а)':'❌ не сделал(а)'}${p?` (${p.score} из ${p.of}${i===1?' сам(а), без подсказок':''}${tries(P,i+1).length>1?', попыток: '+tries(P,i+1).length:''})`:''}`);});
+ T.forEach((x,i)=>{const p=G(P,K[i]);if(p&&p.tr){L.push(`${i+1}. ${x} — ${p.score>=100?'✅':'⏳'} пройдено ${p.score}% (проходок: ${p.runs})`);return;}L.push(`${i+1}. ${x} — ${p?'✅ сделал(а)':'❌ не сделал(а)'}${p?` (${p.score} из ${p.of}${K[i]===1?' сам(а), без подсказок':''}${tries(P,K[i]+1).length>1?', попыток: '+tries(P,K[i]+1).length:''})`:''}`);});
  const lf=leftL(P);L.push('');L.push(lf.length?`Нужно доделать: № ${lf.join(', № ')}.`:'Все задания сделаны! 🏆');
  const Z=zones(P);if(Z.g.length+Z.y.length+Z.r.length){L.push('');
   if(Z.g.length)L.push('🟢 Знает: '+Z.g.map(c=>c+' ('+W[c]+')').join(', '));
@@ -115,11 +120,11 @@ async function load(){const st=document.getElementById('st');
  try{const r=await fetch(API+'list?hw='+HWID+'&_='+Date.now());if(!r.ok)throw r.status;const j=await r.json();
   const subs=(j.subs||[]).filter(s=>!isTest(s.name)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ru'));
   st.textContent='· обновлено '+new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  let cur={};const cell=(p,i)=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;
+  let cur={};const cell=(p,i)=>{if(!p)return '<td class="e">—</td>';const k=p.of?p.score/p.of:0;if(p.tr)return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}%<small>проходок: ${p.runs}</small></td>`;
    const nt=tries(cur,i).length;return `<td class="${k>=.8?'g':k>=.5?'m':'b'}">${p.score}/${p.of}<small>${i===1?(p.ap?'🙋 апелляций '+p.ap:'узнал(а)'):'сам(а)'}${nt>1?' · попыток: '+nt:''}</small></td>`;};
   const zc=Z=>`<td><div class="zc">${['g','y','r'].map(k=>Z[k].map(c=>`<span class="${k}">${c}</span>`).join('')).join('')||'<span style="font:700 13px Manrope;color:var(--mu)">—</span>'}</div></td>`;
   document.getElementById('tb').innerHTML=`<tr><th class="nm">Ученик</th><th>Готово</th>${T.map((x,i)=>`<th>№ ${i+1}<br>${x}</th>`).join('')}<th>Зоны<br>🟢 🟡 🔴</th></tr>`+
-   (subs.length?subs.map(s=>{const P=s.parts||{},d=doneN(P),pc=Math.round(d*100/NT);return `<tr><td class="nm" data-open="${esc(s.sid)}" title="Открыть данные ребёнка">${esc(s.name)}</td><td><span class="pc">${pc}%</span><div class="pcb"><i style="width:${pc}%"></i></div></td>${(cur=P,'')}${T.map((_,i)=>cell(P['t'+(i+1)],i+1)).join('')}${zc(zones(P))}</tr>`;}).join(''):`<tr><td colspan="5" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал. Как только ребёнок сделает задание, он появится здесь.</td></tr>`);
+   (subs.length?subs.map(s=>{const P=s.parts||{},d=doneN(P),pc=Math.round(d*100/NT);return `<tr><td class="nm" data-open="${esc(s.sid)}" title="Открыть данные ребёнка">${esc(s.name)}</td><td><span class="pc">${pc}%</span><div class="pcb"><i style="width:${pc}%"></i></div></td>${(cur=P,'')}${T.map((_,i)=>cell(G(P,K[i]),K[i]+1)).join('')}${zc(zones(P))}</tr>`;}).join(''):`<tr><td colspan="6" style="font-family:Manrope;color:var(--mu);font-weight:600;padding:20px">Пока никто не начал. Как только ребёнок сделает задание, он появится здесь.</td></tr>`);
   const all=subs.filter(s=>doneN(s.parts||{})===NT).length;
   document.getElementById('kpi').innerHTML=`<div><b>${subs.length}</b>начали</div><div><b>${all}</b>сделали всё</div><div><b>${subs.length-all}</b>ещё не доделали</div>`;
   const miss={};subs.forEach(s=>{const Z=zones(s.parts||{});[...Z.y,...Z.r].forEach(c=>miss[c]=(miss[c]||0)+1);});
@@ -127,12 +132,15 @@ async function load(){const st=document.getElementById('st');
   document.getElementById('miss').innerHTML=top.length?'<b style="color:var(--ink)">Чаще всего нужно повторить:</b> '+top.map(([x,c])=>`<span>${esc(x)} × ${c}</span>`).join(''):'';
   document.getElementById('dos').innerHTML=subs.map(s=>{const P=s.parts||{},out=[];const d=doneN(P),pc=Math.round(d*100/NT);
    out.push(`<div class="ccard"><div class="cbar"><b>${pc}%</b><div class="pcb"><i style="width:${pc}%"></i></div><span class="st">${d} из ${NT}</span></div>
-    <div class="tl7">${T.map((x,i)=>{const p=P['t'+(i+1)];return `<div class="${p?'y':'x'}"><span class="nn">${i+1}</span><span>${esc(x)}${p?`<small>${p.score+' из '+p.of}${i===1?' сам(а), без подсказок':''}</small>`:''}</span><span class="st7">${p?'✓ сделал(а)':'✗ не сделал(а)'}</span></div>`;}).join('')}</div></div>`);
+    <div class="tl7">${T.map((x,i)=>{const p=G(P,K[i]),d=Dn(P,K[i]);return `<div class="${d?'y':'x'}"><span class="nn">${i+1}</span><span>${esc(x)}${p?`<small>${p.tr?'пройдено '+p.score+'% · проходок: '+p.runs:p.score+' из '+p.of}${K[i]===1?' сам(а), без подсказок':''}</small>`:''}</span><span class="st7">${d?'✓ сделал(а)':p?'⏳ в процессе':'✗ не сделал(а)'}</span></div>`;}).join('')}</div></div>`);
    const Z=zones(P);if(Z.g.length+Z.y.length+Z.r.length)out.push(`<h4>Зоны</h4><div class="zl">${Z.g.length?`<div class="g">🟢 Знает:${Z.g.map(c=>`<b>${c}</b>`).join('')}</div>`:''}${Z.y.length?`<div class="y">🟡 Стоит повторить:${Z.y.map(c=>`<b>${c}</b>`).join('')}</div>`:''}${Z.r.length?`<div class="r">🔴 Особое внимание:${Z.r.map(c=>`<b>${c}</b>`).join('')}</div>`:''}</div>`);
    const det=[];
-      const tr=(n,name,suf,f)=>{const A=tries(P,n);if(!A.length)return;const L=A.length;det.push(`<h4>№ ${n} ${name}: ${A[L-1].score}/${A[L-1].of}${suf} · попыток: ${L}</h4><div class="bl">${A.map((a,x)=>`<div>Попытка ${x+1}${a.ts?' · '+tm(a.ts):''}: <b>${a.score}/${a.of}</b></div>`).join('')}</div>`+A.map((a,x)=>`<details${x===L-1?' open':''}><summary>Попытка ${x+1}: все ответы</summary><div class="bl">${(a.res||[]).map(f).join('')}</div></details>`).reverse().join(''));};
-   tr(1,'Узнай иероглиф','',(r=>`<div class="${r.ok&&!r.ap?'':'no'}"><span class="zh">${esc(r.c)}</span> (${W[r.c]||''}) — ответ: <b>${esc(r.a)}</b> ${r.ap?'🙋 <b>апелляция</b> — проверьте':r.ok?'✓':r.idk?'не знал(а)':'✗'}</div>`));
-   tr(2,'Напиши иероглиф',' сам(а)',(([c,m,h,sh])=>`<div class="${sh||h?'no':''}"><span class="zh">${esc(c)}</span> — ${sh?'👀 смотрел(а) весь знак':h?'💡 подсказок: '+h:'✓ сам(а)'} · ошибок в чертах: ${m}</div>`));
+      const tr=(n,name,suf,f)=>{const A=tries(P,n);if(!A.length)return;const L=A.length;det.push(`<h4>№ ${n+1} ${name}: ${A[L-1].score}/${A[L-1].of}${suf} · попыток: ${L}</h4><div class="bl">${A.map((a,x)=>`<div>Попытка ${x+1}${a.ts?' · '+tm(a.ts):''}: <b>${a.score}/${a.of}</b></div>`).join('')}</div>`+A.map((a,x)=>`<details${x===L-1?' open':''}><summary>Попытка ${x+1}: все ответы</summary><div class="bl">${(a.res||[]).map(f).join('')}</div></details>`).reverse().join(''));};
+   tr(1,'Контроль: узнай иероглиф','',(r=>`<div class="${r.ok&&!r.ap?'':'no'}"><span class="zh">${esc(r.c)}</span> (${W[r.c]||''}) — ответ: <b>${esc(r.a)}</b> ${r.ap?'🙋 <b>апелляция</b> — проверьте':r.ok?'✓':r.idk?'не знал(а)':'✗'}</div>`));
+   tr(2,'Контроль: напиши иероглиф',' сам(а)',(([c,m,h,sh])=>`<div class="${sh||h?'no':''}"><span class="zh">${esc(c)}</span> — ${sh?'👀 смотрел(а) весь знак':h?'💡 подсказок: '+h:'✓ сам(а)'} · ошибок в чертах: ${m}</div>`));
+   if(P.t3){const ph=P.t3.ph||{};const R3=Object.keys(P).filter(x=>x.startsWith('t3_')).map(x=>P[x]).sort((a,b)=>(a.ts||0)-(b.ts||0));
+    det.push(`<h4>№ 1 Заучивание: пройдено ${P.t3.pct}% · проходок: ${P.t3.runs}</h4><div class="bl">${Object.keys(W).map(c=>`<div class="${(ph[c]||1)>8?'':'no'}"><span class="zh">${c}</span> (${W[c]}) — ${(ph[c]||1)>8?'✓ все 8 фаз':'на фазе '+(ph[c]||1)+': '+(PHN[ph[c]||1]||'')}</div>`).join('')}</div>`+
+     R3.map((r,x)=>`<details${x===R3.length-1?' open':''}><summary>Проходка ${x+1}${r.ts?' · '+tm(r.ts):''}: верно ${r.ok} из ${r.of}</summary><div class="bl">${(r.log||[]).map(([c,p,o,g])=>`<div class="${o?'':'no'}"><span class="zh">${esc(c)}</span> — фаза ${p} (${PHN[p]||''}): ${o?'✓ верно':'✗ ошибка'}${g?' · ответ: <b>'+esc(g)+'</b>':''}</div>`).join('')}</div></details>`).reverse().join(''));}
    out.push(`<h4>📨 Отчёт для родителей</h4><div class="rep">${esc(report(s))}</div><button class="pbtn" data-cp="${esc(s.sid)}" style="margin-top:6px">📋 Скопировать</button>`);
    if(det.length)out.push(`<details class="more" open><summary>Подробно: все ответы по заданиям</summary>${det.join('')}</details>`);
    return `<div class="dc${OPEN.has(s.sid)?' op':''}" data-sid="${esc(s.sid)}"><button>${esc(s.name)}<small>${pc}% · ${d} из ${NT}</small></button><div class="bd">${out.join('')}</div></div>`;}).join('');
